@@ -1,0 +1,17 @@
+syntax = "proto3";
+package Protocol;
+
+import "Enum.proto";
+
+message Channel
+{
+	int64 channelId = 1;
+	int32 maxPlayerCount = 2;
+	int32 currentPlayerCount = 3;
+}
+
+message ChannelInfo
+{
+	int32 channelCount = 1;
+	repeated Channel channels = 2;
+}

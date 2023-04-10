@@ -1,0 +1,85 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
+  m_Name: Default Local Group
+  m_EditorClassIdentifier: 
+  m_GroupName: Default Local Group
+  m_Data:
+    m_SerializedData: []
+  m_GUID: 9c146f26cfe9df64abf19ffb376831c7
+  m_SerializeEntries:
+  - m_GUID: ea9ef9467eefc614483b7bcff59a3071
+    m_Address: login_scene
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 30749d4f617f08549ae349e71e1a32ef
+    m_Address: UI_LoginScene
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 8e87b7c1173233b47813134c111c7f7f
+    m_Address: UI_GameScene
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 73675206938cb194d8d67712ef49d34d
+    m_Address: ForestMap
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: d4c197de159ca4d4d9a7180db191117b
+    m_Address: ForestMapInfo
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 24cb7d443f328144aa1a30552a59feeb
+    m_Address: Bazzi
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 8a7c171a0814a01408b27ca7366b6639
+    m_Address: EventSystem
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 97d97a3ee34c8b54fb3530f88699ab75
+    m_Address: Bomb
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 92afa1cf736c59647ab035bd7cb3fb61
+    m_Address: WaterCourse
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 2cda990e2423bbf4892e6590ba056729
+    m_Address: LoginScene
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 5a3132447297e194e8814a7ddc96bc71
+    m_Address: ChannelScene
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: d27f31b26ca435945843c95ab190c710
+    m_Address: GameScene
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 14884055870d3054c8113a9f4ceece99
+    m_Address: LobbyScene
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 8fa386a6c816c354e8e6e751e59afc95
+    m_Address: UI_ChannelSubItem
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 3031147518578ac4abbd3577ccd2e86e
+    m_Address: UI_ChannelScene
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  m_ReadOnly: 0
+  m_Settings: {fileID: 11400000, guid: 37d63db9dee568844aed5ef436298665, type: 2}
+  m_SchemaSet:
+    m_Schemas:
+    - {fileID: 11400000, guid: 59a683ade7f716c4f87c4f6aa3dc52f4, type: 2}
+    - {fileID: 11400000, guid: bd58fd8cd8bb65748a6306e2043bcb6b, type: 2}
