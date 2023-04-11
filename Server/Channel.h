@@ -8,15 +8,18 @@ class Channel
 public:
 	Channel(int64 id, int32 maxPlayerCount);
 
-	// void AddRoom();
-	// void RemoveRoom();
-	// RoomRef FindRoom();
+	void AddRoom(int32 maxPlayerCount = 8);
+	void RemoveRoom(int32 roomId);
+	RoomRef FindRoom(int32 roomId);
 
 	void InsertPlayer(PlayerRef player);
 	void RemovePlayer(int64 playerId);
 	PlayerRef FindPlayer(int64 playerId);
 
 	void FillChannelInfo(Protocol::Channel* pkt);
+	void FillRoomInfo(Protocol::RoomInfo* pkt);
+
+	int64 GetId() { return _id; }
 
 private:
 	USE_LOCK;
@@ -24,7 +27,9 @@ private:
 	HashMap<int64, PlayerRef> _players;
 
 private:
-	int64 _id;
+	int32 _increaseId = 1;
+
+	int32 _id;
 	int32 _maxPlayerCount = 0;
 	int32 _currentPlayerCount = 0;
 };

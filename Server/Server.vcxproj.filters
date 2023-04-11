@@ -16,6 +16,9 @@
     <Filter Include="GameContents\Channel">
       <UniqueIdentifier>{ff03cd01-4e75-4258-aae6-76da43a721a5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="GameContents\Room">
+      <UniqueIdentifier>{79502481-792a-4912-8e6e-966d9ed0aca2}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Server.cpp">
@@ -54,6 +57,9 @@
     <ClCompile Include="ChannelManager.cpp">
       <Filter>GameContents\Channel</Filter>
     </ClCompile>
+    <ClCompile Include="Room.cpp">
+      <Filter>GameContents\Room</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h">
@@ -88,6 +94,9 @@
     </ClInclude>
     <ClInclude Include="ChannelManager.h">
       <Filter>GameContents\Channel</Filter>
+    </ClInclude>
+    <ClInclude Include="Room.h">
+      <Filter>GameContents\Room</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

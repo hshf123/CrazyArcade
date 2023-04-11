@@ -6,6 +6,7 @@
 #include "ClientSessionManager.h"
 #include "Managers.h"
 #include "ChannelManager.h"
+#include "Channel.h"
 
 PacketHandlerFunc GPacketHandler[UINT16_MAX];
 
@@ -23,6 +24,7 @@ bool Handle_C_LOGIN(PacketSessionRef& session, Protocol::C_LOGIN& pkt)
 	wstring pw = Utils::ConvertStringToWString(pkt.pw());
 
 	{
+		// 사용자 정보 불러오기
 		DBConnection* dbConn = GDBConnectionPool->Pop();
 		auto query = L"SELECT *							\
 						FROM [dbo].[UserInfo]			\
@@ -60,6 +62,7 @@ bool Handle_C_LOGIN(PacketSessionRef& session, Protocol::C_LOGIN& pkt)
 
 	{
 		// TODO : 정보가 없으면 새로 만들기
+		// 유저 정보 불러오기
 		DBConnection* dbConn = GDBConnectionPool->Pop();
 		auto query = L"SELECT *							\
 						FROM [dbo].[Player]				\
@@ -91,6 +94,7 @@ bool Handle_C_LOGIN(PacketSessionRef& session, Protocol::C_LOGIN& pkt)
 			Managers::GetInstance()->GenerateID(outPlayerID)
 		);
 		clientSession->MyPlayer = player;
+		ChannelManager::GetInstance()->AddPlayer(player);
 	}
 
 	Protocol::S_LOGIN loginPkt;
@@ -98,9 +102,38 @@ bool Handle_C_LOGIN(PacketSessionRef& session, Protocol::C_LOGIN& pkt)
 	Protocol::ChannelInfo* channelInfo = new Protocol::ChannelInfo();
 	ChannelManager::GetInstance()->FillChannelInfo(channelInfo);
 	loginPkt.set_allocated_channelinfo(channelInfo);
+	loginPkt.set_playerid(clientSession->MyPlayer.lock()->GetId());
 	SendBufferRef sendBuffer = ClientPacketHandler::MakeSendBuffer(loginPkt);
 	clientSession->Send(sendBuffer);
 
 	return true;
 }
- 
+
+bool Handle_C_CHANNELCHOIC(PacketSessionRef& session, Protocol::C_CHANNELCHOIC& pkt)
+{
+	// success false, 입장가능한지 체크
+	ClientSessionRef clientSession = static_pointer_cast<ClientSession>(session);
+
+	PlayerRef player = ChannelManager::GetInstance()->FindPlayer(pkt.playerid());
+	if (player == nullptr)
+		return false;
+
+	ChannelRef channel = ChannelManager::GetInstance()->FindChannel(pkt.channelid());
+	if (channel == nullptr)
+		return false;
+
+	channel->InsertPlayer(player);
+	ChannelManager::GetInstance()->RemovePlayer(pkt.playerid());
+
+	Protocol::S_CHANNELCHOIC channelChoicePkt;
+	channelChoicePkt.set_success(true);
+	channelChoicePkt.set_channelid(channel->GetId());
+	Protocol::RoomInfo* roomInfo = new Protocol::RoomInfo();
+	channel->FillRoomInfo(roomInfo);
+	channelChoicePkt.set_allocated_roominfo(roomInfo);
+
+	SendBufferRef sendBuffer = ClientPacketHandler::MakeSendBuffer(channelChoicePkt);
+	clientSession->Send(sendBuffer);
+
+	return true;
+}

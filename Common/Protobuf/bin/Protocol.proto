@@ -17,4 +17,18 @@ message S_LOGIN
 {
 	bool success = 1;
 	ChannelInfo channelInfo = 2;
+	int64 playerId = 3;
+}
+
+message C_CHANNELCHOIC
+{
+	int32 channelId = 1;
+	int64 playerId = 2;
+}
+
+message S_CHANNELCHOIC
+{
+	bool success = 1;
+	int32 channelId = 2;
+	RoomInfo roomInfo = 3;
 }

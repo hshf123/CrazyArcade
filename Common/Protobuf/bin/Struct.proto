@@ -5,7 +5,7 @@ import "Enum.proto";
 
 message Channel
 {
-	int64 channelId = 1;
+	int32 channelId = 1;
 	int32 maxPlayerCount = 2;
 	int32 currentPlayerCount = 3;
 }
@@ -14,4 +14,17 @@ message ChannelInfo
 {
 	int32 channelCount = 1;
 	repeated Channel channels = 2;
+}
+
+message Room
+{
+	int32 roomId = 1;
+	int32 maxPlayerCount = 2;
+	int32 currentPlayerCount = 3;
+}
+
+message RoomInfo
+{
+	int32 roomCount = 1;
+	repeated Room rooms = 2;
 }
