@@ -53,28 +53,24 @@ MonoBehaviour:
     m_Address: WaterCourse
     m_ReadOnly: 0
     m_SerializedLabels: []
-  - m_GUID: 2cda990e2423bbf4892e6590ba056729
-    m_Address: LoginScene
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-  - m_GUID: 5a3132447297e194e8814a7ddc96bc71
-    m_Address: ChannelScene
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-  - m_GUID: d27f31b26ca435945843c95ab190c710
-    m_Address: GameScene
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-  - m_GUID: 14884055870d3054c8113a9f4ceece99
-    m_Address: LobbyScene
-    m_ReadOnly: 0
-    m_SerializedLabels: []
   - m_GUID: 8fa386a6c816c354e8e6e751e59afc95
     m_Address: UI_ChannelSubItem
     m_ReadOnly: 0
     m_SerializedLabels: []
   - m_GUID: 3031147518578ac4abbd3577ccd2e86e
     m_Address: UI_ChannelScene
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 237b03d81581708479be05aac02ca72f
+    m_Address: UI_RoomSubItem
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: d67e90be205d3144ebe6e38fedec75bd
+    m_Address: UI_RoomDummySubItem
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 11cd2302efeac6346a9d4e36b841ef19
+    m_Address: UI_RoomScene
     m_ReadOnly: 0
     m_SerializedLabels: []
   m_ReadOnly: 0

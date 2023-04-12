@@ -17,6 +17,7 @@ private:
 
 private:
 	int64 _id;
+	wstring _roomName;
 	int32 _maxPlayerCount = 0;
 	int32 _currentPlayerCount = 0;
 };

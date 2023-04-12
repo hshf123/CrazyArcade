@@ -7,6 +7,10 @@ public enum MsgId : ushort
 {
 	PKT_C_LOGIN = 1000,
 	PKT_S_LOGIN = 1001,
+	PKT_C_CHANNELCHOIC = 1002,
+	PKT_S_CHANNELCHOIC = 1003,
+	PKT_C_MAKEROOM = 1004,
+	PKT_S_MAKEROOM = 1005,
 };
 
 class PacketManager
@@ -30,6 +34,10 @@ class PacketManager
     {
         _onRecv.Add((ushort)MsgId.PKT_S_LOGIN, MakePacket<S_LOGIN>);
         _handler.Add((ushort)MsgId.PKT_S_LOGIN, PacketHandler.S_LOGINHandler);
+        _onRecv.Add((ushort)MsgId.PKT_S_CHANNELCHOIC, MakePacket<S_CHANNELCHOIC>);
+        _handler.Add((ushort)MsgId.PKT_S_CHANNELCHOIC, PacketHandler.S_CHANNELCHOICHandler);
+        _onRecv.Add((ushort)MsgId.PKT_S_MAKEROOM, MakePacket<S_MAKEROOM>);
+        _handler.Add((ushort)MsgId.PKT_S_MAKEROOM, PacketHandler.S_MAKEROOMHandler);
     }
 
     public void OnRecvPacket(PacketSession session, ArraySegment<byte> buffer)

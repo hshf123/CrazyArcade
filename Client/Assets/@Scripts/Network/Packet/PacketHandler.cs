@@ -20,5 +20,26 @@ public class PacketHandler
 
         Managers.Scene.ChangeScene<ChannelScene>(Define.SceneType.ChannelScene);
         Managers.Game.ChannelInfo = pkt.ChannelInfo;
+        Managers.Game.PlayerID = pkt.PlayerId;
+    }
+
+    public static void S_CHANNELCHOICHandler(PacketSession session, IMessage packet)
+    {
+        ServerSession serverSession = session as ServerSession;
+        S_CHANNELCHOIC pkt = packet as S_CHANNELCHOIC;
+        
+        if(pkt.Success == false)
+        {
+            Debug.Log($"실패 사유 : ");
+            return;
+        }
+
+        Managers.Scene.ChangeScene<RoomScene>(Define.SceneType.RoomScene);
+        Managers.Game.RoomInfo = pkt.RoomInfo;
+    }
+
+    public static void S_MAKEROOMHandler(PacketSession session, IMessage packet)
+    {
+
     }
 }

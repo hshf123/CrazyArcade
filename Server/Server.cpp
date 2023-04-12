@@ -14,8 +14,9 @@
 
 int main()
 {
-	ASSERT_CRASH(GDBConnectionPool->Connect(1, L"Driver={ODBC Driver 18 for SQL Server};Server=(localdb)\\MSSQLLocalDB;Database=ServerDB;Trusted_Connection=Yes;"));
-	
+	// ASSERT_CRASH(GDBConnectionPool->Connect(1, L"Driver={ODBC Driver 18 for SQL Server};Server=(localdb)\\MSSQLLocalDB;Database=ServerDB;Trusted_Connection=Yes;"));
+	ASSERT_CRASH(GDBConnectionPool->Connect(1, L"Driver={ODBC Driver 17 for SQL Server};Server=SANGHYUN\\SQLEXPRESS;Database=CrazyArcadeDB;Trusted_Connection=Yes;"));
+	auto testFunc = []() {};
 	{
 		// FOREIGN KEY 제약 조건 삭제
 		auto query1 = L"IF EXISTS (SELECT * FROM sys.foreign_keys WHERE name = 'FK_Player_UserInfo') \

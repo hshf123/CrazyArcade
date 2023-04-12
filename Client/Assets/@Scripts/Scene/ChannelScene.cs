@@ -24,6 +24,7 @@ public class ChannelScene : BaseScene
         //    ChannelInfo.Channels.Add(channel);
         //}
 
+        Managers.Sound.Clear();
         Managers.UI.ShowSceneUI<UI_ChannelScene>(null,
             (sceneUI) =>
             {

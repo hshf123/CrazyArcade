@@ -32,3 +32,15 @@ message S_CHANNELCHOIC
 	int32 channelId = 2;
 	RoomInfo roomInfo = 3;
 }
+
+message C_MAKEROOM
+{
+	string roomName = 1;
+	int64 playerId = 2;
+	int32 channelId = 3;
+}
+
+message S_MAKEROOM
+{
+	bool success = 1;
+}

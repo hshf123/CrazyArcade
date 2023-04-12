@@ -516,10 +516,25 @@ class Room final :
   // accessors -------------------------------------------------------
 
   enum : int {
+    kRoomNameFieldNumber = 2,
     kRoomIdFieldNumber = 1,
-    kMaxPlayerCountFieldNumber = 2,
-    kCurrentPlayerCountFieldNumber = 3,
+    kMaxPlayerCountFieldNumber = 3,
+    kCurrentPlayerCountFieldNumber = 4,
   };
+  // string roomName = 2;
+  void clear_roomname();
+  const std::string& roomname() const;
+  template <typename ArgT0 = const std::string&, typename... ArgT>
+  void set_roomname(ArgT0&& arg0, ArgT... args);
+  std::string* mutable_roomname();
+  PROTOBUF_NODISCARD std::string* release_roomname();
+  void set_allocated_roomname(std::string* roomname);
+  private:
+  const std::string& _internal_roomname() const;
+  inline PROTOBUF_ALWAYS_INLINE void _internal_set_roomname(const std::string& value);
+  std::string* _internal_mutable_roomname();
+  public:
+
   // int32 roomId = 1;
   void clear_roomid();
   int32_t roomid() const;
@@ -529,7 +544,7 @@ class Room final :
   void _internal_set_roomid(int32_t value);
   public:
 
-  // int32 maxPlayerCount = 2;
+  // int32 maxPlayerCount = 3;
   void clear_maxplayercount();
   int32_t maxplayercount() const;
   void set_maxplayercount(int32_t value);
@@ -538,7 +553,7 @@ class Room final :
   void _internal_set_maxplayercount(int32_t value);
   public:
 
-  // int32 currentPlayerCount = 3;
+  // int32 currentPlayerCount = 4;
   void clear_currentplayercount();
   int32_t currentplayercount() const;
   void set_currentplayercount(int32_t value);
@@ -554,6 +569,7 @@ class Room final :
   template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
   typedef void InternalArenaConstructable_;
   typedef void DestructorSkippable_;
+  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr roomname_;
   int32_t roomid_;
   int32_t maxplayercount_;
   int32_t currentplayercount_;
@@ -882,7 +898,57 @@ inline void Room::set_roomid(int32_t value) {
   // @@protoc_insertion_point(field_set:Protocol.Room.roomId)
 }
 
-// int32 maxPlayerCount = 2;
+// string roomName = 2;
+inline void Room::clear_roomname() {
+  roomname_.ClearToEmpty();
+}
+inline const std::string& Room::roomname() const {
+  // @@protoc_insertion_point(field_get:Protocol.Room.roomName)
+  return _internal_roomname();
+}
+template <typename ArgT0, typename... ArgT>
+inline PROTOBUF_ALWAYS_INLINE
+void Room::set_roomname(ArgT0&& arg0, ArgT... args) {
+ 
+ roomname_.Set(static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
+  // @@protoc_insertion_point(field_set:Protocol.Room.roomName)
+}
+inline std::string* Room::mutable_roomname() {
+  std::string* _s = _internal_mutable_roomname();
+  // @@protoc_insertion_point(field_mutable:Protocol.Room.roomName)
+  return _s;
+}
+inline const std::string& Room::_internal_roomname() const {
+  return roomname_.Get();
+}
+inline void Room::_internal_set_roomname(const std::string& value) {
+  
+  roomname_.Set(value, GetArenaForAllocation());
+}
+inline std::string* Room::_internal_mutable_roomname() {
+  
+  return roomname_.Mutable(GetArenaForAllocation());
+}
+inline std::string* Room::release_roomname() {
+  // @@protoc_insertion_point(field_release:Protocol.Room.roomName)
+  return roomname_.Release();
+}
+inline void Room::set_allocated_roomname(std::string* roomname) {
+  if (roomname != nullptr) {
+    
+  } else {
+    
+  }
+  roomname_.SetAllocated(roomname, GetArenaForAllocation());
+#ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  if (roomname_.IsDefault()) {
+    roomname_.Set("", GetArenaForAllocation());
+  }
+#endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  // @@protoc_insertion_point(field_set_allocated:Protocol.Room.roomName)
+}
+
+// int32 maxPlayerCount = 3;
 inline void Room::clear_maxplayercount() {
   maxplayercount_ = 0;
 }
@@ -902,7 +968,7 @@ inline void Room::set_maxplayercount(int32_t value) {
   // @@protoc_insertion_point(field_set:Protocol.Room.maxPlayerCount)
 }
 
-// int32 currentPlayerCount = 3;
+// int32 currentPlayerCount = 4;
 inline void Room::clear_currentplayercount() {
   currentplayercount_ = 0;
 }

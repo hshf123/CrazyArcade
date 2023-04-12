@@ -19,8 +19,9 @@ message ChannelInfo
 message Room
 {
 	int32 roomId = 1;
-	int32 maxPlayerCount = 2;
-	int32 currentPlayerCount = 3;
+	string roomName = 2;
+	int32 maxPlayerCount = 3;
+	int32 currentPlayerCount = 4;
 }
 
 message RoomInfo

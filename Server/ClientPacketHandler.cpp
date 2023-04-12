@@ -137,3 +137,14 @@ bool Handle_C_CHANNELCHOIC(PacketSessionRef& session, Protocol::C_CHANNELCHOIC& 
 
 	return true;
 }
+
+bool Handle_C_MAKEROOM(PacketSessionRef& session, Protocol::C_MAKEROOM& pkt)
+{
+	ClientSessionRef clientSession = static_pointer_cast<ClientSession>(session);
+
+	ChannelRef channel = ChannelManager::GetInstance()->FindChannel(pkt.channelid());
+	if (channel == nullptr)
+		return false;
+
+	return true;
+}
