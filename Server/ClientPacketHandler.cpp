@@ -129,9 +129,9 @@ bool Handle_C_CHANNELCHOIC(PacketSessionRef& session, Protocol::C_CHANNELCHOIC& 
 	Protocol::S_CHANNELCHOIC channelChoicePkt;
 	channelChoicePkt.set_success(true);
 	channelChoicePkt.set_channelid(channel->GetId());
-	Protocol::RoomInfo* roomInfo = new Protocol::RoomInfo();
-	channel->FillRoomInfo(roomInfo);
-	channelChoicePkt.set_allocated_roominfo(roomInfo);
+	Protocol::LobbyInfo* lobbyInfo = new Protocol::LobbyInfo();
+	channel->FillLobbyInfo(lobbyInfo);
+	channelChoicePkt.set_allocated_lobbyinfo(lobbyInfo);
 
 	SendBufferRef sendBuffer = ClientPacketHandler::MakeSendBuffer(channelChoicePkt);
 	clientSession->Send(sendBuffer);
@@ -167,6 +167,8 @@ bool Handle_C_MAKEROOM(PacketSessionRef& session, Protocol::C_MAKEROOM& pkt)
 	ChannelRef channel = ChannelManager::GetInstance()->FindChannel(pkt.channelid());
 	if (channel == nullptr)
 		return false;
+
+	channel->AddRoom(pkt.playerid(), pkt.roomname());
 
 	return true;
 }

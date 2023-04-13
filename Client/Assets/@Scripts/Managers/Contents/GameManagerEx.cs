@@ -15,11 +15,12 @@ public class GameData
 public class GameManagerEx
 {
     public ChannelInfo ChannelInfo { get; set; }
-    public RoomInfo RoomInfo { get; set; }
+    public LobbyInfo LobbyInfo { get; set; }
     public long PlayerID { get; set; }
     public int ChannelID { get; set; }
+    public int RoomID { get; set; }
 
-    public UI_RoomScene Room { get; set; }
+    public UI_LobbyScene Lobby { get; set; }
 
     GameData _gameData = new GameData();
     public GameData SaveData { get { return _gameData; } set { _gameData = value; } }

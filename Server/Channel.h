@@ -8,7 +8,7 @@ class Channel
 public:
 	Channel(int64 id, int32 maxPlayerCount);
 
-	void AddRoom(int32 maxPlayerCount = 8);
+	void AddRoom(int64 playerId, const string& roomName, int32 maxPlayerCount = 8);
 	void RemoveRoom(int32 roomId);
 	RoomRef FindRoom(int32 roomId);
 
@@ -17,7 +17,7 @@ public:
 	PlayerRef FindPlayer(int64 playerId);
 
 	void FillChannelInfo(Protocol::Channel* pkt);
-	void FillRoomInfo(Protocol::RoomInfo* pkt);
+	void FillLobbyInfo(Protocol::LobbyInfo* pkt);
 
 public:
 	void Broadcast(SendBufferRef sendBuffer);

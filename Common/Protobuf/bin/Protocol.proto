@@ -30,7 +30,7 @@ message S_CHANNELCHOIC
 {
 	bool success = 1;
 	int32 channelId = 2;
-	RoomInfo roomInfo = 3;
+	LobbyInfo lobbyInfo = 3;
 }
 
 message C_CHANNELCHAT
@@ -56,4 +56,10 @@ message C_MAKEROOM
 message S_MAKEROOM
 {
 	bool success = 1;
+	int32 roomId = 2;
+}
+
+message S_CHANNELUPDATE
+{
+	LobbyInfo lobbyInfo = 1;
 }

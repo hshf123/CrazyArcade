@@ -14,6 +14,7 @@ enum : uint16
 	PKT_S_CHANNELCHAT = 1005,
 	PKT_C_MAKEROOM = 1006,
 	PKT_S_MAKEROOM = 1007,
+	PKT_S_CHANNELUPDATE = 1008,
 };
 
 bool Handle_INVALID(PacketSessionRef& session, BYTE* buffer, int32 len);
@@ -44,6 +45,7 @@ public:
 	static SendBufferRef MakeSendBuffer(Protocol::S_CHANNELCHOIC& packet) { return MakeSendBuffer(packet, PKT_S_CHANNELCHOIC); }
 	static SendBufferRef MakeSendBuffer(Protocol::S_CHANNELCHAT& packet) { return MakeSendBuffer(packet, PKT_S_CHANNELCHAT); }
 	static SendBufferRef MakeSendBuffer(Protocol::S_MAKEROOM& packet) { return MakeSendBuffer(packet, PKT_S_MAKEROOM); }
+	static SendBufferRef MakeSendBuffer(Protocol::S_CHANNELUPDATE& packet) { return MakeSendBuffer(packet, PKT_S_CHANNELUPDATE); }
 
 private:
 	template<class PacketType, class ProcessFunc>

@@ -7,7 +7,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class UI_RoomScene : UI_Scene
+public class UI_LobbyScene : UI_Scene
 {
     // 채팅 패킷은 오면 바로 띄우면 되고, 내가 들어오기전에 대화했던 내용은 표시할 필요가 없다...
     // 방은 6개 단위로 표현
@@ -43,18 +43,19 @@ public class UI_RoomScene : UI_Scene
         if (base.Init() == false)
             return false;
 
-        Managers.Game.Room = this;
+        Managers.Game.Lobby = this;
         Bind<GameObject>(typeof(GameObjects));
         Bind<Button>(typeof(Buttons));
         BindInputField(typeof(InputFields));
         BindText(typeof(Texts));
 
-        RoomInfo roominfo = Managers.Game.RoomInfo;
-        _rooms = roominfo.Rooms;
+        LobbyInfo lobbyInfo = Managers.Game.LobbyInfo;
+        _rooms = lobbyInfo.Rooms;
 
         Get<Button>((int)Buttons.ChatSendButton).gameObject.BindEvent(OnClickChatSendButton);
         Get<Button>((int)Buttons.RightButton).gameObject.BindEvent(OnClickRightButton);
         Get<Button>((int)Buttons.LeftButton).gameObject.BindEvent(OnClickLeftButton);
+        Get<Button>((int)Buttons.MakeRoomButton).gameObject.BindEvent(OnClickMakeRoomButton);
         GetText((int)Texts.ChatText).text = "안내 : 본 게임은 크아 모작임\n";
 
         RefreshRoomPage();
@@ -74,7 +75,7 @@ public class UI_RoomScene : UI_Scene
         GetText((int)Texts.ChatText).text += msg;
     }
 
-    void RefreshRoomPage()
+    public void RefreshRoomPage()
     {
         ClearRoomPage();
 
@@ -101,7 +102,7 @@ public class UI_RoomScene : UI_Scene
 
     void OnClickMakeRoomButton()
     {
-        
+        Managers.UI.ShowPopupUI<UI_MakeRoomPopup>();
     }
 
     void OnClickChatSendButton()
@@ -122,10 +123,12 @@ public class UI_RoomScene : UI_Scene
     {
         int maxPageCount = _rooms.Count / 6;
         _roomPage = Mathf.Min(_roomPage + 1, maxPageCount);
+        RefreshRoomPage();
     }
 
     void OnClickLeftButton()
     {
         _roomPage = Mathf.Max(_roomPage - 1, 0);
+        RefreshRoomPage();
     }
 }

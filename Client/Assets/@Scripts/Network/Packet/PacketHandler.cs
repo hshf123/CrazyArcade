@@ -34,9 +34,9 @@ public class PacketHandler
             return;
         }
 
-        Managers.Scene.ChangeScene<RoomScene>(Define.SceneType.RoomScene);
+        Managers.Scene.ChangeScene<LobbyScene>(Define.SceneType.LobbyScene);
         Managers.Game.ChannelID = pkt.ChannelId;
-        Managers.Game.RoomInfo = pkt.RoomInfo;
+        Managers.Game.LobbyInfo = pkt.LobbyInfo;
     }
 
     public static void S_CHANNELCHATHandler(PacketSession session, IMessage packet)
@@ -44,16 +44,28 @@ public class PacketHandler
         ServerSession serverSession = session as ServerSession;
         S_CHANNELCHAT pkt = packet as S_CHANNELCHAT;
 
-        Managers.Game.Room.RecvChat(pkt.Name, pkt.Chat);
+        Managers.Game.Lobby.RecvChat(pkt.Name, pkt.Chat);
     }
 
     public static void S_MAKEROOMHandler(PacketSession session, IMessage packet)
     {
+        ServerSession serverSession = session as ServerSession;
+        S_MAKEROOM pkt = packet as S_MAKEROOM;
 
+        if (pkt.Success == false)
+            return;
+
+        Managers.Game.RoomID = pkt.RoomId;
+
+        // TODO : RoomScene
     }
 
-    public static void S_ROOMCHATHandler(PacketSession session, IMessage packet)
+    public static void S_CHANNELUPDATEHandler(PacketSession session, IMessage packet)
     {
+        ServerSession serverSession = session as ServerSession;
+        S_CHANNELUPDATE pkt = packet as S_CHANNELUPDATE;
 
+        Managers.Game.LobbyInfo = pkt.LobbyInfo;
+        Managers.Game.Lobby.RefreshRoomPage();
     }
 }

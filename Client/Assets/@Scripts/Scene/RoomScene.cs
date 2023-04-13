@@ -11,11 +11,7 @@ public class RoomScene : BaseScene
 
         Managers.Sound.Clear();
 
-        Managers.UI.ShowSceneUI<UI_RoomScene>(null,
-            (sceneUI) =>
-            {
-                
-            });
+        
 
         return true;
     }

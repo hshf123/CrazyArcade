@@ -63,7 +63,7 @@ struct C_CHANNELCHOICDefaultTypeInternal {
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 C_CHANNELCHOICDefaultTypeInternal _C_CHANNELCHOIC_default_instance_;
 PROTOBUF_CONSTEXPR S_CHANNELCHOIC::S_CHANNELCHOIC(
     ::_pbi::ConstantInitialized)
-  : roominfo_(nullptr)
+  : lobbyinfo_(nullptr)
   , success_(false)
   , channelid_(0){}
 struct S_CHANNELCHOICDefaultTypeInternal {
@@ -118,7 +118,8 @@ struct C_MAKEROOMDefaultTypeInternal {
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 C_MAKEROOMDefaultTypeInternal _C_MAKEROOM_default_instance_;
 PROTOBUF_CONSTEXPR S_MAKEROOM::S_MAKEROOM(
     ::_pbi::ConstantInitialized)
-  : success_(false){}
+  : success_(false)
+  , roomid_(0){}
 struct S_MAKEROOMDefaultTypeInternal {
   PROTOBUF_CONSTEXPR S_MAKEROOMDefaultTypeInternal()
       : _instance(::_pbi::ConstantInitialized{}) {}
@@ -128,8 +129,20 @@ struct S_MAKEROOMDefaultTypeInternal {
   };
 };
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 S_MAKEROOMDefaultTypeInternal _S_MAKEROOM_default_instance_;
+PROTOBUF_CONSTEXPR S_CHANNELUPDATE::S_CHANNELUPDATE(
+    ::_pbi::ConstantInitialized)
+  : lobbyinfo_(nullptr){}
+struct S_CHANNELUPDATEDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR S_CHANNELUPDATEDefaultTypeInternal()
+      : _instance(::_pbi::ConstantInitialized{}) {}
+  ~S_CHANNELUPDATEDefaultTypeInternal() {}
+  union {
+    S_CHANNELUPDATE _instance;
+  };
+};
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 S_CHANNELUPDATEDefaultTypeInternal _S_CHANNELUPDATE_default_instance_;
 }  // namespace Protocol
-static ::_pb::Metadata file_level_metadata_Protocol_2eproto[8];
+static ::_pb::Metadata file_level_metadata_Protocol_2eproto[9];
 static constexpr ::_pb::EnumDescriptor const** file_level_enum_descriptors_Protocol_2eproto = nullptr;
 static constexpr ::_pb::ServiceDescriptor const** file_level_service_descriptors_Protocol_2eproto = nullptr;
 
@@ -167,7 +180,7 @@ const uint32_t TableStruct_Protocol_2eproto::offsets[] PROTOBUF_SECTION_VARIABLE
   ~0u,  // no _inlined_string_donated_
   PROTOBUF_FIELD_OFFSET(::Protocol::S_CHANNELCHOIC, success_),
   PROTOBUF_FIELD_OFFSET(::Protocol::S_CHANNELCHOIC, channelid_),
-  PROTOBUF_FIELD_OFFSET(::Protocol::S_CHANNELCHOIC, roominfo_),
+  PROTOBUF_FIELD_OFFSET(::Protocol::S_CHANNELCHOIC, lobbyinfo_),
   ~0u,  // no _has_bits_
   PROTOBUF_FIELD_OFFSET(::Protocol::C_CHANNELCHAT, _internal_metadata_),
   ~0u,  // no _extensions_
@@ -201,6 +214,14 @@ const uint32_t TableStruct_Protocol_2eproto::offsets[] PROTOBUF_SECTION_VARIABLE
   ~0u,  // no _weak_field_map_
   ~0u,  // no _inlined_string_donated_
   PROTOBUF_FIELD_OFFSET(::Protocol::S_MAKEROOM, success_),
+  PROTOBUF_FIELD_OFFSET(::Protocol::S_MAKEROOM, roomid_),
+  ~0u,  // no _has_bits_
+  PROTOBUF_FIELD_OFFSET(::Protocol::S_CHANNELUPDATE, _internal_metadata_),
+  ~0u,  // no _extensions_
+  ~0u,  // no _oneof_case_
+  ~0u,  // no _weak_field_map_
+  ~0u,  // no _inlined_string_donated_
+  PROTOBUF_FIELD_OFFSET(::Protocol::S_CHANNELUPDATE, lobbyinfo_),
 };
 static const ::_pbi::MigrationSchema schemas[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) = {
   { 0, -1, -1, sizeof(::Protocol::C_LOGIN)},
@@ -211,6 +232,7 @@ static const ::_pbi::MigrationSchema schemas[] PROTOBUF_SECTION_VARIABLE(protode
   { 43, -1, -1, sizeof(::Protocol::S_CHANNELCHAT)},
   { 51, -1, -1, sizeof(::Protocol::C_MAKEROOM)},
   { 60, -1, -1, sizeof(::Protocol::S_MAKEROOM)},
+  { 68, -1, -1, sizeof(::Protocol::S_CHANNELUPDATE)},
 };
 
 static const ::_pb::Message* const file_default_instances[] = {
@@ -222,6 +244,7 @@ static const ::_pb::Message* const file_default_instances[] = {
   &::Protocol::_S_CHANNELCHAT_default_instance_._instance,
   &::Protocol::_C_MAKEROOM_default_instance_._instance,
   &::Protocol::_S_MAKEROOM_default_instance_._instance,
+  &::Protocol::_S_CHANNELUPDATE_default_instance_._instance,
 };
 
 const char descriptor_table_protodef_Protocol_2eproto[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) =
@@ -231,16 +254,18 @@ const char descriptor_table_protodef_Protocol_2eproto[] PROTOBUF_SECTION_VARIABL
   "\"X\n\007S_LOGIN\022\017\n\007success\030\001 \001(\010\022*\n\013channelI"
   "nfo\030\002 \001(\0132\025.Protocol.ChannelInfo\022\020\n\010play"
   "erId\030\003 \001(\003\"5\n\016C_CHANNELCHOIC\022\021\n\tchannelI"
-  "d\030\001 \001(\005\022\020\n\010playerId\030\002 \001(\003\"Z\n\016S_CHANNELCH"
+  "d\030\001 \001(\005\022\020\n\010playerId\030\002 \001(\003\"\\\n\016S_CHANNELCH"
   "OIC\022\017\n\007success\030\001 \001(\010\022\021\n\tchannelId\030\002 \001(\005\022"
-  "$\n\010roomInfo\030\003 \001(\0132\022.Protocol.RoomInfo\"B\n"
-  "\rC_CHANNELCHAT\022\020\n\010playerId\030\001 \001(\003\022\021\n\tchan"
-  "nelId\030\002 \001(\005\022\014\n\004chat\030\003 \001(\t\"+\n\rS_CHANNELCH"
-  "AT\022\014\n\004name\030\001 \001(\t\022\014\n\004chat\030\002 \001(\t\"C\n\nC_MAKE"
-  "ROOM\022\020\n\010roomName\030\001 \001(\t\022\020\n\010playerId\030\002 \001(\003"
-  "\022\021\n\tchannelId\030\003 \001(\005\"\035\n\nS_MAKEROOM\022\017\n\007suc"
-  "cess\030\001 \001(\010B\033\252\002\030Google.Protobuf.Protocolb"
-  "\006proto3"
+  "&\n\tlobbyInfo\030\003 \001(\0132\023.Protocol.LobbyInfo\""
+  "B\n\rC_CHANNELCHAT\022\020\n\010playerId\030\001 \001(\003\022\021\n\tch"
+  "annelId\030\002 \001(\005\022\014\n\004chat\030\003 \001(\t\"+\n\rS_CHANNEL"
+  "CHAT\022\014\n\004name\030\001 \001(\t\022\014\n\004chat\030\002 \001(\t\"C\n\nC_MA"
+  "KEROOM\022\020\n\010roomName\030\001 \001(\t\022\020\n\010playerId\030\002 \001"
+  "(\003\022\021\n\tchannelId\030\003 \001(\005\"-\n\nS_MAKEROOM\022\017\n\007s"
+  "uccess\030\001 \001(\010\022\016\n\006roomId\030\002 \001(\005\"9\n\017S_CHANNE"
+  "LUPDATE\022&\n\tlobbyInfo\030\001 \001(\0132\023.Protocol.Lo"
+  "bbyInfoB\033\252\002\030Google.Protobuf.Protocolb\006pr"
+  "oto3"
   ;
 static const ::_pbi::DescriptorTable* const descriptor_table_Protocol_2eproto_deps[3] = {
   &::descriptor_table_Enum_2eproto,
@@ -249,9 +274,9 @@ static const ::_pbi::DescriptorTable* const descriptor_table_Protocol_2eproto_de
 };
 static ::_pbi::once_flag descriptor_table_Protocol_2eproto_once;
 const ::_pbi::DescriptorTable descriptor_table_Protocol_2eproto = {
-    false, false, 607, descriptor_table_protodef_Protocol_2eproto,
+    false, false, 684, descriptor_table_protodef_Protocol_2eproto,
     "Protocol.proto",
-    &descriptor_table_Protocol_2eproto_once, descriptor_table_Protocol_2eproto_deps, 3, 8,
+    &descriptor_table_Protocol_2eproto_once, descriptor_table_Protocol_2eproto_deps, 3, 9,
     schemas, file_default_instances, TableStruct_Protocol_2eproto::offsets,
     file_level_metadata_Protocol_2eproto, file_level_enum_descriptors_Protocol_2eproto,
     file_level_service_descriptors_Protocol_2eproto,
@@ -967,18 +992,18 @@ void C_CHANNELCHOIC::InternalSwap(C_CHANNELCHOIC* other) {
 
 class S_CHANNELCHOIC::_Internal {
  public:
-  static const ::Protocol::RoomInfo& roominfo(const S_CHANNELCHOIC* msg);
+  static const ::Protocol::LobbyInfo& lobbyinfo(const S_CHANNELCHOIC* msg);
 };
 
-const ::Protocol::RoomInfo&
-S_CHANNELCHOIC::_Internal::roominfo(const S_CHANNELCHOIC* msg) {
-  return *msg->roominfo_;
+const ::Protocol::LobbyInfo&
+S_CHANNELCHOIC::_Internal::lobbyinfo(const S_CHANNELCHOIC* msg) {
+  return *msg->lobbyinfo_;
 }
-void S_CHANNELCHOIC::clear_roominfo() {
-  if (GetArenaForAllocation() == nullptr && roominfo_ != nullptr) {
-    delete roominfo_;
+void S_CHANNELCHOIC::clear_lobbyinfo() {
+  if (GetArenaForAllocation() == nullptr && lobbyinfo_ != nullptr) {
+    delete lobbyinfo_;
   }
-  roominfo_ = nullptr;
+  lobbyinfo_ = nullptr;
 }
 S_CHANNELCHOIC::S_CHANNELCHOIC(::PROTOBUF_NAMESPACE_ID::Arena* arena,
                          bool is_message_owned)
@@ -989,10 +1014,10 @@ S_CHANNELCHOIC::S_CHANNELCHOIC(::PROTOBUF_NAMESPACE_ID::Arena* arena,
 S_CHANNELCHOIC::S_CHANNELCHOIC(const S_CHANNELCHOIC& from)
   : ::PROTOBUF_NAMESPACE_ID::Message() {
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
-  if (from._internal_has_roominfo()) {
-    roominfo_ = new ::Protocol::RoomInfo(*from.roominfo_);
+  if (from._internal_has_lobbyinfo()) {
+    lobbyinfo_ = new ::Protocol::LobbyInfo(*from.lobbyinfo_);
   } else {
-    roominfo_ = nullptr;
+    lobbyinfo_ = nullptr;
   }
   ::memcpy(&success_, &from.success_,
     static_cast<size_t>(reinterpret_cast<char*>(&channelid_) -
@@ -1002,9 +1027,9 @@ S_CHANNELCHOIC::S_CHANNELCHOIC(const S_CHANNELCHOIC& from)
 
 inline void S_CHANNELCHOIC::SharedCtor() {
 ::memset(reinterpret_cast<char*>(this) + static_cast<size_t>(
-    reinterpret_cast<char*>(&roominfo_) - reinterpret_cast<char*>(this)),
+    reinterpret_cast<char*>(&lobbyinfo_) - reinterpret_cast<char*>(this)),
     0, static_cast<size_t>(reinterpret_cast<char*>(&channelid_) -
-    reinterpret_cast<char*>(&roominfo_)) + sizeof(channelid_));
+    reinterpret_cast<char*>(&lobbyinfo_)) + sizeof(channelid_));
 }
 
 S_CHANNELCHOIC::~S_CHANNELCHOIC() {
@@ -1018,7 +1043,7 @@ S_CHANNELCHOIC::~S_CHANNELCHOIC() {
 
 inline void S_CHANNELCHOIC::SharedDtor() {
   GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
-  if (this != internal_default_instance()) delete roominfo_;
+  if (this != internal_default_instance()) delete lobbyinfo_;
 }
 
 void S_CHANNELCHOIC::SetCachedSize(int size) const {
@@ -1031,10 +1056,10 @@ void S_CHANNELCHOIC::Clear() {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  if (GetArenaForAllocation() == nullptr && roominfo_ != nullptr) {
-    delete roominfo_;
+  if (GetArenaForAllocation() == nullptr && lobbyinfo_ != nullptr) {
+    delete lobbyinfo_;
   }
-  roominfo_ = nullptr;
+  lobbyinfo_ = nullptr;
   ::memset(&success_, 0, static_cast<size_t>(
       reinterpret_cast<char*>(&channelid_) -
       reinterpret_cast<char*>(&success_)) + sizeof(channelid_));
@@ -1063,10 +1088,10 @@ const char* S_CHANNELCHOIC::_InternalParse(const char* ptr, ::_pbi::ParseContext
         } else
           goto handle_unusual;
         continue;
-      // .Protocol.RoomInfo roomInfo = 3;
+      // .Protocol.LobbyInfo lobbyInfo = 3;
       case 3:
         if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 26)) {
-          ptr = ctx->ParseMessage(_internal_mutable_roominfo(), ptr);
+          ptr = ctx->ParseMessage(_internal_mutable_lobbyinfo(), ptr);
           CHK_(ptr);
         } else
           goto handle_unusual;
@@ -1112,11 +1137,11 @@ uint8_t* S_CHANNELCHOIC::_InternalSerialize(
     target = ::_pbi::WireFormatLite::WriteInt32ToArray(2, this->_internal_channelid(), target);
   }
 
-  // .Protocol.RoomInfo roomInfo = 3;
-  if (this->_internal_has_roominfo()) {
+  // .Protocol.LobbyInfo lobbyInfo = 3;
+  if (this->_internal_has_lobbyinfo()) {
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
-      InternalWriteMessage(3, _Internal::roominfo(this),
-        _Internal::roominfo(this).GetCachedSize(), target, stream);
+      InternalWriteMessage(3, _Internal::lobbyinfo(this),
+        _Internal::lobbyinfo(this).GetCachedSize(), target, stream);
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
@@ -1135,11 +1160,11 @@ size_t S_CHANNELCHOIC::ByteSizeLong() const {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  // .Protocol.RoomInfo roomInfo = 3;
-  if (this->_internal_has_roominfo()) {
+  // .Protocol.LobbyInfo lobbyInfo = 3;
+  if (this->_internal_has_lobbyinfo()) {
     total_size += 1 +
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
-        *roominfo_);
+        *lobbyinfo_);
   }
 
   // bool success = 1;
@@ -1174,8 +1199,8 @@ void S_CHANNELCHOIC::MergeFrom(const S_CHANNELCHOIC& from) {
   uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
-  if (from._internal_has_roominfo()) {
-    _internal_mutable_roominfo()->::Protocol::RoomInfo::MergeFrom(from._internal_roominfo());
+  if (from._internal_has_lobbyinfo()) {
+    _internal_mutable_lobbyinfo()->::Protocol::LobbyInfo::MergeFrom(from._internal_lobbyinfo());
   }
   if (from._internal_success() != 0) {
     _internal_set_success(from._internal_success());
@@ -1203,9 +1228,9 @@ void S_CHANNELCHOIC::InternalSwap(S_CHANNELCHOIC* other) {
   ::PROTOBUF_NAMESPACE_ID::internal::memswap<
       PROTOBUF_FIELD_OFFSET(S_CHANNELCHOIC, channelid_)
       + sizeof(S_CHANNELCHOIC::channelid_)
-      - PROTOBUF_FIELD_OFFSET(S_CHANNELCHOIC, roominfo_)>(
-          reinterpret_cast<char*>(&roominfo_),
-          reinterpret_cast<char*>(&other->roominfo_));
+      - PROTOBUF_FIELD_OFFSET(S_CHANNELCHOIC, lobbyinfo_)>(
+          reinterpret_cast<char*>(&lobbyinfo_),
+          reinterpret_cast<char*>(&other->lobbyinfo_));
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata S_CHANNELCHOIC::GetMetadata() const {
@@ -1982,12 +2007,17 @@ S_MAKEROOM::S_MAKEROOM(::PROTOBUF_NAMESPACE_ID::Arena* arena,
 S_MAKEROOM::S_MAKEROOM(const S_MAKEROOM& from)
   : ::PROTOBUF_NAMESPACE_ID::Message() {
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
-  success_ = from.success_;
+  ::memcpy(&success_, &from.success_,
+    static_cast<size_t>(reinterpret_cast<char*>(&roomid_) -
+    reinterpret_cast<char*>(&success_)) + sizeof(roomid_));
   // @@protoc_insertion_point(copy_constructor:Protocol.S_MAKEROOM)
 }
 
 inline void S_MAKEROOM::SharedCtor() {
-success_ = false;
+::memset(reinterpret_cast<char*>(this) + static_cast<size_t>(
+    reinterpret_cast<char*>(&success_) - reinterpret_cast<char*>(this)),
+    0, static_cast<size_t>(reinterpret_cast<char*>(&roomid_) -
+    reinterpret_cast<char*>(&success_)) + sizeof(roomid_));
 }
 
 S_MAKEROOM::~S_MAKEROOM() {
@@ -2013,7 +2043,9 @@ void S_MAKEROOM::Clear() {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  success_ = false;
+  ::memset(&success_, 0, static_cast<size_t>(
+      reinterpret_cast<char*>(&roomid_) -
+      reinterpret_cast<char*>(&success_)) + sizeof(roomid_));
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
@@ -2027,6 +2059,14 @@ const char* S_MAKEROOM::_InternalParse(const char* ptr, ::_pbi::ParseContext* ct
       case 1:
         if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 8)) {
           success_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
+          CHK_(ptr);
+        } else
+          goto handle_unusual;
+        continue;
+      // int32 roomId = 2;
+      case 2:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 16)) {
+          roomid_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr);
           CHK_(ptr);
         } else
           goto handle_unusual;
@@ -2066,6 +2106,12 @@ uint8_t* S_MAKEROOM::_InternalSerialize(
     target = ::_pbi::WireFormatLite::WriteBoolToArray(1, this->_internal_success(), target);
   }
 
+  // int32 roomId = 2;
+  if (this->_internal_roomid() != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::_pbi::WireFormatLite::WriteInt32ToArray(2, this->_internal_roomid(), target);
+  }
+
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
     target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
         _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
@@ -2085,6 +2131,11 @@ size_t S_MAKEROOM::ByteSizeLong() const {
   // bool success = 1;
   if (this->_internal_success() != 0) {
     total_size += 1 + 1;
+  }
+
+  // int32 roomId = 2;
+  if (this->_internal_roomid() != 0) {
+    total_size += ::_pbi::WireFormatLite::Int32SizePlusOne(this->_internal_roomid());
   }
 
   return MaybeComputeUnknownFieldsSize(total_size, &_cached_size_);
@@ -2112,6 +2163,9 @@ void S_MAKEROOM::MergeFrom(const S_MAKEROOM& from) {
   if (from._internal_success() != 0) {
     _internal_set_success(from._internal_success());
   }
+  if (from._internal_roomid() != 0) {
+    _internal_set_roomid(from._internal_roomid());
+  }
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
 }
 
@@ -2129,13 +2183,211 @@ bool S_MAKEROOM::IsInitialized() const {
 void S_MAKEROOM::InternalSwap(S_MAKEROOM* other) {
   using std::swap;
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
-  swap(success_, other->success_);
+  ::PROTOBUF_NAMESPACE_ID::internal::memswap<
+      PROTOBUF_FIELD_OFFSET(S_MAKEROOM, roomid_)
+      + sizeof(S_MAKEROOM::roomid_)
+      - PROTOBUF_FIELD_OFFSET(S_MAKEROOM, success_)>(
+          reinterpret_cast<char*>(&success_),
+          reinterpret_cast<char*>(&other->success_));
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata S_MAKEROOM::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_Protocol_2eproto_getter, &descriptor_table_Protocol_2eproto_once,
       file_level_metadata_Protocol_2eproto[7]);
+}
+
+// ===================================================================
+
+class S_CHANNELUPDATE::_Internal {
+ public:
+  static const ::Protocol::LobbyInfo& lobbyinfo(const S_CHANNELUPDATE* msg);
+};
+
+const ::Protocol::LobbyInfo&
+S_CHANNELUPDATE::_Internal::lobbyinfo(const S_CHANNELUPDATE* msg) {
+  return *msg->lobbyinfo_;
+}
+void S_CHANNELUPDATE::clear_lobbyinfo() {
+  if (GetArenaForAllocation() == nullptr && lobbyinfo_ != nullptr) {
+    delete lobbyinfo_;
+  }
+  lobbyinfo_ = nullptr;
+}
+S_CHANNELUPDATE::S_CHANNELUPDATE(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+                         bool is_message_owned)
+  : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned) {
+  SharedCtor();
+  // @@protoc_insertion_point(arena_constructor:Protocol.S_CHANNELUPDATE)
+}
+S_CHANNELUPDATE::S_CHANNELUPDATE(const S_CHANNELUPDATE& from)
+  : ::PROTOBUF_NAMESPACE_ID::Message() {
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  if (from._internal_has_lobbyinfo()) {
+    lobbyinfo_ = new ::Protocol::LobbyInfo(*from.lobbyinfo_);
+  } else {
+    lobbyinfo_ = nullptr;
+  }
+  // @@protoc_insertion_point(copy_constructor:Protocol.S_CHANNELUPDATE)
+}
+
+inline void S_CHANNELUPDATE::SharedCtor() {
+lobbyinfo_ = nullptr;
+}
+
+S_CHANNELUPDATE::~S_CHANNELUPDATE() {
+  // @@protoc_insertion_point(destructor:Protocol.S_CHANNELUPDATE)
+  if (auto *arena = _internal_metadata_.DeleteReturnArena<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>()) {
+  (void)arena;
+    return;
+  }
+  SharedDtor();
+}
+
+inline void S_CHANNELUPDATE::SharedDtor() {
+  GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
+  if (this != internal_default_instance()) delete lobbyinfo_;
+}
+
+void S_CHANNELUPDATE::SetCachedSize(int size) const {
+  _cached_size_.Set(size);
+}
+
+void S_CHANNELUPDATE::Clear() {
+// @@protoc_insertion_point(message_clear_start:Protocol.S_CHANNELUPDATE)
+  uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  if (GetArenaForAllocation() == nullptr && lobbyinfo_ != nullptr) {
+    delete lobbyinfo_;
+  }
+  lobbyinfo_ = nullptr;
+  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+}
+
+const char* S_CHANNELUPDATE::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
+#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  while (!ctx->Done(&ptr)) {
+    uint32_t tag;
+    ptr = ::_pbi::ReadTag(ptr, &tag);
+    switch (tag >> 3) {
+      // .Protocol.LobbyInfo lobbyInfo = 1;
+      case 1:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 10)) {
+          ptr = ctx->ParseMessage(_internal_mutable_lobbyinfo(), ptr);
+          CHK_(ptr);
+        } else
+          goto handle_unusual;
+        continue;
+      default:
+        goto handle_unusual;
+    }  // switch
+  handle_unusual:
+    if ((tag == 0) || ((tag & 7) == 4)) {
+      CHK_(ptr);
+      ctx->SetLastTag(tag);
+      goto message_done;
+    }
+    ptr = UnknownFieldParse(
+        tag,
+        _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
+        ptr, ctx);
+    CHK_(ptr != nullptr);
+  }  // while
+message_done:
+  return ptr;
+failure:
+  ptr = nullptr;
+  goto message_done;
+#undef CHK_
+}
+
+uint8_t* S_CHANNELUPDATE::_InternalSerialize(
+    uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+  // @@protoc_insertion_point(serialize_to_array_start:Protocol.S_CHANNELUPDATE)
+  uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  // .Protocol.LobbyInfo lobbyInfo = 1;
+  if (this->_internal_has_lobbyinfo()) {
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
+      InternalWriteMessage(1, _Internal::lobbyinfo(this),
+        _Internal::lobbyinfo(this).GetCachedSize(), target, stream);
+  }
+
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:Protocol.S_CHANNELUPDATE)
+  return target;
+}
+
+size_t S_CHANNELUPDATE::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:Protocol.S_CHANNELUPDATE)
+  size_t total_size = 0;
+
+  uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  // .Protocol.LobbyInfo lobbyInfo = 1;
+  if (this->_internal_has_lobbyinfo()) {
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
+        *lobbyinfo_);
+  }
+
+  return MaybeComputeUnknownFieldsSize(total_size, &_cached_size_);
+}
+
+const ::PROTOBUF_NAMESPACE_ID::Message::ClassData S_CHANNELUPDATE::_class_data_ = {
+    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSizeCheck,
+    S_CHANNELUPDATE::MergeImpl
+};
+const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*S_CHANNELUPDATE::GetClassData() const { return &_class_data_; }
+
+void S_CHANNELUPDATE::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message* to,
+                      const ::PROTOBUF_NAMESPACE_ID::Message& from) {
+  static_cast<S_CHANNELUPDATE *>(to)->MergeFrom(
+      static_cast<const S_CHANNELUPDATE &>(from));
+}
+
+
+void S_CHANNELUPDATE::MergeFrom(const S_CHANNELUPDATE& from) {
+// @@protoc_insertion_point(class_specific_merge_from_start:Protocol.S_CHANNELUPDATE)
+  GOOGLE_DCHECK_NE(&from, this);
+  uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  if (from._internal_has_lobbyinfo()) {
+    _internal_mutable_lobbyinfo()->::Protocol::LobbyInfo::MergeFrom(from._internal_lobbyinfo());
+  }
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+}
+
+void S_CHANNELUPDATE::CopyFrom(const S_CHANNELUPDATE& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:Protocol.S_CHANNELUPDATE)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool S_CHANNELUPDATE::IsInitialized() const {
+  return true;
+}
+
+void S_CHANNELUPDATE::InternalSwap(S_CHANNELUPDATE* other) {
+  using std::swap;
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+  swap(lobbyinfo_, other->lobbyinfo_);
+}
+
+::PROTOBUF_NAMESPACE_ID::Metadata S_CHANNELUPDATE::GetMetadata() const {
+  return ::_pbi::AssignDescriptors(
+      &descriptor_table_Protocol_2eproto_getter, &descriptor_table_Protocol_2eproto_once,
+      file_level_metadata_Protocol_2eproto[8]);
 }
 
 // @@protoc_insertion_point(namespace_scope)
@@ -2172,6 +2424,10 @@ Arena::CreateMaybeMessage< ::Protocol::C_MAKEROOM >(Arena* arena) {
 template<> PROTOBUF_NOINLINE ::Protocol::S_MAKEROOM*
 Arena::CreateMaybeMessage< ::Protocol::S_MAKEROOM >(Arena* arena) {
   return Arena::CreateMessageInternal< ::Protocol::S_MAKEROOM >(arena);
+}
+template<> PROTOBUF_NOINLINE ::Protocol::S_CHANNELUPDATE*
+Arena::CreateMaybeMessage< ::Protocol::S_CHANNELUPDATE >(Arena* arena) {
+  return Arena::CreateMessageInternal< ::Protocol::S_CHANNELUPDATE >(arena);
 }
 PROTOBUF_NAMESPACE_CLOSE
 

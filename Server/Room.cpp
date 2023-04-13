@@ -2,10 +2,10 @@
 #include "Room.h"
 #include "Player.h"
 
-Room::Room(int64 id, int32 maxPlayerCount)
-	:_id(id), _maxPlayerCount(maxPlayerCount)
+Room::Room(int64 id, const string& roomName, int32 maxPlayerCount)
+	:_roomId(id), _maxPlayerCount(maxPlayerCount)
 {
-
+	_roomName = Utils::ConvertStringToWString(roomName);
 }
 
 void Room::InsertPlayer(PlayerRef player)
@@ -32,9 +32,14 @@ PlayerRef Room::FindPlayer(int64 playerId)
 
 void Room::FillRoomlInfo(Protocol::Room* pkt)
 {
-	pkt->set_roomid(_id);
+	pkt->set_roomid(_roomId);
 	pkt->set_maxplayercount(_maxPlayerCount);
 	pkt->set_currentplayercount(_currentPlayerCount);
+}
+
+void Room::SetLeader(int64 playerId)
+{
+	_leaderId = playerId;
 }
 
 void Room::Broadcast(SendBufferRef sendBuffer)

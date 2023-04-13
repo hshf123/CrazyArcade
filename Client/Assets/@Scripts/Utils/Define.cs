@@ -39,6 +39,7 @@ public class Define
         Unknown,
         LoginScene,
         ChannelScene,
+        LobbyScene,
         RoomScene,
         GameScene,
     }

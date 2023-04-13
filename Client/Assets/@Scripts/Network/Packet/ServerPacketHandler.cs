@@ -13,6 +13,7 @@ public enum MsgId : ushort
 	PKT_S_CHANNELCHAT = 1005,
 	PKT_C_MAKEROOM = 1006,
 	PKT_S_MAKEROOM = 1007,
+	PKT_S_CHANNELUPDATE = 1008,
 };
 
 class PacketManager
@@ -42,6 +43,8 @@ class PacketManager
         _handler.Add((ushort)MsgId.PKT_S_CHANNELCHAT, PacketHandler.S_CHANNELCHATHandler);
         _onRecv.Add((ushort)MsgId.PKT_S_MAKEROOM, MakePacket<S_MAKEROOM>);
         _handler.Add((ushort)MsgId.PKT_S_MAKEROOM, PacketHandler.S_MAKEROOMHandler);
+        _onRecv.Add((ushort)MsgId.PKT_S_CHANNELUPDATE, MakePacket<S_CHANNELUPDATE>);
+        _handler.Add((ushort)MsgId.PKT_S_CHANNELUPDATE, PacketHandler.S_CHANNELUPDATEHandler);
     }
 
     public void OnRecvPacket(PacketSession session, ArraySegment<byte> buffer)

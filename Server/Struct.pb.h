@@ -52,18 +52,18 @@ extern ChannelDefaultTypeInternal _Channel_default_instance_;
 class ChannelInfo;
 struct ChannelInfoDefaultTypeInternal;
 extern ChannelInfoDefaultTypeInternal _ChannelInfo_default_instance_;
+class LobbyInfo;
+struct LobbyInfoDefaultTypeInternal;
+extern LobbyInfoDefaultTypeInternal _LobbyInfo_default_instance_;
 class Room;
 struct RoomDefaultTypeInternal;
 extern RoomDefaultTypeInternal _Room_default_instance_;
-class RoomInfo;
-struct RoomInfoDefaultTypeInternal;
-extern RoomInfoDefaultTypeInternal _RoomInfo_default_instance_;
 }  // namespace Protocol
 PROTOBUF_NAMESPACE_OPEN
 template<> ::Protocol::Channel* Arena::CreateMaybeMessage<::Protocol::Channel>(Arena*);
 template<> ::Protocol::ChannelInfo* Arena::CreateMaybeMessage<::Protocol::ChannelInfo>(Arena*);
+template<> ::Protocol::LobbyInfo* Arena::CreateMaybeMessage<::Protocol::LobbyInfo>(Arena*);
 template<> ::Protocol::Room* Arena::CreateMaybeMessage<::Protocol::Room>(Arena*);
-template<> ::Protocol::RoomInfo* Arena::CreateMaybeMessage<::Protocol::RoomInfo>(Arena*);
 PROTOBUF_NAMESPACE_CLOSE
 namespace Protocol {
 
@@ -578,24 +578,24 @@ class Room final :
 };
 // -------------------------------------------------------------------
 
-class RoomInfo final :
-    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:Protocol.RoomInfo) */ {
+class LobbyInfo final :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:Protocol.LobbyInfo) */ {
  public:
-  inline RoomInfo() : RoomInfo(nullptr) {}
-  ~RoomInfo() override;
-  explicit PROTOBUF_CONSTEXPR RoomInfo(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
+  inline LobbyInfo() : LobbyInfo(nullptr) {}
+  ~LobbyInfo() override;
+  explicit PROTOBUF_CONSTEXPR LobbyInfo(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
 
-  RoomInfo(const RoomInfo& from);
-  RoomInfo(RoomInfo&& from) noexcept
-    : RoomInfo() {
+  LobbyInfo(const LobbyInfo& from);
+  LobbyInfo(LobbyInfo&& from) noexcept
+    : LobbyInfo() {
     *this = ::std::move(from);
   }
 
-  inline RoomInfo& operator=(const RoomInfo& from) {
+  inline LobbyInfo& operator=(const LobbyInfo& from) {
     CopyFrom(from);
     return *this;
   }
-  inline RoomInfo& operator=(RoomInfo&& from) noexcept {
+  inline LobbyInfo& operator=(LobbyInfo&& from) noexcept {
     if (this == &from) return *this;
     if (GetOwningArena() == from.GetOwningArena()
   #ifdef PROTOBUF_FORCE_COPY_IN_MOVE
@@ -618,20 +618,20 @@ class RoomInfo final :
   static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
     return default_instance().GetMetadata().reflection;
   }
-  static const RoomInfo& default_instance() {
+  static const LobbyInfo& default_instance() {
     return *internal_default_instance();
   }
-  static inline const RoomInfo* internal_default_instance() {
-    return reinterpret_cast<const RoomInfo*>(
-               &_RoomInfo_default_instance_);
+  static inline const LobbyInfo* internal_default_instance() {
+    return reinterpret_cast<const LobbyInfo*>(
+               &_LobbyInfo_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
     3;
 
-  friend void swap(RoomInfo& a, RoomInfo& b) {
+  friend void swap(LobbyInfo& a, LobbyInfo& b) {
     a.Swap(&b);
   }
-  inline void Swap(RoomInfo* other) {
+  inline void Swap(LobbyInfo* other) {
     if (other == this) return;
   #ifdef PROTOBUF_FORCE_COPY_IN_SWAP
     if (GetOwningArena() != nullptr &&
@@ -644,7 +644,7 @@ class RoomInfo final :
       ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
     }
   }
-  void UnsafeArenaSwap(RoomInfo* other) {
+  void UnsafeArenaSwap(LobbyInfo* other) {
     if (other == this) return;
     GOOGLE_DCHECK(GetOwningArena() == other->GetOwningArena());
     InternalSwap(other);
@@ -652,13 +652,13 @@ class RoomInfo final :
 
   // implements Message ----------------------------------------------
 
-  RoomInfo* New(::PROTOBUF_NAMESPACE_ID::Arena* arena = nullptr) const final {
-    return CreateMaybeMessage<RoomInfo>(arena);
+  LobbyInfo* New(::PROTOBUF_NAMESPACE_ID::Arena* arena = nullptr) const final {
+    return CreateMaybeMessage<LobbyInfo>(arena);
   }
   using ::PROTOBUF_NAMESPACE_ID::Message::CopyFrom;
-  void CopyFrom(const RoomInfo& from);
+  void CopyFrom(const LobbyInfo& from);
   using ::PROTOBUF_NAMESPACE_ID::Message::MergeFrom;
-  void MergeFrom(const RoomInfo& from);
+  void MergeFrom(const LobbyInfo& from);
   private:
   static void MergeImpl(::PROTOBUF_NAMESPACE_ID::Message* to, const ::PROTOBUF_NAMESPACE_ID::Message& from);
   public:
@@ -675,15 +675,15 @@ class RoomInfo final :
   void SharedCtor();
   void SharedDtor();
   void SetCachedSize(int size) const final;
-  void InternalSwap(RoomInfo* other);
+  void InternalSwap(LobbyInfo* other);
 
   private:
   friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
   static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
-    return "Protocol.RoomInfo";
+    return "Protocol.LobbyInfo";
   }
   protected:
-  explicit RoomInfo(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+  explicit LobbyInfo(::PROTOBUF_NAMESPACE_ID::Arena* arena,
                        bool is_message_owned = false);
   public:
 
@@ -727,7 +727,7 @@ class RoomInfo final :
   void _internal_set_roomcount(int32_t value);
   public:
 
-  // @@protoc_insertion_point(class_scope:Protocol.RoomInfo)
+  // @@protoc_insertion_point(class_scope:Protocol.LobbyInfo)
  private:
   class _Internal;
 
@@ -990,65 +990,65 @@ inline void Room::set_currentplayercount(int32_t value) {
 
 // -------------------------------------------------------------------
 
-// RoomInfo
+// LobbyInfo
 
 // int32 roomCount = 1;
-inline void RoomInfo::clear_roomcount() {
+inline void LobbyInfo::clear_roomcount() {
   roomcount_ = 0;
 }
-inline int32_t RoomInfo::_internal_roomcount() const {
+inline int32_t LobbyInfo::_internal_roomcount() const {
   return roomcount_;
 }
-inline int32_t RoomInfo::roomcount() const {
-  // @@protoc_insertion_point(field_get:Protocol.RoomInfo.roomCount)
+inline int32_t LobbyInfo::roomcount() const {
+  // @@protoc_insertion_point(field_get:Protocol.LobbyInfo.roomCount)
   return _internal_roomcount();
 }
-inline void RoomInfo::_internal_set_roomcount(int32_t value) {
+inline void LobbyInfo::_internal_set_roomcount(int32_t value) {
   
   roomcount_ = value;
 }
-inline void RoomInfo::set_roomcount(int32_t value) {
+inline void LobbyInfo::set_roomcount(int32_t value) {
   _internal_set_roomcount(value);
-  // @@protoc_insertion_point(field_set:Protocol.RoomInfo.roomCount)
+  // @@protoc_insertion_point(field_set:Protocol.LobbyInfo.roomCount)
 }
 
 // repeated .Protocol.Room rooms = 2;
-inline int RoomInfo::_internal_rooms_size() const {
+inline int LobbyInfo::_internal_rooms_size() const {
   return rooms_.size();
 }
-inline int RoomInfo::rooms_size() const {
+inline int LobbyInfo::rooms_size() const {
   return _internal_rooms_size();
 }
-inline void RoomInfo::clear_rooms() {
+inline void LobbyInfo::clear_rooms() {
   rooms_.Clear();
 }
-inline ::Protocol::Room* RoomInfo::mutable_rooms(int index) {
-  // @@protoc_insertion_point(field_mutable:Protocol.RoomInfo.rooms)
+inline ::Protocol::Room* LobbyInfo::mutable_rooms(int index) {
+  // @@protoc_insertion_point(field_mutable:Protocol.LobbyInfo.rooms)
   return rooms_.Mutable(index);
 }
 inline ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::Protocol::Room >*
-RoomInfo::mutable_rooms() {
-  // @@protoc_insertion_point(field_mutable_list:Protocol.RoomInfo.rooms)
+LobbyInfo::mutable_rooms() {
+  // @@protoc_insertion_point(field_mutable_list:Protocol.LobbyInfo.rooms)
   return &rooms_;
 }
-inline const ::Protocol::Room& RoomInfo::_internal_rooms(int index) const {
+inline const ::Protocol::Room& LobbyInfo::_internal_rooms(int index) const {
   return rooms_.Get(index);
 }
-inline const ::Protocol::Room& RoomInfo::rooms(int index) const {
-  // @@protoc_insertion_point(field_get:Protocol.RoomInfo.rooms)
+inline const ::Protocol::Room& LobbyInfo::rooms(int index) const {
+  // @@protoc_insertion_point(field_get:Protocol.LobbyInfo.rooms)
   return _internal_rooms(index);
 }
-inline ::Protocol::Room* RoomInfo::_internal_add_rooms() {
+inline ::Protocol::Room* LobbyInfo::_internal_add_rooms() {
   return rooms_.Add();
 }
-inline ::Protocol::Room* RoomInfo::add_rooms() {
+inline ::Protocol::Room* LobbyInfo::add_rooms() {
   ::Protocol::Room* _add = _internal_add_rooms();
-  // @@protoc_insertion_point(field_add:Protocol.RoomInfo.rooms)
+  // @@protoc_insertion_point(field_add:Protocol.LobbyInfo.rooms)
   return _add;
 }
 inline const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::Protocol::Room >&
-RoomInfo::rooms() const {
-  // @@protoc_insertion_point(field_list:Protocol.RoomInfo.rooms)
+LobbyInfo::rooms() const {
+  // @@protoc_insertion_point(field_list:Protocol.LobbyInfo.rooms)
   return rooms_;
 }
 

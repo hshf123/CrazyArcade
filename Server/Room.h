@@ -3,7 +3,7 @@
 class Room
 {
 public:
-	Room(int64 id, int32 maxPlayerCount);
+	Room(int64 id, const string& roomName, int32 maxPlayerCount);
 
 	void InsertPlayer(PlayerRef player);
 	void RemovePlayer(int64 playerId);
@@ -12,6 +12,10 @@ public:
 	void FillRoomlInfo(Protocol::Room* pkt);
 
 public:
+	int32 GetId() { return _roomId; }
+	void SetLeader(int64 playerId);
+	PlayerRef GetLeader() { return FindPlayer(_leaderId); }
+
 	void Broadcast(SendBufferRef sendBuffer);
 
 private:
@@ -19,9 +23,11 @@ private:
 	HashMap<int64, PlayerRef> _players;
 
 private:
-	int64 _id;
+	int32 _roomId;
 	wstring _roomName;
 	int32 _maxPlayerCount = 0;
 	int32 _currentPlayerCount = 0;
+
+	int64 _leaderId;
 };
 

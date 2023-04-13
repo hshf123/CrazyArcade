@@ -30,15 +30,15 @@ namespace Protocol {
             "CgxjaGFubmVsQ291bnQYASABKAUSIwoIY2hhbm5lbHMYAiADKAsyES5Qcm90",
             "b2NvbC5DaGFubmVsIlwKBFJvb20SDgoGcm9vbUlkGAEgASgFEhAKCHJvb21O",
             "YW1lGAIgASgJEhYKDm1heFBsYXllckNvdW50GAMgASgFEhoKEmN1cnJlbnRQ",
-            "bGF5ZXJDb3VudBgEIAEoBSI8CghSb29tSW5mbxIRCglyb29tQ291bnQYASAB",
-            "KAUSHQoFcm9vbXMYAiADKAsyDi5Qcm90b2NvbC5Sb29tYgZwcm90bzM="));
+            "bGF5ZXJDb3VudBgEIAEoBSI9CglMb2JieUluZm8SEQoJcm9vbUNvdW50GAEg",
+            "ASgFEh0KBXJvb21zGAIgAygLMg4uUHJvdG9jb2wuUm9vbWIGcHJvdG8z"));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { global::Protocol.EnumReflection.Descriptor, },
           new pbr::GeneratedClrTypeInfo(null, null, new pbr::GeneratedClrTypeInfo[] {
             new pbr::GeneratedClrTypeInfo(typeof(global::Protocol.Channel), global::Protocol.Channel.Parser, new[]{ "ChannelId", "MaxPlayerCount", "CurrentPlayerCount" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Protocol.ChannelInfo), global::Protocol.ChannelInfo.Parser, new[]{ "ChannelCount", "Channels" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Protocol.Room), global::Protocol.Room.Parser, new[]{ "RoomId", "RoomName", "MaxPlayerCount", "CurrentPlayerCount" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Protocol.RoomInfo), global::Protocol.RoomInfo.Parser, new[]{ "RoomCount", "Rooms" }, null, null, null, null)
+            new pbr::GeneratedClrTypeInfo(typeof(global::Protocol.LobbyInfo), global::Protocol.LobbyInfo.Parser, new[]{ "RoomCount", "Rooms" }, null, null, null, null)
           }));
     }
     #endregion
@@ -823,16 +823,16 @@ namespace Protocol {
 
   }
 
-  public sealed partial class RoomInfo : pb::IMessage<RoomInfo>
+  public sealed partial class LobbyInfo : pb::IMessage<LobbyInfo>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage
   #endif
   {
-    private static readonly pb::MessageParser<RoomInfo> _parser = new pb::MessageParser<RoomInfo>(() => new RoomInfo());
+    private static readonly pb::MessageParser<LobbyInfo> _parser = new pb::MessageParser<LobbyInfo>(() => new LobbyInfo());
     private pb::UnknownFieldSet _unknownFields;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public static pb::MessageParser<RoomInfo> Parser { get { return _parser; } }
+    public static pb::MessageParser<LobbyInfo> Parser { get { return _parser; } }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
@@ -848,7 +848,7 @@ namespace Protocol {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public RoomInfo() {
+    public LobbyInfo() {
       OnConstruction();
     }
 
@@ -856,7 +856,7 @@ namespace Protocol {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public RoomInfo(RoomInfo other) : this() {
+    public LobbyInfo(LobbyInfo other) : this() {
       roomCount_ = other.roomCount_;
       rooms_ = other.rooms_.Clone();
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
@@ -864,8 +864,8 @@ namespace Protocol {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public RoomInfo Clone() {
-      return new RoomInfo(this);
+    public LobbyInfo Clone() {
+      return new LobbyInfo(this);
     }
 
     /// <summary>Field number for the "roomCount" field.</summary>
@@ -894,12 +894,12 @@ namespace Protocol {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override bool Equals(object other) {
-      return Equals(other as RoomInfo);
+      return Equals(other as LobbyInfo);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public bool Equals(RoomInfo other) {
+    public bool Equals(LobbyInfo other) {
       if (ReferenceEquals(other, null)) {
         return false;
       }
@@ -977,7 +977,7 @@ namespace Protocol {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public void MergeFrom(RoomInfo other) {
+    public void MergeFrom(LobbyInfo other) {
       if (other == null) {
         return;
       }

@@ -24,7 +24,7 @@ message Room
 	int32 currentPlayerCount = 4;
 }
 
-message RoomInfo
+message LobbyInfo
 {
 	int32 roomCount = 1;
 	repeated Room rooms = 2;

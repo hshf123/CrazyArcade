@@ -4,13 +4,19 @@ using UnityEngine;
 
 public class LobbyScene : BaseScene
 {
-    void Start()
+    protected override bool Init()
     {
-        
-    }
+        if (base.Init() == false)
+            return false;
 
-    void Update()
-    {
-        
+        Managers.Sound.Clear();
+
+        Managers.UI.ShowSceneUI<UI_LobbyScene>(null,
+            (sceneUI) =>
+            {
+
+            });
+
+        return true;
     }
 }

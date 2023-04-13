@@ -2,6 +2,8 @@
 #include "Channel.h"
 #include "Player.h"
 #include "Room.h"
+#include "Protocol.pb.h"
+#include "ClientPacketHandler.h"
 
 Channel::Channel(int64 id, int32 maxPlayerCount)
 	: _id(id), _maxPlayerCount(maxPlayerCount), _currentPlayerCount(0)
@@ -9,12 +11,37 @@ Channel::Channel(int64 id, int32 maxPlayerCount)
 
 }
 
-void Channel::AddRoom(int32 maxPlayerCount /*= 8*/)
+void Channel::AddRoom(int64 playerId, const string& roomName, int32 maxPlayerCount /*= 8*/)
 {
 	WRITE_LOCK;
 	// TODO : increaseId Á¶Àý
-	RoomRef room = MakeShared<Room>(_increaseId, maxPlayerCount);
+	RoomRef room = MakeShared<Room>(_increaseId, roomName, maxPlayerCount);
 	_rooms.insert({ _increaseId++, room });
+
+	PlayerRef player = FindPlayer(playerId);
+	if (player == nullptr)
+		return;
+
+	room->InsertPlayer(player);
+	room->SetLeader(playerId);
+	RemovePlayer(playerId);
+
+	{
+		Protocol::S_MAKEROOM makeRoomPkt;
+		makeRoomPkt.set_success(true);
+		makeRoomPkt.set_roomid(room->GetId());
+		SendBufferRef sendBuffer = ClientPacketHandler::MakeSendBuffer(makeRoomPkt);
+		player->Send(sendBuffer);
+	}
+
+	{
+		Protocol::S_CHANNELUPDATE channelUpdatePkt;
+		Protocol::LobbyInfo* lobbyInfo = new Protocol::LobbyInfo();
+		FillLobbyInfo(lobbyInfo);
+		channelUpdatePkt.set_allocated_lobbyinfo(lobbyInfo);
+		SendBufferRef sendBuffer = ClientPacketHandler::MakeSendBuffer(channelUpdatePkt);
+		Broadcast(sendBuffer);
+	}
 }
 
 void Channel::RemoveRoom(int32 roomId)
@@ -62,7 +89,7 @@ void Channel::FillChannelInfo(Protocol::Channel* pkt)
 	pkt->set_currentplayercount(_currentPlayerCount);
 }
 
-void Channel::FillRoomInfo(Protocol::RoomInfo* pkt)
+void Channel::FillLobbyInfo(Protocol::LobbyInfo* pkt)
 {
 	READ_LOCK;
 	pkt->set_roomcount(_rooms.size());
