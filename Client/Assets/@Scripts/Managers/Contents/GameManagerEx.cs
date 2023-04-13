@@ -21,6 +21,7 @@ public class GameManagerEx
     public int RoomID { get; set; }
 
     public UI_LobbyScene Lobby { get; set; }
+    public Room Room { get; set; }
 
     GameData _gameData = new GameData();
     public GameData SaveData { get { return _gameData; } set { _gameData = value; } }

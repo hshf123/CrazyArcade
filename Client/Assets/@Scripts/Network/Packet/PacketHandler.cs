@@ -27,8 +27,8 @@ public class PacketHandler
     {
         ServerSession serverSession = session as ServerSession;
         S_CHANNELCHOIC pkt = packet as S_CHANNELCHOIC;
-        
-        if(pkt.Success == false)
+
+        if (pkt.Success == false)
         {
             Debug.Log($"실패 사유 : ");
             return;
@@ -55,9 +55,10 @@ public class PacketHandler
         if (pkt.Success == false)
             return;
 
+        Managers.Game.LobbyInfo = null;
+        Managers.Game.Lobby = null;
         Managers.Game.RoomID = pkt.RoomId;
-
-        // TODO : RoomScene
+        Managers.Scene.ChangeScene<RoomScene>(Define.SceneType.RoomScene);
     }
 
     public static void S_CHANNELUPDATEHandler(PacketSession session, IMessage packet)
@@ -67,5 +68,33 @@ public class PacketHandler
 
         Managers.Game.LobbyInfo = pkt.LobbyInfo;
         Managers.Game.Lobby.RefreshRoomPage();
+    }
+
+    public static void S_ROOMENTERHandler(PacketSession session, IMessage packet)
+    {
+        ServerSession serverSession = session as ServerSession;
+        S_ROOMENTER pkt = packet as S_ROOMENTER;
+
+        if (pkt.Success == false)
+            return;
+
+        Managers.Game.LobbyInfo = null;
+        Managers.Game.Lobby = null;
+        Managers.Game.RoomID = pkt.RoomId;
+        Managers.Game.Room = pkt.Room;
+        Managers.Scene.ChangeScene<RoomScene>(Define.SceneType.RoomScene);
+        // TODO : Room Update
+    }
+
+    public static void S_ROOMUPDATEHandler(PacketSession session, IMessage packet)
+    {
+        ServerSession serverSession = session as ServerSession;
+        S_ROOMUPDATE pkt = packet as S_ROOMUPDATE;
+
+        if (Managers.Game.RoomID != pkt.RoomId)
+            return;
+
+        Managers.Game.Room = pkt.Room;
+        // TODO : Room Update
     }
 }

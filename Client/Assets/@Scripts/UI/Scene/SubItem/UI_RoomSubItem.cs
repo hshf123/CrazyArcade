@@ -5,6 +5,7 @@ using UnityEngine;
 public class UI_RoomSubItem : UI_Base
 {
     GameObject _roomList;
+    public int RoomID { get; set; }
 
     enum Texts
     {

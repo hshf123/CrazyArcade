@@ -5,6 +5,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class UI_LobbyScene : UI_Scene
@@ -87,7 +88,12 @@ public class UI_LobbyScene : UI_Scene
             }
             else
             {
-                Managers.UI.MakeSubItem<UI_RoomSubItem>(Get<GameObject>((int)GameObjects.RoomList).transform);
+                Managers.UI.MakeSubItem<UI_RoomSubItem>(Get<GameObject>((int)GameObjects.RoomList).transform, null,
+                    (room)=>
+                    {
+                        room.gameObject.BindEvent(OnClickRoom);
+                        room.RoomID = _rooms[i].RoomId;
+                    });
             }
         }
     }
@@ -104,7 +110,6 @@ public class UI_LobbyScene : UI_Scene
     {
         Managers.UI.ShowPopupUI<UI_MakeRoomPopup>();
     }
-
     void OnClickChatSendButton()
     {
         string msg = GetInputField((int)InputFields.ChatInputField).text;
@@ -118,17 +123,30 @@ public class UI_LobbyScene : UI_Scene
         GetInputField((int)InputFields.ChatInputField).text = "";
         Managers.Net.SessionManager.Broadcast(chatPkt);
     }
-
     void OnClickRightButton()
     {
         int maxPageCount = _rooms.Count / 6;
         _roomPage = Mathf.Min(_roomPage + 1, maxPageCount);
         RefreshRoomPage();
     }
-
     void OnClickLeftButton()
     {
         _roomPage = Mathf.Max(_roomPage - 1, 0);
         RefreshRoomPage();
+    }
+    void OnClickRoom(PointerEventData evtData)
+    {
+        GameObject go = evtData.pointerCurrentRaycast.gameObject;
+        if (go == null)
+            return;
+
+        UI_RoomSubItem room = go.GetComponent<UI_RoomSubItem>();
+        Debug.Log($"{room.RoomID}번 방에 들어가려고 시도!");
+
+        C_ROOMENTER roomEnterPkt = new C_ROOMENTER();
+        roomEnterPkt.ChannelId = Managers.Game.ChannelID;
+        roomEnterPkt.PlayerId = Managers.Game.PlayerID;
+        roomEnterPkt.RoomId = room.RoomID;
+        Managers.Net.SessionManager.Broadcast(roomEnterPkt);
     }
 }

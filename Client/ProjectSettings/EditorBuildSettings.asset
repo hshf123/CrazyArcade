@@ -15,6 +15,9 @@ EditorBuildSettings:
     path: Assets/@Scenes/ChannelScene.unity
     guid: 5a3132447297e194e8814a7ddc96bc71
   - enabled: 1
+    path: Assets/@Scenes/LobbyScene.unity
+    guid: 6cd44fa052597304eb585f45266709f7
+  - enabled: 1
     path: Assets/@Scenes/RoomScene.unity
     guid: 14884055870d3054c8113a9f4ceece99
   - enabled: 1

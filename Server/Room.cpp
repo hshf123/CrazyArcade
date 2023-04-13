@@ -12,12 +12,14 @@ void Room::InsertPlayer(PlayerRef player)
 {
 	WRITE_LOCK;
 	_players.insert({ player->GetId(), player });
+	_currentPlayerCount++;
 }
 
 void Room::RemovePlayer(int64 playerId)
 {
 	WRITE_LOCK;
 	_players.erase(playerId);
+	_currentPlayerCount--;
 }
 
 PlayerRef Room::FindPlayer(int64 playerId)

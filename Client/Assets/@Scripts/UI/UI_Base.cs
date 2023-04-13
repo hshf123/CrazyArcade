@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UIElements;
 
 public abstract class UI_Base : MonoBehaviour
@@ -74,6 +75,19 @@ public abstract class UI_Base : MonoBehaviour
             case Define.UIEvent.Press:
                 evt.OnPressHandler -= action;
                 evt.OnPressHandler += action;
+                break;
+        }
+    }
+
+    public static void BindEvent(GameObject go, Action<PointerEventData> action, Define.UIEvent type = Define.UIEvent.Click)
+    {
+        UI_EventHandler evt = Utils.GetOrAddComponent<UI_EventHandler>(go);
+
+        switch (type)
+        {
+            case Define.UIEvent.Click:
+                evt.OnClickEventHandler -= action;
+                evt.OnClickEventHandler += action;
                 break;
         }
     }
