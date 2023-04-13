@@ -7,6 +7,7 @@
 #include "Managers.h"
 #include "ChannelManager.h"
 #include "Channel.h"
+#include "Room.h"
 
 PacketHandlerFunc GPacketHandler[UINT16_MAX];
 
@@ -134,6 +135,27 @@ bool Handle_C_CHANNELCHOIC(PacketSessionRef& session, Protocol::C_CHANNELCHOIC& 
 
 	SendBufferRef sendBuffer = ClientPacketHandler::MakeSendBuffer(channelChoicePkt);
 	clientSession->Send(sendBuffer);
+
+	return true;
+}
+
+bool Handle_C_CHANNELCHAT(PacketSessionRef& session, Protocol::C_CHANNELCHAT& pkt)
+{
+	ClientSessionRef clientSession = static_pointer_cast<ClientSession>(session);
+
+	ChannelRef channel = ChannelManager::GetInstance()->FindChannel(pkt.channelid());
+	if (channel == nullptr)
+		return false;
+
+	PlayerRef player = channel->FindPlayer(pkt.playerid());
+	if (player == nullptr)
+		return false;
+
+	Protocol::S_CHANNELCHAT chatPkt;
+	chatPkt.set_name(player->GetName());
+	chatPkt.set_chat(pkt.chat());
+	SendBufferRef sendBuffer = ClientPacketHandler::MakeSendBuffer(chatPkt);
+	channel->Broadcast(sendBuffer);
 
 	return true;
 }

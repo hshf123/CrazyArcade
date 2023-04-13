@@ -72,3 +72,12 @@ void Channel::FillRoomInfo(Protocol::RoomInfo* pkt)
 		p.second->FillRoomlInfo(room);
 	}
 }
+
+void Channel::Broadcast(SendBufferRef sendBuffer)
+{
+	READ_LOCK;
+	for (auto& p : _players)
+	{
+		p.second->Send(sendBuffer);
+	}
+}

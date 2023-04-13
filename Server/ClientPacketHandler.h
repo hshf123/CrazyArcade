@@ -10,13 +10,16 @@ enum : uint16
 	PKT_S_LOGIN = 1001,
 	PKT_C_CHANNELCHOIC = 1002,
 	PKT_S_CHANNELCHOIC = 1003,
-	PKT_C_MAKEROOM = 1004,
-	PKT_S_MAKEROOM = 1005,
+	PKT_C_CHANNELCHAT = 1004,
+	PKT_S_CHANNELCHAT = 1005,
+	PKT_C_MAKEROOM = 1006,
+	PKT_S_MAKEROOM = 1007,
 };
 
 bool Handle_INVALID(PacketSessionRef& session, BYTE* buffer, int32 len);
 bool Handle_C_LOGIN(PacketSessionRef& session, Protocol::C_LOGIN& pkt);
 bool Handle_C_CHANNELCHOIC(PacketSessionRef& session, Protocol::C_CHANNELCHOIC& pkt);
+bool Handle_C_CHANNELCHAT(PacketSessionRef& session, Protocol::C_CHANNELCHAT& pkt);
 bool Handle_C_MAKEROOM(PacketSessionRef& session, Protocol::C_MAKEROOM& pkt);
 
 class ClientPacketHandler
@@ -28,6 +31,7 @@ public:
 			GPacketHandler[i] = Handle_INVALID;
 		GPacketHandler[PKT_C_LOGIN] = [](PacketSessionRef& session, BYTE* buffer, int32 len) { return HandlePacket<Protocol::C_LOGIN>(Handle_C_LOGIN, session, buffer, len); };
 		GPacketHandler[PKT_C_CHANNELCHOIC] = [](PacketSessionRef& session, BYTE* buffer, int32 len) { return HandlePacket<Protocol::C_CHANNELCHOIC>(Handle_C_CHANNELCHOIC, session, buffer, len); };
+		GPacketHandler[PKT_C_CHANNELCHAT] = [](PacketSessionRef& session, BYTE* buffer, int32 len) { return HandlePacket<Protocol::C_CHANNELCHAT>(Handle_C_CHANNELCHAT, session, buffer, len); };
 		GPacketHandler[PKT_C_MAKEROOM] = [](PacketSessionRef& session, BYTE* buffer, int32 len) { return HandlePacket<Protocol::C_MAKEROOM>(Handle_C_MAKEROOM, session, buffer, len); };
 	}
 
@@ -38,6 +42,7 @@ public:
 	}
 	static SendBufferRef MakeSendBuffer(Protocol::S_LOGIN& packet) { return MakeSendBuffer(packet, PKT_S_LOGIN); }
 	static SendBufferRef MakeSendBuffer(Protocol::S_CHANNELCHOIC& packet) { return MakeSendBuffer(packet, PKT_S_CHANNELCHOIC); }
+	static SendBufferRef MakeSendBuffer(Protocol::S_CHANNELCHAT& packet) { return MakeSendBuffer(packet, PKT_S_CHANNELCHAT); }
 	static SendBufferRef MakeSendBuffer(Protocol::S_MAKEROOM& packet) { return MakeSendBuffer(packet, PKT_S_MAKEROOM); }
 
 private:

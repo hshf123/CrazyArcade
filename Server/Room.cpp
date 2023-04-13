@@ -36,3 +36,12 @@ void Room::FillRoomlInfo(Protocol::Room* pkt)
 	pkt->set_maxplayercount(_maxPlayerCount);
 	pkt->set_currentplayercount(_currentPlayerCount);
 }
+
+void Room::Broadcast(SendBufferRef sendBuffer)
+{
+	READ_LOCK;
+	for (auto& p : _players)
+	{
+		p.second->Send(sendBuffer);
+	}
+}

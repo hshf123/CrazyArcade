@@ -35,10 +35,24 @@ public class PacketHandler
         }
 
         Managers.Scene.ChangeScene<RoomScene>(Define.SceneType.RoomScene);
+        Managers.Game.ChannelID = pkt.ChannelId;
         Managers.Game.RoomInfo = pkt.RoomInfo;
     }
 
+    public static void S_CHANNELCHATHandler(PacketSession session, IMessage packet)
+    {
+        ServerSession serverSession = session as ServerSession;
+        S_CHANNELCHAT pkt = packet as S_CHANNELCHAT;
+
+        Managers.Game.Room.RecvChat(pkt.Name, pkt.Chat);
+    }
+
     public static void S_MAKEROOMHandler(PacketSession session, IMessage packet)
+    {
+
+    }
+
+    public static void S_ROOMCHATHandler(PacketSession session, IMessage packet)
     {
 
     }

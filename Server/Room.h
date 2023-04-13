@@ -11,6 +11,9 @@ public:
 
 	void FillRoomlInfo(Protocol::Room* pkt);
 
+public:
+	void Broadcast(SendBufferRef sendBuffer);
+
 private:
 	USE_LOCK;
 	HashMap<int64, PlayerRef> _players;

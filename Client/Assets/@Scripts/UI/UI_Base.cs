@@ -46,6 +46,7 @@ public abstract class UI_Base : MonoBehaviour
     }
 
     protected void BindText(Type type) { Bind<TextMeshProUGUI>(type); }
+    protected void BindInputField(Type type) { Bind<TMP_InputField>(type); }
 
     protected T Get<T>(int idx) where T : UnityEngine.Object
     {
@@ -57,6 +58,7 @@ public abstract class UI_Base : MonoBehaviour
     }
 
     protected TextMeshProUGUI GetText(int idx) { return Get<TextMeshProUGUI>(idx); }
+    protected TMP_InputField GetInputField(int idx) { return Get<TMP_InputField>(idx); }
 
     public static void BindEvent(GameObject go, Action action, Define.UIEvent type = Define.UIEvent.Click)
     {

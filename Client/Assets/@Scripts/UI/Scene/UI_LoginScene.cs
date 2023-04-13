@@ -8,9 +8,6 @@ using System.Runtime.CompilerServices;
 
 public class UI_LoginScene : UI_Scene
 {
-    TMP_InputField _inputFieldId;
-    TMP_InputField _inputFieldPw;
-
     enum Buttons
     {
         DreamServerButton,
@@ -20,6 +17,12 @@ public class UI_LoginScene : UI_Scene
         SignInButton,
         LoginButton,
         ExitButton,
+    }
+
+    enum InputFields
+    {
+        Input_ID,
+        Input_PW,
     }
 
     enum Texts
@@ -32,10 +35,9 @@ public class UI_LoginScene : UI_Scene
         if (base.Init() == false)
             return false;
 
-        _inputFieldId = Utils.FindChild<TMP_InputField>(gameObject, "Input_ID", true);
-        _inputFieldPw = Utils.FindChild<TMP_InputField>(gameObject, "Input_PW", true);
         Bind<Button>(typeof(Buttons));
         BindText(typeof(Texts));
+        BindInputField(typeof(InputFields));
 
         Get<Button>((int)Buttons.SignInButton).gameObject.BindEvent(OnClickSignInButton);
         Get<Button>((int)Buttons.LoginButton).gameObject.BindEvent(OnClickLoginButton);
@@ -46,9 +48,9 @@ public class UI_LoginScene : UI_Scene
 
     void Update()
     {
-        if (_inputFieldId.isFocused && Input.GetKey(KeyCode.Tab))
+        if (GetInputField((int)InputFields.Input_ID).isFocused && Input.GetKey(KeyCode.Tab))
         {
-            _inputFieldPw.Select();
+            GetInputField((int)InputFields.Input_PW).Select();
         }
     }
 
@@ -62,7 +64,7 @@ public class UI_LoginScene : UI_Scene
         // LATER 아이디 컨벤션? 비번 해시? 웹서버?
 
         loginPkt.Id = GetText((int)Texts.Input_ID_Text).text;
-        loginPkt.Pw = _inputFieldPw.text;
+        loginPkt.Pw = GetInputField((int)InputFields.Input_PW).text;
 
         Managers.Net.SessionManager.Broadcast(loginPkt);
     }

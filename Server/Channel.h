@@ -19,6 +19,9 @@ public:
 	void FillChannelInfo(Protocol::Channel* pkt);
 	void FillRoomInfo(Protocol::RoomInfo* pkt);
 
+public:
+	void Broadcast(SendBufferRef sendBuffer);
+
 	int64 GetId() { return _id; }
 
 private:

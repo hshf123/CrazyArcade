@@ -17,6 +17,9 @@ public class GameManagerEx
     public ChannelInfo ChannelInfo { get; set; }
     public RoomInfo RoomInfo { get; set; }
     public long PlayerID { get; set; }
+    public int ChannelID { get; set; }
+
+    public UI_RoomScene Room { get; set; }
 
     GameData _gameData = new GameData();
     public GameData SaveData { get { return _gameData; } set { _gameData = value; } }

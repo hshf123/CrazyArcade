@@ -23,9 +23,4 @@ public class UI_RoomSubItem : UI_Base
 
         return true;
     }
-
-    public void RefreshUI()
-    {
-        
-    }
 }
