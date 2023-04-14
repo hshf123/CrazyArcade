@@ -37,6 +37,7 @@ message Player
 	int32 level = 2;
 	string name = 3;
 	int32 roomIdx = 4;
+	bool ready = 5;
 }
 
 message RoomInfo

@@ -883,6 +883,7 @@ class Player final :
     kPlayerIdFieldNumber = 1,
     kLevelFieldNumber = 2,
     kRoomIdxFieldNumber = 4,
+    kReadyFieldNumber = 5,
   };
   // string name = 3;
   void clear_name();
@@ -925,6 +926,15 @@ class Player final :
   void _internal_set_roomidx(int32_t value);
   public:
 
+  // bool ready = 5;
+  void clear_ready();
+  bool ready() const;
+  void set_ready(bool value);
+  private:
+  bool _internal_ready() const;
+  void _internal_set_ready(bool value);
+  public:
+
   // @@protoc_insertion_point(class_scope:Protocol.Player)
  private:
   class _Internal;
@@ -936,6 +946,7 @@ class Player final :
   int64_t playerid_;
   int32_t level_;
   int32_t roomidx_;
+  bool ready_;
   mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   friend struct ::TableStruct_Struct_2eproto;
 };
@@ -1591,6 +1602,26 @@ inline void Player::_internal_set_roomidx(int32_t value) {
 inline void Player::set_roomidx(int32_t value) {
   _internal_set_roomidx(value);
   // @@protoc_insertion_point(field_set:Protocol.Player.roomIdx)
+}
+
+// bool ready = 5;
+inline void Player::clear_ready() {
+  ready_ = false;
+}
+inline bool Player::_internal_ready() const {
+  return ready_;
+}
+inline bool Player::ready() const {
+  // @@protoc_insertion_point(field_get:Protocol.Player.ready)
+  return _internal_ready();
+}
+inline void Player::_internal_set_ready(bool value) {
+  
+  ready_ = value;
+}
+inline void Player::set_ready(bool value) {
+  _internal_set_ready(value);
+  // @@protoc_insertion_point(field_set:Protocol.Player.ready)
 }
 
 // -------------------------------------------------------------------

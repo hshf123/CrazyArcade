@@ -11,6 +11,7 @@ public class DevScene : BaseScene
             return false;
 
         // Managers.Scene.ChangeScene<ChannelScene>(Define.SceneType.ChannelScene);
+        Screen.SetResolution(800, 600, false);
 
         return true;
     }

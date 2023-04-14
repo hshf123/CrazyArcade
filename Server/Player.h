@@ -24,5 +24,7 @@ private:
 	int32 _level;
 	float _exp;
 	int64 _id;
+
 	int32 _roomIdx;
+	bool _ready = false;
 };

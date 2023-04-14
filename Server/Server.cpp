@@ -64,8 +64,8 @@ int main()
 						VALUES (?, ?)";
 		DBBind<2, 0> dbBind(*dbConn, query);
 
-		WCHAR id[20] = L"hshf123";
-		WCHAR password[20] = L"tkdgus4259@";
+		WCHAR id[20] = L"Test1";
+		WCHAR password[20] = L"Test1@";
 
 		dbBind.BindParam(0, id);
 		dbBind.BindParam(1, password);
@@ -80,13 +80,49 @@ int main()
 						VALUES (?, ?, ?, ?)";
 		DBBind<4, 0> dbBind(*dbConn, query);
 
-		WCHAR name[20] = L"ÇÑ»óÇö";
-		WCHAR password[20] = L"hshf123";
+		WCHAR name[20] = L"TestPlayer1";
+		WCHAR player_id[20] = L"Test1";
 		int32 level = 1;
 		float exp = 0.f;
 
 		dbBind.BindParam(0, name);
+		dbBind.BindParam(1, player_id);
+		dbBind.BindParam(2, level);
+		dbBind.BindParam(3, exp);
+
+		ASSERT_CRASH(dbBind.Execute());
+		GDBConnectionPool->Push(dbConn);
+	}
+	{
+		DBConnection* dbConn = GDBConnectionPool->Pop();
+		auto query = L"INSERT INTO [dbo].[UserInfo]			\
+						([id], [password])					\
+						VALUES (?, ?)";
+		DBBind<2, 0> dbBind(*dbConn, query);
+
+		WCHAR id[20] = L"Test2";
+		WCHAR password[20] = L"Test2@";
+
+		dbBind.BindParam(0, id);
 		dbBind.BindParam(1, password);
+
+		ASSERT_CRASH(dbBind.Execute());
+		GDBConnectionPool->Push(dbConn);
+	}
+	{
+		DBConnection* dbConn = GDBConnectionPool->Pop();
+		auto query = L"INSERT INTO [dbo].[Player]				\
+						([name], [player_id], [level], [exp])	\
+						VALUES (?, ?, ?, ?)";
+		DBBind<4, 0> dbBind(*dbConn, query);
+
+		WCHAR name[20] = L"TestPlayer2";
+		WCHAR player_id[20] = L"Test2";
+		int32 level = 1;
+		float exp = 0.f;
+
+		dbBind.BindParam(0, name);
+		dbBind.BindParam(1, player_id);
 		dbBind.BindParam(2, level);
 		dbBind.BindParam(3, exp);
 

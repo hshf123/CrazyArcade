@@ -58,7 +58,7 @@ public class PacketHandler
         Managers.Game.LobbyInfo = null;
         Managers.Game.Lobby = null;
 
-        Managers.Game.Room = pkt.RoomInfo;
+        Managers.Game.RoomInfo = pkt.RoomInfo;
 
         Managers.Scene.ChangeScene<RoomScene>(Define.SceneType.RoomScene);
     }
@@ -69,7 +69,7 @@ public class PacketHandler
         S_CHANNELUPDATE pkt = packet as S_CHANNELUPDATE;
 
         Managers.Game.LobbyInfo = pkt.LobbyInfo;
-        Managers.Game.Lobby.RefreshRoomPage();
+        Managers.Game.Lobby.RefreshLobbyPage();
     }
 
     public static void S_ROOMENTERHandler(PacketSession session, IMessage packet)
@@ -83,10 +83,8 @@ public class PacketHandler
         Managers.Game.LobbyInfo = null;
         Managers.Game.Lobby = null;
 
-        Managers.Game.Room = pkt.RoomInfo;
-
+        Managers.Game.RoomInfo = pkt.RoomInfo;
         Managers.Scene.ChangeScene<RoomScene>(Define.SceneType.RoomScene);
-        // TODO : Room Update
     }
 
     public static void S_ROOMUPDATEHandler(PacketSession session, IMessage packet)
@@ -94,10 +92,13 @@ public class PacketHandler
         ServerSession serverSession = session as ServerSession;
         S_ROOMUPDATE pkt = packet as S_ROOMUPDATE;
 
-        if (Managers.Game.Room.RoomId != pkt.RoomId)
+        if (Managers.Game.RoomInfo.RoomId != pkt.RoomId)
             return;
 
-        Managers.Game.Room = pkt.RoomInfo;
-        // TODO : Room Update
+        Managers.Game.LobbyInfo = null;
+        Managers.Game.Lobby = null;
+
+        Managers.Game.RoomInfo = pkt.RoomInfo;
+        Managers.Game.Room.RefreshRoomPage();
     }
 }

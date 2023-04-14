@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class UI_RoomSubItem : UI_Base
 {
-    GameObject _roomList;
     public int RoomID { get; set; }
 
     enum Texts
@@ -19,8 +18,6 @@ public class UI_RoomSubItem : UI_Base
     {
         if (base.Init() == false)
             return false;
-
-        _roomList = gameObject.FindChild("RoomList");
 
         return true;
     }

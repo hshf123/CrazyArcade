@@ -23,7 +23,6 @@ public class UI_RoomScene : UI_Scene
     {
         StartButton,
         ReadyButton,
-        ExitButton,
         BackButton,
         ChatSendButton,
 
@@ -54,13 +53,13 @@ public class UI_RoomScene : UI_Scene
         if (base.Init() == false)
             return false;
 
+        Managers.Game.Room = this;
         Bind<GameObject>(typeof(GameObjects));
         Bind<Button>(typeof(Buttons));
         BindInputField(typeof(InputFields));
         BindText(typeof(Texts));
         Bind<Image>(typeof(Images));
         
-        Get<Button>((int)Buttons.ExitButton).gameObject.BindEvent(OnClickExitButton);
         Get<Button>((int)Buttons.BackButton).gameObject.BindEvent(OnClickBackButton);
         Get<Button>((int)Buttons.ChatSendButton).gameObject.BindEvent(OnClickChatSendButton);
 
@@ -85,14 +84,36 @@ public class UI_RoomScene : UI_Scene
 
         GetText((int)Texts.ChatText).text = "안내 : RoomScene입니다.\n";
 
-        RefreshRoom();
+        RefreshRoomPage();
 
         return true;
     }
-
-    public void RefreshRoom()
+    void Update()
     {
-        foreach (var player in Managers.Game.Room.PlayerList)
+        if (GetInputField((int)InputFields.ChatInputField).isFocused && Input.GetKey(KeyCode.KeypadEnter))
+            OnClickChatSendButton();
+    }
+
+    public void RefreshRoomPage()
+    {
+        foreach(var player in _playerList.Values)
+        {
+            Managers.Resource.Destroy(player.gameObject);
+        }
+        _playerList.Clear();
+
+        for (int i = 1; i < 8; i++)
+        {
+            bool ben = Managers.Game.RoomInfo.BenList[i];
+            string playerPos = $"Player_{i}";
+            if (ben == false)
+            {
+                gameObject.FindChild(playerPos, true).FindChild("ben").SetActive(false);
+            }
+            gameObject.FindChild(playerPos, true).FindChild("ready").SetActive(false);
+        }
+
+        foreach (var player in Managers.Game.RoomInfo.PlayerList)
         {
             string playerPos = $"Player_{player.RoomIdx}";
             if (playerPos.Equals("Player_0"))
@@ -107,6 +128,9 @@ public class UI_RoomScene : UI_Scene
                     subItem.SetPlayerLevel(player.Level);
                     _playerList.Add(player.RoomIdx, subItem);
                 });
+
+            if(player.Ready)
+                gameObject.FindChild(playerPos, true).FindChild("ready").SetActive(true);
         }
     }
 
@@ -121,10 +145,6 @@ public class UI_RoomScene : UI_Scene
 
     }
     void OnClickReadyButton()
-    {
-
-    }
-    void OnClickExitButton()
     {
 
     }

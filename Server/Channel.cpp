@@ -27,6 +27,7 @@ void Channel::AddRoom(int64 playerId, const string& roomName, int32 maxPlayerCou
 	RemovePlayer(playerId);
 
 	{
+		// 방을 만든 플레이어에게 전송
 		Protocol::S_MAKEROOM makeRoomPkt;
 		makeRoomPkt.set_success(true);
 		Protocol::RoomInfo* roomInfo = room->GetRoomInfoProtocol();
@@ -36,6 +37,7 @@ void Channel::AddRoom(int64 playerId, const string& roomName, int32 maxPlayerCou
 	}
 
 	{
+		// 로비에 있는 플레이어들에게 전송
 		Protocol::S_CHANNELUPDATE channelUpdatePkt;
 		Protocol::LobbyInfo* lobbyInfo = GetLobbyInfoProtocol();
 		channelUpdatePkt.set_allocated_lobbyinfo(lobbyInfo);

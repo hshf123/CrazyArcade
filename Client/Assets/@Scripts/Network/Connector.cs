@@ -1,16 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net;
 using System.Net.Sockets;
-using System.Text;
 using System.Threading.Tasks;
+using UnityEngine;
 
 public class Connector
 {
     Func<Session> _sessionFactory;
 
-    public void Connect(string serverIP, int serverPort, Func<Session> sessionFactory, int count = 1)
+    async public Task Connect(string serverIP, int serverPort, Func<Session> sessionFactory, int count = 1)
     {
         for (int i = 0; i < count; i++)
         {
@@ -22,7 +20,7 @@ public class Connector
             args.RemoteEndPoint = new IPEndPoint(IPAddress.Parse(serverIP), serverPort);
             args.UserToken = socket;
 
-            RegisterConnect(args);
+            await RegisterConnect(args);
         }
     }
 
@@ -37,7 +35,7 @@ public class Connector
         }
         catch (SocketException e)
         {
-            Console.WriteLine(e.ToString());
+            Debug.Log(e.ToString());
             return;
         }
         OnConnectCompleted(args);
@@ -53,7 +51,7 @@ public class Connector
         }
         else
         {
-            Console.WriteLine($"OnConnectCompleted Fail: {args.SocketError}");
+            Debug.Log($"OnConnectCompleted Fail: {args.SocketError}");
         }
     }
 }

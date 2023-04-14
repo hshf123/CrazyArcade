@@ -32,11 +32,11 @@ namespace Protocol {
             "YW1lGAIgASgJEhAKCGxlYWRlcklkGAMgASgDEhYKDm1heFBsYXllckNvdW50",
             "GAQgASgFEhoKEmN1cnJlbnRQbGF5ZXJDb3VudBgFIAEoBSI9CglMb2JieUlu",
             "Zm8SEQoJcm9vbUNvdW50GAEgASgFEh0KBXJvb21zGAIgAygLMg4uUHJvdG9j",
-            "b2wuUm9vbSJICgZQbGF5ZXISEAoIcGxheWVySWQYASABKAMSDQoFbGV2ZWwY",
-            "AiABKAUSDAoEbmFtZRgDIAEoCRIPCgdyb29tSWR4GAQgASgFIm8KCFJvb21J",
-            "bmZvEg4KBnJvb21JZBgBIAEoBRIcCgRyb29tGAIgASgLMg4uUHJvdG9jb2wu",
-            "Um9vbRIPCgdiZW5MaXN0GAMgAygIEiQKCnBsYXllckxpc3QYBCADKAsyEC5Q",
-            "cm90b2NvbC5QbGF5ZXJiBnByb3RvMw=="));
+            "b2wuUm9vbSJXCgZQbGF5ZXISEAoIcGxheWVySWQYASABKAMSDQoFbGV2ZWwY",
+            "AiABKAUSDAoEbmFtZRgDIAEoCRIPCgdyb29tSWR4GAQgASgFEg0KBXJlYWR5",
+            "GAUgASgIIm8KCFJvb21JbmZvEg4KBnJvb21JZBgBIAEoBRIcCgRyb29tGAIg",
+            "ASgLMg4uUHJvdG9jb2wuUm9vbRIPCgdiZW5MaXN0GAMgAygIEiQKCnBsYXll",
+            "ckxpc3QYBCADKAsyEC5Qcm90b2NvbC5QbGF5ZXJiBnByb3RvMw=="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { global::Protocol.EnumReflection.Descriptor, },
           new pbr::GeneratedClrTypeInfo(null, null, new pbr::GeneratedClrTypeInfo[] {
@@ -44,7 +44,7 @@ namespace Protocol {
             new pbr::GeneratedClrTypeInfo(typeof(global::Protocol.ChannelInfo), global::Protocol.ChannelInfo.Parser, new[]{ "ChannelCount", "Channels" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Protocol.Room), global::Protocol.Room.Parser, new[]{ "RoomId", "RoomName", "LeaderId", "MaxPlayerCount", "CurrentPlayerCount" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Protocol.LobbyInfo), global::Protocol.LobbyInfo.Parser, new[]{ "RoomCount", "Rooms" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Protocol.Player), global::Protocol.Player.Parser, new[]{ "PlayerId", "Level", "Name", "RoomIdx" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Protocol.Player), global::Protocol.Player.Parser, new[]{ "PlayerId", "Level", "Name", "RoomIdx", "Ready" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Protocol.RoomInfo), global::Protocol.RoomInfo.Parser, new[]{ "RoomId", "Room", "BenList", "PlayerList" }, null, null, null, null)
           }));
     }
@@ -1120,6 +1120,7 @@ namespace Protocol {
       level_ = other.level_;
       name_ = other.name_;
       roomIdx_ = other.roomIdx_;
+      ready_ = other.ready_;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
@@ -1177,6 +1178,18 @@ namespace Protocol {
       }
     }
 
+    /// <summary>Field number for the "ready" field.</summary>
+    public const int ReadyFieldNumber = 5;
+    private bool ready_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool Ready {
+      get { return ready_; }
+      set {
+        ready_ = value;
+      }
+    }
+
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override bool Equals(object other) {
@@ -1196,6 +1209,7 @@ namespace Protocol {
       if (Level != other.Level) return false;
       if (Name != other.Name) return false;
       if (RoomIdx != other.RoomIdx) return false;
+      if (Ready != other.Ready) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
@@ -1207,6 +1221,7 @@ namespace Protocol {
       if (Level != 0) hash ^= Level.GetHashCode();
       if (Name.Length != 0) hash ^= Name.GetHashCode();
       if (RoomIdx != 0) hash ^= RoomIdx.GetHashCode();
+      if (Ready != false) hash ^= Ready.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -1241,6 +1256,10 @@ namespace Protocol {
         output.WriteRawTag(32);
         output.WriteInt32(RoomIdx);
       }
+      if (Ready != false) {
+        output.WriteRawTag(40);
+        output.WriteBool(Ready);
+      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
@@ -1267,6 +1286,10 @@ namespace Protocol {
         output.WriteRawTag(32);
         output.WriteInt32(RoomIdx);
       }
+      if (Ready != false) {
+        output.WriteRawTag(40);
+        output.WriteBool(Ready);
+      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(ref output);
       }
@@ -1288,6 +1311,9 @@ namespace Protocol {
       }
       if (RoomIdx != 0) {
         size += 1 + pb::CodedOutputStream.ComputeInt32Size(RoomIdx);
+      }
+      if (Ready != false) {
+        size += 1 + 1;
       }
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
@@ -1312,6 +1338,9 @@ namespace Protocol {
       }
       if (other.RoomIdx != 0) {
         RoomIdx = other.RoomIdx;
+      }
+      if (other.Ready != false) {
+        Ready = other.Ready;
       }
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
@@ -1344,6 +1373,10 @@ namespace Protocol {
             RoomIdx = input.ReadInt32();
             break;
           }
+          case 40: {
+            Ready = input.ReadBool();
+            break;
+          }
         }
       }
     #endif
@@ -1373,6 +1406,10 @@ namespace Protocol {
           }
           case 32: {
             RoomIdx = input.ReadInt32();
+            break;
+          }
+          case 40: {
+            Ready = input.ReadBool();
             break;
           }
         }

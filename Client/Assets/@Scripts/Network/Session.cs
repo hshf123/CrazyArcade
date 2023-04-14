@@ -1,12 +1,11 @@
 ﻿using Google.Protobuf;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net;
 using System.Net.Sockets;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using UnityEngine;
 
 public abstract class PacketSession : Session
 {
@@ -141,7 +140,7 @@ public abstract class Session
         }
         catch (Exception e)
         {
-            Console.WriteLine($"RegisterSend Failed {e}");
+            Debug.Log($"RegisterSend Failed {e}");
             return;
         }
 
@@ -165,7 +164,7 @@ public abstract class Session
                 }
                 catch (Exception e)
                 {
-                    Console.WriteLine($"OnSendCompleted Failed {e}");
+                    Debug.Log($"OnSendCompleted Failed {e}");
                 }
             }
             else
@@ -189,7 +188,7 @@ public abstract class Session
         }
         catch (Exception e)
         {
-            Console.WriteLine($"RegisterRecv Failed {e}");
+            Debug.Log($"RegisterRecv Failed {e}");
             return;
         }
 
@@ -224,11 +223,11 @@ public abstract class Session
                     return;
                 }
 
-                await RegisterRecv();
+                RegisterRecv();
             }
             catch (Exception e)
             {
-                Console.WriteLine($"OnRecvCompleted Failed {e}");
+                Debug.Log($"OnRecvCompleted Failed {e}");
             }
         }
         else

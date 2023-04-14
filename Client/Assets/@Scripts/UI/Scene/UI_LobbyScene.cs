@@ -10,8 +10,7 @@ using UnityEngine.UI;
 
 public class UI_LobbyScene : UI_Scene
 {
-    // 채팅 패킷은 오면 바로 띄우면 되고, 내가 들어오기전에 대화했던 내용은 표시할 필요가 없다...
-    // 방은 6개 단위로 표현
+    List<int> _roomIds = new List<int>();
 
     enum GameObjects
     {
@@ -36,7 +35,6 @@ public class UI_LobbyScene : UI_Scene
         ChatText,
     }
 
-    RepeatedField<Room> _rooms = new RepeatedField<Room>();
     int _roomPage = 0;
 
     public override bool Init()
@@ -50,16 +48,13 @@ public class UI_LobbyScene : UI_Scene
         BindInputField(typeof(InputFields));
         BindText(typeof(Texts));
 
-        LobbyInfo lobbyInfo = Managers.Game.LobbyInfo;
-        _rooms = lobbyInfo.Rooms;
-
         Get<Button>((int)Buttons.ChatSendButton).gameObject.BindEvent(OnClickChatSendButton);
         Get<Button>((int)Buttons.RightButton).gameObject.BindEvent(OnClickRightButton);
         Get<Button>((int)Buttons.LeftButton).gameObject.BindEvent(OnClickLeftButton);
         Get<Button>((int)Buttons.MakeRoomButton).gameObject.BindEvent(OnClickMakeRoomButton);
         GetText((int)Texts.ChatText).text = "안내 : 본 게임은 크아 모작임\n";
 
-        RefreshRoomPage();
+        RefreshLobbyPage();
 
         return true;
     }
@@ -76,23 +71,26 @@ public class UI_LobbyScene : UI_Scene
         GetText((int)Texts.ChatText).text += msg;
     }
 
-    public void RefreshRoomPage()
+    public void RefreshLobbyPage()
     {
         ClearRoomPage();
 
+        _roomIds.Clear();
+        int idx = 0;
         for (int i = _roomPage * 6; i < (_roomPage + 1) * 6; i++)
         {
-            if (i >= _rooms.Count)
+            if (i >= Managers.Game.LobbyInfo.RoomCount)
             {
                 Managers.UI.MakeSubItem<UI_RoomDummySubItem>(Get<GameObject>((int)GameObjects.RoomList).transform);
             }
             else
             {
+                _roomIds.Add(Managers.Game.LobbyInfo.Rooms[i].RoomId);
                 Managers.UI.MakeSubItem<UI_RoomSubItem>(Get<GameObject>((int)GameObjects.RoomList).transform, null,
                     (room)=>
                     {
                         room.gameObject.BindEvent(OnClickRoom);
-                        room.RoomID = _rooms[i].RoomId;
+                        room.RoomID = _roomIds[idx++];
                     });
             }
         }
@@ -125,14 +123,14 @@ public class UI_LobbyScene : UI_Scene
     }
     void OnClickRightButton()
     {
-        int maxPageCount = _rooms.Count / 6;
+        int maxPageCount = Managers.Game.LobbyInfo.RoomCount / 6;
         _roomPage = Mathf.Min(_roomPage + 1, maxPageCount);
-        RefreshRoomPage();
+        RefreshLobbyPage();
     }
     void OnClickLeftButton()
     {
         _roomPage = Mathf.Max(_roomPage - 1, 0);
-        RefreshRoomPage();
+        RefreshLobbyPage();
     }
     void OnClickRoom(PointerEventData evtData)
     {

@@ -15,6 +15,7 @@ void Player::CopyPlayerProtocol(Protocol::Player* pkt)
 	pkt->set_level(_level);
 	pkt->set_name(GetName());
 	pkt->set_roomidx(_roomIdx);
+	pkt->set_ready(_ready);
 }
 
 void Player::Send(SendBufferRef sendBuffer)
