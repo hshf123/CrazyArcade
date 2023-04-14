@@ -101,4 +101,16 @@ public class PacketHandler
         Managers.Game.RoomInfo = pkt.RoomInfo;
         Managers.Game.Room.RefreshRoomPage();
     }
+
+    public static void S_ROOMSTARTHandler(PacketSession session, IMessage packet)
+    {
+        ServerSession serverSession = session as ServerSession;
+        S_ROOMSTART pkt = packet as S_ROOMSTART;
+
+        if (pkt.Success == false)
+            return;
+
+        Managers.Game.RoomInfo = pkt.RoomInfo;
+        Managers.Scene.ChangeScene<GameScene>(Define.SceneType.GameScene);
+    }
 }

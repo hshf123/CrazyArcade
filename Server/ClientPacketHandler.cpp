@@ -234,14 +234,18 @@ bool Handle_C_ROOMREADY(PacketSessionRef& session, Protocol::C_ROOMREADY& pkt)
 	if (player->GetId() != pkt.playerid())
 		return false;
 
-	// TODO 플레이어에서 룸이랑 채널 정보 얻기
-
 	ChannelRef channel = ChannelManager::GetInstance()->FindChannel(player->GetChannelID());
 	if (channel == nullptr)
 		return false;
 
+	if (channel->GetId() != pkt.channelid())
+		return false;
+
 	RoomRef room = channel->FindRoom(player->GetRoomID());
 	if (room == nullptr)
+		return false;
+
+	if (room->GetId() != pkt.roomid())
 		return false;
 
 	player->SetReady();
@@ -251,5 +255,39 @@ bool Handle_C_ROOMREADY(PacketSessionRef& session, Protocol::C_ROOMREADY& pkt)
 	SendBufferRef sendBuffer = ClientPacketHandler::MakeSendBuffer(roomUpdatePkt);
 	room->Broadcast(sendBuffer);
 
-	return false;
+	return true;
+}
+
+bool Handle_C_ROOMSTART(PacketSessionRef& session, Protocol::C_ROOMSTART& pkt)
+{
+	ClientSessionRef clientSession = static_pointer_cast<ClientSession>(session);
+
+	PlayerRef player = clientSession->MyPlayer.lock();
+	if (player == nullptr)
+		return false;
+
+	if (player->GetId() != pkt.playerid())
+		return false;
+
+	ChannelRef channel = ChannelManager::GetInstance()->FindChannel(player->GetChannelID());
+	if (channel == nullptr)
+		return false;
+
+	if (channel->GetId() != pkt.channelid())
+		return false;
+
+	RoomRef room = channel->FindRoom(player->GetRoomID());
+	if (room == nullptr)
+		return false;
+
+	if (room->GetId() != pkt.roomid())
+		return false;
+
+	if (room->GetLeader()->GetId() != pkt.playerid())
+		return false;
+
+	if (room->CanGameStart() == false)
+		return false;
+
+	return true;
 }

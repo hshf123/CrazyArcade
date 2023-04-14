@@ -1,2 +1,8 @@
 syntax = "proto3";
 package Protocol;
+
+enum RoomState
+{
+	WAITING = 0;
+	GAMESTART = 1;
+}

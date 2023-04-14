@@ -24,14 +24,23 @@ namespace Protocol {
     static EnumReflection() {
       byte[] descriptorData = global::System.Convert.FromBase64String(
           string.Concat(
-            "CgpFbnVtLnByb3RvEghQcm90b2NvbGIGcHJvdG8z"));
+            "CgpFbnVtLnByb3RvEghQcm90b2NvbConCglSb29tU3RhdGUSCwoHV0FJVElO",
+            "RxAAEg0KCUdBTUVTVEFSVBABYgZwcm90bzM="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
-          new pbr::GeneratedClrTypeInfo(null, null, null));
+          new pbr::GeneratedClrTypeInfo(new[] {typeof(global::Protocol.RoomState), }, null, null));
     }
     #endregion
 
   }
+  #region Enums
+  public enum RoomState {
+    [pbr::OriginalName("WAITING")] Waiting = 0,
+    [pbr::OriginalName("GAMESTART")] Gamestart = 1,
+  }
+
+  #endregion
+
 }
 
 #endregion Designer generated code

@@ -1,5 +1,7 @@
 #pragma once
 
+using RoomState = Protocol::RoomState;
+
 class Room
 {
 public:
@@ -10,11 +12,14 @@ public:
 	PlayerRef FindPlayer(int64 playerId);
 	void SetIdx(PlayerRef player);
 
+public:
+	bool CanGameStart();
+
+public:
 	void CopyRoomProtocol(Protocol::Room* pkt);
 	Protocol::Room* GetRoomProtocol();
 	Protocol::RoomInfo* GetRoomInfoProtocol();
 
-public:
 	int32 GetId() { return _roomId; }
 	string GetRoomName() { return Utils::ConvertWStringToString(_roomName); }
 	void SetLeader(int64 playerId);
@@ -35,5 +40,5 @@ private:
 
 	int64 _leaderId;
 	bool _benList[8];
+	RoomState _state = RoomState::WAITING;
 };
-

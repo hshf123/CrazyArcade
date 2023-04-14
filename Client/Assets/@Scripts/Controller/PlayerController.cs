@@ -70,10 +70,6 @@ public class PlayerController : MonoBehaviour
         #region Charactor Info
         _speed = 2f;
 
-        _cellPos = new Vector3Int(-9, 5); // 판정을 위한 셀 좌표 TODO : 스폰위치설정
-        Vector3 pos = Managers.Map.CurrentGrid.CellToWorld(_cellPos);
-        transform.position = pos + correction;
-
         _shadow = Utils.FindChild<SpriteRenderer>(gameObject, "shadow");
         _shadow.transform.localPosition = new Vector3(0, -0.65f, 0);
         _shadow.sortingOrder = _sortOrder - 1;
@@ -83,12 +79,18 @@ public class PlayerController : MonoBehaviour
         _cursor.sortingOrder = _sortOrder + 1;
         #endregion
     }
-
     void Update()
     {
         InputDir();
         MovePosition();
         UpdateSortOrder();
+    }
+
+    public void SetStartPos(Vector3Int pos)
+    {
+        _cellPos = pos;
+        Vector3 worldPos = Managers.Map.CurrentGrid.CellToWorld(_cellPos);
+        transform.position = worldPos + correction;
     }
 
     void UpdateAnimation()

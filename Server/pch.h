@@ -11,6 +11,7 @@
 #endif
 
 #include "CorePch.h"
+#include "Enum.pb.h"
 #include "Struct.pb.h"
 #include "DBConnection.h"
 #include "DBConnectionPool.h"

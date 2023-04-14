@@ -143,12 +143,17 @@ public class UI_RoomScene : UI_Scene
 
     void OnClickStartButton()
     {
-
+        C_ROOMSTART roomStartPkt = new C_ROOMSTART();
+        roomStartPkt.PlayerId = Managers.Game.PlayerID;
+        roomStartPkt.ChannelId = Managers.Game.ChannelID;
+        roomStartPkt.RoomId = Managers.Game.RoomInfo.RoomId;
+        Managers.Net.SessionManager.Broadcast(roomStartPkt);
     }
     void OnClickReadyButton()
     {
         C_ROOMREADY roomReadyPkt = new C_ROOMREADY();
         roomReadyPkt.PlayerId = Managers.Game.PlayerID;
+        roomReadyPkt.ChannelId = Managers.Game.ChannelID;
         roomReadyPkt.RoomId = Managers.Game.RoomInfo.RoomId;
         Managers.Net.SessionManager.Broadcast(roomReadyPkt);
     }

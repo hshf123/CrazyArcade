@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "Room.h"
 #include "Player.h"
+#include "ClientPacketHandler.h"
 
 Room::Room(int64 id, const string& roomName, int32 maxPlayerCount)
 	:_roomId(id), _maxPlayerCount(maxPlayerCount)
@@ -46,6 +47,26 @@ void Room::SetIdx(PlayerRef player)
 			return;
 		}
 	}
+}
+
+bool Room::CanGameStart()
+{
+	READ_LOCK;
+
+	if (_currentPlayerCount < 2)
+		return false;
+
+	Protocol::S_ROOMSTART roomStartPkt;
+	roomStartPkt.set_success(true);
+	roomStartPkt.set_allocated_roominfo(GetRoomInfoProtocol());
+	SendBufferRef sendBuffer = ClientPacketHandler::MakeSendBuffer(roomStartPkt);
+	Broadcast(sendBuffer);
+
+	_state = RoomState::GAMESTART;
+
+	// TODO 채널에 있는 사람들한테 게임 시작중인방이라고 broadcast
+
+	return true;
 }
 
 void Room::CopyRoomProtocol(Protocol::Room* pkt)
