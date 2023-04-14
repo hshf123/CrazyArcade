@@ -47,9 +47,7 @@ void Session::Disconnect(const WCHAR* cause)
 	wcout.imbue(locale("kor"));
 	wcout << "Disconnect : " << cause << endl;
 
-	OnDisconnected();
-	SocketUtils::Close(_socket);
-	GetService()->ReleaseSession(GetSessionRef());
+	RegisterDisconnect();
 }
 
 HANDLE Session::GetHandle()
@@ -63,6 +61,9 @@ void Session::Dispatch(IocpEvent* iocpEvent, int32 numOfBytes /*= 0*/)
 	{
 	case EventType::Connect:
 		ProcessConnect();
+		break;
+	case EventType::Disconnect:
+		ProcessDisconnect();
 		break;
 	case EventType::Recv:
 		ProcessRecv(numOfBytes);
@@ -100,6 +101,24 @@ bool Session::RegisterConnect()
 		if (errorCode != WSA_IO_PENDING)
 		{
 			_connectEvent.owner = nullptr;
+			return false;
+		}
+	}
+
+	return true;
+}
+
+bool Session::RegisterDisconnect()
+{
+	_disconnectEvent.Init();
+	_disconnectEvent.owner = shared_from_this(); // ADD_REF
+
+	if (false == SocketUtils::DisconnectEx(_socket, &_disconnectEvent, TF_REUSE_SOCKET, 0))
+	{
+		int32 errorCode = ::WSAGetLastError();
+		if (errorCode != WSA_IO_PENDING)
+		{
+			_disconnectEvent.owner = nullptr; // RELEASE_REF
 			return false;
 		}
 	}
@@ -183,6 +202,14 @@ void Session::ProcessConnect()
 	GetService()->AddSession(GetSessionRef());
 	OnConnected(GetService()->GetNetAddress());
 	RegisterRecv();
+}
+
+void Session::ProcessDisconnect()
+{
+	_disconnectEvent.owner = nullptr;
+
+	OnDisconnected();
+	GetService()->ReleaseSession(GetSessionRef());
 }
 
 void Session::ProcessRecv(int32 numOfBytes)

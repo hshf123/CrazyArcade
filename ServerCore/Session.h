@@ -43,10 +43,12 @@ private:
 
 private:
 	bool RegisterConnect();
+	bool RegisterDisconnect();
 	void RegisterRecv();
 	void RegisterSend();
 
 	void ProcessConnect();
+	void ProcessDisconnect();
 	void ProcessRecv(int32 numOfBytes);
 	void ProcessSend(int32 numOfBytes);
 
