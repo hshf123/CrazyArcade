@@ -222,3 +222,34 @@ bool Handle_C_ROOMENTER(PacketSessionRef& session, Protocol::C_ROOMENTER& pkt)
 
 	return true;
 }
+
+bool Handle_C_ROOMREADY(PacketSessionRef& session, Protocol::C_ROOMREADY& pkt)
+{
+	ClientSessionRef clientSession = static_pointer_cast<ClientSession>(session);
+	
+	PlayerRef player = clientSession->MyPlayer.lock();
+	if (player == nullptr)
+		return false;
+
+	if (player->GetId() != pkt.playerid())
+		return false;
+
+	// TODO 플레이어에서 룸이랑 채널 정보 얻기
+
+	ChannelRef channel = ChannelManager::GetInstance()->FindChannel(player->GetChannelID());
+	if (channel == nullptr)
+		return false;
+
+	RoomRef room = channel->FindRoom(player->GetRoomID());
+	if (room == nullptr)
+		return false;
+
+	player->SetReady();
+	Protocol::S_ROOMUPDATE roomUpdatePkt;
+	roomUpdatePkt.set_roomid(player->GetRoomID());
+	roomUpdatePkt.set_allocated_roominfo(room->GetRoomInfoProtocol());
+	SendBufferRef sendBuffer = ClientPacketHandler::MakeSendBuffer(roomUpdatePkt);
+	room->Broadcast(sendBuffer);
+
+	return false;
+}

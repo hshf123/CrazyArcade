@@ -83,3 +83,9 @@ message S_ROOMUPDATE
 	int32 roomId = 1;
 	RoomInfo roomInfo = 2;
 }
+
+message C_ROOMREADY
+{
+	int64 playerId = 1;
+	int32 roomId = 2;
+}

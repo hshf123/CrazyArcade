@@ -66,6 +66,7 @@ void Channel::InsertPlayer(PlayerRef player)
 {
 	WRITE_LOCK;
 	_players.insert({ player->GetId(), player });
+	player->SetChannelD(_id);
 }
 
 void Channel::RemovePlayer(int64 playerId)

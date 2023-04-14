@@ -14,6 +14,7 @@ void Room::InsertPlayer(PlayerRef player)
 	_players.insert({ player->GetId(), player });
 	_currentPlayerCount++;
 	SetIdx(player);
+	player->SetRoomID(_roomId);
 }
 
 void Room::RemovePlayer(int64 playerId)

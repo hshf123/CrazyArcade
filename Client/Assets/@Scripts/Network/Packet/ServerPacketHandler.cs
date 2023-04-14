@@ -17,6 +17,7 @@ public enum MsgId : ushort
 	PKT_C_ROOMENTER = 1009,
 	PKT_S_ROOMENTER = 1010,
 	PKT_S_ROOMUPDATE = 1011,
+	PKT_C_ROOMREADY = 1012,
 };
 
 class PacketManager

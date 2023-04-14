@@ -1,3 +1,4 @@
+using Google.Protobuf.Protocol;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -146,7 +147,10 @@ public class UI_RoomScene : UI_Scene
     }
     void OnClickReadyButton()
     {
-
+        C_ROOMREADY roomReadyPkt = new C_ROOMREADY();
+        roomReadyPkt.PlayerId = Managers.Game.PlayerID;
+        roomReadyPkt.RoomId = Managers.Game.RoomInfo.RoomId;
+        Managers.Net.SessionManager.Broadcast(roomReadyPkt);
     }
     void OnClickBackButton()
     {
