@@ -8,6 +8,7 @@ public:
 	void InsertPlayer(PlayerRef player);
 	void RemovePlayer(int64 playerId);
 	PlayerRef FindPlayer(int64 playerId);
+	void SetIdx(PlayerRef player);
 
 	void CopyRoomProtocol(Protocol::Room* pkt);
 	Protocol::Room* GetRoomProtocol();
@@ -24,6 +25,7 @@ public:
 private:
 	USE_LOCK;
 	HashMap<int64, PlayerRef> _players;
+	HashMap<int32, PlayerRef> _idxes;
 
 private:
 	int32 _roomId;

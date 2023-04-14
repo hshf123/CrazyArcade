@@ -882,6 +882,7 @@ class Player final :
     kNameFieldNumber = 3,
     kPlayerIdFieldNumber = 1,
     kLevelFieldNumber = 2,
+    kRoomIdxFieldNumber = 4,
   };
   // string name = 3;
   void clear_name();
@@ -915,6 +916,15 @@ class Player final :
   void _internal_set_level(int32_t value);
   public:
 
+  // int32 roomIdx = 4;
+  void clear_roomidx();
+  int32_t roomidx() const;
+  void set_roomidx(int32_t value);
+  private:
+  int32_t _internal_roomidx() const;
+  void _internal_set_roomidx(int32_t value);
+  public:
+
   // @@protoc_insertion_point(class_scope:Protocol.Player)
  private:
   class _Internal;
@@ -925,6 +935,7 @@ class Player final :
   ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr name_;
   int64_t playerid_;
   int32_t level_;
+  int32_t roomidx_;
   mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   friend struct ::TableStruct_Struct_2eproto;
 };
@@ -1560,6 +1571,26 @@ inline void Player::set_allocated_name(std::string* name) {
   }
 #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
   // @@protoc_insertion_point(field_set_allocated:Protocol.Player.name)
+}
+
+// int32 roomIdx = 4;
+inline void Player::clear_roomidx() {
+  roomidx_ = 0;
+}
+inline int32_t Player::_internal_roomidx() const {
+  return roomidx_;
+}
+inline int32_t Player::roomidx() const {
+  // @@protoc_insertion_point(field_get:Protocol.Player.roomIdx)
+  return _internal_roomidx();
+}
+inline void Player::_internal_set_roomidx(int32_t value) {
+  
+  roomidx_ = value;
+}
+inline void Player::set_roomidx(int32_t value) {
+  _internal_set_roomidx(value);
+  // @@protoc_insertion_point(field_set:Protocol.Player.roomIdx)
 }
 
 // -------------------------------------------------------------------

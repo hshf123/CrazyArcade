@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class UI_PlayerSubItem : UI_Base
 {
+    string _name;
+    string _level;
+
     enum Texts
     {
         PlayerName,
@@ -17,16 +20,19 @@ public class UI_PlayerSubItem : UI_Base
 
         BindText(typeof(Texts));
 
+        GetText((int)Texts.PlayerName).text = _name;
+        GetText((int)Texts.PlayerLevel).text = _level;
+
         return true;
     }
 
     public void SetPlayerName(string name)
     {
-        GetText((int)Texts.PlayerName).text = $"{name}";
+        _name = $"{name}";
     }
 
-    public void SetPlayerName(int level)
+    public void SetPlayerLevel(int level)
     {
-        GetText((int)Texts.PlayerLevel).text = $"Lv. {level:D2}";
+        _level = $"Lv. {level:D2}";
     }
 }

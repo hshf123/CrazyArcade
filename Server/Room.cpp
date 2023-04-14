@@ -13,11 +13,13 @@ void Room::InsertPlayer(PlayerRef player)
 	WRITE_LOCK;
 	_players.insert({ player->GetId(), player });
 	_currentPlayerCount++;
+	SetIdx(player);
 }
 
 void Room::RemovePlayer(int64 playerId)
 {
 	WRITE_LOCK;
+	_idxes.erase(FindPlayer(playerId)->GetRoomIdx());
 	_players.erase(playerId);
 	_currentPlayerCount--;
 }
@@ -30,6 +32,19 @@ PlayerRef Room::FindPlayer(int64 playerId)
 		return nullptr;
 
 	return findIt->second;
+}
+
+void Room::SetIdx(PlayerRef player)
+{
+	for (int i = 0; i < 8; i++)
+	{
+		if (_idxes[i] == nullptr && _benList[i] == false)
+		{
+			_idxes[i] = player;
+			player->SetRoomIdx(i);
+			return;
+		}
+	}
 }
 
 void Room::CopyRoomProtocol(Protocol::Room* pkt)

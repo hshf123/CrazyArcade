@@ -81,7 +81,8 @@ PROTOBUF_CONSTEXPR Player::Player(
     ::_pbi::ConstantInitialized)
   : name_(&::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized{})
   , playerid_(int64_t{0})
-  , level_(0){}
+  , level_(0)
+  , roomidx_(0){}
 struct PlayerDefaultTypeInternal {
   PROTOBUF_CONSTEXPR PlayerDefaultTypeInternal()
       : _instance(::_pbi::ConstantInitialized{}) {}
@@ -157,6 +158,7 @@ const uint32_t TableStruct_Struct_2eproto::offsets[] PROTOBUF_SECTION_VARIABLE(p
   PROTOBUF_FIELD_OFFSET(::Protocol::Player, playerid_),
   PROTOBUF_FIELD_OFFSET(::Protocol::Player, level_),
   PROTOBUF_FIELD_OFFSET(::Protocol::Player, name_),
+  PROTOBUF_FIELD_OFFSET(::Protocol::Player, roomidx_),
   ~0u,  // no _has_bits_
   PROTOBUF_FIELD_OFFSET(::Protocol::RoomInfo, _internal_metadata_),
   ~0u,  // no _extensions_
@@ -174,7 +176,7 @@ static const ::_pbi::MigrationSchema schemas[] PROTOBUF_SECTION_VARIABLE(protode
   { 17, -1, -1, sizeof(::Protocol::Room)},
   { 28, -1, -1, sizeof(::Protocol::LobbyInfo)},
   { 36, -1, -1, sizeof(::Protocol::Player)},
-  { 45, -1, -1, sizeof(::Protocol::RoomInfo)},
+  { 46, -1, -1, sizeof(::Protocol::RoomInfo)},
 };
 
 static const ::_pb::Message* const file_default_instances[] = {
@@ -196,18 +198,19 @@ const char descriptor_table_protodef_Struct_2eproto[] PROTOBUF_SECTION_VARIABLE(
   "aderId\030\003 \001(\003\022\026\n\016maxPlayerCount\030\004 \001(\005\022\032\n\022"
   "currentPlayerCount\030\005 \001(\005\"=\n\tLobbyInfo\022\021\n"
   "\troomCount\030\001 \001(\005\022\035\n\005rooms\030\002 \003(\0132\016.Protoc"
-  "ol.Room\"7\n\006Player\022\020\n\010playerId\030\001 \001(\003\022\r\n\005l"
-  "evel\030\002 \001(\005\022\014\n\004name\030\003 \001(\t\"o\n\010RoomInfo\022\016\n\006"
-  "roomId\030\001 \001(\005\022\034\n\004room\030\002 \001(\0132\016.Protocol.Ro"
-  "om\022\017\n\007benList\030\003 \003(\010\022$\n\nplayerList\030\004 \003(\0132"
-  "\020.Protocol.Playerb\006proto3"
+  "ol.Room\"H\n\006Player\022\020\n\010playerId\030\001 \001(\003\022\r\n\005l"
+  "evel\030\002 \001(\005\022\014\n\004name\030\003 \001(\t\022\017\n\007roomIdx\030\004 \001("
+  "\005\"o\n\010RoomInfo\022\016\n\006roomId\030\001 \001(\005\022\034\n\004room\030\002 "
+  "\001(\0132\016.Protocol.Room\022\017\n\007benList\030\003 \003(\010\022$\n\n"
+  "playerList\030\004 \003(\0132\020.Protocol.Playerb\006prot"
+  "o3"
   ;
 static const ::_pbi::DescriptorTable* const descriptor_table_Struct_2eproto_deps[1] = {
   &::descriptor_table_Enum_2eproto,
 };
 static ::_pbi::once_flag descriptor_table_Struct_2eproto_once;
 const ::_pbi::DescriptorTable descriptor_table_Struct_2eproto = {
-    false, false, 545, descriptor_table_protodef_Struct_2eproto,
+    false, false, 562, descriptor_table_protodef_Struct_2eproto,
     "Struct.proto",
     &descriptor_table_Struct_2eproto_once, descriptor_table_Struct_2eproto_deps, 1, 6,
     schemas, file_default_instances, TableStruct_Struct_2eproto::offsets,
@@ -1180,8 +1183,8 @@ Player::Player(const Player& from)
       GetArenaForAllocation());
   }
   ::memcpy(&playerid_, &from.playerid_,
-    static_cast<size_t>(reinterpret_cast<char*>(&level_) -
-    reinterpret_cast<char*>(&playerid_)) + sizeof(level_));
+    static_cast<size_t>(reinterpret_cast<char*>(&roomidx_) -
+    reinterpret_cast<char*>(&playerid_)) + sizeof(roomidx_));
   // @@protoc_insertion_point(copy_constructor:Protocol.Player)
 }
 
@@ -1192,8 +1195,8 @@ name_.InitDefault();
 #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
 ::memset(reinterpret_cast<char*>(this) + static_cast<size_t>(
     reinterpret_cast<char*>(&playerid_) - reinterpret_cast<char*>(this)),
-    0, static_cast<size_t>(reinterpret_cast<char*>(&level_) -
-    reinterpret_cast<char*>(&playerid_)) + sizeof(level_));
+    0, static_cast<size_t>(reinterpret_cast<char*>(&roomidx_) -
+    reinterpret_cast<char*>(&playerid_)) + sizeof(roomidx_));
 }
 
 Player::~Player() {
@@ -1222,8 +1225,8 @@ void Player::Clear() {
 
   name_.ClearToEmpty();
   ::memset(&playerid_, 0, static_cast<size_t>(
-      reinterpret_cast<char*>(&level_) -
-      reinterpret_cast<char*>(&playerid_)) + sizeof(level_));
+      reinterpret_cast<char*>(&roomidx_) -
+      reinterpret_cast<char*>(&playerid_)) + sizeof(roomidx_));
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
@@ -1256,6 +1259,14 @@ const char* Player::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
           ptr = ::_pbi::InlineGreedyStringParser(str, ptr, ctx);
           CHK_(ptr);
           CHK_(::_pbi::VerifyUTF8(str, "Protocol.Player.name"));
+        } else
+          goto handle_unusual;
+        continue;
+      // int32 roomIdx = 4;
+      case 4:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 32)) {
+          roomidx_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr);
+          CHK_(ptr);
         } else
           goto handle_unusual;
         continue;
@@ -1310,6 +1321,12 @@ uint8_t* Player::_InternalSerialize(
         3, this->_internal_name(), target);
   }
 
+  // int32 roomIdx = 4;
+  if (this->_internal_roomidx() != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::_pbi::WireFormatLite::WriteInt32ToArray(4, this->_internal_roomidx(), target);
+  }
+
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
     target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
         _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
@@ -1343,6 +1360,11 @@ size_t Player::ByteSizeLong() const {
     total_size += ::_pbi::WireFormatLite::Int32SizePlusOne(this->_internal_level());
   }
 
+  // int32 roomIdx = 4;
+  if (this->_internal_roomidx() != 0) {
+    total_size += ::_pbi::WireFormatLite::Int32SizePlusOne(this->_internal_roomidx());
+  }
+
   return MaybeComputeUnknownFieldsSize(total_size, &_cached_size_);
 }
 
@@ -1374,6 +1396,9 @@ void Player::MergeFrom(const Player& from) {
   if (from._internal_level() != 0) {
     _internal_set_level(from._internal_level());
   }
+  if (from._internal_roomidx() != 0) {
+    _internal_set_roomidx(from._internal_roomidx());
+  }
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
 }
 
@@ -1398,8 +1423,8 @@ void Player::InternalSwap(Player* other) {
       &other->name_, rhs_arena
   );
   ::PROTOBUF_NAMESPACE_ID::internal::memswap<
-      PROTOBUF_FIELD_OFFSET(Player, level_)
-      + sizeof(Player::level_)
+      PROTOBUF_FIELD_OFFSET(Player, roomidx_)
+      + sizeof(Player::roomidx_)
       - PROTOBUF_FIELD_OFFSET(Player, playerid_)>(
           reinterpret_cast<char*>(&playerid_),
           reinterpret_cast<char*>(&other->playerid_));

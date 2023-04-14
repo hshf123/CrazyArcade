@@ -1,13 +1,24 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SocialPlatforms.Impl;
 using UnityEngine.UI;
 
 public class UI_RoomScene : UI_Scene
 {
-    bool[] _ben = new bool[8];
+    Dictionary<int, UI_PlayerSubItem> _playerList = new Dictionary<int, UI_PlayerSubItem>();
 
-
+    enum GameObjects
+    {
+        Leader,
+        Player_1,
+        Player_2,
+        Player_3,
+        Player_4,
+        Player_5,
+        Player_6,
+        Player_7,
+    }
     enum Buttons
     {
         StartButton,
@@ -33,15 +44,21 @@ public class UI_RoomScene : UI_Scene
         ChatText,
         MapNameText,
     }
+    enum Images
+    {
+        MapIcon,
+    }
 
     public override bool Init()
     {
         if (base.Init() == false)
             return false;
 
+        Bind<GameObject>(typeof(GameObjects));
         Bind<Button>(typeof(Buttons));
         BindInputField(typeof(InputFields));
         BindText(typeof(Texts));
+        Bind<Image>(typeof(Images));
         
         Get<Button>((int)Buttons.ExitButton).gameObject.BindEvent(OnClickExitButton);
         Get<Button>((int)Buttons.BackButton).gameObject.BindEvent(OnClickBackButton);
@@ -68,7 +85,29 @@ public class UI_RoomScene : UI_Scene
 
         GetText((int)Texts.ChatText).text = "안내 : RoomScene입니다.\n";
 
+        RefreshRoom();
+
         return true;
+    }
+
+    public void RefreshRoom()
+    {
+        foreach (var player in Managers.Game.Room.PlayerList)
+        {
+            string playerPos = $"Player_{player.RoomIdx}";
+            if (playerPos.Equals("Player_0"))
+            {
+                playerPos = "Leader";
+            }
+
+            Managers.UI.MakeSubItem<UI_PlayerSubItem>(gameObject.FindChild(playerPos, true).transform, null,
+                (subItem)=>
+                {
+                    subItem.SetPlayerName(player.Name);
+                    subItem.SetPlayerLevel(player.Level);
+                    _playerList.Add(player.RoomIdx, subItem);
+                });
+        }
     }
 
     public void RecvChat(string name, string chat)
@@ -101,7 +140,6 @@ public class UI_RoomScene : UI_Scene
     {
         if (Managers.Game.IsLeader == false)
             return;
-        _ben[n] = !_ben[n];
     }
     void OnClickBenButton1()
     {
