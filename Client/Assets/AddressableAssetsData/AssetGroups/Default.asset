@@ -77,6 +77,14 @@ MonoBehaviour:
     m_Address: UI_SignUpPopup
     m_ReadOnly: 0
     m_SerializedLabels: []
+  - m_GUID: 0eda0af9cb65aeb4eaa349f033d1c288
+    m_Address: UI_RoomScene
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: a22595ed91d7e0240b2611611f41fe4b
+    m_Address: UI_PlayerSubItem
+    m_ReadOnly: 0
+    m_SerializedLabels: []
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 37d63db9dee568844aed5ef436298665, type: 2}
   m_SchemaSet:

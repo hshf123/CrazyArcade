@@ -48,13 +48,15 @@ PlayerRef ChannelManager::FindPlayer(int64 playerId)
 	return findIt->second;
 }
 
-void ChannelManager::FillChannelInfo(Protocol::ChannelInfo* channelInfo)
+Protocol::ChannelInfo* ChannelManager::GetChannelInfoProtocol()
 {
+	Protocol::ChannelInfo* pkt = new Protocol::ChannelInfo();
 	READ_LOCK;
-	channelInfo->set_channelcount(_channels.size());
+	pkt->set_channelcount(_channels.size());
 	for (auto& p : _channels)
 	{
-		Protocol::Channel* c = channelInfo->add_channels();
-		p.second->FillChannelInfo(c);
+		Protocol::Channel* c = pkt->add_channels();
+		p.second->CopyChannelProtocol(c);
 	}
+	return pkt;
 }

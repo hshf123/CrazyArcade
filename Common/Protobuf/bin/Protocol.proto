@@ -56,7 +56,7 @@ message C_MAKEROOM
 message S_MAKEROOM
 {
 	bool success = 1;
-	int32 roomId = 2;
+	RoomInfo roomInfo = 2;
 }
 
 message S_CHANNELUPDATE
@@ -75,11 +75,11 @@ message S_ROOMENTER
 {
 	bool success = 1;
 	int32 roomId = 2;
-	Room room = 3;
+	RoomInfo roomInfo = 3;
 }
 
 message S_ROOMUPDATE
 {
 	int32 roomId = 1;
-	Room room = 2;
+	RoomInfo roomInfo = 2;
 }

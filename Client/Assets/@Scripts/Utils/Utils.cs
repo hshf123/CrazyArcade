@@ -19,9 +19,20 @@ public class Utils
 
         if (recursive == false)
         {
-            Transform transform = go.transform.Find(name);
-            if (transform != null)
-                return transform.GetComponent<T>();
+            //Transform transform = go.transform.Find(name);
+            //if (transform != null)
+            //    return transform.GetComponent<T>();
+
+            for (int i = 0; i < go.transform.childCount; i++)
+            {
+                Transform transform = go.transform.GetChild(i);
+                if (string.IsNullOrEmpty(name) || transform.name == name)
+                {
+                    T component = transform.GetComponent<T>();
+                    if (component != null)
+                        return component;
+                }
+            }
         }
         else
         {

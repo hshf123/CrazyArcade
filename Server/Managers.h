@@ -14,5 +14,5 @@ public:
 	}
 
 public:
-    uint64 GenerateID(const wstring& name);
+    int64 GenerateID(const wstring& name);
 };

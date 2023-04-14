@@ -20,12 +20,28 @@ message Room
 {
 	int32 roomId = 1;
 	string roomName = 2;
-	int32 maxPlayerCount = 3;
-	int32 currentPlayerCount = 4;
+	int64 leaderId = 3;
+	int32 maxPlayerCount = 4;
+	int32 currentPlayerCount = 5;
 }
 
 message LobbyInfo
 {
 	int32 roomCount = 1;
 	repeated Room rooms = 2;
+}
+
+message Player
+{
+	int64 playerId = 1;
+	int32 level = 2;
+	string name = 3;
+}
+
+message RoomInfo
+{
+	int32 roomId = 1;
+	Room room = 2;
+	repeated bool benList = 3;
+	repeated Player playerList = 4;
 }

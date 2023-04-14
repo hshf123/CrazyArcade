@@ -118,8 +118,8 @@ struct C_MAKEROOMDefaultTypeInternal {
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 C_MAKEROOMDefaultTypeInternal _C_MAKEROOM_default_instance_;
 PROTOBUF_CONSTEXPR S_MAKEROOM::S_MAKEROOM(
     ::_pbi::ConstantInitialized)
-  : success_(false)
-  , roomid_(0){}
+  : roominfo_(nullptr)
+  , success_(false){}
 struct S_MAKEROOMDefaultTypeInternal {
   PROTOBUF_CONSTEXPR S_MAKEROOMDefaultTypeInternal()
       : _instance(::_pbi::ConstantInitialized{}) {}
@@ -157,7 +157,7 @@ struct C_ROOMENTERDefaultTypeInternal {
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 C_ROOMENTERDefaultTypeInternal _C_ROOMENTER_default_instance_;
 PROTOBUF_CONSTEXPR S_ROOMENTER::S_ROOMENTER(
     ::_pbi::ConstantInitialized)
-  : room_(nullptr)
+  : roominfo_(nullptr)
   , success_(false)
   , roomid_(0){}
 struct S_ROOMENTERDefaultTypeInternal {
@@ -171,7 +171,7 @@ struct S_ROOMENTERDefaultTypeInternal {
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 S_ROOMENTERDefaultTypeInternal _S_ROOMENTER_default_instance_;
 PROTOBUF_CONSTEXPR S_ROOMUPDATE::S_ROOMUPDATE(
     ::_pbi::ConstantInitialized)
-  : room_(nullptr)
+  : roominfo_(nullptr)
   , roomid_(0){}
 struct S_ROOMUPDATEDefaultTypeInternal {
   PROTOBUF_CONSTEXPR S_ROOMUPDATEDefaultTypeInternal()
@@ -255,7 +255,7 @@ const uint32_t TableStruct_Protocol_2eproto::offsets[] PROTOBUF_SECTION_VARIABLE
   ~0u,  // no _weak_field_map_
   ~0u,  // no _inlined_string_donated_
   PROTOBUF_FIELD_OFFSET(::Protocol::S_MAKEROOM, success_),
-  PROTOBUF_FIELD_OFFSET(::Protocol::S_MAKEROOM, roomid_),
+  PROTOBUF_FIELD_OFFSET(::Protocol::S_MAKEROOM, roominfo_),
   ~0u,  // no _has_bits_
   PROTOBUF_FIELD_OFFSET(::Protocol::S_CHANNELUPDATE, _internal_metadata_),
   ~0u,  // no _extensions_
@@ -280,7 +280,7 @@ const uint32_t TableStruct_Protocol_2eproto::offsets[] PROTOBUF_SECTION_VARIABLE
   ~0u,  // no _inlined_string_donated_
   PROTOBUF_FIELD_OFFSET(::Protocol::S_ROOMENTER, success_),
   PROTOBUF_FIELD_OFFSET(::Protocol::S_ROOMENTER, roomid_),
-  PROTOBUF_FIELD_OFFSET(::Protocol::S_ROOMENTER, room_),
+  PROTOBUF_FIELD_OFFSET(::Protocol::S_ROOMENTER, roominfo_),
   ~0u,  // no _has_bits_
   PROTOBUF_FIELD_OFFSET(::Protocol::S_ROOMUPDATE, _internal_metadata_),
   ~0u,  // no _extensions_
@@ -288,7 +288,7 @@ const uint32_t TableStruct_Protocol_2eproto::offsets[] PROTOBUF_SECTION_VARIABLE
   ~0u,  // no _weak_field_map_
   ~0u,  // no _inlined_string_donated_
   PROTOBUF_FIELD_OFFSET(::Protocol::S_ROOMUPDATE, roomid_),
-  PROTOBUF_FIELD_OFFSET(::Protocol::S_ROOMUPDATE, room_),
+  PROTOBUF_FIELD_OFFSET(::Protocol::S_ROOMUPDATE, roominfo_),
 };
 static const ::_pbi::MigrationSchema schemas[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) = {
   { 0, -1, -1, sizeof(::Protocol::C_LOGIN)},
@@ -334,16 +334,17 @@ const char descriptor_table_protodef_Protocol_2eproto[] PROTOBUF_SECTION_VARIABL
   "annelId\030\002 \001(\005\022\014\n\004chat\030\003 \001(\t\"+\n\rS_CHANNEL"
   "CHAT\022\014\n\004name\030\001 \001(\t\022\014\n\004chat\030\002 \001(\t\"C\n\nC_MA"
   "KEROOM\022\020\n\010roomName\030\001 \001(\t\022\020\n\010playerId\030\002 \001"
-  "(\003\022\021\n\tchannelId\030\003 \001(\005\"-\n\nS_MAKEROOM\022\017\n\007s"
-  "uccess\030\001 \001(\010\022\016\n\006roomId\030\002 \001(\005\"9\n\017S_CHANNE"
-  "LUPDATE\022&\n\tlobbyInfo\030\001 \001(\0132\023.Protocol.Lo"
-  "bbyInfo\"B\n\013C_ROOMENTER\022\021\n\tchannelId\030\001 \001("
-  "\005\022\020\n\010playerId\030\002 \001(\003\022\016\n\006roomId\030\003 \001(\005\"L\n\013S"
-  "_ROOMENTER\022\017\n\007success\030\001 \001(\010\022\016\n\006roomId\030\002 "
-  "\001(\005\022\034\n\004room\030\003 \001(\0132\016.Protocol.Room\"<\n\014S_R"
-  "OOMUPDATE\022\016\n\006roomId\030\001 \001(\005\022\034\n\004room\030\002 \001(\0132"
-  "\016.Protocol.RoomB\033\252\002\030Google.Protobuf.Prot"
-  "ocolb\006proto3"
+  "(\003\022\021\n\tchannelId\030\003 \001(\005\"C\n\nS_MAKEROOM\022\017\n\007s"
+  "uccess\030\001 \001(\010\022$\n\010roomInfo\030\002 \001(\0132\022.Protoco"
+  "l.RoomInfo\"9\n\017S_CHANNELUPDATE\022&\n\tlobbyIn"
+  "fo\030\001 \001(\0132\023.Protocol.LobbyInfo\"B\n\013C_ROOME"
+  "NTER\022\021\n\tchannelId\030\001 \001(\005\022\020\n\010playerId\030\002 \001("
+  "\003\022\016\n\006roomId\030\003 \001(\005\"T\n\013S_ROOMENTER\022\017\n\007succ"
+  "ess\030\001 \001(\010\022\016\n\006roomId\030\002 \001(\005\022$\n\010roomInfo\030\003 "
+  "\001(\0132\022.Protocol.RoomInfo\"D\n\014S_ROOMUPDATE\022"
+  "\016\n\006roomId\030\001 \001(\005\022$\n\010roomInfo\030\002 \001(\0132\022.Prot"
+  "ocol.RoomInfoB\033\252\002\030Google.Protobuf.Protoc"
+  "olb\006proto3"
   ;
 static const ::_pbi::DescriptorTable* const descriptor_table_Protocol_2eproto_deps[3] = {
   &::descriptor_table_Enum_2eproto,
@@ -352,7 +353,7 @@ static const ::_pbi::DescriptorTable* const descriptor_table_Protocol_2eproto_de
 };
 static ::_pbi::once_flag descriptor_table_Protocol_2eproto_once;
 const ::_pbi::DescriptorTable descriptor_table_Protocol_2eproto = {
-    false, false, 892, descriptor_table_protodef_Protocol_2eproto,
+    false, false, 930, descriptor_table_protodef_Protocol_2eproto,
     "Protocol.proto",
     &descriptor_table_Protocol_2eproto_once, descriptor_table_Protocol_2eproto_deps, 3, 12,
     schemas, file_default_instances, TableStruct_Protocol_2eproto::offsets,
@@ -2074,8 +2075,19 @@ void C_MAKEROOM::InternalSwap(C_MAKEROOM* other) {
 
 class S_MAKEROOM::_Internal {
  public:
+  static const ::Protocol::RoomInfo& roominfo(const S_MAKEROOM* msg);
 };
 
+const ::Protocol::RoomInfo&
+S_MAKEROOM::_Internal::roominfo(const S_MAKEROOM* msg) {
+  return *msg->roominfo_;
+}
+void S_MAKEROOM::clear_roominfo() {
+  if (GetArenaForAllocation() == nullptr && roominfo_ != nullptr) {
+    delete roominfo_;
+  }
+  roominfo_ = nullptr;
+}
 S_MAKEROOM::S_MAKEROOM(::PROTOBUF_NAMESPACE_ID::Arena* arena,
                          bool is_message_owned)
   : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned) {
@@ -2085,17 +2097,20 @@ S_MAKEROOM::S_MAKEROOM(::PROTOBUF_NAMESPACE_ID::Arena* arena,
 S_MAKEROOM::S_MAKEROOM(const S_MAKEROOM& from)
   : ::PROTOBUF_NAMESPACE_ID::Message() {
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
-  ::memcpy(&success_, &from.success_,
-    static_cast<size_t>(reinterpret_cast<char*>(&roomid_) -
-    reinterpret_cast<char*>(&success_)) + sizeof(roomid_));
+  if (from._internal_has_roominfo()) {
+    roominfo_ = new ::Protocol::RoomInfo(*from.roominfo_);
+  } else {
+    roominfo_ = nullptr;
+  }
+  success_ = from.success_;
   // @@protoc_insertion_point(copy_constructor:Protocol.S_MAKEROOM)
 }
 
 inline void S_MAKEROOM::SharedCtor() {
 ::memset(reinterpret_cast<char*>(this) + static_cast<size_t>(
-    reinterpret_cast<char*>(&success_) - reinterpret_cast<char*>(this)),
-    0, static_cast<size_t>(reinterpret_cast<char*>(&roomid_) -
-    reinterpret_cast<char*>(&success_)) + sizeof(roomid_));
+    reinterpret_cast<char*>(&roominfo_) - reinterpret_cast<char*>(this)),
+    0, static_cast<size_t>(reinterpret_cast<char*>(&success_) -
+    reinterpret_cast<char*>(&roominfo_)) + sizeof(success_));
 }
 
 S_MAKEROOM::~S_MAKEROOM() {
@@ -2109,6 +2124,7 @@ S_MAKEROOM::~S_MAKEROOM() {
 
 inline void S_MAKEROOM::SharedDtor() {
   GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
+  if (this != internal_default_instance()) delete roominfo_;
 }
 
 void S_MAKEROOM::SetCachedSize(int size) const {
@@ -2121,9 +2137,11 @@ void S_MAKEROOM::Clear() {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  ::memset(&success_, 0, static_cast<size_t>(
-      reinterpret_cast<char*>(&roomid_) -
-      reinterpret_cast<char*>(&success_)) + sizeof(roomid_));
+  if (GetArenaForAllocation() == nullptr && roominfo_ != nullptr) {
+    delete roominfo_;
+  }
+  roominfo_ = nullptr;
+  success_ = false;
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
@@ -2141,10 +2159,10 @@ const char* S_MAKEROOM::_InternalParse(const char* ptr, ::_pbi::ParseContext* ct
         } else
           goto handle_unusual;
         continue;
-      // int32 roomId = 2;
+      // .Protocol.RoomInfo roomInfo = 2;
       case 2:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 16)) {
-          roomid_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr);
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 18)) {
+          ptr = ctx->ParseMessage(_internal_mutable_roominfo(), ptr);
           CHK_(ptr);
         } else
           goto handle_unusual;
@@ -2184,10 +2202,11 @@ uint8_t* S_MAKEROOM::_InternalSerialize(
     target = ::_pbi::WireFormatLite::WriteBoolToArray(1, this->_internal_success(), target);
   }
 
-  // int32 roomId = 2;
-  if (this->_internal_roomid() != 0) {
-    target = stream->EnsureSpace(target);
-    target = ::_pbi::WireFormatLite::WriteInt32ToArray(2, this->_internal_roomid(), target);
+  // .Protocol.RoomInfo roomInfo = 2;
+  if (this->_internal_has_roominfo()) {
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
+      InternalWriteMessage(2, _Internal::roominfo(this),
+        _Internal::roominfo(this).GetCachedSize(), target, stream);
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
@@ -2206,14 +2225,16 @@ size_t S_MAKEROOM::ByteSizeLong() const {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
+  // .Protocol.RoomInfo roomInfo = 2;
+  if (this->_internal_has_roominfo()) {
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
+        *roominfo_);
+  }
+
   // bool success = 1;
   if (this->_internal_success() != 0) {
     total_size += 1 + 1;
-  }
-
-  // int32 roomId = 2;
-  if (this->_internal_roomid() != 0) {
-    total_size += ::_pbi::WireFormatLite::Int32SizePlusOne(this->_internal_roomid());
   }
 
   return MaybeComputeUnknownFieldsSize(total_size, &_cached_size_);
@@ -2238,11 +2259,11 @@ void S_MAKEROOM::MergeFrom(const S_MAKEROOM& from) {
   uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
+  if (from._internal_has_roominfo()) {
+    _internal_mutable_roominfo()->::Protocol::RoomInfo::MergeFrom(from._internal_roominfo());
+  }
   if (from._internal_success() != 0) {
     _internal_set_success(from._internal_success());
-  }
-  if (from._internal_roomid() != 0) {
-    _internal_set_roomid(from._internal_roomid());
   }
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
 }
@@ -2262,11 +2283,11 @@ void S_MAKEROOM::InternalSwap(S_MAKEROOM* other) {
   using std::swap;
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
   ::PROTOBUF_NAMESPACE_ID::internal::memswap<
-      PROTOBUF_FIELD_OFFSET(S_MAKEROOM, roomid_)
-      + sizeof(S_MAKEROOM::roomid_)
-      - PROTOBUF_FIELD_OFFSET(S_MAKEROOM, success_)>(
-          reinterpret_cast<char*>(&success_),
-          reinterpret_cast<char*>(&other->success_));
+      PROTOBUF_FIELD_OFFSET(S_MAKEROOM, success_)
+      + sizeof(S_MAKEROOM::success_)
+      - PROTOBUF_FIELD_OFFSET(S_MAKEROOM, roominfo_)>(
+          reinterpret_cast<char*>(&roominfo_),
+          reinterpret_cast<char*>(&other->roominfo_));
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata S_MAKEROOM::GetMetadata() const {
@@ -2699,18 +2720,18 @@ void C_ROOMENTER::InternalSwap(C_ROOMENTER* other) {
 
 class S_ROOMENTER::_Internal {
  public:
-  static const ::Protocol::Room& room(const S_ROOMENTER* msg);
+  static const ::Protocol::RoomInfo& roominfo(const S_ROOMENTER* msg);
 };
 
-const ::Protocol::Room&
-S_ROOMENTER::_Internal::room(const S_ROOMENTER* msg) {
-  return *msg->room_;
+const ::Protocol::RoomInfo&
+S_ROOMENTER::_Internal::roominfo(const S_ROOMENTER* msg) {
+  return *msg->roominfo_;
 }
-void S_ROOMENTER::clear_room() {
-  if (GetArenaForAllocation() == nullptr && room_ != nullptr) {
-    delete room_;
+void S_ROOMENTER::clear_roominfo() {
+  if (GetArenaForAllocation() == nullptr && roominfo_ != nullptr) {
+    delete roominfo_;
   }
-  room_ = nullptr;
+  roominfo_ = nullptr;
 }
 S_ROOMENTER::S_ROOMENTER(::PROTOBUF_NAMESPACE_ID::Arena* arena,
                          bool is_message_owned)
@@ -2721,10 +2742,10 @@ S_ROOMENTER::S_ROOMENTER(::PROTOBUF_NAMESPACE_ID::Arena* arena,
 S_ROOMENTER::S_ROOMENTER(const S_ROOMENTER& from)
   : ::PROTOBUF_NAMESPACE_ID::Message() {
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
-  if (from._internal_has_room()) {
-    room_ = new ::Protocol::Room(*from.room_);
+  if (from._internal_has_roominfo()) {
+    roominfo_ = new ::Protocol::RoomInfo(*from.roominfo_);
   } else {
-    room_ = nullptr;
+    roominfo_ = nullptr;
   }
   ::memcpy(&success_, &from.success_,
     static_cast<size_t>(reinterpret_cast<char*>(&roomid_) -
@@ -2734,9 +2755,9 @@ S_ROOMENTER::S_ROOMENTER(const S_ROOMENTER& from)
 
 inline void S_ROOMENTER::SharedCtor() {
 ::memset(reinterpret_cast<char*>(this) + static_cast<size_t>(
-    reinterpret_cast<char*>(&room_) - reinterpret_cast<char*>(this)),
+    reinterpret_cast<char*>(&roominfo_) - reinterpret_cast<char*>(this)),
     0, static_cast<size_t>(reinterpret_cast<char*>(&roomid_) -
-    reinterpret_cast<char*>(&room_)) + sizeof(roomid_));
+    reinterpret_cast<char*>(&roominfo_)) + sizeof(roomid_));
 }
 
 S_ROOMENTER::~S_ROOMENTER() {
@@ -2750,7 +2771,7 @@ S_ROOMENTER::~S_ROOMENTER() {
 
 inline void S_ROOMENTER::SharedDtor() {
   GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
-  if (this != internal_default_instance()) delete room_;
+  if (this != internal_default_instance()) delete roominfo_;
 }
 
 void S_ROOMENTER::SetCachedSize(int size) const {
@@ -2763,10 +2784,10 @@ void S_ROOMENTER::Clear() {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  if (GetArenaForAllocation() == nullptr && room_ != nullptr) {
-    delete room_;
+  if (GetArenaForAllocation() == nullptr && roominfo_ != nullptr) {
+    delete roominfo_;
   }
-  room_ = nullptr;
+  roominfo_ = nullptr;
   ::memset(&success_, 0, static_cast<size_t>(
       reinterpret_cast<char*>(&roomid_) -
       reinterpret_cast<char*>(&success_)) + sizeof(roomid_));
@@ -2795,10 +2816,10 @@ const char* S_ROOMENTER::_InternalParse(const char* ptr, ::_pbi::ParseContext* c
         } else
           goto handle_unusual;
         continue;
-      // .Protocol.Room room = 3;
+      // .Protocol.RoomInfo roomInfo = 3;
       case 3:
         if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 26)) {
-          ptr = ctx->ParseMessage(_internal_mutable_room(), ptr);
+          ptr = ctx->ParseMessage(_internal_mutable_roominfo(), ptr);
           CHK_(ptr);
         } else
           goto handle_unusual;
@@ -2844,11 +2865,11 @@ uint8_t* S_ROOMENTER::_InternalSerialize(
     target = ::_pbi::WireFormatLite::WriteInt32ToArray(2, this->_internal_roomid(), target);
   }
 
-  // .Protocol.Room room = 3;
-  if (this->_internal_has_room()) {
+  // .Protocol.RoomInfo roomInfo = 3;
+  if (this->_internal_has_roominfo()) {
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
-      InternalWriteMessage(3, _Internal::room(this),
-        _Internal::room(this).GetCachedSize(), target, stream);
+      InternalWriteMessage(3, _Internal::roominfo(this),
+        _Internal::roominfo(this).GetCachedSize(), target, stream);
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
@@ -2867,11 +2888,11 @@ size_t S_ROOMENTER::ByteSizeLong() const {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  // .Protocol.Room room = 3;
-  if (this->_internal_has_room()) {
+  // .Protocol.RoomInfo roomInfo = 3;
+  if (this->_internal_has_roominfo()) {
     total_size += 1 +
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
-        *room_);
+        *roominfo_);
   }
 
   // bool success = 1;
@@ -2906,8 +2927,8 @@ void S_ROOMENTER::MergeFrom(const S_ROOMENTER& from) {
   uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
-  if (from._internal_has_room()) {
-    _internal_mutable_room()->::Protocol::Room::MergeFrom(from._internal_room());
+  if (from._internal_has_roominfo()) {
+    _internal_mutable_roominfo()->::Protocol::RoomInfo::MergeFrom(from._internal_roominfo());
   }
   if (from._internal_success() != 0) {
     _internal_set_success(from._internal_success());
@@ -2935,9 +2956,9 @@ void S_ROOMENTER::InternalSwap(S_ROOMENTER* other) {
   ::PROTOBUF_NAMESPACE_ID::internal::memswap<
       PROTOBUF_FIELD_OFFSET(S_ROOMENTER, roomid_)
       + sizeof(S_ROOMENTER::roomid_)
-      - PROTOBUF_FIELD_OFFSET(S_ROOMENTER, room_)>(
-          reinterpret_cast<char*>(&room_),
-          reinterpret_cast<char*>(&other->room_));
+      - PROTOBUF_FIELD_OFFSET(S_ROOMENTER, roominfo_)>(
+          reinterpret_cast<char*>(&roominfo_),
+          reinterpret_cast<char*>(&other->roominfo_));
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata S_ROOMENTER::GetMetadata() const {
@@ -2950,18 +2971,18 @@ void S_ROOMENTER::InternalSwap(S_ROOMENTER* other) {
 
 class S_ROOMUPDATE::_Internal {
  public:
-  static const ::Protocol::Room& room(const S_ROOMUPDATE* msg);
+  static const ::Protocol::RoomInfo& roominfo(const S_ROOMUPDATE* msg);
 };
 
-const ::Protocol::Room&
-S_ROOMUPDATE::_Internal::room(const S_ROOMUPDATE* msg) {
-  return *msg->room_;
+const ::Protocol::RoomInfo&
+S_ROOMUPDATE::_Internal::roominfo(const S_ROOMUPDATE* msg) {
+  return *msg->roominfo_;
 }
-void S_ROOMUPDATE::clear_room() {
-  if (GetArenaForAllocation() == nullptr && room_ != nullptr) {
-    delete room_;
+void S_ROOMUPDATE::clear_roominfo() {
+  if (GetArenaForAllocation() == nullptr && roominfo_ != nullptr) {
+    delete roominfo_;
   }
-  room_ = nullptr;
+  roominfo_ = nullptr;
 }
 S_ROOMUPDATE::S_ROOMUPDATE(::PROTOBUF_NAMESPACE_ID::Arena* arena,
                          bool is_message_owned)
@@ -2972,10 +2993,10 @@ S_ROOMUPDATE::S_ROOMUPDATE(::PROTOBUF_NAMESPACE_ID::Arena* arena,
 S_ROOMUPDATE::S_ROOMUPDATE(const S_ROOMUPDATE& from)
   : ::PROTOBUF_NAMESPACE_ID::Message() {
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
-  if (from._internal_has_room()) {
-    room_ = new ::Protocol::Room(*from.room_);
+  if (from._internal_has_roominfo()) {
+    roominfo_ = new ::Protocol::RoomInfo(*from.roominfo_);
   } else {
-    room_ = nullptr;
+    roominfo_ = nullptr;
   }
   roomid_ = from.roomid_;
   // @@protoc_insertion_point(copy_constructor:Protocol.S_ROOMUPDATE)
@@ -2983,9 +3004,9 @@ S_ROOMUPDATE::S_ROOMUPDATE(const S_ROOMUPDATE& from)
 
 inline void S_ROOMUPDATE::SharedCtor() {
 ::memset(reinterpret_cast<char*>(this) + static_cast<size_t>(
-    reinterpret_cast<char*>(&room_) - reinterpret_cast<char*>(this)),
+    reinterpret_cast<char*>(&roominfo_) - reinterpret_cast<char*>(this)),
     0, static_cast<size_t>(reinterpret_cast<char*>(&roomid_) -
-    reinterpret_cast<char*>(&room_)) + sizeof(roomid_));
+    reinterpret_cast<char*>(&roominfo_)) + sizeof(roomid_));
 }
 
 S_ROOMUPDATE::~S_ROOMUPDATE() {
@@ -2999,7 +3020,7 @@ S_ROOMUPDATE::~S_ROOMUPDATE() {
 
 inline void S_ROOMUPDATE::SharedDtor() {
   GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
-  if (this != internal_default_instance()) delete room_;
+  if (this != internal_default_instance()) delete roominfo_;
 }
 
 void S_ROOMUPDATE::SetCachedSize(int size) const {
@@ -3012,10 +3033,10 @@ void S_ROOMUPDATE::Clear() {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  if (GetArenaForAllocation() == nullptr && room_ != nullptr) {
-    delete room_;
+  if (GetArenaForAllocation() == nullptr && roominfo_ != nullptr) {
+    delete roominfo_;
   }
-  room_ = nullptr;
+  roominfo_ = nullptr;
   roomid_ = 0;
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
@@ -3034,10 +3055,10 @@ const char* S_ROOMUPDATE::_InternalParse(const char* ptr, ::_pbi::ParseContext* 
         } else
           goto handle_unusual;
         continue;
-      // .Protocol.Room room = 2;
+      // .Protocol.RoomInfo roomInfo = 2;
       case 2:
         if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 18)) {
-          ptr = ctx->ParseMessage(_internal_mutable_room(), ptr);
+          ptr = ctx->ParseMessage(_internal_mutable_roominfo(), ptr);
           CHK_(ptr);
         } else
           goto handle_unusual;
@@ -3077,11 +3098,11 @@ uint8_t* S_ROOMUPDATE::_InternalSerialize(
     target = ::_pbi::WireFormatLite::WriteInt32ToArray(1, this->_internal_roomid(), target);
   }
 
-  // .Protocol.Room room = 2;
-  if (this->_internal_has_room()) {
+  // .Protocol.RoomInfo roomInfo = 2;
+  if (this->_internal_has_roominfo()) {
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
-      InternalWriteMessage(2, _Internal::room(this),
-        _Internal::room(this).GetCachedSize(), target, stream);
+      InternalWriteMessage(2, _Internal::roominfo(this),
+        _Internal::roominfo(this).GetCachedSize(), target, stream);
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
@@ -3100,11 +3121,11 @@ size_t S_ROOMUPDATE::ByteSizeLong() const {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  // .Protocol.Room room = 2;
-  if (this->_internal_has_room()) {
+  // .Protocol.RoomInfo roomInfo = 2;
+  if (this->_internal_has_roominfo()) {
     total_size += 1 +
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
-        *room_);
+        *roominfo_);
   }
 
   // int32 roomId = 1;
@@ -3134,8 +3155,8 @@ void S_ROOMUPDATE::MergeFrom(const S_ROOMUPDATE& from) {
   uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
-  if (from._internal_has_room()) {
-    _internal_mutable_room()->::Protocol::Room::MergeFrom(from._internal_room());
+  if (from._internal_has_roominfo()) {
+    _internal_mutable_roominfo()->::Protocol::RoomInfo::MergeFrom(from._internal_roominfo());
   }
   if (from._internal_roomid() != 0) {
     _internal_set_roomid(from._internal_roomid());
@@ -3160,9 +3181,9 @@ void S_ROOMUPDATE::InternalSwap(S_ROOMUPDATE* other) {
   ::PROTOBUF_NAMESPACE_ID::internal::memswap<
       PROTOBUF_FIELD_OFFSET(S_ROOMUPDATE, roomid_)
       + sizeof(S_ROOMUPDATE::roomid_)
-      - PROTOBUF_FIELD_OFFSET(S_ROOMUPDATE, room_)>(
-          reinterpret_cast<char*>(&room_),
-          reinterpret_cast<char*>(&other->room_));
+      - PROTOBUF_FIELD_OFFSET(S_ROOMUPDATE, roominfo_)>(
+          reinterpret_cast<char*>(&roominfo_),
+          reinterpret_cast<char*>(&other->roominfo_));
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata S_ROOMUPDATE::GetMetadata() const {

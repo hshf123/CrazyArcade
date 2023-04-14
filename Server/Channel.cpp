@@ -29,15 +29,15 @@ void Channel::AddRoom(int64 playerId, const string& roomName, int32 maxPlayerCou
 	{
 		Protocol::S_MAKEROOM makeRoomPkt;
 		makeRoomPkt.set_success(true);
-		makeRoomPkt.set_roomid(room->GetId());
+		Protocol::RoomInfo* roomInfo = room->GetRoomInfoProtocol();
+		makeRoomPkt.set_allocated_roominfo(roomInfo);
 		SendBufferRef sendBuffer = ClientPacketHandler::MakeSendBuffer(makeRoomPkt);
 		player->Send(sendBuffer);
 	}
 
 	{
 		Protocol::S_CHANNELUPDATE channelUpdatePkt;
-		Protocol::LobbyInfo* lobbyInfo = new Protocol::LobbyInfo();
-		FillLobbyInfo(lobbyInfo);
+		Protocol::LobbyInfo* lobbyInfo = GetLobbyInfoProtocol();
 		channelUpdatePkt.set_allocated_lobbyinfo(lobbyInfo);
 		SendBufferRef sendBuffer = ClientPacketHandler::MakeSendBuffer(channelUpdatePkt);
 		Broadcast(sendBuffer);
@@ -82,22 +82,25 @@ PlayerRef Channel::FindPlayer(int64 playerId)
 	return findIt->second;
 }
 
-void Channel::FillChannelInfo(Protocol::Channel* pkt)
+void Channel::CopyChannelProtocol(Protocol::Channel* pkt)
 {
+	READ_LOCK;
 	pkt->set_channelid(_id);
 	pkt->set_maxplayercount(_maxPlayerCount);
 	pkt->set_currentplayercount(_currentPlayerCount);
 }
 
-void Channel::FillLobbyInfo(Protocol::LobbyInfo* pkt)
+Protocol::LobbyInfo* Channel::GetLobbyInfoProtocol()
 {
+	Protocol::LobbyInfo* pkt = new Protocol::LobbyInfo();
 	READ_LOCK;
 	pkt->set_roomcount(_rooms.size());
 	for (auto p : _rooms)
 	{
 		Protocol::Room* room = pkt->add_rooms();
-		p.second->FillRoomlInfo(room);
+		p.second->CopyRoomProtocol(room);
 	}
+	return pkt;
 }
 
 void Channel::Broadcast(SendBufferRef sendBuffer)

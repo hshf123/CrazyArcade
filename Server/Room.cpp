@@ -32,15 +32,47 @@ PlayerRef Room::FindPlayer(int64 playerId)
 	return findIt->second;
 }
 
-void Room::FillRoomlInfo(Protocol::Room* pkt)
+void Room::CopyRoomProtocol(Protocol::Room* pkt)
 {
+	READ_LOCK;
 	pkt->set_roomid(_roomId);
+	pkt->set_roomname(GetRoomName());
+	pkt->set_leaderid(_leaderId);
 	pkt->set_maxplayercount(_maxPlayerCount);
 	pkt->set_currentplayercount(_currentPlayerCount);
 }
 
+Protocol::Room* Room::GetRoomProtocol()
+{
+	Protocol::Room* pkt = new Protocol::Room();
+	READ_LOCK;
+	pkt->set_roomid(_roomId);
+	pkt->set_roomname(GetRoomName());
+	pkt->set_leaderid(_leaderId);
+	pkt->set_maxplayercount(_maxPlayerCount);
+	pkt->set_currentplayercount(_currentPlayerCount);
+	return pkt;
+}
+
+Protocol::RoomInfo* Room::GetRoomInfoProtocol()
+{
+	Protocol::RoomInfo* pkt = new Protocol::RoomInfo();
+	READ_LOCK;
+	pkt->set_roomid(_roomId);
+	pkt->set_allocated_room(GetRoomProtocol());
+	for (int i = 0; i < 8; i++)
+		pkt->add_benlist(_benList[i]);
+	for (auto& p : _players)
+	{
+		Protocol::Player* player = pkt->add_playerlist();
+		p.second->CopyPlayerProtocol(player);
+	}
+	return pkt;
+}
+
 void Room::SetLeader(int64 playerId)
 {
+	WRITE_LOCK;
 	_leaderId = playerId;
 }
 

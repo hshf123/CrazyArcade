@@ -57,7 +57,9 @@ public class PacketHandler
 
         Managers.Game.LobbyInfo = null;
         Managers.Game.Lobby = null;
-        Managers.Game.RoomID = pkt.RoomId;
+
+        Managers.Game.Room = pkt.RoomInfo;
+
         Managers.Scene.ChangeScene<RoomScene>(Define.SceneType.RoomScene);
     }
 
@@ -80,8 +82,9 @@ public class PacketHandler
 
         Managers.Game.LobbyInfo = null;
         Managers.Game.Lobby = null;
-        Managers.Game.RoomID = pkt.RoomId;
-        Managers.Game.Room = pkt.Room;
+
+        Managers.Game.Room = pkt.RoomInfo;
+
         Managers.Scene.ChangeScene<RoomScene>(Define.SceneType.RoomScene);
         // TODO : Room Update
     }
@@ -91,10 +94,10 @@ public class PacketHandler
         ServerSession serverSession = session as ServerSession;
         S_ROOMUPDATE pkt = packet as S_ROOMUPDATE;
 
-        if (Managers.Game.RoomID != pkt.RoomId)
+        if (Managers.Game.Room.RoomId != pkt.RoomId)
             return;
 
-        Managers.Game.Room = pkt.Room;
+        Managers.Game.Room = pkt.RoomInfo;
         // TODO : Room Update
     }
 }

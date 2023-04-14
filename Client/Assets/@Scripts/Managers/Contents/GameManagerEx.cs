@@ -18,10 +18,10 @@ public class GameManagerEx
     public LobbyInfo LobbyInfo { get; set; }
     public long PlayerID { get; set; }
     public int ChannelID { get; set; }
-    public int RoomID { get; set; }
 
     public UI_LobbyScene Lobby { get; set; }
-    public Room Room { get; set; }
+    public RoomInfo Room { get; set; }
+    public bool IsLeader { get { return Room.Room.LeaderId == PlayerID; } }
 
     GameData _gameData = new GameData();
     public GameData SaveData { get { return _gameData; } set { _gameData = value; } }

@@ -9,10 +9,13 @@ public:
 	void RemovePlayer(int64 playerId);
 	PlayerRef FindPlayer(int64 playerId);
 
-	void FillRoomlInfo(Protocol::Room* pkt);
+	void CopyRoomProtocol(Protocol::Room* pkt);
+	Protocol::Room* GetRoomProtocol();
+	Protocol::RoomInfo* GetRoomInfoProtocol();
 
 public:
 	int32 GetId() { return _roomId; }
+	string GetRoomName() { return Utils::ConvertWStringToString(_roomName); }
 	void SetLeader(int64 playerId);
 	PlayerRef GetLeader() { return FindPlayer(_leaderId); }
 
@@ -29,5 +32,6 @@ private:
 	int32 _currentPlayerCount = 0;
 
 	int64 _leaderId;
+	bool _benList[8];
 };
 

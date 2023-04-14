@@ -8,6 +8,14 @@ Player::Player(ClientSessionRef clientSession, wstring name, wstring playerid, i
 
 }
 
+void Player::CopyPlayerProtocol(Protocol::Player* pkt)
+{
+	READ_LOCK;
+	pkt->set_playerid(_id);
+	pkt->set_level(_level);
+	pkt->set_name(GetName());
+}
+
 void Player::Send(SendBufferRef sendBuffer)
 {
 	_ownerSession.lock()->Send(sendBuffer);
