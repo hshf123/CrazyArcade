@@ -202,17 +202,17 @@ bool Handle_C_ROOMENTER(PacketSessionRef& session, Protocol::C_ROOMENTER& pkt)
 	}
 
 	{
-		// 입장한 방에 broadcast
+		// 입장한 방에 broadcast, 입장한 사용자는 제외하고
 		Protocol::S_ROOMUPDATE roomUpdatePkt;
 		roomUpdatePkt.set_roomid(room->GetId());
 		Protocol::RoomInfo* roomInfo = room->GetRoomInfoProtocol();
 		roomUpdatePkt.set_allocated_roominfo(roomInfo);
 		SendBufferRef sendBuffer = ClientPacketHandler::MakeSendBuffer(roomUpdatePkt);
-		room->Broadcast(sendBuffer);
+		room->Broadcast(sendBuffer, clientSession);
 	}
 
 	{
-		// 해당 채널에 broadcast
+		// 해당 채널 로비에 broadcast
 		Protocol::S_CHANNELUPDATE channelUpdatePkt;
 		Protocol::LobbyInfo* lobbyInfo = channel->GetLobbyInfoProtocol();
 		channelUpdatePkt.set_allocated_lobbyinfo(lobbyInfo);
@@ -289,5 +289,10 @@ bool Handle_C_ROOMSTART(PacketSessionRef& session, Protocol::C_ROOMSTART& pkt)
 	if (room->CanGameStart() == false)
 		return false;
 
+	return true;
+}
+
+bool Handle_C_MOVE(PacketSessionRef& session, Protocol::C_MOVE& pkt)
+{
 	return true;
 }

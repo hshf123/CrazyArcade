@@ -74,6 +74,7 @@ public class PacketHandler
 
     public static void S_ROOMENTERHandler(PacketSession session, IMessage packet)
     {
+        Debug.Log($"S_ROOMENTERHandler");
         ServerSession serverSession = session as ServerSession;
         S_ROOMENTER pkt = packet as S_ROOMENTER;
 
@@ -89,6 +90,7 @@ public class PacketHandler
 
     public static void S_ROOMUPDATEHandler(PacketSession session, IMessage packet)
     {
+        Debug.Log($"S_ROOMUPDATEHandler");
         ServerSession serverSession = session as ServerSession;
         S_ROOMUPDATE pkt = packet as S_ROOMUPDATE;
 
@@ -104,6 +106,7 @@ public class PacketHandler
 
     public static void S_ROOMSTARTHandler(PacketSession session, IMessage packet)
     {
+        Debug.Log($"S_ROOMSTARTHandler");
         ServerSession serverSession = session as ServerSession;
         S_ROOMSTART pkt = packet as S_ROOMSTART;
 

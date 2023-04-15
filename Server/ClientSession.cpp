@@ -17,7 +17,6 @@ void ClientSession::OnDisconnected()
 	GSessionManager.Remove(static_pointer_cast<ClientSession>(shared_from_this()));
 }
 
-
 void ClientSession::OnRecvPacket(BYTE* buffer, int32 len)
 {
 	PacketSessionRef session = GetPacketSessionRef();

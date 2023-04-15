@@ -103,3 +103,14 @@ message S_ROOMSTART
 	bool success = 1;
 	RoomInfo roomInfo = 2;
 }
+
+message C_MOVE
+{
+	PlayerInfo playerInfo = 1;
+	PositionInfo positionInfo = 2;
+}
+
+message S_MOVE
+{
+
+}

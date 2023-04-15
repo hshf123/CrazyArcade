@@ -25,7 +25,7 @@ public:
 	void SetLeader(int64 playerId);
 	PlayerRef GetLeader() { return FindPlayer(_leaderId); }
 
-	void Broadcast(SendBufferRef sendBuffer);
+	void Broadcast(SendBufferRef sendBuffer, ClientSessionRef exceptSession = nullptr);
 
 private:
 	USE_LOCK;

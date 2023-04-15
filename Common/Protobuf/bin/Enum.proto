@@ -6,3 +6,21 @@ enum RoomState
 	WAITING = 0;
 	GAMESTART = 1;
 }
+
+ enum PlayerState
+{
+    IDLE = 0;
+    MOVING = 1;
+    INTRAP = 2;
+    OUTTRAP = 3;
+    DEAD = 4;
+}   
+
+enum MoveDir
+{
+    NONE = 0;
+    UP = 1;
+    RIGHT = 2;
+    DOWN = 3;
+    LEFT = 4;
+}

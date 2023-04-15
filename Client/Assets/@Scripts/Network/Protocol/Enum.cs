@@ -25,10 +25,13 @@ namespace Protocol {
       byte[] descriptorData = global::System.Convert.FromBase64String(
           string.Concat(
             "CgpFbnVtLnByb3RvEghQcm90b2NvbConCglSb29tU3RhdGUSCwoHV0FJVElO",
-            "RxAAEg0KCUdBTUVTVEFSVBABYgZwcm90bzM="));
+            "RxAAEg0KCUdBTUVTVEFSVBABKkYKC1BsYXllclN0YXRlEggKBElETEUQABIK",
+            "CgZNT1ZJTkcQARIKCgZJTlRSQVAQAhILCgdPVVRUUkFQEAMSCAoEREVBRBAE",
+            "KjoKB01vdmVEaXISCAoETk9ORRAAEgYKAlVQEAESCQoFUklHSFQQAhIICgRE",
+            "T1dOEAMSCAoETEVGVBAEYgZwcm90bzM="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
-          new pbr::GeneratedClrTypeInfo(new[] {typeof(global::Protocol.RoomState), }, null, null));
+          new pbr::GeneratedClrTypeInfo(new[] {typeof(global::Protocol.RoomState), typeof(global::Protocol.PlayerState), typeof(global::Protocol.MoveDir), }, null, null));
     }
     #endregion
 
@@ -37,6 +40,22 @@ namespace Protocol {
   public enum RoomState {
     [pbr::OriginalName("WAITING")] Waiting = 0,
     [pbr::OriginalName("GAMESTART")] Gamestart = 1,
+  }
+
+  public enum PlayerState {
+    [pbr::OriginalName("IDLE")] Idle = 0,
+    [pbr::OriginalName("MOVING")] Moving = 1,
+    [pbr::OriginalName("INTRAP")] Intrap = 2,
+    [pbr::OriginalName("OUTTRAP")] Outtrap = 3,
+    [pbr::OriginalName("DEAD")] Dead = 4,
+  }
+
+  public enum MoveDir {
+    [pbr::OriginalName("NONE")] None = 0,
+    [pbr::OriginalName("UP")] Up = 1,
+    [pbr::OriginalName("RIGHT")] Right = 2,
+    [pbr::OriginalName("DOWN")] Down = 3,
+    [pbr::OriginalName("LEFT")] Left = 4,
   }
 
   #endregion

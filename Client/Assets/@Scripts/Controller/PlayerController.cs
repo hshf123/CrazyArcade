@@ -6,28 +6,27 @@ using static Define;
 
 public class PlayerController : MonoBehaviour
 {
-    Vector3 correction = new Vector3(0.5f, 0.5f, 0);
+    protected Vector3 correction = new Vector3(0.5f, 0.5f, 0);
 
-    SpriteRenderer _spriteRenderer;
-    Animator _animator;
-    SpriteRenderer _shadow;
-    SpriteRenderer _cursor;
-    Coroutine _coBomb;
-    bool _bombCool = false;
-    int _bombId = 1;
+    protected SpriteRenderer _spriteRenderer;
+    protected Animator _animator;
+    protected SpriteRenderer _shadow;
+    protected Coroutine _coBomb;
+    protected bool _bombCool = false;
+    protected int _bombId = 1;
 
-    int _sortOrder;
+    protected int _sortOrder;
     [SerializeField]
-    float _speed;
+    protected float _speed;
     [SerializeField]
-    int _maxBombCount = 1;
+    protected int _maxBombCount = 1;
     [SerializeField]
-    int _bombRange = 1;
-    int _bombCount = 0;
+    protected int _bombRange = 1;
+    protected int _bombCount = 0;
 
-    Vector3Int _cellPos;
-    MoveDir _lastDir = MoveDir.Down;
-    MoveDir _moveDir = MoveDir.Down;
+    protected Vector3Int _cellPos;
+    protected MoveDir _lastDir = MoveDir.Down;
+    protected MoveDir _moveDir = MoveDir.Down;
     public MoveDir Dir
     {
         get
@@ -45,7 +44,7 @@ public class PlayerController : MonoBehaviour
             UpdateAnimation();
         }
     }
-    PlayerState _state = PlayerState.Idle;
+    protected PlayerState _state = PlayerState.Idle;
     public PlayerState State
     {
         get { return _state; }
@@ -61,6 +60,10 @@ public class PlayerController : MonoBehaviour
 
     void Start()
     {
+        Init();
+    }
+    protected virtual bool Init()
+    {
         #region Component
         _spriteRenderer = Utils.GetOrAddComponent<SpriteRenderer>(gameObject);
         _animator = Utils.GetOrAddComponent<Animator>(gameObject);
@@ -73,15 +76,16 @@ public class PlayerController : MonoBehaviour
         _shadow = Utils.FindChild<SpriteRenderer>(gameObject, "shadow");
         _shadow.transform.localPosition = new Vector3(0, -0.65f, 0);
         _shadow.sortingOrder = _sortOrder - 1;
-
-        _cursor = Utils.FindChild<SpriteRenderer>(gameObject, "cursor");
-        _cursor.transform.localPosition = new Vector3(0, 0.5f, 0);
-        _cursor.sortingOrder = _sortOrder + 1;
         #endregion
+
+        return true;
     }
     void Update()
     {
-        InputDir();
+        VirtualUpdate();
+    }
+    protected virtual void VirtualUpdate()
+    {
         MovePosition();
         UpdateSortOrder();
     }
@@ -93,7 +97,7 @@ public class PlayerController : MonoBehaviour
         transform.position = worldPos + correction;
     }
 
-    void UpdateAnimation()
+    protected void UpdateAnimation()
     {
         switch(_state)
         {
@@ -161,37 +165,8 @@ public class PlayerController : MonoBehaviour
                 }
         }
     }
-    void InputDir()
-    {
-        State = PlayerState.Moving;
-        if (Input.GetKey(KeyCode.UpArrow))
-        {
-            Dir = MoveDir.Up;
-        }
-        else if (Input.GetKey(KeyCode.RightArrow))
-        {
-            Dir = MoveDir.Right;
-        }
-        else if (Input.GetKey(KeyCode.DownArrow))
-        {
-            Dir = MoveDir.Down;
-        }
-        else if (Input.GetKey(KeyCode.LeftArrow))
-        {
-            Dir = MoveDir.Left;
-        }
-        else
-        {
-            Dir = MoveDir.None;
-            State = PlayerState.Idle;
-        }
-
-        if (Input.GetKey(KeyCode.Space))
-        {
-            _coBomb = StartCoroutine(Bomb());
-        }
-    }
-    void MovePosition()
+    
+    protected void MovePosition()
     {
         if (State != PlayerState.Moving)
             return;
@@ -282,14 +257,13 @@ public class PlayerController : MonoBehaviour
         }
         //Debug.Log($"Move To {_cellPos}");
     }
-    void UpdateSortOrder()
+    protected virtual void UpdateSortOrder()
     {
         _sortOrder = -100 + (Managers.Map.MaxY - _cellPos.y) * 2 + 1;
         _spriteRenderer.sortingOrder = _sortOrder;
         _shadow.sortingOrder = _sortOrder - 1;
-        _cursor.sortingOrder = _sortOrder + 1;
     }
-    IEnumerator Bomb()
+    protected IEnumerator Bomb()
     {
         Vector3Int pos = Managers.Map.CurrentGrid.WorldToCell(transform.position + new Vector3(0, -0.3f, 0));
         if (_bombCool == false && Managers.Object.Find(pos) == null

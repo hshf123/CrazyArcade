@@ -192,10 +192,10 @@ public abstract class Session
             return;
         }
 
-        await OnRecvCompleted(recvLen);
+        OnRecvCompleted(recvLen);
     }
 
-    async Task OnRecvCompleted(int recvLen)
+    void OnRecvCompleted(int recvLen)
     {
         if (recvLen > 0)
         {

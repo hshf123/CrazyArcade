@@ -21,9 +21,15 @@ void Room::InsertPlayer(PlayerRef player)
 void Room::RemovePlayer(int64 playerId)
 {
 	WRITE_LOCK;
-	_idxes.erase(FindPlayer(playerId)->GetRoomIdx());
+	PlayerRef player = FindPlayer(playerId);
+	if (player == nullptr)
+		return;
+	_idxes.erase(player->GetRoomIdx());
 	_players.erase(playerId);
 	_currentPlayerCount--;
+	player->SetRoomID(-1);
+	_idxes[player->GetRoomIdx()] = nullptr;
+	player->SetRoomIdx(-1);
 }
 
 PlayerRef Room::FindPlayer(int64 playerId)
@@ -55,6 +61,15 @@ bool Room::CanGameStart()
 
 	if (_currentPlayerCount < 2)
 		return false;
+
+	for (auto& p : _players)
+	{
+		if (p.second->GetId() == _leaderId)
+			continue;
+
+		if (p.second->GetReady() == false)
+			return false;
+	}
 
 	Protocol::S_ROOMSTART roomStartPkt;
 	roomStartPkt.set_success(true);
@@ -113,11 +128,13 @@ void Room::SetLeader(int64 playerId)
 	_leaderId = playerId;
 }
 
-void Room::Broadcast(SendBufferRef sendBuffer)
+void Room::Broadcast(SendBufferRef sendBuffer, ClientSessionRef exceptSession /*= nullptr*/)
 {
 	READ_LOCK;
 	for (auto& p : _players)
 	{
+		if (exceptSession != nullptr && p.second->GetClientSession() == exceptSession)
+			continue;
 		p.second->Send(sendBuffer);
 	}
 }

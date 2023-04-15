@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class ObjectManager
 {
+    public MyPlayerController MyPlayer { get; set; }
     Dictionary<int, GameObject> _bombs = new Dictionary<int, GameObject>();
 
     public void Add(int id, GameObject go)

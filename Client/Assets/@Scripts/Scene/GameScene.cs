@@ -31,10 +31,20 @@ public class GameScene : BaseScene
             int idx = 0;
             foreach (var player in Managers.Game.RoomInfo.PlayerList)
             {
+                if (player.PlayerId == Managers.Game.PlayerID)
+                {
+                    Managers.Resource.Instantiate("MyBazzi", null,
+                    (myBazzi) =>
+                    {
+                        MyPlayerController pc = myBazzi.GetComponent<MyPlayerController>();
+                        pc.SetStartPos(respawnPos[idx++]);
+                    });
+                    continue;
+                }
+
                 Managers.Resource.Instantiate("Bazzi", null,
                 (bazzi) =>
                 {
-                    // TODO 리스폰 위치 설정
                     PlayerController pc = bazzi.GetComponent<PlayerController>();
                     pc.SetStartPos(respawnPos[idx++]);
                 });

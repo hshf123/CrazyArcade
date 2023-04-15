@@ -21,6 +21,8 @@ enum : uint16
 	PKT_C_ROOMREADY = 1012,
 	PKT_C_ROOMSTART = 1013,
 	PKT_S_ROOMSTART = 1014,
+	PKT_C_MOVE = 1015,
+	PKT_S_MOVE = 1016,
 };
 
 bool Handle_INVALID(PacketSessionRef& session, BYTE* buffer, int32 len);
@@ -31,6 +33,7 @@ bool Handle_C_MAKEROOM(PacketSessionRef& session, Protocol::C_MAKEROOM& pkt);
 bool Handle_C_ROOMENTER(PacketSessionRef& session, Protocol::C_ROOMENTER& pkt);
 bool Handle_C_ROOMREADY(PacketSessionRef& session, Protocol::C_ROOMREADY& pkt);
 bool Handle_C_ROOMSTART(PacketSessionRef& session, Protocol::C_ROOMSTART& pkt);
+bool Handle_C_MOVE(PacketSessionRef& session, Protocol::C_MOVE& pkt);
 
 class ClientPacketHandler
 {
@@ -46,6 +49,7 @@ public:
 		GPacketHandler[PKT_C_ROOMENTER] = [](PacketSessionRef& session, BYTE* buffer, int32 len) { return HandlePacket<Protocol::C_ROOMENTER>(Handle_C_ROOMENTER, session, buffer, len); };
 		GPacketHandler[PKT_C_ROOMREADY] = [](PacketSessionRef& session, BYTE* buffer, int32 len) { return HandlePacket<Protocol::C_ROOMREADY>(Handle_C_ROOMREADY, session, buffer, len); };
 		GPacketHandler[PKT_C_ROOMSTART] = [](PacketSessionRef& session, BYTE* buffer, int32 len) { return HandlePacket<Protocol::C_ROOMSTART>(Handle_C_ROOMSTART, session, buffer, len); };
+		GPacketHandler[PKT_C_MOVE] = [](PacketSessionRef& session, BYTE* buffer, int32 len) { return HandlePacket<Protocol::C_MOVE>(Handle_C_MOVE, session, buffer, len); };
 	}
 
 	static bool HandlePacket(PacketSessionRef& session, BYTE* buffer, uint32 len)
@@ -61,6 +65,7 @@ public:
 	static SendBufferRef MakeSendBuffer(Protocol::S_ROOMENTER& packet) { return MakeSendBuffer(packet, PKT_S_ROOMENTER); }
 	static SendBufferRef MakeSendBuffer(Protocol::S_ROOMUPDATE& packet) { return MakeSendBuffer(packet, PKT_S_ROOMUPDATE); }
 	static SendBufferRef MakeSendBuffer(Protocol::S_ROOMSTART& packet) { return MakeSendBuffer(packet, PKT_S_ROOMSTART); }
+	static SendBufferRef MakeSendBuffer(Protocol::S_MOVE& packet) { return MakeSendBuffer(packet, PKT_S_MOVE); }
 
 private:
 	template<class PacketType, class ProcessFunc>

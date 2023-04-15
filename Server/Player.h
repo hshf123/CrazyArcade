@@ -5,9 +5,10 @@ class Player
 public:
 	Player(ClientSessionRef clientSession, wstring name, wstring playerid, int32 level, float exp, int64 id);
 
+public:
 	void CopyPlayerProtocol(Protocol::Player* pkt);
 
-public:
+	ClientSessionRef GetClientSession() { return _ownerSession.lock(); }
 	int64 GetId() { return _id; }
 	string GetName() { return Utils::ConvertWStringToString(_name); }
 	int32 GetLevel() { return _level; }
@@ -18,6 +19,7 @@ public:
 	void SetRoomIdx(int32 roomIdx) { _roomIdx = roomIdx; }
 	int32 GetRoomIdx() { return _roomIdx; }
 	void SetReady() { _ready = !_ready; }
+	bool GetReady() { return _ready; }
 
 	void Send(SendBufferRef sendBuffer);
 

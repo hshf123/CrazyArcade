@@ -20,7 +20,7 @@ public class Connector
             args.RemoteEndPoint = new IPEndPoint(IPAddress.Parse(serverIP), serverPort);
             args.UserToken = socket;
 
-            await RegisterConnect(args);
+            RegisterConnect(args);
         }
     }
 

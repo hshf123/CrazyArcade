@@ -19,6 +19,9 @@
     <Filter Include="GameContents\Room">
       <UniqueIdentifier>{79502481-792a-4912-8e6e-966d9ed0aca2}</UniqueIdentifier>
     </Filter>
+    <Filter Include="GameContents\Object">
+      <UniqueIdentifier>{cd94fe35-8caa-463b-b083-8e42ba0c5b7e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Server.cpp">

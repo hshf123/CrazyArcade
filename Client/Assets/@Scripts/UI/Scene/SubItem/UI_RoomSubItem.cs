@@ -5,6 +5,10 @@ using UnityEngine;
 public class UI_RoomSubItem : UI_Base
 {
     public int RoomID { get; set; }
+    public string RoomName { get; set; }
+    public int CurrentPlayerCount { get; set; }
+    public int MaxPlayerCount { get; set; }
+    public string RoomState { get; set; } = "Waiting";
 
     enum Texts
     {
@@ -21,10 +25,10 @@ public class UI_RoomSubItem : UI_Base
 
         BindText(typeof(Texts));
 
-        GetText((int)Texts.RoomNameText).text = Managers.Game.RoomInfo.Room.RoomName;
-        GetText((int)Texts.RoomNumberText).text = $"{Managers.Game.RoomInfo.Room.RoomId:D2}";
-        GetText((int)Texts.RoomPlayerCountText).text = $"{Managers.Game.RoomInfo.Room.CurrentPlayerCount}/{Managers.Game.RoomInfo.Room.MaxPlayerCount}";
-        GetText((int)Texts.RoomStateText).text = "Waiting"; // TODO
+        GetText((int)Texts.RoomNameText).text = RoomName;
+        GetText((int)Texts.RoomNumberText).text = $"{RoomID:D2}";
+        GetText((int)Texts.RoomPlayerCountText).text = $"{CurrentPlayerCount}/{MaxPlayerCount}";
+        GetText((int)Texts.RoomStateText).text = RoomState; // TODO
 
         return true;
     }
