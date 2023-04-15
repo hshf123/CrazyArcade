@@ -1,13 +1,13 @@
 syntax = "proto3";
 package Protocol;
 
-enum RoomState
+enum PRoomState
 {
 	WAITING = 0;
 	GAMESTART = 1;
 }
 
- enum PlayerState
+ enum PPlayerState
 {
     IDLE = 0;
     MOVING = 1;
@@ -16,7 +16,7 @@ enum RoomState
     DEAD = 4;
 }   
 
-enum MoveDir
+enum PMoveDir
 {
     NONE = 0;
     UP = 1;

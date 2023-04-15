@@ -29,16 +29,16 @@ static constexpr ::_pbi::MigrationSchema* schemas = nullptr;
 static constexpr ::_pb::Message* const* file_default_instances = nullptr;
 
 const char descriptor_table_protodef_Enum_2eproto[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) =
-  "\n\nEnum.proto\022\010Protocol*\'\n\tRoomState\022\013\n\007W"
-  "AITING\020\000\022\r\n\tGAMESTART\020\001*F\n\013PlayerState\022\010"
-  "\n\004IDLE\020\000\022\n\n\006MOVING\020\001\022\n\n\006INTRAP\020\002\022\013\n\007OUTT"
-  "RAP\020\003\022\010\n\004DEAD\020\004*:\n\007MoveDir\022\010\n\004NONE\020\000\022\006\n\002"
-  "UP\020\001\022\t\n\005RIGHT\020\002\022\010\n\004DOWN\020\003\022\010\n\004LEFT\020\004b\006pro"
-  "to3"
+  "\n\nEnum.proto\022\010Protocol*(\n\nPRoomState\022\013\n\007"
+  "WAITING\020\000\022\r\n\tGAMESTART\020\001*G\n\014PPlayerState"
+  "\022\010\n\004IDLE\020\000\022\n\n\006MOVING\020\001\022\n\n\006INTRAP\020\002\022\013\n\007OU"
+  "TTRAP\020\003\022\010\n\004DEAD\020\004*;\n\010PMoveDir\022\010\n\004NONE\020\000\022"
+  "\006\n\002UP\020\001\022\t\n\005RIGHT\020\002\022\010\n\004DOWN\020\003\022\010\n\004LEFT\020\004b\006"
+  "proto3"
   ;
 static ::_pbi::once_flag descriptor_table_Enum_2eproto_once;
 const ::_pbi::DescriptorTable descriptor_table_Enum_2eproto = {
-    false, false, 203, descriptor_table_protodef_Enum_2eproto,
+    false, false, 206, descriptor_table_protodef_Enum_2eproto,
     "Enum.proto",
     &descriptor_table_Enum_2eproto_once, nullptr, 0, 0,
     schemas, file_default_instances, TableStruct_Enum_2eproto::offsets,
@@ -52,11 +52,11 @@ PROTOBUF_ATTRIBUTE_WEAK const ::_pbi::DescriptorTable* descriptor_table_Enum_2ep
 // Force running AddDescriptors() at dynamic initialization time.
 PROTOBUF_ATTRIBUTE_INIT_PRIORITY2 static ::_pbi::AddDescriptorsRunner dynamic_init_dummy_Enum_2eproto(&descriptor_table_Enum_2eproto);
 namespace Protocol {
-const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* RoomState_descriptor() {
+const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* PRoomState_descriptor() {
   ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&descriptor_table_Enum_2eproto);
   return file_level_enum_descriptors_Enum_2eproto[0];
 }
-bool RoomState_IsValid(int value) {
+bool PRoomState_IsValid(int value) {
   switch (value) {
     case 0:
     case 1:
@@ -66,11 +66,11 @@ bool RoomState_IsValid(int value) {
   }
 }
 
-const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* PlayerState_descriptor() {
+const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* PPlayerState_descriptor() {
   ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&descriptor_table_Enum_2eproto);
   return file_level_enum_descriptors_Enum_2eproto[1];
 }
-bool PlayerState_IsValid(int value) {
+bool PPlayerState_IsValid(int value) {
   switch (value) {
     case 0:
     case 1:
@@ -83,11 +83,11 @@ bool PlayerState_IsValid(int value) {
   }
 }
 
-const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* MoveDir_descriptor() {
+const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* PMoveDir_descriptor() {
   ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&descriptor_table_Enum_2eproto);
   return file_level_enum_descriptors_Enum_2eproto[2];
 }
-bool MoveDir_IsValid(int value) {
+bool PMoveDir_IsValid(int value) {
   switch (value) {
     case 0:
     case 1:

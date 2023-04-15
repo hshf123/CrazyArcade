@@ -16,8 +16,8 @@ public:
 	void RemovePlayer(int64 playerId);
 	PlayerRef FindPlayer(int64 playerId);
 
-	void CopyChannelProtocol(Protocol::Channel* pkt);
-	Protocol::LobbyInfo* GetLobbyInfoProtocol();
+	void CopyChannelProtocol(Protocol::PChannel* pkt);
+	Protocol::PLobbyInfo* GetLobbyInfoProtocol();
 
 public:
 	void Broadcast(SendBufferRef sendBuffer);

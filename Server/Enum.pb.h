@@ -47,86 +47,86 @@ PROTOBUF_NAMESPACE_OPEN
 PROTOBUF_NAMESPACE_CLOSE
 namespace Protocol {
 
-enum RoomState : int {
+enum PRoomState : int {
   WAITING = 0,
   GAMESTART = 1,
-  RoomState_INT_MIN_SENTINEL_DO_NOT_USE_ = std::numeric_limits<int32_t>::min(),
-  RoomState_INT_MAX_SENTINEL_DO_NOT_USE_ = std::numeric_limits<int32_t>::max()
+  PRoomState_INT_MIN_SENTINEL_DO_NOT_USE_ = std::numeric_limits<int32_t>::min(),
+  PRoomState_INT_MAX_SENTINEL_DO_NOT_USE_ = std::numeric_limits<int32_t>::max()
 };
-bool RoomState_IsValid(int value);
-constexpr RoomState RoomState_MIN = WAITING;
-constexpr RoomState RoomState_MAX = GAMESTART;
-constexpr int RoomState_ARRAYSIZE = RoomState_MAX + 1;
+bool PRoomState_IsValid(int value);
+constexpr PRoomState PRoomState_MIN = WAITING;
+constexpr PRoomState PRoomState_MAX = GAMESTART;
+constexpr int PRoomState_ARRAYSIZE = PRoomState_MAX + 1;
 
-const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* RoomState_descriptor();
+const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* PRoomState_descriptor();
 template<typename T>
-inline const std::string& RoomState_Name(T enum_t_value) {
-  static_assert(::std::is_same<T, RoomState>::value ||
+inline const std::string& PRoomState_Name(T enum_t_value) {
+  static_assert(::std::is_same<T, PRoomState>::value ||
     ::std::is_integral<T>::value,
-    "Incorrect type passed to function RoomState_Name.");
+    "Incorrect type passed to function PRoomState_Name.");
   return ::PROTOBUF_NAMESPACE_ID::internal::NameOfEnum(
-    RoomState_descriptor(), enum_t_value);
+    PRoomState_descriptor(), enum_t_value);
 }
-inline bool RoomState_Parse(
-    ::PROTOBUF_NAMESPACE_ID::ConstStringParam name, RoomState* value) {
-  return ::PROTOBUF_NAMESPACE_ID::internal::ParseNamedEnum<RoomState>(
-    RoomState_descriptor(), name, value);
+inline bool PRoomState_Parse(
+    ::PROTOBUF_NAMESPACE_ID::ConstStringParam name, PRoomState* value) {
+  return ::PROTOBUF_NAMESPACE_ID::internal::ParseNamedEnum<PRoomState>(
+    PRoomState_descriptor(), name, value);
 }
-enum PlayerState : int {
+enum PPlayerState : int {
   IDLE = 0,
   MOVING = 1,
   INTRAP = 2,
   OUTTRAP = 3,
   DEAD = 4,
-  PlayerState_INT_MIN_SENTINEL_DO_NOT_USE_ = std::numeric_limits<int32_t>::min(),
-  PlayerState_INT_MAX_SENTINEL_DO_NOT_USE_ = std::numeric_limits<int32_t>::max()
+  PPlayerState_INT_MIN_SENTINEL_DO_NOT_USE_ = std::numeric_limits<int32_t>::min(),
+  PPlayerState_INT_MAX_SENTINEL_DO_NOT_USE_ = std::numeric_limits<int32_t>::max()
 };
-bool PlayerState_IsValid(int value);
-constexpr PlayerState PlayerState_MIN = IDLE;
-constexpr PlayerState PlayerState_MAX = DEAD;
-constexpr int PlayerState_ARRAYSIZE = PlayerState_MAX + 1;
+bool PPlayerState_IsValid(int value);
+constexpr PPlayerState PPlayerState_MIN = IDLE;
+constexpr PPlayerState PPlayerState_MAX = DEAD;
+constexpr int PPlayerState_ARRAYSIZE = PPlayerState_MAX + 1;
 
-const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* PlayerState_descriptor();
+const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* PPlayerState_descriptor();
 template<typename T>
-inline const std::string& PlayerState_Name(T enum_t_value) {
-  static_assert(::std::is_same<T, PlayerState>::value ||
+inline const std::string& PPlayerState_Name(T enum_t_value) {
+  static_assert(::std::is_same<T, PPlayerState>::value ||
     ::std::is_integral<T>::value,
-    "Incorrect type passed to function PlayerState_Name.");
+    "Incorrect type passed to function PPlayerState_Name.");
   return ::PROTOBUF_NAMESPACE_ID::internal::NameOfEnum(
-    PlayerState_descriptor(), enum_t_value);
+    PPlayerState_descriptor(), enum_t_value);
 }
-inline bool PlayerState_Parse(
-    ::PROTOBUF_NAMESPACE_ID::ConstStringParam name, PlayerState* value) {
-  return ::PROTOBUF_NAMESPACE_ID::internal::ParseNamedEnum<PlayerState>(
-    PlayerState_descriptor(), name, value);
+inline bool PPlayerState_Parse(
+    ::PROTOBUF_NAMESPACE_ID::ConstStringParam name, PPlayerState* value) {
+  return ::PROTOBUF_NAMESPACE_ID::internal::ParseNamedEnum<PPlayerState>(
+    PPlayerState_descriptor(), name, value);
 }
-enum MoveDir : int {
+enum PMoveDir : int {
   NONE = 0,
   UP = 1,
   RIGHT = 2,
   DOWN = 3,
   LEFT = 4,
-  MoveDir_INT_MIN_SENTINEL_DO_NOT_USE_ = std::numeric_limits<int32_t>::min(),
-  MoveDir_INT_MAX_SENTINEL_DO_NOT_USE_ = std::numeric_limits<int32_t>::max()
+  PMoveDir_INT_MIN_SENTINEL_DO_NOT_USE_ = std::numeric_limits<int32_t>::min(),
+  PMoveDir_INT_MAX_SENTINEL_DO_NOT_USE_ = std::numeric_limits<int32_t>::max()
 };
-bool MoveDir_IsValid(int value);
-constexpr MoveDir MoveDir_MIN = NONE;
-constexpr MoveDir MoveDir_MAX = LEFT;
-constexpr int MoveDir_ARRAYSIZE = MoveDir_MAX + 1;
+bool PMoveDir_IsValid(int value);
+constexpr PMoveDir PMoveDir_MIN = NONE;
+constexpr PMoveDir PMoveDir_MAX = LEFT;
+constexpr int PMoveDir_ARRAYSIZE = PMoveDir_MAX + 1;
 
-const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* MoveDir_descriptor();
+const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* PMoveDir_descriptor();
 template<typename T>
-inline const std::string& MoveDir_Name(T enum_t_value) {
-  static_assert(::std::is_same<T, MoveDir>::value ||
+inline const std::string& PMoveDir_Name(T enum_t_value) {
+  static_assert(::std::is_same<T, PMoveDir>::value ||
     ::std::is_integral<T>::value,
-    "Incorrect type passed to function MoveDir_Name.");
+    "Incorrect type passed to function PMoveDir_Name.");
   return ::PROTOBUF_NAMESPACE_ID::internal::NameOfEnum(
-    MoveDir_descriptor(), enum_t_value);
+    PMoveDir_descriptor(), enum_t_value);
 }
-inline bool MoveDir_Parse(
-    ::PROTOBUF_NAMESPACE_ID::ConstStringParam name, MoveDir* value) {
-  return ::PROTOBUF_NAMESPACE_ID::internal::ParseNamedEnum<MoveDir>(
-    MoveDir_descriptor(), name, value);
+inline bool PMoveDir_Parse(
+    ::PROTOBUF_NAMESPACE_ID::ConstStringParam name, PMoveDir* value) {
+  return ::PROTOBUF_NAMESPACE_ID::internal::ParseNamedEnum<PMoveDir>(
+    PMoveDir_descriptor(), name, value);
 }
 // ===================================================================
 
@@ -150,20 +150,20 @@ inline bool MoveDir_Parse(
 
 PROTOBUF_NAMESPACE_OPEN
 
-template <> struct is_proto_enum< ::Protocol::RoomState> : ::std::true_type {};
+template <> struct is_proto_enum< ::Protocol::PRoomState> : ::std::true_type {};
 template <>
-inline const EnumDescriptor* GetEnumDescriptor< ::Protocol::RoomState>() {
-  return ::Protocol::RoomState_descriptor();
+inline const EnumDescriptor* GetEnumDescriptor< ::Protocol::PRoomState>() {
+  return ::Protocol::PRoomState_descriptor();
 }
-template <> struct is_proto_enum< ::Protocol::PlayerState> : ::std::true_type {};
+template <> struct is_proto_enum< ::Protocol::PPlayerState> : ::std::true_type {};
 template <>
-inline const EnumDescriptor* GetEnumDescriptor< ::Protocol::PlayerState>() {
-  return ::Protocol::PlayerState_descriptor();
+inline const EnumDescriptor* GetEnumDescriptor< ::Protocol::PPlayerState>() {
+  return ::Protocol::PPlayerState_descriptor();
 }
-template <> struct is_proto_enum< ::Protocol::MoveDir> : ::std::true_type {};
+template <> struct is_proto_enum< ::Protocol::PMoveDir> : ::std::true_type {};
 template <>
-inline const EnumDescriptor* GetEnumDescriptor< ::Protocol::MoveDir>() {
-  return ::Protocol::MoveDir_descriptor();
+inline const EnumDescriptor* GetEnumDescriptor< ::Protocol::PMoveDir>() {
+  return ::Protocol::PMoveDir_descriptor();
 }
 
 PROTOBUF_NAMESPACE_CLOSE

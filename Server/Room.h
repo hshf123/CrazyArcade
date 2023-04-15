@@ -1,6 +1,6 @@
 #pragma once
 
-using RoomState = Protocol::RoomState;
+using RoomState = Protocol::PRoomState;
 
 class Room
 {
@@ -16,9 +16,8 @@ public:
 	bool CanGameStart();
 
 public:
-	void CopyRoomProtocol(Protocol::Room* pkt);
-	Protocol::Room* GetRoomProtocol();
-	Protocol::RoomInfo* GetRoomInfoProtocol();
+	void CopyRoomProtocol(Protocol::PRoom* pkt);
+	Protocol::PRoom* GetRoomProtocol();
 
 	int32 GetId() { return _roomId; }
 	string GetRoomName() { return Utils::ConvertWStringToString(_roomName); }

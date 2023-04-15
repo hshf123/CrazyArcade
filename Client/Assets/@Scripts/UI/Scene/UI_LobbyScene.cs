@@ -45,7 +45,7 @@ public class UI_LobbyScene : UI_Scene
         if (base.Init() == false)
             return false;
 
-        Managers.Game.Lobby = this;
+        Managers.Game.LobbyUI = this;
         Bind<GameObject>(typeof(GameObjects));
         Bind<Button>(typeof(Buttons));
         BindInputField(typeof(InputFields));

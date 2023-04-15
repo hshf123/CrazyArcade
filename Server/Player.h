@@ -6,10 +6,11 @@ public:
 	Player(ClientSessionRef clientSession, wstring name, wstring playerid, int32 level, float exp, int64 id);
 
 public:
-	void CopyPlayerProtocol(Protocol::Player* pkt);
+	void CopyPlayerProtocol(Protocol::PPlayer* pkt);
 
 	ClientSessionRef GetClientSession() { return _ownerSession.lock(); }
 	int64 GetId() { return _id; }
+	string GetPlayerId() { return Utils::ConvertWStringToString(_playerid); }
 	string GetName() { return Utils::ConvertWStringToString(_name); }
 	int32 GetLevel() { return _level; }
 	void SetChannelD(int32 channelId) { _channelId = channelId; }
@@ -32,9 +33,13 @@ private:
 	int32 _level;
 	float _exp;
 	int64 _id;
-
 	int32 _channelId;
 	int32 _roomId;
 	int32 _roomIdx;
 	bool _ready = false;
+
+	float _speed;
+	int32 _maxBombCount;
+	int32 _bombCount;
+	int32 _bombRange;
 };

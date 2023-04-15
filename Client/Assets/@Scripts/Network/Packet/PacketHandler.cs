@@ -44,7 +44,7 @@ public class PacketHandler
         ServerSession serverSession = session as ServerSession;
         S_CHANNELCHAT pkt = packet as S_CHANNELCHAT;
 
-        Managers.Game.Lobby.RecvChat(pkt.Name, pkt.Chat);
+        Managers.Game.LobbyUI.RecvChat(pkt.Name, pkt.Chat);
     }
 
     public static void S_MAKEROOMHandler(PacketSession session, IMessage packet)
@@ -56,9 +56,9 @@ public class PacketHandler
             return;
 
         Managers.Game.LobbyInfo = null;
-        Managers.Game.Lobby = null;
+        Managers.Game.LobbyUI = null;
 
-        Managers.Game.RoomInfo = pkt.RoomInfo;
+        Managers.Game.Room = pkt.Room;
 
         Managers.Scene.ChangeScene<RoomScene>(Define.SceneType.RoomScene);
     }
@@ -69,7 +69,7 @@ public class PacketHandler
         S_CHANNELUPDATE pkt = packet as S_CHANNELUPDATE;
 
         Managers.Game.LobbyInfo = pkt.LobbyInfo;
-        Managers.Game.Lobby.RefreshLobbyPage();
+        Managers.Game.LobbyUI.RefreshLobbyPage();
     }
 
     public static void S_ROOMENTERHandler(PacketSession session, IMessage packet)
@@ -82,9 +82,9 @@ public class PacketHandler
             return;
 
         Managers.Game.LobbyInfo = null;
-        Managers.Game.Lobby = null;
+        Managers.Game.LobbyUI = null;
 
-        Managers.Game.RoomInfo = pkt.RoomInfo;
+        Managers.Game.Room = pkt.Room;
         Managers.Scene.ChangeScene<RoomScene>(Define.SceneType.RoomScene);
     }
 
@@ -94,14 +94,14 @@ public class PacketHandler
         ServerSession serverSession = session as ServerSession;
         S_ROOMUPDATE pkt = packet as S_ROOMUPDATE;
 
-        if (Managers.Game.RoomInfo.RoomId != pkt.RoomId)
+        if (Managers.Game.Room.RoomId != pkt.Room.RoomId)
             return;
 
         Managers.Game.LobbyInfo = null;
-        Managers.Game.Lobby = null;
+        Managers.Game.LobbyUI = null;
 
-        Managers.Game.RoomInfo = pkt.RoomInfo;
-        Managers.Game.Room.RefreshRoomPage();
+        Managers.Game.Room = pkt.Room;
+        Managers.Game.RoomUI.RefreshRoomPage();
     }
 
     public static void S_ROOMSTARTHandler(PacketSession session, IMessage packet)
@@ -113,7 +113,12 @@ public class PacketHandler
         if (pkt.Success == false)
             return;
 
-        Managers.Game.RoomInfo = pkt.RoomInfo;
+        Managers.Game.Room = pkt.Room;
         Managers.Scene.ChangeScene<GameScene>(Define.SceneType.GameScene);
+    }
+
+    public static void S_MOVEHandler(PacketSession session, IMessage packet)
+    {
+
     }
 }

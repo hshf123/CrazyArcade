@@ -29,9 +29,9 @@ public class GameScene : BaseScene
             Debug.Log(map.name);
             // TEMP
             int idx = 0;
-            foreach (var player in Managers.Game.RoomInfo.PlayerList)
+            foreach (var player in Managers.Game.Room.PlayerList)
             {
-                if (player.PlayerId == Managers.Game.PlayerID)
+                if (player.Id == Managers.Game.PlayerID)
                 {
                     Managers.Resource.Instantiate("MyBazzi", null,
                     (myBazzi) =>

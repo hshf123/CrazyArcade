@@ -54,7 +54,7 @@ public class UI_RoomScene : UI_Scene
         if (base.Init() == false)
             return false;
 
-        Managers.Game.Room = this;
+        Managers.Game.RoomUI = this;
         Bind<GameObject>(typeof(GameObjects));
         Bind<Button>(typeof(Buttons));
         BindInputField(typeof(InputFields));
@@ -105,7 +105,7 @@ public class UI_RoomScene : UI_Scene
 
         for (int i = 1; i < 8; i++)
         {
-            bool ben = Managers.Game.RoomInfo.BenList[i];
+            bool ben = Managers.Game.Room.BenList[i];
             string playerPos = $"Player_{i}";
             if (ben == false)
             {
@@ -114,7 +114,7 @@ public class UI_RoomScene : UI_Scene
             gameObject.FindChild(playerPos, true).FindChild("ready").SetActive(false);
         }
 
-        foreach (var player in Managers.Game.RoomInfo.PlayerList)
+        foreach (var player in Managers.Game.Room.PlayerList)
         {
             string playerPos = $"Player_{player.RoomIdx}";
             if (playerPos.Equals("Player_0"))
@@ -146,7 +146,7 @@ public class UI_RoomScene : UI_Scene
         C_ROOMSTART roomStartPkt = new C_ROOMSTART();
         roomStartPkt.PlayerId = Managers.Game.PlayerID;
         roomStartPkt.ChannelId = Managers.Game.ChannelID;
-        roomStartPkt.RoomId = Managers.Game.RoomInfo.RoomId;
+        roomStartPkt.RoomId = Managers.Game.Room.RoomId;
         Managers.Net.SessionManager.Broadcast(roomStartPkt);
     }
     void OnClickReadyButton()
@@ -154,7 +154,7 @@ public class UI_RoomScene : UI_Scene
         C_ROOMREADY roomReadyPkt = new C_ROOMREADY();
         roomReadyPkt.PlayerId = Managers.Game.PlayerID;
         roomReadyPkt.ChannelId = Managers.Game.ChannelID;
-        roomReadyPkt.RoomId = Managers.Game.RoomInfo.RoomId;
+        roomReadyPkt.RoomId = Managers.Game.Room.RoomId;
         Managers.Net.SessionManager.Broadcast(roomReadyPkt);
     }
     void OnClickBackButton()

@@ -30,8 +30,7 @@ void Channel::AddRoom(int64 playerId, const string& roomName, int32 maxPlayerCou
 		// 방을 만든 플레이어에게 전송
 		Protocol::S_MAKEROOM makeRoomPkt;
 		makeRoomPkt.set_success(true);
-		Protocol::RoomInfo* roomInfo = room->GetRoomInfoProtocol();
-		makeRoomPkt.set_allocated_roominfo(roomInfo);
+		makeRoomPkt.set_allocated_room(room->GetRoomProtocol());
 		SendBufferRef sendBuffer = ClientPacketHandler::MakeSendBuffer(makeRoomPkt);
 		player->Send(sendBuffer);
 	}
@@ -39,7 +38,7 @@ void Channel::AddRoom(int64 playerId, const string& roomName, int32 maxPlayerCou
 	{
 		// 로비에 있는 플레이어들에게 전송
 		Protocol::S_CHANNELUPDATE channelUpdatePkt;
-		Protocol::LobbyInfo* lobbyInfo = GetLobbyInfoProtocol();
+		Protocol::PLobbyInfo* lobbyInfo = GetLobbyInfoProtocol();
 		channelUpdatePkt.set_allocated_lobbyinfo(lobbyInfo);
 		SendBufferRef sendBuffer = ClientPacketHandler::MakeSendBuffer(channelUpdatePkt);
 		Broadcast(sendBuffer);
@@ -85,7 +84,7 @@ PlayerRef Channel::FindPlayer(int64 playerId)
 	return findIt->second;
 }
 
-void Channel::CopyChannelProtocol(Protocol::Channel* pkt)
+void Channel::CopyChannelProtocol(Protocol::PChannel* pkt)
 {
 	READ_LOCK;
 	pkt->set_channelid(_id);
@@ -93,14 +92,14 @@ void Channel::CopyChannelProtocol(Protocol::Channel* pkt)
 	pkt->set_currentplayercount(_currentPlayerCount);
 }
 
-Protocol::LobbyInfo* Channel::GetLobbyInfoProtocol()
+Protocol::PLobbyInfo* Channel::GetLobbyInfoProtocol()
 {
-	Protocol::LobbyInfo* pkt = new Protocol::LobbyInfo();
+	Protocol::PLobbyInfo* pkt = new Protocol::PLobbyInfo();
 	READ_LOCK;
 	pkt->set_roomcount(_rooms.size());
-	for (auto p : _rooms)
+	for (auto& p : _rooms)
 	{
-		Protocol::Room* room = pkt->add_rooms();
+		Protocol::PRoom* room = pkt->add_rooms();
 		p.second->CopyRoomProtocol(room);
 	}
 	return pkt;

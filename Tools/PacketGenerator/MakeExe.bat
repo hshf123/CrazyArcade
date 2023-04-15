@@ -4,4 +4,6 @@ MOVE .\dist\PacketGenerator.exe .\GenPackets.exe
 @RD /S /Q .\build
 @RD /S /Q .\dist
 DEL /S /F /Q .\PacketGenerator.spec
+DEL /Q /F TestPacketHandler.cs
+DEL /Q /F TestPacketHandler.h
 PAUSE

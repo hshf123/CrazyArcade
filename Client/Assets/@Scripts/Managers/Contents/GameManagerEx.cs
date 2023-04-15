@@ -14,15 +14,15 @@ public class GameData
 
 public class GameManagerEx
 {
-    public ChannelInfo ChannelInfo { get; set; }
-    public LobbyInfo LobbyInfo { get; set; }
+    public PChannelInfo ChannelInfo { get; set; }
+    public PLobbyInfo LobbyInfo { get; set; }
     public long PlayerID { get; set; }
     public int ChannelID { get; set; }
 
-    public UI_LobbyScene Lobby { get; set; }
-    public UI_RoomScene Room { get; set; }
-    public RoomInfo RoomInfo { get; set; }
-    public bool IsLeader { get { return RoomInfo.Room.LeaderId == PlayerID; } }
+    public UI_LobbyScene LobbyUI { get; set; }
+    public UI_RoomScene RoomUI { get; set; }
+    public PRoom Room { get; set; }
+    public bool IsLeader { get { return Room.LeaderId == PlayerID; } }
 
     GameData _gameData = new GameData();
     public GameData SaveData { get { return _gameData; } set { _gameData = value; } }

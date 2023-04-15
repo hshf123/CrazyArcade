@@ -24,7 +24,7 @@ public:
 	void RemovePlayer(int64 playerId);
 	PlayerRef FindPlayer(int64 playerId);
 
-	Protocol::ChannelInfo* GetChannelInfoProtocol();
+	Protocol::PChannelInfo* GetChannelInfoProtocol();
 
 private:
 	USE_LOCK;

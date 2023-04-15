@@ -16,7 +16,7 @@ message C_LOGIN
 message S_LOGIN
 {
 	bool success = 1;
-	ChannelInfo channelInfo = 2;
+	PChannelInfo channelInfo = 2;
 	int64 playerId = 3;
 }
 
@@ -30,7 +30,7 @@ message S_CHANNELCHOIC
 {
 	bool success = 1;
 	int32 channelId = 2;
-	LobbyInfo lobbyInfo = 3;
+	PLobbyInfo lobbyInfo = 3;
 }
 
 message C_CHANNELCHAT
@@ -56,12 +56,12 @@ message C_MAKEROOM
 message S_MAKEROOM
 {
 	bool success = 1;
-	RoomInfo roomInfo = 2;
+	PRoom room = 2;
 }
 
 message S_CHANNELUPDATE
 {
-	LobbyInfo lobbyInfo = 1;
+	PLobbyInfo lobbyInfo = 1;
 }
 
 message C_ROOMENTER
@@ -74,14 +74,12 @@ message C_ROOMENTER
 message S_ROOMENTER
 {
 	bool success = 1;
-	int32 roomId = 2;
-	RoomInfo roomInfo = 3;
+	PRoom room = 2;
 }
 
 message S_ROOMUPDATE
 {
-	int32 roomId = 1;
-	RoomInfo roomInfo = 2;
+	PRoom room = 1;
 }
 
 message C_ROOMREADY
@@ -101,13 +99,13 @@ message C_ROOMSTART
 message S_ROOMSTART
 {
 	bool success = 1;
-	RoomInfo roomInfo = 2;
+	PRoom room = 2;
 }
 
 message C_MOVE
 {
-	PlayerInfo playerInfo = 1;
-	PositionInfo positionInfo = 2;
+	PPlayer player = 1;
+	PPositionInfo positionInfo = 2;
 }
 
 message S_MOVE

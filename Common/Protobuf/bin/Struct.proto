@@ -3,79 +3,71 @@ package Protocol;
 
 import "Enum.proto";
 
-message Channel
+message PChannel
 {
 	int32 channelId = 1;
 	int32 maxPlayerCount = 2;
 	int32 currentPlayerCount = 3;
 }
 
-message ChannelInfo
+message PChannelInfo
 {
 	int32 channelCount = 1;
-	repeated Channel channels = 2;
+	repeated PChannel channels = 2;
 }
 
-message Room
+message PRoom
 {
 	int32 roomId = 1;
 	string roomName = 2;
 	int64 leaderId = 3;
 	int32 maxPlayerCount = 4;
 	int32 currentPlayerCount = 5;
+
+	repeated bool benList = 6;
+	repeated PPlayer playerList = 7;
 }
 
-message LobbyInfo
+message PLobbyInfo
 {
 	int32 roomCount = 1;
-	repeated Room rooms = 2;
+	repeated PRoom rooms = 2;
 }
 
-// UI
-message Player
+message PPlayer
 {
-	int64 playerId = 1;
-	int32 level = 2;
-	string name = 3;
-	int32 roomIdx = 4;
-	bool ready = 5;
-}
-
-message RoomInfo
-{
-	int32 roomId = 1;
-	Room room = 2;
-	repeated bool benList = 3;
-	repeated Player playerList = 4;
-}
-
-// InGame
-message PlayerInfo
-{
-	int64 playerId = 1;
+	string playerId = 1;
 	string name = 2;
-	float speed = 3;
-	int32 maxBombCount = 4;
-	int32 bombCount = 5;
-	int32 bombRange = 6;
+	int32 level = 3;
+	float exp = 4;
+	int64 id = 5;
+	int32 channelId = 6;
+	int32 roomId = 7;
+	int32 roomIdx = 8;
+	bool ready = 9;
+
+	float speed = 10;
+	int32 maxBombCount = 11;
+	int32 bombCount = 12;
+	int32 bombRange = 13;
 }
 
-message WorldPos
+message PWorldPos
 {
 	float posX = 1;
 	float posY = 2;
 }
 
-message CellPos
+message PCellPos
 {
 	int32 posX = 1;
 	int32 posY = 2;
 }
 
-message PositionInfo
+message PPositionInfo
 {
-	PlayerState state = 1;
-	MoveDir moveDir = 2;
-	WorldPos worldPos = 3;
-	CellPos cellPos = 4;
+	PPlayerState state = 1;
+	PMoveDir moveDir = 2;
+	PWorldPos worldPos = 3;
+	PCellPos cellPos = 4;
 }

@@ -15,7 +15,7 @@ public class UI_ChannelSubItem : UI_Base
         EnterButton
     }
 
-    public Channel Channel { get; set; }
+    public PChannel Channel { get; set; }
 
     public override bool Init()
     {

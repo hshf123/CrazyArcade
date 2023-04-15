@@ -24,8 +24,6 @@ def main():
     f.write(output)
     f.close()
 
-    print(output)
-
     parser = ProtoParser.ProtoParser(1000, args.recv, args.send)
     parser.parse_proto(args.path)
 
@@ -38,8 +36,6 @@ def main():
     f = open(args.output+'.cs', 'w+')
     f.write(output)
     f.close()
-
-    print(output)
 
     return;
 

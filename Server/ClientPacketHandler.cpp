@@ -100,7 +100,7 @@ bool Handle_C_LOGIN(PacketSessionRef& session, Protocol::C_LOGIN& pkt)
 
 	Protocol::S_LOGIN loginPkt;
 	loginPkt.set_success(true);
-	Protocol::ChannelInfo* channelInfo = ChannelManager::GetInstance()->GetChannelInfoProtocol();
+	Protocol::PChannelInfo* channelInfo = ChannelManager::GetInstance()->GetChannelInfoProtocol();
 	loginPkt.set_allocated_channelinfo(channelInfo);
 	loginPkt.set_playerid(clientSession->MyPlayer.lock()->GetId());
 	SendBufferRef sendBuffer = ClientPacketHandler::MakeSendBuffer(loginPkt);
@@ -128,7 +128,7 @@ bool Handle_C_CHANNELCHOIC(PacketSessionRef& session, Protocol::C_CHANNELCHOIC& 
 	Protocol::S_CHANNELCHOIC channelChoicePkt;
 	channelChoicePkt.set_success(true);
 	channelChoicePkt.set_channelid(channel->GetId());
-	Protocol::LobbyInfo* lobbyInfo = channel->GetLobbyInfoProtocol();
+	Protocol::PLobbyInfo* lobbyInfo = channel->GetLobbyInfoProtocol();
 	channelChoicePkt.set_allocated_lobbyinfo(lobbyInfo);
 
 	SendBufferRef sendBuffer = ClientPacketHandler::MakeSendBuffer(channelChoicePkt);
@@ -194,9 +194,7 @@ bool Handle_C_ROOMENTER(PacketSessionRef& session, Protocol::C_ROOMENTER& pkt)
 		// 입장한 사용자한테 방정보 전송
 		Protocol::S_ROOMENTER roomEnterPkt;
 		roomEnterPkt.set_success(true);
-		roomEnterPkt.set_roomid(room->GetId());
-		Protocol::RoomInfo* roomInfo = room->GetRoomInfoProtocol();
-		roomEnterPkt.set_allocated_roominfo(roomInfo);
+		roomEnterPkt.set_allocated_room(room->GetRoomProtocol());
 		SendBufferRef sendBuffer = ClientPacketHandler::MakeSendBuffer(roomEnterPkt);
 		clientSession->Send(sendBuffer);
 	}
@@ -204,9 +202,7 @@ bool Handle_C_ROOMENTER(PacketSessionRef& session, Protocol::C_ROOMENTER& pkt)
 	{
 		// 입장한 방에 broadcast, 입장한 사용자는 제외하고
 		Protocol::S_ROOMUPDATE roomUpdatePkt;
-		roomUpdatePkt.set_roomid(room->GetId());
-		Protocol::RoomInfo* roomInfo = room->GetRoomInfoProtocol();
-		roomUpdatePkt.set_allocated_roominfo(roomInfo);
+		roomUpdatePkt.set_allocated_room(room->GetRoomProtocol());
 		SendBufferRef sendBuffer = ClientPacketHandler::MakeSendBuffer(roomUpdatePkt);
 		room->Broadcast(sendBuffer, clientSession);
 	}
@@ -214,7 +210,7 @@ bool Handle_C_ROOMENTER(PacketSessionRef& session, Protocol::C_ROOMENTER& pkt)
 	{
 		// 해당 채널 로비에 broadcast
 		Protocol::S_CHANNELUPDATE channelUpdatePkt;
-		Protocol::LobbyInfo* lobbyInfo = channel->GetLobbyInfoProtocol();
+		Protocol::PLobbyInfo* lobbyInfo = channel->GetLobbyInfoProtocol();
 		channelUpdatePkt.set_allocated_lobbyinfo(lobbyInfo);
 		SendBufferRef sendBuffer = ClientPacketHandler::MakeSendBuffer(channelUpdatePkt);
 		channel->Broadcast(sendBuffer);
@@ -250,8 +246,7 @@ bool Handle_C_ROOMREADY(PacketSessionRef& session, Protocol::C_ROOMREADY& pkt)
 
 	player->SetReady();
 	Protocol::S_ROOMUPDATE roomUpdatePkt;
-	roomUpdatePkt.set_roomid(player->GetRoomID());
-	roomUpdatePkt.set_allocated_roominfo(room->GetRoomInfoProtocol());
+	roomUpdatePkt.set_allocated_room(room->GetRoomProtocol());
 	SendBufferRef sendBuffer = ClientPacketHandler::MakeSendBuffer(roomUpdatePkt);
 	room->Broadcast(sendBuffer);
 
