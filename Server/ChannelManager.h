@@ -16,7 +16,7 @@ public:
 	}
 
 public:
-	void AddChannel(int32 maxPlayerCount = 500);
+	void AddChannel(int32 maxPlayerCount = 20);
 	void RemoveChannel(int64 channelId);
 	ChannelRef FindChannel(int64 channelId);
 
@@ -24,7 +24,7 @@ public:
 	void RemovePlayer(int64 playerId);
 	PlayerRef FindPlayer(int64 playerId);
 
-	Protocol::PChannelInfo* GetChannelInfoProtocol();
+	Vector<Protocol::PChannel> GetChannelsProtocol();
 
 private:
 	USE_LOCK;

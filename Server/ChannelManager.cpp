@@ -3,10 +3,13 @@
 #include "Channel.h"
 #include "Player.h"
 
-void ChannelManager::AddChannel(int32 maxPlayerCount /*= 500*/)
+void ChannelManager::AddChannel(int32 maxPlayerCount /*= 20*/)
 {
 	WRITE_LOCK;
-	ChannelRef channel = MakeShared<Channel>(_increaseId, maxPlayerCount);
+	ChannelRef channel = MakeShared<Channel>();
+	channel->ChannelInfo.set_channelid(_increaseId);
+	channel->ChannelInfo.set_maxplayercount(maxPlayerCount);
+	channel->ChannelInfo.set_currentplayercount(0);
 	_channels.insert({ _increaseId++, channel });
 }
 
@@ -29,7 +32,7 @@ ChannelRef ChannelManager::FindChannel(int64 channelId)
 void ChannelManager::AddPlayer(PlayerRef player)
 {
 	WRITE_LOCK;
-	_players.insert({ player->GetId(), player });
+	_players.insert({ player->PlayerInfo.id(), player });
 }
 
 void ChannelManager::RemovePlayer(int64 playerId)
@@ -48,15 +51,13 @@ PlayerRef ChannelManager::FindPlayer(int64 playerId)
 	return findIt->second;
 }
 
-Protocol::PChannelInfo* ChannelManager::GetChannelInfoProtocol()
+Vector<Protocol::PChannel> ChannelManager::GetChannelsProtocol()
 {
-	Protocol::PChannelInfo* pkt = new Protocol::PChannelInfo();
+	Vector<Protocol::PChannel> res;
 	READ_LOCK;
-	pkt->set_channelcount(_channels.size());
 	for (auto& p : _channels)
 	{
-		Protocol::PChannel* c = pkt->add_channels();
-		p.second->CopyChannelProtocol(c);
+		res.push_back(*p.second->GetChannelProtocol());
 	}
-	return pkt;
+	return res;
 }

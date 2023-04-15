@@ -5,12 +5,6 @@
 #include "Protocol.pb.h"
 #include "ClientPacketHandler.h"
 
-Channel::Channel(int64 id, int32 maxPlayerCount)
-	: _id(id), _maxPlayerCount(maxPlayerCount), _currentPlayerCount(0)
-{
-
-}
-
 void Channel::AddRoom(int64 playerId, const string& roomName, int32 maxPlayerCount /*= 8*/)
 {
 	WRITE_LOCK;
@@ -38,8 +32,11 @@ void Channel::AddRoom(int64 playerId, const string& roomName, int32 maxPlayerCou
 	{
 		// 로비에 있는 플레이어들에게 전송
 		Protocol::S_CHANNELUPDATE channelUpdatePkt;
-		Protocol::PLobbyInfo* lobbyInfo = GetLobbyInfoProtocol();
-		channelUpdatePkt.set_allocated_lobbyinfo(lobbyInfo);
+		for (Protocol::PRoom r : GetRoomsProtocol())
+		{
+			Protocol::PRoom* room = channelUpdatePkt.add_rooms();
+			room->CopyFrom(r);
+		}
 		SendBufferRef sendBuffer = ClientPacketHandler::MakeSendBuffer(channelUpdatePkt);
 		Broadcast(sendBuffer);
 	}
@@ -64,8 +61,8 @@ RoomRef Channel::FindRoom(int32 roomId)
 void Channel::InsertPlayer(PlayerRef player)
 {
 	WRITE_LOCK;
-	_players.insert({ player->GetId(), player });
-	player->SetChannelD(_id);
+	_players.insert({ player->PlayerInfo.id(), player });
+	player->PlayerInfo.set_channelid(ChannelInfo.channelid());
 }
 
 void Channel::RemovePlayer(int64 playerId)
@@ -87,22 +84,25 @@ PlayerRef Channel::FindPlayer(int64 playerId)
 void Channel::CopyChannelProtocol(Protocol::PChannel* pkt)
 {
 	READ_LOCK;
-	pkt->set_channelid(_id);
-	pkt->set_maxplayercount(_maxPlayerCount);
-	pkt->set_currentplayercount(_currentPlayerCount);
+	pkt->CopyFrom(ChannelInfo);
 }
 
-Protocol::PLobbyInfo* Channel::GetLobbyInfoProtocol()
+Protocol::PChannel* Channel::GetChannelProtocol()
 {
-	Protocol::PLobbyInfo* pkt = new Protocol::PLobbyInfo();
+	Protocol::PChannel* pkt = new Protocol::PChannel();
+	pkt->CopyFrom(ChannelInfo);
+	return pkt;
+}
+
+Vector<Protocol::PRoom> Channel::GetRoomsProtocol()
+{
+	Vector<Protocol::PRoom> res;
 	READ_LOCK;
-	pkt->set_roomcount(_rooms.size());
 	for (auto& p : _rooms)
 	{
-		Protocol::PRoom* room = pkt->add_rooms();
-		p.second->CopyRoomProtocol(room);
+		res.push_back(*p.second->GetRoomProtocol());
 	}
-	return pkt;
+	return res;
 }
 
 void Channel::Broadcast(SendBufferRef sendBuffer)

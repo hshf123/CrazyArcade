@@ -12,10 +12,10 @@ Room::Room(int64 id, const string& roomName, int32 maxPlayerCount)
 void Room::InsertPlayer(PlayerRef player)
 {
 	WRITE_LOCK;
-	_players.insert({ player->GetId(), player });
+	_players.insert({ player->PlayerInfo.id(), player});
 	_currentPlayerCount++;
 	SetIdx(player);
-	player->SetRoomID(_roomId);
+	player->PlayerInfo.set_roomid(_roomId);
 }
 
 void Room::RemovePlayer(int64 playerId)
@@ -24,12 +24,11 @@ void Room::RemovePlayer(int64 playerId)
 	PlayerRef player = FindPlayer(playerId);
 	if (player == nullptr)
 		return;
-	_idxes.erase(player->GetRoomIdx());
+	_idxes.erase(player->PlayerInfo.roomidx());
 	_players.erase(playerId);
 	_currentPlayerCount--;
-	player->SetRoomID(-1);
-	_idxes[player->GetRoomIdx()] = nullptr;
-	player->SetRoomIdx(-1);
+	_idxes[player->PlayerInfo.roomidx()] = nullptr;
+	player->PlayerInfo.set_roomid(-1);
 }
 
 PlayerRef Room::FindPlayer(int64 playerId)
@@ -49,7 +48,7 @@ void Room::SetIdx(PlayerRef player)
 		if (_idxes[i] == nullptr && _benList[i] == false)
 		{
 			_idxes[i] = player;
-			player->SetRoomIdx(i);
+			player->PlayerInfo.set_roomidx(i);
 			return;
 		}
 	}
@@ -64,12 +63,14 @@ bool Room::CanGameStart()
 
 	for (auto& p : _players)
 	{
-		if (p.second->GetId() == _leaderId)
+		if (p.second->PlayerInfo.id() == _leaderId)
 			continue;
 
-		if (p.second->GetReady() == false)
+		if (p.second->PlayerInfo.ready() == false)
 			return false;
 	}
+
+	// TODO 방에있는 모두에게 기본 PositioniInfo 채워주기
 
 	Protocol::S_ROOMSTART roomStartPkt;
 	roomStartPkt.set_success(true);

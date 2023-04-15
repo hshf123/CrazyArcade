@@ -10,12 +10,6 @@ message PChannel
 	int32 currentPlayerCount = 3;
 }
 
-message PChannelInfo
-{
-	int32 channelCount = 1;
-	repeated PChannel channels = 2;
-}
-
 message PRoom
 {
 	int32 roomId = 1;
@@ -26,12 +20,6 @@ message PRoom
 
 	repeated bool benList = 6;
 	repeated PPlayer playerList = 7;
-}
-
-message PLobbyInfo
-{
-	int32 roomCount = 1;
-	repeated PRoom rooms = 2;
 }
 
 message PPlayer

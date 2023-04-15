@@ -26,32 +26,27 @@ namespace Protocol {
           string.Concat(
             "CgxTdHJ1Y3QucHJvdG8SCFByb3RvY29sGgpFbnVtLnByb3RvIlEKCFBDaGFu",
             "bmVsEhEKCWNoYW5uZWxJZBgBIAEoBRIWCg5tYXhQbGF5ZXJDb3VudBgCIAEo",
-            "BRIaChJjdXJyZW50UGxheWVyQ291bnQYAyABKAUiSgoMUENoYW5uZWxJbmZv",
-            "EhQKDGNoYW5uZWxDb3VudBgBIAEoBRIkCghjaGFubmVscxgCIAMoCzISLlBy",
-            "b3RvY29sLlBDaGFubmVsIqcBCgVQUm9vbRIOCgZyb29tSWQYASABKAUSEAoI",
-            "cm9vbU5hbWUYAiABKAkSEAoIbGVhZGVySWQYAyABKAMSFgoObWF4UGxheWVy",
-            "Q291bnQYBCABKAUSGgoSY3VycmVudFBsYXllckNvdW50GAUgASgFEg8KB2Jl",
-            "bkxpc3QYBiADKAgSJQoKcGxheWVyTGlzdBgHIAMoCzIRLlByb3RvY29sLlBQ",
-            "bGF5ZXIiPwoKUExvYmJ5SW5mbxIRCglyb29tQ291bnQYASABKAUSHgoFcm9v",
-            "bXMYAiADKAsyDy5Qcm90b2NvbC5QUm9vbSLfAQoHUFBsYXllchIQCghwbGF5",
-            "ZXJJZBgBIAEoCRIMCgRuYW1lGAIgASgJEg0KBWxldmVsGAMgASgFEgsKA2V4",
-            "cBgEIAEoAhIKCgJpZBgFIAEoAxIRCgljaGFubmVsSWQYBiABKAUSDgoGcm9v",
-            "bUlkGAcgASgFEg8KB3Jvb21JZHgYCCABKAUSDQoFcmVhZHkYCSABKAgSDQoF",
-            "c3BlZWQYCiABKAISFAoMbWF4Qm9tYkNvdW50GAsgASgFEhEKCWJvbWJDb3Vu",
-            "dBgMIAEoBRIRCglib21iUmFuZ2UYDSABKAUiJwoJUFdvcmxkUG9zEgwKBHBv",
-            "c1gYASABKAISDAoEcG9zWRgCIAEoAiImCghQQ2VsbFBvcxIMCgRwb3NYGAEg",
-            "ASgFEgwKBHBvc1kYAiABKAUipwEKDVBQb3NpdGlvbkluZm8SJQoFc3RhdGUY",
-            "ASABKA4yFi5Qcm90b2NvbC5QUGxheWVyU3RhdGUSIwoHbW92ZURpchgCIAEo",
-            "DjISLlByb3RvY29sLlBNb3ZlRGlyEiUKCHdvcmxkUG9zGAMgASgLMhMuUHJv",
-            "dG9jb2wuUFdvcmxkUG9zEiMKB2NlbGxQb3MYBCABKAsyEi5Qcm90b2NvbC5Q",
-            "Q2VsbFBvc2IGcHJvdG8z"));
+            "BRIaChJjdXJyZW50UGxheWVyQ291bnQYAyABKAUipwEKBVBSb29tEg4KBnJv",
+            "b21JZBgBIAEoBRIQCghyb29tTmFtZRgCIAEoCRIQCghsZWFkZXJJZBgDIAEo",
+            "AxIWCg5tYXhQbGF5ZXJDb3VudBgEIAEoBRIaChJjdXJyZW50UGxheWVyQ291",
+            "bnQYBSABKAUSDwoHYmVuTGlzdBgGIAMoCBIlCgpwbGF5ZXJMaXN0GAcgAygL",
+            "MhEuUHJvdG9jb2wuUFBsYXllciLfAQoHUFBsYXllchIQCghwbGF5ZXJJZBgB",
+            "IAEoCRIMCgRuYW1lGAIgASgJEg0KBWxldmVsGAMgASgFEgsKA2V4cBgEIAEo",
+            "AhIKCgJpZBgFIAEoAxIRCgljaGFubmVsSWQYBiABKAUSDgoGcm9vbUlkGAcg",
+            "ASgFEg8KB3Jvb21JZHgYCCABKAUSDQoFcmVhZHkYCSABKAgSDQoFc3BlZWQY",
+            "CiABKAISFAoMbWF4Qm9tYkNvdW50GAsgASgFEhEKCWJvbWJDb3VudBgMIAEo",
+            "BRIRCglib21iUmFuZ2UYDSABKAUiJwoJUFdvcmxkUG9zEgwKBHBvc1gYASAB",
+            "KAISDAoEcG9zWRgCIAEoAiImCghQQ2VsbFBvcxIMCgRwb3NYGAEgASgFEgwK",
+            "BHBvc1kYAiABKAUipwEKDVBQb3NpdGlvbkluZm8SJQoFc3RhdGUYASABKA4y",
+            "Fi5Qcm90b2NvbC5QUGxheWVyU3RhdGUSIwoHbW92ZURpchgCIAEoDjISLlBy",
+            "b3RvY29sLlBNb3ZlRGlyEiUKCHdvcmxkUG9zGAMgASgLMhMuUHJvdG9jb2wu",
+            "UFdvcmxkUG9zEiMKB2NlbGxQb3MYBCABKAsyEi5Qcm90b2NvbC5QQ2VsbFBv",
+            "c2IGcHJvdG8z"));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { global::Protocol.EnumReflection.Descriptor, },
           new pbr::GeneratedClrTypeInfo(null, null, new pbr::GeneratedClrTypeInfo[] {
             new pbr::GeneratedClrTypeInfo(typeof(global::Protocol.PChannel), global::Protocol.PChannel.Parser, new[]{ "ChannelId", "MaxPlayerCount", "CurrentPlayerCount" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Protocol.PChannelInfo), global::Protocol.PChannelInfo.Parser, new[]{ "ChannelCount", "Channels" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Protocol.PRoom), global::Protocol.PRoom.Parser, new[]{ "RoomId", "RoomName", "LeaderId", "MaxPlayerCount", "CurrentPlayerCount", "BenList", "PlayerList" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Protocol.PLobbyInfo), global::Protocol.PLobbyInfo.Parser, new[]{ "RoomCount", "Rooms" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Protocol.PPlayer), global::Protocol.PPlayer.Parser, new[]{ "PlayerId", "Name", "Level", "Exp", "Id", "ChannelId", "RoomId", "RoomIdx", "Ready", "Speed", "MaxBombCount", "BombCount", "BombRange" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Protocol.PWorldPos), global::Protocol.PWorldPos.Parser, new[]{ "PosX", "PosY" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Protocol.PCellPos), global::Protocol.PCellPos.Parser, new[]{ "PosX", "PosY" }, null, null, null, null),
@@ -325,221 +320,6 @@ namespace Protocol {
 
   }
 
-  public sealed partial class PChannelInfo : pb::IMessage<PChannelInfo>
-  #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
-      , pb::IBufferMessage
-  #endif
-  {
-    private static readonly pb::MessageParser<PChannelInfo> _parser = new pb::MessageParser<PChannelInfo>(() => new PChannelInfo());
-    private pb::UnknownFieldSet _unknownFields;
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public static pb::MessageParser<PChannelInfo> Parser { get { return _parser; } }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public static pbr::MessageDescriptor Descriptor {
-      get { return global::Protocol.StructReflection.Descriptor.MessageTypes[1]; }
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    pbr::MessageDescriptor pb::IMessage.Descriptor {
-      get { return Descriptor; }
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public PChannelInfo() {
-      OnConstruction();
-    }
-
-    partial void OnConstruction();
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public PChannelInfo(PChannelInfo other) : this() {
-      channelCount_ = other.channelCount_;
-      channels_ = other.channels_.Clone();
-      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public PChannelInfo Clone() {
-      return new PChannelInfo(this);
-    }
-
-    /// <summary>Field number for the "channelCount" field.</summary>
-    public const int ChannelCountFieldNumber = 1;
-    private int channelCount_;
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public int ChannelCount {
-      get { return channelCount_; }
-      set {
-        channelCount_ = value;
-      }
-    }
-
-    /// <summary>Field number for the "channels" field.</summary>
-    public const int ChannelsFieldNumber = 2;
-    private static readonly pb::FieldCodec<global::Protocol.PChannel> _repeated_channels_codec
-        = pb::FieldCodec.ForMessage(18, global::Protocol.PChannel.Parser);
-    private readonly pbc::RepeatedField<global::Protocol.PChannel> channels_ = new pbc::RepeatedField<global::Protocol.PChannel>();
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public pbc::RepeatedField<global::Protocol.PChannel> Channels {
-      get { return channels_; }
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public override bool Equals(object other) {
-      return Equals(other as PChannelInfo);
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public bool Equals(PChannelInfo other) {
-      if (ReferenceEquals(other, null)) {
-        return false;
-      }
-      if (ReferenceEquals(other, this)) {
-        return true;
-      }
-      if (ChannelCount != other.ChannelCount) return false;
-      if(!channels_.Equals(other.channels_)) return false;
-      return Equals(_unknownFields, other._unknownFields);
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public override int GetHashCode() {
-      int hash = 1;
-      if (ChannelCount != 0) hash ^= ChannelCount.GetHashCode();
-      hash ^= channels_.GetHashCode();
-      if (_unknownFields != null) {
-        hash ^= _unknownFields.GetHashCode();
-      }
-      return hash;
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public override string ToString() {
-      return pb::JsonFormatter.ToDiagnosticString(this);
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public void WriteTo(pb::CodedOutputStream output) {
-    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
-      output.WriteRawMessage(this);
-    #else
-      if (ChannelCount != 0) {
-        output.WriteRawTag(8);
-        output.WriteInt32(ChannelCount);
-      }
-      channels_.WriteTo(output, _repeated_channels_codec);
-      if (_unknownFields != null) {
-        _unknownFields.WriteTo(output);
-      }
-    #endif
-    }
-
-    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
-      if (ChannelCount != 0) {
-        output.WriteRawTag(8);
-        output.WriteInt32(ChannelCount);
-      }
-      channels_.WriteTo(ref output, _repeated_channels_codec);
-      if (_unknownFields != null) {
-        _unknownFields.WriteTo(ref output);
-      }
-    }
-    #endif
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public int CalculateSize() {
-      int size = 0;
-      if (ChannelCount != 0) {
-        size += 1 + pb::CodedOutputStream.ComputeInt32Size(ChannelCount);
-      }
-      size += channels_.CalculateSize(_repeated_channels_codec);
-      if (_unknownFields != null) {
-        size += _unknownFields.CalculateSize();
-      }
-      return size;
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public void MergeFrom(PChannelInfo other) {
-      if (other == null) {
-        return;
-      }
-      if (other.ChannelCount != 0) {
-        ChannelCount = other.ChannelCount;
-      }
-      channels_.Add(other.channels_);
-      _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public void MergeFrom(pb::CodedInputStream input) {
-    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
-      input.ReadRawMessage(this);
-    #else
-      uint tag;
-      while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
-          default:
-            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
-            break;
-          case 8: {
-            ChannelCount = input.ReadInt32();
-            break;
-          }
-          case 18: {
-            channels_.AddEntriesFrom(input, _repeated_channels_codec);
-            break;
-          }
-        }
-      }
-    #endif
-    }
-
-    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
-      uint tag;
-      while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
-          default:
-            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
-            break;
-          case 8: {
-            ChannelCount = input.ReadInt32();
-            break;
-          }
-          case 18: {
-            channels_.AddEntriesFrom(ref input, _repeated_channels_codec);
-            break;
-          }
-        }
-      }
-    }
-    #endif
-
-  }
-
   public sealed partial class PRoom : pb::IMessage<PRoom>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage
@@ -554,7 +334,7 @@ namespace Protocol {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::Protocol.StructReflection.Descriptor.MessageTypes[2]; }
+      get { return global::Protocol.StructReflection.Descriptor.MessageTypes[1]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -931,221 +711,6 @@ namespace Protocol {
 
   }
 
-  public sealed partial class PLobbyInfo : pb::IMessage<PLobbyInfo>
-  #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
-      , pb::IBufferMessage
-  #endif
-  {
-    private static readonly pb::MessageParser<PLobbyInfo> _parser = new pb::MessageParser<PLobbyInfo>(() => new PLobbyInfo());
-    private pb::UnknownFieldSet _unknownFields;
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public static pb::MessageParser<PLobbyInfo> Parser { get { return _parser; } }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public static pbr::MessageDescriptor Descriptor {
-      get { return global::Protocol.StructReflection.Descriptor.MessageTypes[3]; }
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    pbr::MessageDescriptor pb::IMessage.Descriptor {
-      get { return Descriptor; }
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public PLobbyInfo() {
-      OnConstruction();
-    }
-
-    partial void OnConstruction();
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public PLobbyInfo(PLobbyInfo other) : this() {
-      roomCount_ = other.roomCount_;
-      rooms_ = other.rooms_.Clone();
-      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public PLobbyInfo Clone() {
-      return new PLobbyInfo(this);
-    }
-
-    /// <summary>Field number for the "roomCount" field.</summary>
-    public const int RoomCountFieldNumber = 1;
-    private int roomCount_;
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public int RoomCount {
-      get { return roomCount_; }
-      set {
-        roomCount_ = value;
-      }
-    }
-
-    /// <summary>Field number for the "rooms" field.</summary>
-    public const int RoomsFieldNumber = 2;
-    private static readonly pb::FieldCodec<global::Protocol.PRoom> _repeated_rooms_codec
-        = pb::FieldCodec.ForMessage(18, global::Protocol.PRoom.Parser);
-    private readonly pbc::RepeatedField<global::Protocol.PRoom> rooms_ = new pbc::RepeatedField<global::Protocol.PRoom>();
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public pbc::RepeatedField<global::Protocol.PRoom> Rooms {
-      get { return rooms_; }
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public override bool Equals(object other) {
-      return Equals(other as PLobbyInfo);
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public bool Equals(PLobbyInfo other) {
-      if (ReferenceEquals(other, null)) {
-        return false;
-      }
-      if (ReferenceEquals(other, this)) {
-        return true;
-      }
-      if (RoomCount != other.RoomCount) return false;
-      if(!rooms_.Equals(other.rooms_)) return false;
-      return Equals(_unknownFields, other._unknownFields);
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public override int GetHashCode() {
-      int hash = 1;
-      if (RoomCount != 0) hash ^= RoomCount.GetHashCode();
-      hash ^= rooms_.GetHashCode();
-      if (_unknownFields != null) {
-        hash ^= _unknownFields.GetHashCode();
-      }
-      return hash;
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public override string ToString() {
-      return pb::JsonFormatter.ToDiagnosticString(this);
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public void WriteTo(pb::CodedOutputStream output) {
-    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
-      output.WriteRawMessage(this);
-    #else
-      if (RoomCount != 0) {
-        output.WriteRawTag(8);
-        output.WriteInt32(RoomCount);
-      }
-      rooms_.WriteTo(output, _repeated_rooms_codec);
-      if (_unknownFields != null) {
-        _unknownFields.WriteTo(output);
-      }
-    #endif
-    }
-
-    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
-      if (RoomCount != 0) {
-        output.WriteRawTag(8);
-        output.WriteInt32(RoomCount);
-      }
-      rooms_.WriteTo(ref output, _repeated_rooms_codec);
-      if (_unknownFields != null) {
-        _unknownFields.WriteTo(ref output);
-      }
-    }
-    #endif
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public int CalculateSize() {
-      int size = 0;
-      if (RoomCount != 0) {
-        size += 1 + pb::CodedOutputStream.ComputeInt32Size(RoomCount);
-      }
-      size += rooms_.CalculateSize(_repeated_rooms_codec);
-      if (_unknownFields != null) {
-        size += _unknownFields.CalculateSize();
-      }
-      return size;
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public void MergeFrom(PLobbyInfo other) {
-      if (other == null) {
-        return;
-      }
-      if (other.RoomCount != 0) {
-        RoomCount = other.RoomCount;
-      }
-      rooms_.Add(other.rooms_);
-      _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public void MergeFrom(pb::CodedInputStream input) {
-    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
-      input.ReadRawMessage(this);
-    #else
-      uint tag;
-      while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
-          default:
-            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
-            break;
-          case 8: {
-            RoomCount = input.ReadInt32();
-            break;
-          }
-          case 18: {
-            rooms_.AddEntriesFrom(input, _repeated_rooms_codec);
-            break;
-          }
-        }
-      }
-    #endif
-    }
-
-    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
-      uint tag;
-      while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
-          default:
-            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
-            break;
-          case 8: {
-            RoomCount = input.ReadInt32();
-            break;
-          }
-          case 18: {
-            rooms_.AddEntriesFrom(ref input, _repeated_rooms_codec);
-            break;
-          }
-        }
-      }
-    }
-    #endif
-
-  }
-
   public sealed partial class PPlayer : pb::IMessage<PPlayer>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage
@@ -1160,7 +725,7 @@ namespace Protocol {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::Protocol.StructReflection.Descriptor.MessageTypes[4]; }
+      get { return global::Protocol.StructReflection.Descriptor.MessageTypes[2]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -1793,7 +1358,7 @@ namespace Protocol {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::Protocol.StructReflection.Descriptor.MessageTypes[5]; }
+      get { return global::Protocol.StructReflection.Descriptor.MessageTypes[3]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -2019,7 +1584,7 @@ namespace Protocol {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::Protocol.StructReflection.Descriptor.MessageTypes[6]; }
+      get { return global::Protocol.StructReflection.Descriptor.MessageTypes[4]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -2245,7 +1810,7 @@ namespace Protocol {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::Protocol.StructReflection.Descriptor.MessageTypes[7]; }
+      get { return global::Protocol.StructReflection.Descriptor.MessageTypes[5]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]

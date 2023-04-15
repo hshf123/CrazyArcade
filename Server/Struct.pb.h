@@ -52,12 +52,6 @@ extern PCellPosDefaultTypeInternal _PCellPos_default_instance_;
 class PChannel;
 struct PChannelDefaultTypeInternal;
 extern PChannelDefaultTypeInternal _PChannel_default_instance_;
-class PChannelInfo;
-struct PChannelInfoDefaultTypeInternal;
-extern PChannelInfoDefaultTypeInternal _PChannelInfo_default_instance_;
-class PLobbyInfo;
-struct PLobbyInfoDefaultTypeInternal;
-extern PLobbyInfoDefaultTypeInternal _PLobbyInfo_default_instance_;
 class PPlayer;
 struct PPlayerDefaultTypeInternal;
 extern PPlayerDefaultTypeInternal _PPlayer_default_instance_;
@@ -74,8 +68,6 @@ extern PWorldPosDefaultTypeInternal _PWorldPos_default_instance_;
 PROTOBUF_NAMESPACE_OPEN
 template<> ::Protocol::PCellPos* Arena::CreateMaybeMessage<::Protocol::PCellPos>(Arena*);
 template<> ::Protocol::PChannel* Arena::CreateMaybeMessage<::Protocol::PChannel>(Arena*);
-template<> ::Protocol::PChannelInfo* Arena::CreateMaybeMessage<::Protocol::PChannelInfo>(Arena*);
-template<> ::Protocol::PLobbyInfo* Arena::CreateMaybeMessage<::Protocol::PLobbyInfo>(Arena*);
 template<> ::Protocol::PPlayer* Arena::CreateMaybeMessage<::Protocol::PPlayer>(Arena*);
 template<> ::Protocol::PPositionInfo* Arena::CreateMaybeMessage<::Protocol::PPositionInfo>(Arena*);
 template<> ::Protocol::PRoom* Arena::CreateMaybeMessage<::Protocol::PRoom>(Arena*);
@@ -250,169 +242,6 @@ class PChannel final :
 };
 // -------------------------------------------------------------------
 
-class PChannelInfo final :
-    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:Protocol.PChannelInfo) */ {
- public:
-  inline PChannelInfo() : PChannelInfo(nullptr) {}
-  ~PChannelInfo() override;
-  explicit PROTOBUF_CONSTEXPR PChannelInfo(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
-
-  PChannelInfo(const PChannelInfo& from);
-  PChannelInfo(PChannelInfo&& from) noexcept
-    : PChannelInfo() {
-    *this = ::std::move(from);
-  }
-
-  inline PChannelInfo& operator=(const PChannelInfo& from) {
-    CopyFrom(from);
-    return *this;
-  }
-  inline PChannelInfo& operator=(PChannelInfo&& from) noexcept {
-    if (this == &from) return *this;
-    if (GetOwningArena() == from.GetOwningArena()
-  #ifdef PROTOBUF_FORCE_COPY_IN_MOVE
-        && GetOwningArena() != nullptr
-  #endif  // !PROTOBUF_FORCE_COPY_IN_MOVE
-    ) {
-      InternalSwap(&from);
-    } else {
-      CopyFrom(from);
-    }
-    return *this;
-  }
-
-  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* descriptor() {
-    return GetDescriptor();
-  }
-  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* GetDescriptor() {
-    return default_instance().GetMetadata().descriptor;
-  }
-  static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
-    return default_instance().GetMetadata().reflection;
-  }
-  static const PChannelInfo& default_instance() {
-    return *internal_default_instance();
-  }
-  static inline const PChannelInfo* internal_default_instance() {
-    return reinterpret_cast<const PChannelInfo*>(
-               &_PChannelInfo_default_instance_);
-  }
-  static constexpr int kIndexInFileMessages =
-    1;
-
-  friend void swap(PChannelInfo& a, PChannelInfo& b) {
-    a.Swap(&b);
-  }
-  inline void Swap(PChannelInfo* other) {
-    if (other == this) return;
-  #ifdef PROTOBUF_FORCE_COPY_IN_SWAP
-    if (GetOwningArena() != nullptr &&
-        GetOwningArena() == other->GetOwningArena()) {
-   #else  // PROTOBUF_FORCE_COPY_IN_SWAP
-    if (GetOwningArena() == other->GetOwningArena()) {
-  #endif  // !PROTOBUF_FORCE_COPY_IN_SWAP
-      InternalSwap(other);
-    } else {
-      ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
-    }
-  }
-  void UnsafeArenaSwap(PChannelInfo* other) {
-    if (other == this) return;
-    GOOGLE_DCHECK(GetOwningArena() == other->GetOwningArena());
-    InternalSwap(other);
-  }
-
-  // implements Message ----------------------------------------------
-
-  PChannelInfo* New(::PROTOBUF_NAMESPACE_ID::Arena* arena = nullptr) const final {
-    return CreateMaybeMessage<PChannelInfo>(arena);
-  }
-  using ::PROTOBUF_NAMESPACE_ID::Message::CopyFrom;
-  void CopyFrom(const PChannelInfo& from);
-  using ::PROTOBUF_NAMESPACE_ID::Message::MergeFrom;
-  void MergeFrom(const PChannelInfo& from);
-  private:
-  static void MergeImpl(::PROTOBUF_NAMESPACE_ID::Message* to, const ::PROTOBUF_NAMESPACE_ID::Message& from);
-  public:
-  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
-  bool IsInitialized() const final;
-
-  size_t ByteSizeLong() const final;
-  const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
-  uint8_t* _InternalSerialize(
-      uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
-  int GetCachedSize() const final { return _cached_size_.Get(); }
-
-  private:
-  void SharedCtor();
-  void SharedDtor();
-  void SetCachedSize(int size) const final;
-  void InternalSwap(PChannelInfo* other);
-
-  private:
-  friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
-  static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
-    return "Protocol.PChannelInfo";
-  }
-  protected:
-  explicit PChannelInfo(::PROTOBUF_NAMESPACE_ID::Arena* arena,
-                       bool is_message_owned = false);
-  public:
-
-  static const ClassData _class_data_;
-  const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*GetClassData() const final;
-
-  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
-
-  // nested types ----------------------------------------------------
-
-  // accessors -------------------------------------------------------
-
-  enum : int {
-    kChannelsFieldNumber = 2,
-    kChannelCountFieldNumber = 1,
-  };
-  // repeated .Protocol.PChannel channels = 2;
-  int channels_size() const;
-  private:
-  int _internal_channels_size() const;
-  public:
-  void clear_channels();
-  ::Protocol::PChannel* mutable_channels(int index);
-  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::Protocol::PChannel >*
-      mutable_channels();
-  private:
-  const ::Protocol::PChannel& _internal_channels(int index) const;
-  ::Protocol::PChannel* _internal_add_channels();
-  public:
-  const ::Protocol::PChannel& channels(int index) const;
-  ::Protocol::PChannel* add_channels();
-  const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::Protocol::PChannel >&
-      channels() const;
-
-  // int32 channelCount = 1;
-  void clear_channelcount();
-  int32_t channelcount() const;
-  void set_channelcount(int32_t value);
-  private:
-  int32_t _internal_channelcount() const;
-  void _internal_set_channelcount(int32_t value);
-  public:
-
-  // @@protoc_insertion_point(class_scope:Protocol.PChannelInfo)
- private:
-  class _Internal;
-
-  template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
-  typedef void InternalArenaConstructable_;
-  typedef void DestructorSkippable_;
-  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::Protocol::PChannel > channels_;
-  int32_t channelcount_;
-  mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
-  friend struct ::TableStruct_Struct_2eproto;
-};
-// -------------------------------------------------------------------
-
 class PRoom final :
     public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:Protocol.PRoom) */ {
  public:
@@ -461,7 +290,7 @@ class PRoom final :
                &_PRoom_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    2;
+    1;
 
   friend void swap(PRoom& a, PRoom& b) {
     a.Swap(&b);
@@ -649,169 +478,6 @@ class PRoom final :
 };
 // -------------------------------------------------------------------
 
-class PLobbyInfo final :
-    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:Protocol.PLobbyInfo) */ {
- public:
-  inline PLobbyInfo() : PLobbyInfo(nullptr) {}
-  ~PLobbyInfo() override;
-  explicit PROTOBUF_CONSTEXPR PLobbyInfo(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
-
-  PLobbyInfo(const PLobbyInfo& from);
-  PLobbyInfo(PLobbyInfo&& from) noexcept
-    : PLobbyInfo() {
-    *this = ::std::move(from);
-  }
-
-  inline PLobbyInfo& operator=(const PLobbyInfo& from) {
-    CopyFrom(from);
-    return *this;
-  }
-  inline PLobbyInfo& operator=(PLobbyInfo&& from) noexcept {
-    if (this == &from) return *this;
-    if (GetOwningArena() == from.GetOwningArena()
-  #ifdef PROTOBUF_FORCE_COPY_IN_MOVE
-        && GetOwningArena() != nullptr
-  #endif  // !PROTOBUF_FORCE_COPY_IN_MOVE
-    ) {
-      InternalSwap(&from);
-    } else {
-      CopyFrom(from);
-    }
-    return *this;
-  }
-
-  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* descriptor() {
-    return GetDescriptor();
-  }
-  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* GetDescriptor() {
-    return default_instance().GetMetadata().descriptor;
-  }
-  static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
-    return default_instance().GetMetadata().reflection;
-  }
-  static const PLobbyInfo& default_instance() {
-    return *internal_default_instance();
-  }
-  static inline const PLobbyInfo* internal_default_instance() {
-    return reinterpret_cast<const PLobbyInfo*>(
-               &_PLobbyInfo_default_instance_);
-  }
-  static constexpr int kIndexInFileMessages =
-    3;
-
-  friend void swap(PLobbyInfo& a, PLobbyInfo& b) {
-    a.Swap(&b);
-  }
-  inline void Swap(PLobbyInfo* other) {
-    if (other == this) return;
-  #ifdef PROTOBUF_FORCE_COPY_IN_SWAP
-    if (GetOwningArena() != nullptr &&
-        GetOwningArena() == other->GetOwningArena()) {
-   #else  // PROTOBUF_FORCE_COPY_IN_SWAP
-    if (GetOwningArena() == other->GetOwningArena()) {
-  #endif  // !PROTOBUF_FORCE_COPY_IN_SWAP
-      InternalSwap(other);
-    } else {
-      ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
-    }
-  }
-  void UnsafeArenaSwap(PLobbyInfo* other) {
-    if (other == this) return;
-    GOOGLE_DCHECK(GetOwningArena() == other->GetOwningArena());
-    InternalSwap(other);
-  }
-
-  // implements Message ----------------------------------------------
-
-  PLobbyInfo* New(::PROTOBUF_NAMESPACE_ID::Arena* arena = nullptr) const final {
-    return CreateMaybeMessage<PLobbyInfo>(arena);
-  }
-  using ::PROTOBUF_NAMESPACE_ID::Message::CopyFrom;
-  void CopyFrom(const PLobbyInfo& from);
-  using ::PROTOBUF_NAMESPACE_ID::Message::MergeFrom;
-  void MergeFrom(const PLobbyInfo& from);
-  private:
-  static void MergeImpl(::PROTOBUF_NAMESPACE_ID::Message* to, const ::PROTOBUF_NAMESPACE_ID::Message& from);
-  public:
-  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
-  bool IsInitialized() const final;
-
-  size_t ByteSizeLong() const final;
-  const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
-  uint8_t* _InternalSerialize(
-      uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
-  int GetCachedSize() const final { return _cached_size_.Get(); }
-
-  private:
-  void SharedCtor();
-  void SharedDtor();
-  void SetCachedSize(int size) const final;
-  void InternalSwap(PLobbyInfo* other);
-
-  private:
-  friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
-  static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
-    return "Protocol.PLobbyInfo";
-  }
-  protected:
-  explicit PLobbyInfo(::PROTOBUF_NAMESPACE_ID::Arena* arena,
-                       bool is_message_owned = false);
-  public:
-
-  static const ClassData _class_data_;
-  const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*GetClassData() const final;
-
-  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
-
-  // nested types ----------------------------------------------------
-
-  // accessors -------------------------------------------------------
-
-  enum : int {
-    kRoomsFieldNumber = 2,
-    kRoomCountFieldNumber = 1,
-  };
-  // repeated .Protocol.PRoom rooms = 2;
-  int rooms_size() const;
-  private:
-  int _internal_rooms_size() const;
-  public:
-  void clear_rooms();
-  ::Protocol::PRoom* mutable_rooms(int index);
-  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::Protocol::PRoom >*
-      mutable_rooms();
-  private:
-  const ::Protocol::PRoom& _internal_rooms(int index) const;
-  ::Protocol::PRoom* _internal_add_rooms();
-  public:
-  const ::Protocol::PRoom& rooms(int index) const;
-  ::Protocol::PRoom* add_rooms();
-  const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::Protocol::PRoom >&
-      rooms() const;
-
-  // int32 roomCount = 1;
-  void clear_roomcount();
-  int32_t roomcount() const;
-  void set_roomcount(int32_t value);
-  private:
-  int32_t _internal_roomcount() const;
-  void _internal_set_roomcount(int32_t value);
-  public:
-
-  // @@protoc_insertion_point(class_scope:Protocol.PLobbyInfo)
- private:
-  class _Internal;
-
-  template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
-  typedef void InternalArenaConstructable_;
-  typedef void DestructorSkippable_;
-  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::Protocol::PRoom > rooms_;
-  int32_t roomcount_;
-  mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
-  friend struct ::TableStruct_Struct_2eproto;
-};
-// -------------------------------------------------------------------
-
 class PPlayer final :
     public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:Protocol.PPlayer) */ {
  public:
@@ -860,7 +526,7 @@ class PPlayer final :
                &_PPlayer_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    4;
+    2;
 
   friend void swap(PPlayer& a, PPlayer& b) {
     a.Swap(&b);
@@ -1145,7 +811,7 @@ class PWorldPos final :
                &_PWorldPos_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    5;
+    3;
 
   friend void swap(PWorldPos& a, PWorldPos& b) {
     a.Swap(&b);
@@ -1299,7 +965,7 @@ class PCellPos final :
                &_PCellPos_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    6;
+    4;
 
   friend void swap(PCellPos& a, PCellPos& b) {
     a.Swap(&b);
@@ -1453,7 +1119,7 @@ class PPositionInfo final :
                &_PPositionInfo_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    7;
+    5;
 
   friend void swap(PPositionInfo& a, PPositionInfo& b) {
     a.Swap(&b);
@@ -1666,70 +1332,6 @@ inline void PChannel::_internal_set_currentplayercount(int32_t value) {
 inline void PChannel::set_currentplayercount(int32_t value) {
   _internal_set_currentplayercount(value);
   // @@protoc_insertion_point(field_set:Protocol.PChannel.currentPlayerCount)
-}
-
-// -------------------------------------------------------------------
-
-// PChannelInfo
-
-// int32 channelCount = 1;
-inline void PChannelInfo::clear_channelcount() {
-  channelcount_ = 0;
-}
-inline int32_t PChannelInfo::_internal_channelcount() const {
-  return channelcount_;
-}
-inline int32_t PChannelInfo::channelcount() const {
-  // @@protoc_insertion_point(field_get:Protocol.PChannelInfo.channelCount)
-  return _internal_channelcount();
-}
-inline void PChannelInfo::_internal_set_channelcount(int32_t value) {
-  
-  channelcount_ = value;
-}
-inline void PChannelInfo::set_channelcount(int32_t value) {
-  _internal_set_channelcount(value);
-  // @@protoc_insertion_point(field_set:Protocol.PChannelInfo.channelCount)
-}
-
-// repeated .Protocol.PChannel channels = 2;
-inline int PChannelInfo::_internal_channels_size() const {
-  return channels_.size();
-}
-inline int PChannelInfo::channels_size() const {
-  return _internal_channels_size();
-}
-inline void PChannelInfo::clear_channels() {
-  channels_.Clear();
-}
-inline ::Protocol::PChannel* PChannelInfo::mutable_channels(int index) {
-  // @@protoc_insertion_point(field_mutable:Protocol.PChannelInfo.channels)
-  return channels_.Mutable(index);
-}
-inline ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::Protocol::PChannel >*
-PChannelInfo::mutable_channels() {
-  // @@protoc_insertion_point(field_mutable_list:Protocol.PChannelInfo.channels)
-  return &channels_;
-}
-inline const ::Protocol::PChannel& PChannelInfo::_internal_channels(int index) const {
-  return channels_.Get(index);
-}
-inline const ::Protocol::PChannel& PChannelInfo::channels(int index) const {
-  // @@protoc_insertion_point(field_get:Protocol.PChannelInfo.channels)
-  return _internal_channels(index);
-}
-inline ::Protocol::PChannel* PChannelInfo::_internal_add_channels() {
-  return channels_.Add();
-}
-inline ::Protocol::PChannel* PChannelInfo::add_channels() {
-  ::Protocol::PChannel* _add = _internal_add_channels();
-  // @@protoc_insertion_point(field_add:Protocol.PChannelInfo.channels)
-  return _add;
-}
-inline const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::Protocol::PChannel >&
-PChannelInfo::channels() const {
-  // @@protoc_insertion_point(field_list:Protocol.PChannelInfo.channels)
-  return channels_;
 }
 
 // -------------------------------------------------------------------
@@ -1951,70 +1553,6 @@ inline const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::Protocol::PPlayer >&
 PRoom::playerlist() const {
   // @@protoc_insertion_point(field_list:Protocol.PRoom.playerList)
   return playerlist_;
-}
-
-// -------------------------------------------------------------------
-
-// PLobbyInfo
-
-// int32 roomCount = 1;
-inline void PLobbyInfo::clear_roomcount() {
-  roomcount_ = 0;
-}
-inline int32_t PLobbyInfo::_internal_roomcount() const {
-  return roomcount_;
-}
-inline int32_t PLobbyInfo::roomcount() const {
-  // @@protoc_insertion_point(field_get:Protocol.PLobbyInfo.roomCount)
-  return _internal_roomcount();
-}
-inline void PLobbyInfo::_internal_set_roomcount(int32_t value) {
-  
-  roomcount_ = value;
-}
-inline void PLobbyInfo::set_roomcount(int32_t value) {
-  _internal_set_roomcount(value);
-  // @@protoc_insertion_point(field_set:Protocol.PLobbyInfo.roomCount)
-}
-
-// repeated .Protocol.PRoom rooms = 2;
-inline int PLobbyInfo::_internal_rooms_size() const {
-  return rooms_.size();
-}
-inline int PLobbyInfo::rooms_size() const {
-  return _internal_rooms_size();
-}
-inline void PLobbyInfo::clear_rooms() {
-  rooms_.Clear();
-}
-inline ::Protocol::PRoom* PLobbyInfo::mutable_rooms(int index) {
-  // @@protoc_insertion_point(field_mutable:Protocol.PLobbyInfo.rooms)
-  return rooms_.Mutable(index);
-}
-inline ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::Protocol::PRoom >*
-PLobbyInfo::mutable_rooms() {
-  // @@protoc_insertion_point(field_mutable_list:Protocol.PLobbyInfo.rooms)
-  return &rooms_;
-}
-inline const ::Protocol::PRoom& PLobbyInfo::_internal_rooms(int index) const {
-  return rooms_.Get(index);
-}
-inline const ::Protocol::PRoom& PLobbyInfo::rooms(int index) const {
-  // @@protoc_insertion_point(field_get:Protocol.PLobbyInfo.rooms)
-  return _internal_rooms(index);
-}
-inline ::Protocol::PRoom* PLobbyInfo::_internal_add_rooms() {
-  return rooms_.Add();
-}
-inline ::Protocol::PRoom* PLobbyInfo::add_rooms() {
-  ::Protocol::PRoom* _add = _internal_add_rooms();
-  // @@protoc_insertion_point(field_add:Protocol.PLobbyInfo.rooms)
-  return _add;
-}
-inline const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::Protocol::PRoom >&
-PLobbyInfo::rooms() const {
-  // @@protoc_insertion_point(field_list:Protocol.PLobbyInfo.rooms)
-  return rooms_;
 }
 
 // -------------------------------------------------------------------
@@ -2656,10 +2194,6 @@ inline void PPositionInfo::set_allocated_cellpos(::Protocol::PCellPos* cellpos) 
 #ifdef __GNUC__
   #pragma GCC diagnostic pop
 #endif  // __GNUC__
-// -------------------------------------------------------------------
-
-// -------------------------------------------------------------------
-
 // -------------------------------------------------------------------
 
 // -------------------------------------------------------------------

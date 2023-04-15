@@ -85,16 +85,16 @@ public class UI_LobbyScene : UI_Scene
         int idx = 0;
         for (int i = _roomPage * 6; i < (_roomPage + 1) * 6; i++)
         {
-            if (i >= Managers.Game.LobbyInfo.RoomCount)
+            if (i >= Managers.Game.Rooms.Count)
             {
                 Managers.UI.MakeSubItem<UI_RoomDummySubItem>(Get<GameObject>((int)GameObjects.RoomList).transform);
             }
             else
             {
-                _roomIds.Add(Managers.Game.LobbyInfo.Rooms[i].RoomId);
-                _roomNames.Add(Managers.Game.LobbyInfo.Rooms[i].RoomName);
-                _roomCurrentPlayerCounts.Add(Managers.Game.LobbyInfo.Rooms[i].CurrentPlayerCount);
-                _roomMaxCurrentPlayerCounts.Add(Managers.Game.LobbyInfo.Rooms[i].MaxPlayerCount);
+                _roomIds.Add(Managers.Game.Rooms[i].RoomId);
+                _roomNames.Add(Managers.Game.Rooms[i].RoomName);
+                _roomCurrentPlayerCounts.Add(Managers.Game.Rooms[i].CurrentPlayerCount);
+                _roomMaxCurrentPlayerCounts.Add(Managers.Game.Rooms[i].MaxPlayerCount);
                 Managers.UI.MakeSubItem<UI_RoomSubItem>(Get<GameObject>((int)GameObjects.RoomList).transform, null,
                     (room)=>
                     {
@@ -136,7 +136,7 @@ public class UI_LobbyScene : UI_Scene
     }
     void OnClickRightButton()
     {
-        int maxPageCount = Managers.Game.LobbyInfo.RoomCount / 6;
+        int maxPageCount = Managers.Game.Rooms.Count / 6;
         _roomPage = Mathf.Min(_roomPage + 1, maxPageCount);
         RefreshLobbyPage();
     }

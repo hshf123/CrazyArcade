@@ -1,13 +1,12 @@
 #pragma once
 
-using RoomRef = shared_ptr<class Room>; 
+using RoomRef = shared_ptr<class Room>;
+using ChannelInfo = Protocol::PChannel;
 
 // RoomManager °â¿ë
 class Channel
 {
 public:
-	Channel(int64 id, int32 maxPlayerCount);
-
 	void AddRoom(int64 playerId, const string& roomName, int32 maxPlayerCount = 8);
 	void RemoveRoom(int32 roomId);
 	RoomRef FindRoom(int32 roomId);
@@ -17,12 +16,14 @@ public:
 	PlayerRef FindPlayer(int64 playerId);
 
 	void CopyChannelProtocol(Protocol::PChannel* pkt);
-	Protocol::PLobbyInfo* GetLobbyInfoProtocol();
+	Protocol::PChannel* GetChannelProtocol();
+	Vector<Protocol::PRoom> GetRoomsProtocol();
 
 public:
 	void Broadcast(SendBufferRef sendBuffer);
 
-	int64 GetId() { return _id; }
+public:
+	ChannelInfo ChannelInfo;
 
 private:
 	USE_LOCK;
@@ -31,8 +32,4 @@ private:
 
 private:
 	int32 _increaseId = 1;
-
-	int32 _id;
-	int32 _maxPlayerCount = 0;
-	int32 _currentPlayerCount = 0;
 };

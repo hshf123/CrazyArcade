@@ -19,14 +19,14 @@ public class PacketHandler
         }
 
         Managers.Scene.ChangeScene<ChannelScene>(Define.SceneType.ChannelScene);
-        Managers.Game.ChannelInfo = pkt.ChannelInfo;
+        Managers.Game.Channels = pkt.Channels;
         Managers.Game.PlayerID = pkt.PlayerId;
     }
 
-    public static void S_CHANNELCHOICHandler(PacketSession session, IMessage packet)
+    public static void S_CHANNELCHOICEHandler(PacketSession session, IMessage packet)
     {
         ServerSession serverSession = session as ServerSession;
-        S_CHANNELCHOIC pkt = packet as S_CHANNELCHOIC;
+        S_CHANNELCHOICE pkt = packet as S_CHANNELCHOICE;
 
         if (pkt.Success == false)
         {
@@ -36,7 +36,7 @@ public class PacketHandler
 
         Managers.Scene.ChangeScene<LobbyScene>(Define.SceneType.LobbyScene);
         Managers.Game.ChannelID = pkt.ChannelId;
-        Managers.Game.LobbyInfo = pkt.LobbyInfo;
+        Managers.Game.Rooms = pkt.Rooms;
     }
 
     public static void S_CHANNELCHATHandler(PacketSession session, IMessage packet)
@@ -55,7 +55,7 @@ public class PacketHandler
         if (pkt.Success == false)
             return;
 
-        Managers.Game.LobbyInfo = null;
+        Managers.Game.Rooms = null;
         Managers.Game.LobbyUI = null;
 
         Managers.Game.Room = pkt.Room;
@@ -68,7 +68,7 @@ public class PacketHandler
         ServerSession serverSession = session as ServerSession;
         S_CHANNELUPDATE pkt = packet as S_CHANNELUPDATE;
 
-        Managers.Game.LobbyInfo = pkt.LobbyInfo;
+        Managers.Game.Rooms = pkt.Rooms;
         Managers.Game.LobbyUI.RefreshLobbyPage();
     }
 
@@ -81,7 +81,7 @@ public class PacketHandler
         if (pkt.Success == false)
             return;
 
-        Managers.Game.LobbyInfo = null;
+        Managers.Game.Rooms = null;
         Managers.Game.LobbyUI = null;
 
         Managers.Game.Room = pkt.Room;
@@ -97,7 +97,7 @@ public class PacketHandler
         if (Managers.Game.Room.RoomId != pkt.Room.RoomId)
             return;
 
-        Managers.Game.LobbyInfo = null;
+        Managers.Game.Rooms = null;
         Managers.Game.LobbyUI = null;
 
         Managers.Game.Room = pkt.Room;

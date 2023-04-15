@@ -16,21 +16,21 @@ message C_LOGIN
 message S_LOGIN
 {
 	bool success = 1;
-	PChannelInfo channelInfo = 2;
+	repeated PChannel channels = 2;
 	int64 playerId = 3;
 }
 
-message C_CHANNELCHOIC
+message C_CHANNELCHOICE
 {
 	int32 channelId = 1;
 	int64 playerId = 2;
 }
 
-message S_CHANNELCHOIC
+message S_CHANNELCHOICE
 {
 	bool success = 1;
 	int32 channelId = 2;
-	PLobbyInfo lobbyInfo = 3;
+	repeated PRoom rooms = 3;
 }
 
 message C_CHANNELCHAT
@@ -61,7 +61,7 @@ message S_MAKEROOM
 
 message S_CHANNELUPDATE
 {
-	PLobbyInfo lobbyInfo = 1;
+	repeated PRoom rooms = 1;
 }
 
 message C_ROOMENTER
@@ -110,5 +110,6 @@ message C_MOVE
 
 message S_MOVE
 {
-
+	PPlayer player = 1;
+	PPositionInfo positionInfo = 2;
 }

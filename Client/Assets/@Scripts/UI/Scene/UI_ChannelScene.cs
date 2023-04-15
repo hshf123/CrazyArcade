@@ -24,17 +24,17 @@ public class UI_ChannelScene : UI_Scene
 
         _subItems = new List<UI_ChannelSubItem>();
 
-        for (int i = 0; i < Managers.Game.ChannelInfo.ChannelCount; i++)
+        for (int i = 0; i < Managers.Game.Channels.Count; i++)
         {
             Managers.UI.MakeSubItem<UI_ChannelSubItem>(Get<GameObject>((int)GameObjects.ChannelItem).transform, null,
                 (subItem) =>
                 {
-                    subItem.Channel = Managers.Game.ChannelInfo.Channels[_subItems.Count];
+                    subItem.Channel = Managers.Game.Channels[_subItems.Count];
                     _subItems.Add(subItem);
                     subItem.name = $"{subItem.name}_{_subItems.Count}";
 
-                    if (_subItems.Count == Managers.Game.ChannelInfo.ChannelCount)
-                        Managers.Game.ChannelInfo = null;
+                    if (_subItems.Count == Managers.Game.Channels.Count)
+                        Managers.Game.Channels = null;
                 });
         }
 

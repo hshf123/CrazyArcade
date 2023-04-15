@@ -86,30 +86,41 @@ bool Handle_C_LOGIN(PacketSessionRef& session, Protocol::C_LOGIN& pkt)
 		dbConn->Fetch();
 		GDBConnectionPool->Push(dbConn);
 
-		PlayerRef player = MakeShared<Player>(
-			clientSession,
-			outName,
-			outPlayerID,
-			level,
-			exp,
-			Managers::GetInstance()->GenerateID(outPlayerID)
-		);
+		PlayerRef player = MakeShared<Player>();
+		player->PlayerInfo.set_playerid(Utils::ConvertWStringToString(outPlayerID));
+		player->PlayerInfo.set_name(Utils::ConvertWStringToString(outName));
+		player->PlayerInfo.set_level(level);
+		player->PlayerInfo.set_exp(exp);
+		player->PlayerInfo.set_id(Managers::GetInstance()->GenerateID(outName));
+		player->PlayerInfo.set_channelid(-1);
+		player->PlayerInfo.set_roomid(-1);
+		player->PlayerInfo.set_roomidx(-1);
+		player->PlayerInfo.set_ready(false);
+		player->PlayerInfo.set_speed(2.f);
+		player->PlayerInfo.set_maxbombcount(1);
+		player->PlayerInfo.set_bombcount(1);
+		player->PlayerInfo.set_bombrange(1);
+
 		clientSession->MyPlayer = player;
+		player->SetClientSession(clientSession);
 		ChannelManager::GetInstance()->AddPlayer(player);
 	}
 
 	Protocol::S_LOGIN loginPkt;
 	loginPkt.set_success(true);
-	Protocol::PChannelInfo* channelInfo = ChannelManager::GetInstance()->GetChannelInfoProtocol();
-	loginPkt.set_allocated_channelinfo(channelInfo);
-	loginPkt.set_playerid(clientSession->MyPlayer.lock()->GetId());
+	for (Protocol::PChannel c : ChannelManager::GetInstance()->GetChannelsProtocol())
+	{
+		Protocol::PChannel* channel = loginPkt.add_channels();
+		channel->CopyFrom(c);
+	}
+	loginPkt.set_playerid(clientSession->MyPlayer.lock()->PlayerInfo.id());
 	SendBufferRef sendBuffer = ClientPacketHandler::MakeSendBuffer(loginPkt);
 	clientSession->Send(sendBuffer);
 
 	return true;
 }
 
-bool Handle_C_CHANNELCHOIC(PacketSessionRef& session, Protocol::C_CHANNELCHOIC& pkt)
+bool Handle_C_CHANNELCHOICE(PacketSessionRef& session, Protocol::C_CHANNELCHOICE& pkt)
 {
 	// success false, 입장가능한지 체크
 	ClientSessionRef clientSession = static_pointer_cast<ClientSession>(session);
@@ -125,12 +136,14 @@ bool Handle_C_CHANNELCHOIC(PacketSessionRef& session, Protocol::C_CHANNELCHOIC& 
 	channel->InsertPlayer(player);
 	ChannelManager::GetInstance()->RemovePlayer(pkt.playerid());
 
-	Protocol::S_CHANNELCHOIC channelChoicePkt;
+	Protocol::S_CHANNELCHOICE channelChoicePkt;
 	channelChoicePkt.set_success(true);
-	channelChoicePkt.set_channelid(channel->GetId());
-	Protocol::PLobbyInfo* lobbyInfo = channel->GetLobbyInfoProtocol();
-	channelChoicePkt.set_allocated_lobbyinfo(lobbyInfo);
-
+	channelChoicePkt.set_channelid(channel->ChannelInfo.channelid());
+	for (Protocol::PRoom r : channel->GetRoomsProtocol())
+	{
+		Protocol::PRoom* room = channelChoicePkt.add_rooms();
+		room->CopyFrom(r);
+	}
 	SendBufferRef sendBuffer = ClientPacketHandler::MakeSendBuffer(channelChoicePkt);
 	clientSession->Send(sendBuffer);
 
@@ -150,7 +163,7 @@ bool Handle_C_CHANNELCHAT(PacketSessionRef& session, Protocol::C_CHANNELCHAT& pk
 		return false;
 
 	Protocol::S_CHANNELCHAT chatPkt;
-	chatPkt.set_name(player->GetName());
+	chatPkt.set_name(player->PlayerInfo.name());
 	chatPkt.set_chat(pkt.chat());
 	SendBufferRef sendBuffer = ClientPacketHandler::MakeSendBuffer(chatPkt);
 	channel->Broadcast(sendBuffer);
@@ -210,8 +223,11 @@ bool Handle_C_ROOMENTER(PacketSessionRef& session, Protocol::C_ROOMENTER& pkt)
 	{
 		// 해당 채널 로비에 broadcast
 		Protocol::S_CHANNELUPDATE channelUpdatePkt;
-		Protocol::PLobbyInfo* lobbyInfo = channel->GetLobbyInfoProtocol();
-		channelUpdatePkt.set_allocated_lobbyinfo(lobbyInfo);
+		for (Protocol::PRoom r : channel->GetRoomsProtocol())
+		{
+			Protocol::PRoom* room = channelUpdatePkt.add_rooms();
+			room->CopyFrom(r);
+		}
 		SendBufferRef sendBuffer = ClientPacketHandler::MakeSendBuffer(channelUpdatePkt);
 		channel->Broadcast(sendBuffer);
 	}
@@ -227,24 +243,24 @@ bool Handle_C_ROOMREADY(PacketSessionRef& session, Protocol::C_ROOMREADY& pkt)
 	if (player == nullptr)
 		return false;
 
-	if (player->GetId() != pkt.playerid())
+	if (player->PlayerInfo.id() != pkt.playerid())
 		return false;
 
-	ChannelRef channel = ChannelManager::GetInstance()->FindChannel(player->GetChannelID());
+	ChannelRef channel = ChannelManager::GetInstance()->FindChannel(player->PlayerInfo.channelid());
 	if (channel == nullptr)
 		return false;
 
-	if (channel->GetId() != pkt.channelid())
+	if (channel->ChannelInfo.channelid() != pkt.channelid())
 		return false;
 
-	RoomRef room = channel->FindRoom(player->GetRoomID());
+	RoomRef room = channel->FindRoom(player->PlayerInfo.roomid());
 	if (room == nullptr)
 		return false;
 
 	if (room->GetId() != pkt.roomid())
 		return false;
 
-	player->SetReady();
+	player->PlayerInfo.set_ready(!player->PlayerInfo.ready());
 	Protocol::S_ROOMUPDATE roomUpdatePkt;
 	roomUpdatePkt.set_allocated_room(room->GetRoomProtocol());
 	SendBufferRef sendBuffer = ClientPacketHandler::MakeSendBuffer(roomUpdatePkt);
@@ -261,24 +277,24 @@ bool Handle_C_ROOMSTART(PacketSessionRef& session, Protocol::C_ROOMSTART& pkt)
 	if (player == nullptr)
 		return false;
 
-	if (player->GetId() != pkt.playerid())
+	if (player->PlayerInfo.id() != pkt.playerid())
 		return false;
 
-	ChannelRef channel = ChannelManager::GetInstance()->FindChannel(player->GetChannelID());
+	ChannelRef channel = ChannelManager::GetInstance()->FindChannel(player->PlayerInfo.channelid());
 	if (channel == nullptr)
 		return false;
 
-	if (channel->GetId() != pkt.channelid())
+	if (channel->ChannelInfo.channelid() != pkt.channelid())
 		return false;
 
-	RoomRef room = channel->FindRoom(player->GetRoomID());
+	RoomRef room = channel->FindRoom(player->PlayerInfo.roomid());
 	if (room == nullptr)
 		return false;
 
 	if (room->GetId() != pkt.roomid())
 		return false;
 
-	if (room->GetLeader()->GetId() != pkt.playerid())
+	if (room->GetLeader()->PlayerInfo.id() != pkt.playerid())
 		return false;
 
 	if (room->CanGameStart() == false)
@@ -289,5 +305,40 @@ bool Handle_C_ROOMSTART(PacketSessionRef& session, Protocol::C_ROOMSTART& pkt)
 
 bool Handle_C_MOVE(PacketSessionRef& session, Protocol::C_MOVE& pkt)
 {
+	ClientSessionRef clientSession = static_pointer_cast<ClientSession>(session);
+	Protocol::PPlayer playerPkt =  pkt.player();
+	Protocol::PPositionInfo posInfo = pkt.positioninfo();
+
+	wstring log = L"[Log] PLAYERID : ";
+	log += playerPkt.id();
+	log += L" | C_MOVE(";
+	log += pkt.positioninfo().worldpos().posx();
+	log += L", ";
+	log += pkt.positioninfo().worldpos().posy();
+	log += L")";
+	Utils::Log(log);
+
+	PlayerRef player = clientSession->MyPlayer.lock();
+	if (player == nullptr)
+		return false;
+
+	ChannelRef channel = ChannelManager::GetInstance()->FindChannel(player->PlayerInfo.channelid());
+	if (channel == nullptr)
+		return false;
+
+	RoomRef room = channel->FindRoom(player->PlayerInfo.roomid());
+	if (room == nullptr)
+		return false;
+
+	// TODO : 검증
+
+	player->PosInfo.CopyFrom(pkt.positioninfo());
+
+	Protocol::S_MOVE movePkt;
+	movePkt.set_allocated_player(player->GetPlayerProtocol());
+	movePkt.set_allocated_positioninfo(player->GetPositionInfoProtocol());
+	SendBufferRef sendBuffer = ClientPacketHandler::MakeSendBuffer(movePkt);
+	room->Broadcast(sendBuffer);
+
 	return true;
 }

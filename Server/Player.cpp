@@ -2,29 +2,29 @@
 #include "Player.h"
 #include "ClientSession.h"
 
-Player::Player(ClientSessionRef clientSession, wstring name, wstring playerid, int32 level, float exp, int64 id)
-	: _ownerSession(clientSession), _name(name), _playerid(playerid), _level(level), _exp(exp), _id(id)
-{
-
-}
 
 void Player::CopyPlayerProtocol(Protocol::PPlayer* pkt)
 {
-	READ_LOCK;
-	pkt->set_playerid(GetPlayerId());
-	pkt->set_name(GetName());
-	pkt->set_level(_level);
-	pkt->set_exp(_exp);
-	pkt->set_id(_id);
-	pkt->set_channelid(_channelId);
-	pkt->set_roomid(_roomId);
-	pkt->set_roomidx(_roomIdx);
-	pkt->set_ready(_ready);
+	pkt->CopyFrom(PlayerInfo);
+}
 
-	pkt->set_speed(_speed);
-	pkt->set_maxbombcount(_maxBombCount);
-	pkt->set_bombcount(_bombCount);
-	pkt->set_bombrange(_bombRange);
+Protocol::PPlayer* Player::GetPlayerProtocol()
+{
+	Protocol::PPlayer* pkt = new Protocol::PPlayer();
+	pkt->CopyFrom(PlayerInfo);
+	return pkt;
+}
+
+void Player::CopyPositionInfoProtocol(Protocol::PPositionInfo* pkt)
+{
+	pkt->CopyFrom(PosInfo);
+}
+
+Protocol::PPositionInfo* Player::GetPositionInfoProtocol()
+{
+	Protocol::PPositionInfo* pkt = new Protocol::PPositionInfo();
+	pkt->CopyFrom(PosInfo);
+	return pkt;
 }
 
 void Player::Send(SendBufferRef sendBuffer)

@@ -35,19 +35,6 @@ struct PChannelDefaultTypeInternal {
   };
 };
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 PChannelDefaultTypeInternal _PChannel_default_instance_;
-PROTOBUF_CONSTEXPR PChannelInfo::PChannelInfo(
-    ::_pbi::ConstantInitialized)
-  : channels_()
-  , channelcount_(0){}
-struct PChannelInfoDefaultTypeInternal {
-  PROTOBUF_CONSTEXPR PChannelInfoDefaultTypeInternal()
-      : _instance(::_pbi::ConstantInitialized{}) {}
-  ~PChannelInfoDefaultTypeInternal() {}
-  union {
-    PChannelInfo _instance;
-  };
-};
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 PChannelInfoDefaultTypeInternal _PChannelInfo_default_instance_;
 PROTOBUF_CONSTEXPR PRoom::PRoom(
     ::_pbi::ConstantInitialized)
   : benlist_()
@@ -66,19 +53,6 @@ struct PRoomDefaultTypeInternal {
   };
 };
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 PRoomDefaultTypeInternal _PRoom_default_instance_;
-PROTOBUF_CONSTEXPR PLobbyInfo::PLobbyInfo(
-    ::_pbi::ConstantInitialized)
-  : rooms_()
-  , roomcount_(0){}
-struct PLobbyInfoDefaultTypeInternal {
-  PROTOBUF_CONSTEXPR PLobbyInfoDefaultTypeInternal()
-      : _instance(::_pbi::ConstantInitialized{}) {}
-  ~PLobbyInfoDefaultTypeInternal() {}
-  union {
-    PLobbyInfo _instance;
-  };
-};
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 PLobbyInfoDefaultTypeInternal _PLobbyInfo_default_instance_;
 PROTOBUF_CONSTEXPR PPlayer::PPlayer(
     ::_pbi::ConstantInitialized)
   : playerid_(&::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized{})
@@ -147,7 +121,7 @@ struct PPositionInfoDefaultTypeInternal {
 };
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 PPositionInfoDefaultTypeInternal _PPositionInfo_default_instance_;
 }  // namespace Protocol
-static ::_pb::Metadata file_level_metadata_Struct_2eproto[8];
+static ::_pb::Metadata file_level_metadata_Struct_2eproto[6];
 static constexpr ::_pb::EnumDescriptor const** file_level_enum_descriptors_Struct_2eproto = nullptr;
 static constexpr ::_pb::ServiceDescriptor const** file_level_service_descriptors_Struct_2eproto = nullptr;
 
@@ -162,14 +136,6 @@ const uint32_t TableStruct_Struct_2eproto::offsets[] PROTOBUF_SECTION_VARIABLE(p
   PROTOBUF_FIELD_OFFSET(::Protocol::PChannel, maxplayercount_),
   PROTOBUF_FIELD_OFFSET(::Protocol::PChannel, currentplayercount_),
   ~0u,  // no _has_bits_
-  PROTOBUF_FIELD_OFFSET(::Protocol::PChannelInfo, _internal_metadata_),
-  ~0u,  // no _extensions_
-  ~0u,  // no _oneof_case_
-  ~0u,  // no _weak_field_map_
-  ~0u,  // no _inlined_string_donated_
-  PROTOBUF_FIELD_OFFSET(::Protocol::PChannelInfo, channelcount_),
-  PROTOBUF_FIELD_OFFSET(::Protocol::PChannelInfo, channels_),
-  ~0u,  // no _has_bits_
   PROTOBUF_FIELD_OFFSET(::Protocol::PRoom, _internal_metadata_),
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
@@ -182,14 +148,6 @@ const uint32_t TableStruct_Struct_2eproto::offsets[] PROTOBUF_SECTION_VARIABLE(p
   PROTOBUF_FIELD_OFFSET(::Protocol::PRoom, currentplayercount_),
   PROTOBUF_FIELD_OFFSET(::Protocol::PRoom, benlist_),
   PROTOBUF_FIELD_OFFSET(::Protocol::PRoom, playerlist_),
-  ~0u,  // no _has_bits_
-  PROTOBUF_FIELD_OFFSET(::Protocol::PLobbyInfo, _internal_metadata_),
-  ~0u,  // no _extensions_
-  ~0u,  // no _oneof_case_
-  ~0u,  // no _weak_field_map_
-  ~0u,  // no _inlined_string_donated_
-  PROTOBUF_FIELD_OFFSET(::Protocol::PLobbyInfo, roomcount_),
-  PROTOBUF_FIELD_OFFSET(::Protocol::PLobbyInfo, rooms_),
   ~0u,  // no _has_bits_
   PROTOBUF_FIELD_OFFSET(::Protocol::PPlayer, _internal_metadata_),
   ~0u,  // no _extensions_
@@ -238,20 +196,16 @@ const uint32_t TableStruct_Struct_2eproto::offsets[] PROTOBUF_SECTION_VARIABLE(p
 };
 static const ::_pbi::MigrationSchema schemas[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) = {
   { 0, -1, -1, sizeof(::Protocol::PChannel)},
-  { 9, -1, -1, sizeof(::Protocol::PChannelInfo)},
-  { 17, -1, -1, sizeof(::Protocol::PRoom)},
-  { 30, -1, -1, sizeof(::Protocol::PLobbyInfo)},
-  { 38, -1, -1, sizeof(::Protocol::PPlayer)},
-  { 57, -1, -1, sizeof(::Protocol::PWorldPos)},
-  { 65, -1, -1, sizeof(::Protocol::PCellPos)},
-  { 73, -1, -1, sizeof(::Protocol::PPositionInfo)},
+  { 9, -1, -1, sizeof(::Protocol::PRoom)},
+  { 22, -1, -1, sizeof(::Protocol::PPlayer)},
+  { 41, -1, -1, sizeof(::Protocol::PWorldPos)},
+  { 49, -1, -1, sizeof(::Protocol::PCellPos)},
+  { 57, -1, -1, sizeof(::Protocol::PPositionInfo)},
 };
 
 static const ::_pb::Message* const file_default_instances[] = {
   &::Protocol::_PChannel_default_instance_._instance,
-  &::Protocol::_PChannelInfo_default_instance_._instance,
   &::Protocol::_PRoom_default_instance_._instance,
-  &::Protocol::_PLobbyInfo_default_instance_._instance,
   &::Protocol::_PPlayer_default_instance_._instance,
   &::Protocol::_PWorldPos_default_instance_._instance,
   &::Protocol::_PCellPos_default_instance_._instance,
@@ -262,35 +216,32 @@ const char descriptor_table_protodef_Struct_2eproto[] PROTOBUF_SECTION_VARIABLE(
   "\n\014Struct.proto\022\010Protocol\032\nEnum.proto\"Q\n\010"
   "PChannel\022\021\n\tchannelId\030\001 \001(\005\022\026\n\016maxPlayer"
   "Count\030\002 \001(\005\022\032\n\022currentPlayerCount\030\003 \001(\005\""
-  "J\n\014PChannelInfo\022\024\n\014channelCount\030\001 \001(\005\022$\n"
-  "\010channels\030\002 \003(\0132\022.Protocol.PChannel\"\247\001\n\005"
-  "PRoom\022\016\n\006roomId\030\001 \001(\005\022\020\n\010roomName\030\002 \001(\t\022"
-  "\020\n\010leaderId\030\003 \001(\003\022\026\n\016maxPlayerCount\030\004 \001("
-  "\005\022\032\n\022currentPlayerCount\030\005 \001(\005\022\017\n\007benList"
-  "\030\006 \003(\010\022%\n\nplayerList\030\007 \003(\0132\021.Protocol.PP"
-  "layer\"\?\n\nPLobbyInfo\022\021\n\troomCount\030\001 \001(\005\022\036"
-  "\n\005rooms\030\002 \003(\0132\017.Protocol.PRoom\"\337\001\n\007PPlay"
-  "er\022\020\n\010playerId\030\001 \001(\t\022\014\n\004name\030\002 \001(\t\022\r\n\005le"
-  "vel\030\003 \001(\005\022\013\n\003exp\030\004 \001(\002\022\n\n\002id\030\005 \001(\003\022\021\n\tch"
-  "annelId\030\006 \001(\005\022\016\n\006roomId\030\007 \001(\005\022\017\n\007roomIdx"
-  "\030\010 \001(\005\022\r\n\005ready\030\t \001(\010\022\r\n\005speed\030\n \001(\002\022\024\n\014"
-  "maxBombCount\030\013 \001(\005\022\021\n\tbombCount\030\014 \001(\005\022\021\n"
-  "\tbombRange\030\r \001(\005\"\'\n\tPWorldPos\022\014\n\004posX\030\001 "
-  "\001(\002\022\014\n\004posY\030\002 \001(\002\"&\n\010PCellPos\022\014\n\004posX\030\001 "
-  "\001(\005\022\014\n\004posY\030\002 \001(\005\"\247\001\n\rPPositionInfo\022%\n\005s"
-  "tate\030\001 \001(\0162\026.Protocol.PPlayerState\022#\n\007mo"
-  "veDir\030\002 \001(\0162\022.Protocol.PMoveDir\022%\n\010world"
-  "Pos\030\003 \001(\0132\023.Protocol.PWorldPos\022#\n\007cellPo"
-  "s\030\004 \001(\0132\022.Protocol.PCellPosb\006proto3"
+  "\247\001\n\005PRoom\022\016\n\006roomId\030\001 \001(\005\022\020\n\010roomName\030\002 "
+  "\001(\t\022\020\n\010leaderId\030\003 \001(\003\022\026\n\016maxPlayerCount\030"
+  "\004 \001(\005\022\032\n\022currentPlayerCount\030\005 \001(\005\022\017\n\007ben"
+  "List\030\006 \003(\010\022%\n\nplayerList\030\007 \003(\0132\021.Protoco"
+  "l.PPlayer\"\337\001\n\007PPlayer\022\020\n\010playerId\030\001 \001(\t\022"
+  "\014\n\004name\030\002 \001(\t\022\r\n\005level\030\003 \001(\005\022\013\n\003exp\030\004 \001("
+  "\002\022\n\n\002id\030\005 \001(\003\022\021\n\tchannelId\030\006 \001(\005\022\016\n\006room"
+  "Id\030\007 \001(\005\022\017\n\007roomIdx\030\010 \001(\005\022\r\n\005ready\030\t \001(\010"
+  "\022\r\n\005speed\030\n \001(\002\022\024\n\014maxBombCount\030\013 \001(\005\022\021\n"
+  "\tbombCount\030\014 \001(\005\022\021\n\tbombRange\030\r \001(\005\"\'\n\tP"
+  "WorldPos\022\014\n\004posX\030\001 \001(\002\022\014\n\004posY\030\002 \001(\002\"&\n\010"
+  "PCellPos\022\014\n\004posX\030\001 \001(\005\022\014\n\004posY\030\002 \001(\005\"\247\001\n"
+  "\rPPositionInfo\022%\n\005state\030\001 \001(\0162\026.Protocol"
+  ".PPlayerState\022#\n\007moveDir\030\002 \001(\0162\022.Protoco"
+  "l.PMoveDir\022%\n\010worldPos\030\003 \001(\0132\023.Protocol."
+  "PWorldPos\022#\n\007cellPos\030\004 \001(\0132\022.Protocol.PC"
+  "ellPosb\006proto3"
   ;
 static const ::_pbi::DescriptorTable* const descriptor_table_Struct_2eproto_deps[1] = {
   &::descriptor_table_Enum_2eproto,
 };
 static ::_pbi::once_flag descriptor_table_Struct_2eproto_once;
 const ::_pbi::DescriptorTable descriptor_table_Struct_2eproto = {
-    false, false, 915, descriptor_table_protodef_Struct_2eproto,
+    false, false, 774, descriptor_table_protodef_Struct_2eproto,
     "Struct.proto",
-    &descriptor_table_Struct_2eproto_once, descriptor_table_Struct_2eproto_deps, 1, 8,
+    &descriptor_table_Struct_2eproto_once, descriptor_table_Struct_2eproto_deps, 1, 6,
     schemas, file_default_instances, TableStruct_Struct_2eproto::offsets,
     file_level_metadata_Struct_2eproto, file_level_enum_descriptors_Struct_2eproto,
     file_level_service_descriptors_Struct_2eproto,
@@ -528,210 +479,6 @@ void PChannel::InternalSwap(PChannel* other) {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_Struct_2eproto_getter, &descriptor_table_Struct_2eproto_once,
       file_level_metadata_Struct_2eproto[0]);
-}
-
-// ===================================================================
-
-class PChannelInfo::_Internal {
- public:
-};
-
-PChannelInfo::PChannelInfo(::PROTOBUF_NAMESPACE_ID::Arena* arena,
-                         bool is_message_owned)
-  : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned),
-  channels_(arena) {
-  SharedCtor();
-  // @@protoc_insertion_point(arena_constructor:Protocol.PChannelInfo)
-}
-PChannelInfo::PChannelInfo(const PChannelInfo& from)
-  : ::PROTOBUF_NAMESPACE_ID::Message(),
-      channels_(from.channels_) {
-  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
-  channelcount_ = from.channelcount_;
-  // @@protoc_insertion_point(copy_constructor:Protocol.PChannelInfo)
-}
-
-inline void PChannelInfo::SharedCtor() {
-channelcount_ = 0;
-}
-
-PChannelInfo::~PChannelInfo() {
-  // @@protoc_insertion_point(destructor:Protocol.PChannelInfo)
-  if (auto *arena = _internal_metadata_.DeleteReturnArena<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>()) {
-  (void)arena;
-    return;
-  }
-  SharedDtor();
-}
-
-inline void PChannelInfo::SharedDtor() {
-  GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
-}
-
-void PChannelInfo::SetCachedSize(int size) const {
-  _cached_size_.Set(size);
-}
-
-void PChannelInfo::Clear() {
-// @@protoc_insertion_point(message_clear_start:Protocol.PChannelInfo)
-  uint32_t cached_has_bits = 0;
-  // Prevent compiler warnings about cached_has_bits being unused
-  (void) cached_has_bits;
-
-  channels_.Clear();
-  channelcount_ = 0;
-  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
-}
-
-const char* PChannelInfo::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
-#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
-  while (!ctx->Done(&ptr)) {
-    uint32_t tag;
-    ptr = ::_pbi::ReadTag(ptr, &tag);
-    switch (tag >> 3) {
-      // int32 channelCount = 1;
-      case 1:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 8)) {
-          channelcount_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr);
-          CHK_(ptr);
-        } else
-          goto handle_unusual;
-        continue;
-      // repeated .Protocol.PChannel channels = 2;
-      case 2:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 18)) {
-          ptr -= 1;
-          do {
-            ptr += 1;
-            ptr = ctx->ParseMessage(_internal_add_channels(), ptr);
-            CHK_(ptr);
-            if (!ctx->DataAvailable(ptr)) break;
-          } while (::PROTOBUF_NAMESPACE_ID::internal::ExpectTag<18>(ptr));
-        } else
-          goto handle_unusual;
-        continue;
-      default:
-        goto handle_unusual;
-    }  // switch
-  handle_unusual:
-    if ((tag == 0) || ((tag & 7) == 4)) {
-      CHK_(ptr);
-      ctx->SetLastTag(tag);
-      goto message_done;
-    }
-    ptr = UnknownFieldParse(
-        tag,
-        _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
-        ptr, ctx);
-    CHK_(ptr != nullptr);
-  }  // while
-message_done:
-  return ptr;
-failure:
-  ptr = nullptr;
-  goto message_done;
-#undef CHK_
-}
-
-uint8_t* PChannelInfo::_InternalSerialize(
-    uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
-  // @@protoc_insertion_point(serialize_to_array_start:Protocol.PChannelInfo)
-  uint32_t cached_has_bits = 0;
-  (void) cached_has_bits;
-
-  // int32 channelCount = 1;
-  if (this->_internal_channelcount() != 0) {
-    target = stream->EnsureSpace(target);
-    target = ::_pbi::WireFormatLite::WriteInt32ToArray(1, this->_internal_channelcount(), target);
-  }
-
-  // repeated .Protocol.PChannel channels = 2;
-  for (unsigned i = 0,
-      n = static_cast<unsigned>(this->_internal_channels_size()); i < n; i++) {
-    const auto& repfield = this->_internal_channels(i);
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
-        InternalWriteMessage(2, repfield, repfield.GetCachedSize(), target, stream);
-  }
-
-  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
-    target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
-        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
-  }
-  // @@protoc_insertion_point(serialize_to_array_end:Protocol.PChannelInfo)
-  return target;
-}
-
-size_t PChannelInfo::ByteSizeLong() const {
-// @@protoc_insertion_point(message_byte_size_start:Protocol.PChannelInfo)
-  size_t total_size = 0;
-
-  uint32_t cached_has_bits = 0;
-  // Prevent compiler warnings about cached_has_bits being unused
-  (void) cached_has_bits;
-
-  // repeated .Protocol.PChannel channels = 2;
-  total_size += 1UL * this->_internal_channels_size();
-  for (const auto& msg : this->channels_) {
-    total_size +=
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(msg);
-  }
-
-  // int32 channelCount = 1;
-  if (this->_internal_channelcount() != 0) {
-    total_size += ::_pbi::WireFormatLite::Int32SizePlusOne(this->_internal_channelcount());
-  }
-
-  return MaybeComputeUnknownFieldsSize(total_size, &_cached_size_);
-}
-
-const ::PROTOBUF_NAMESPACE_ID::Message::ClassData PChannelInfo::_class_data_ = {
-    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSizeCheck,
-    PChannelInfo::MergeImpl
-};
-const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*PChannelInfo::GetClassData() const { return &_class_data_; }
-
-void PChannelInfo::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message* to,
-                      const ::PROTOBUF_NAMESPACE_ID::Message& from) {
-  static_cast<PChannelInfo *>(to)->MergeFrom(
-      static_cast<const PChannelInfo &>(from));
-}
-
-
-void PChannelInfo::MergeFrom(const PChannelInfo& from) {
-// @@protoc_insertion_point(class_specific_merge_from_start:Protocol.PChannelInfo)
-  GOOGLE_DCHECK_NE(&from, this);
-  uint32_t cached_has_bits = 0;
-  (void) cached_has_bits;
-
-  channels_.MergeFrom(from.channels_);
-  if (from._internal_channelcount() != 0) {
-    _internal_set_channelcount(from._internal_channelcount());
-  }
-  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
-}
-
-void PChannelInfo::CopyFrom(const PChannelInfo& from) {
-// @@protoc_insertion_point(class_specific_copy_from_start:Protocol.PChannelInfo)
-  if (&from == this) return;
-  Clear();
-  MergeFrom(from);
-}
-
-bool PChannelInfo::IsInitialized() const {
-  return true;
-}
-
-void PChannelInfo::InternalSwap(PChannelInfo* other) {
-  using std::swap;
-  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
-  channels_.InternalSwap(&other->channels_);
-  swap(channelcount_, other->channelcount_);
-}
-
-::PROTOBUF_NAMESPACE_ID::Metadata PChannelInfo::GetMetadata() const {
-  return ::_pbi::AssignDescriptors(
-      &descriptor_table_Struct_2eproto_getter, &descriptor_table_Struct_2eproto_once,
-      file_level_metadata_Struct_2eproto[1]);
 }
 
 // ===================================================================
@@ -1095,211 +842,7 @@ void PRoom::InternalSwap(PRoom* other) {
 ::PROTOBUF_NAMESPACE_ID::Metadata PRoom::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_Struct_2eproto_getter, &descriptor_table_Struct_2eproto_once,
-      file_level_metadata_Struct_2eproto[2]);
-}
-
-// ===================================================================
-
-class PLobbyInfo::_Internal {
- public:
-};
-
-PLobbyInfo::PLobbyInfo(::PROTOBUF_NAMESPACE_ID::Arena* arena,
-                         bool is_message_owned)
-  : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned),
-  rooms_(arena) {
-  SharedCtor();
-  // @@protoc_insertion_point(arena_constructor:Protocol.PLobbyInfo)
-}
-PLobbyInfo::PLobbyInfo(const PLobbyInfo& from)
-  : ::PROTOBUF_NAMESPACE_ID::Message(),
-      rooms_(from.rooms_) {
-  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
-  roomcount_ = from.roomcount_;
-  // @@protoc_insertion_point(copy_constructor:Protocol.PLobbyInfo)
-}
-
-inline void PLobbyInfo::SharedCtor() {
-roomcount_ = 0;
-}
-
-PLobbyInfo::~PLobbyInfo() {
-  // @@protoc_insertion_point(destructor:Protocol.PLobbyInfo)
-  if (auto *arena = _internal_metadata_.DeleteReturnArena<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>()) {
-  (void)arena;
-    return;
-  }
-  SharedDtor();
-}
-
-inline void PLobbyInfo::SharedDtor() {
-  GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
-}
-
-void PLobbyInfo::SetCachedSize(int size) const {
-  _cached_size_.Set(size);
-}
-
-void PLobbyInfo::Clear() {
-// @@protoc_insertion_point(message_clear_start:Protocol.PLobbyInfo)
-  uint32_t cached_has_bits = 0;
-  // Prevent compiler warnings about cached_has_bits being unused
-  (void) cached_has_bits;
-
-  rooms_.Clear();
-  roomcount_ = 0;
-  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
-}
-
-const char* PLobbyInfo::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
-#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
-  while (!ctx->Done(&ptr)) {
-    uint32_t tag;
-    ptr = ::_pbi::ReadTag(ptr, &tag);
-    switch (tag >> 3) {
-      // int32 roomCount = 1;
-      case 1:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 8)) {
-          roomcount_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr);
-          CHK_(ptr);
-        } else
-          goto handle_unusual;
-        continue;
-      // repeated .Protocol.PRoom rooms = 2;
-      case 2:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 18)) {
-          ptr -= 1;
-          do {
-            ptr += 1;
-            ptr = ctx->ParseMessage(_internal_add_rooms(), ptr);
-            CHK_(ptr);
-            if (!ctx->DataAvailable(ptr)) break;
-          } while (::PROTOBUF_NAMESPACE_ID::internal::ExpectTag<18>(ptr));
-        } else
-          goto handle_unusual;
-        continue;
-      default:
-        goto handle_unusual;
-    }  // switch
-  handle_unusual:
-    if ((tag == 0) || ((tag & 7) == 4)) {
-      CHK_(ptr);
-      ctx->SetLastTag(tag);
-      goto message_done;
-    }
-    ptr = UnknownFieldParse(
-        tag,
-        _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
-        ptr, ctx);
-    CHK_(ptr != nullptr);
-  }  // while
-message_done:
-  return ptr;
-failure:
-  ptr = nullptr;
-  goto message_done;
-#undef CHK_
-}
-
-uint8_t* PLobbyInfo::_InternalSerialize(
-    uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
-  // @@protoc_insertion_point(serialize_to_array_start:Protocol.PLobbyInfo)
-  uint32_t cached_has_bits = 0;
-  (void) cached_has_bits;
-
-  // int32 roomCount = 1;
-  if (this->_internal_roomcount() != 0) {
-    target = stream->EnsureSpace(target);
-    target = ::_pbi::WireFormatLite::WriteInt32ToArray(1, this->_internal_roomcount(), target);
-  }
-
-  // repeated .Protocol.PRoom rooms = 2;
-  for (unsigned i = 0,
-      n = static_cast<unsigned>(this->_internal_rooms_size()); i < n; i++) {
-    const auto& repfield = this->_internal_rooms(i);
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
-        InternalWriteMessage(2, repfield, repfield.GetCachedSize(), target, stream);
-  }
-
-  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
-    target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
-        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
-  }
-  // @@protoc_insertion_point(serialize_to_array_end:Protocol.PLobbyInfo)
-  return target;
-}
-
-size_t PLobbyInfo::ByteSizeLong() const {
-// @@protoc_insertion_point(message_byte_size_start:Protocol.PLobbyInfo)
-  size_t total_size = 0;
-
-  uint32_t cached_has_bits = 0;
-  // Prevent compiler warnings about cached_has_bits being unused
-  (void) cached_has_bits;
-
-  // repeated .Protocol.PRoom rooms = 2;
-  total_size += 1UL * this->_internal_rooms_size();
-  for (const auto& msg : this->rooms_) {
-    total_size +=
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(msg);
-  }
-
-  // int32 roomCount = 1;
-  if (this->_internal_roomcount() != 0) {
-    total_size += ::_pbi::WireFormatLite::Int32SizePlusOne(this->_internal_roomcount());
-  }
-
-  return MaybeComputeUnknownFieldsSize(total_size, &_cached_size_);
-}
-
-const ::PROTOBUF_NAMESPACE_ID::Message::ClassData PLobbyInfo::_class_data_ = {
-    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSizeCheck,
-    PLobbyInfo::MergeImpl
-};
-const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*PLobbyInfo::GetClassData() const { return &_class_data_; }
-
-void PLobbyInfo::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message* to,
-                      const ::PROTOBUF_NAMESPACE_ID::Message& from) {
-  static_cast<PLobbyInfo *>(to)->MergeFrom(
-      static_cast<const PLobbyInfo &>(from));
-}
-
-
-void PLobbyInfo::MergeFrom(const PLobbyInfo& from) {
-// @@protoc_insertion_point(class_specific_merge_from_start:Protocol.PLobbyInfo)
-  GOOGLE_DCHECK_NE(&from, this);
-  uint32_t cached_has_bits = 0;
-  (void) cached_has_bits;
-
-  rooms_.MergeFrom(from.rooms_);
-  if (from._internal_roomcount() != 0) {
-    _internal_set_roomcount(from._internal_roomcount());
-  }
-  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
-}
-
-void PLobbyInfo::CopyFrom(const PLobbyInfo& from) {
-// @@protoc_insertion_point(class_specific_copy_from_start:Protocol.PLobbyInfo)
-  if (&from == this) return;
-  Clear();
-  MergeFrom(from);
-}
-
-bool PLobbyInfo::IsInitialized() const {
-  return true;
-}
-
-void PLobbyInfo::InternalSwap(PLobbyInfo* other) {
-  using std::swap;
-  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
-  rooms_.InternalSwap(&other->rooms_);
-  swap(roomcount_, other->roomcount_);
-}
-
-::PROTOBUF_NAMESPACE_ID::Metadata PLobbyInfo::GetMetadata() const {
-  return ::_pbi::AssignDescriptors(
-      &descriptor_table_Struct_2eproto_getter, &descriptor_table_Struct_2eproto_once,
-      file_level_metadata_Struct_2eproto[3]);
+      file_level_metadata_Struct_2eproto[1]);
 }
 
 // ===================================================================
@@ -1824,7 +1367,7 @@ void PPlayer::InternalSwap(PPlayer* other) {
 ::PROTOBUF_NAMESPACE_ID::Metadata PPlayer::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_Struct_2eproto_getter, &descriptor_table_Struct_2eproto_once,
-      file_level_metadata_Struct_2eproto[4]);
+      file_level_metadata_Struct_2eproto[2]);
 }
 
 // ===================================================================
@@ -2053,7 +1596,7 @@ void PWorldPos::InternalSwap(PWorldPos* other) {
 ::PROTOBUF_NAMESPACE_ID::Metadata PWorldPos::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_Struct_2eproto_getter, &descriptor_table_Struct_2eproto_once,
-      file_level_metadata_Struct_2eproto[5]);
+      file_level_metadata_Struct_2eproto[3]);
 }
 
 // ===================================================================
@@ -2258,7 +1801,7 @@ void PCellPos::InternalSwap(PCellPos* other) {
 ::PROTOBUF_NAMESPACE_ID::Metadata PCellPos::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_Struct_2eproto_getter, &descriptor_table_Struct_2eproto_once,
-      file_level_metadata_Struct_2eproto[6]);
+      file_level_metadata_Struct_2eproto[4]);
 }
 
 // ===================================================================
@@ -2549,7 +2092,7 @@ void PPositionInfo::InternalSwap(PPositionInfo* other) {
 ::PROTOBUF_NAMESPACE_ID::Metadata PPositionInfo::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_Struct_2eproto_getter, &descriptor_table_Struct_2eproto_once,
-      file_level_metadata_Struct_2eproto[7]);
+      file_level_metadata_Struct_2eproto[5]);
 }
 
 // @@protoc_insertion_point(namespace_scope)
@@ -2559,17 +2102,9 @@ template<> PROTOBUF_NOINLINE ::Protocol::PChannel*
 Arena::CreateMaybeMessage< ::Protocol::PChannel >(Arena* arena) {
   return Arena::CreateMessageInternal< ::Protocol::PChannel >(arena);
 }
-template<> PROTOBUF_NOINLINE ::Protocol::PChannelInfo*
-Arena::CreateMaybeMessage< ::Protocol::PChannelInfo >(Arena* arena) {
-  return Arena::CreateMessageInternal< ::Protocol::PChannelInfo >(arena);
-}
 template<> PROTOBUF_NOINLINE ::Protocol::PRoom*
 Arena::CreateMaybeMessage< ::Protocol::PRoom >(Arena* arena) {
   return Arena::CreateMessageInternal< ::Protocol::PRoom >(arena);
-}
-template<> PROTOBUF_NOINLINE ::Protocol::PLobbyInfo*
-Arena::CreateMaybeMessage< ::Protocol::PLobbyInfo >(Arena* arena) {
-  return Arena::CreateMessageInternal< ::Protocol::PLobbyInfo >(arena);
 }
 template<> PROTOBUF_NOINLINE ::Protocol::PPlayer*
 Arena::CreateMaybeMessage< ::Protocol::PPlayer >(Arena* arena) {

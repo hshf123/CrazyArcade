@@ -1,3 +1,4 @@
+using Google.Protobuf.Collections;
 using Protocol;
 using System;
 using System.Collections;
@@ -14,8 +15,9 @@ public class GameData
 
 public class GameManagerEx
 {
-    public PChannelInfo ChannelInfo { get; set; }
-    public PLobbyInfo LobbyInfo { get; set; }
+    public RepeatedField<PChannel> Channels { get; set; } = new RepeatedField<PChannel>();
+    public RepeatedField<PRoom> Rooms { get; set; } = new RepeatedField<PRoom>();
+
     public long PlayerID { get; set; }
     public int ChannelID { get; set; }
 

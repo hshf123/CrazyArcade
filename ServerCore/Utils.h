@@ -19,4 +19,10 @@ public:
 		string str = converter.to_bytes(wstr);
 		return str;
 	}
+
+	static void Log(const wstring& str)
+	{
+		wcout.imbue(locale("kor"));
+		wcout << str << endl;
+	}
 };
