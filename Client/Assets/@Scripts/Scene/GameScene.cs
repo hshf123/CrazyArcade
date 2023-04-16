@@ -43,7 +43,8 @@ public class GameScene : BaseScene
                 pc.WorldPos = new Vector3(posInfo.WorldPos.PosX, posInfo.WorldPos.PosY, 0);
                 pc.CellPos = new Vector3Int(posInfo.CellPos.PosX, posInfo.CellPos.PosY, 0);
 
-                Managers.Game.MyPlayer = pc;
+                Managers.Object.MyPlayer = pc;
+                Managers.Object.Add(pc.PlayerInfo.Id, pc);
                 Debug.Log($"MyPlayer : {posInfo.CellPos.PosX}, {posInfo.CellPos.PosY}");
             });
         }
@@ -58,6 +59,7 @@ public class GameScene : BaseScene
                 pc.Dir = posInfo.MoveDir;
                 pc.WorldPos = new Vector3(posInfo.WorldPos.PosX, posInfo.WorldPos.PosY, 0);
                 pc.CellPos = new Vector3Int(posInfo.CellPos.PosX, posInfo.CellPos.PosY, 0);
+                Managers.Object.Add(pc.PlayerInfo.Id, pc);
                 Debug.Log($"Player : {posInfo.CellPos.PosX}, {posInfo.CellPos.PosY}");
             });
         }

@@ -120,6 +120,22 @@ public class PacketHandler
 
     public static void S_MOVEHandler(PacketSession session, IMessage packet)
     {
+        Debug.Log($"S_MOVEHandler");
+        ServerSession serverSession = session as ServerSession;
+        S_MOVE pkt = packet as S_MOVE;
 
+        long playerId = pkt.Player.Id;
+        PlayerController pc = Managers.Object.Find(playerId);
+        if (pc == null)
+            return;
+
+        if (pc.PlayerInfo.Id == Managers.Object.MyPlayer.PlayerInfo.Id)
+        {
+            // TODO 서버와의 포지션을 보정 해주는 작업
+            return;
+        }
+
+        pc.State = pkt.PositionInfo.State;
+        pc.Dir = pkt.PositionInfo.MoveDir;
     }
 }

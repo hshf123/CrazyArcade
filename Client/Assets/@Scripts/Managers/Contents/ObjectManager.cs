@@ -5,16 +5,16 @@ using UnityEngine;
 public class ObjectManager
 {
     public MyPlayerController MyPlayer { get; set; }
-    Dictionary<int, GameObject> _bombs = new Dictionary<int, GameObject>();
+    Dictionary<long, PlayerController> _players = new Dictionary<long, PlayerController>();
 
-    public void Add(int id, GameObject go)
+    public void Add(long id, PlayerController pc)
     {
-        _bombs.Add(id, go);
+        _players.Add(id, pc);
     }
 
-    public bool Remove(int id)
+    public bool Remove(long id)
     {
-        if (_bombs.Remove(id) == false)
+        if (_players.Remove(id) == false)
             return false;
 
         return true;
@@ -22,21 +22,14 @@ public class ObjectManager
 
     public void Clear()
     {
-        _bombs.Clear();
+        _players.Clear();
     }
 
-    public GameObject Find(Vector3Int pos)
+    public PlayerController Find(long id)
     {
-        foreach(GameObject go in _bombs.Values)
-        {
-            BombController bc = go.GetComponent<BombController>();
-            if (bc == null)
-                Debug.Log("No BombController");
+        PlayerController pc = null;
+        _players.TryGetValue(id, out pc);
 
-            if (bc.CellPos == pos)
-                return bc.gameObject;
-        }
-
-        return null;
+        return pc;
     }
 }

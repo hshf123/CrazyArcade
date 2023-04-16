@@ -5,6 +5,8 @@ using static Define;
 using PositionInfo = Protocol.PPositionInfo;
 using MoveDir = Protocol.PMoveDir;
 using PlayerState = Protocol.PPlayerState;
+using Google.Protobuf.Protocol;
+using UnityEngine.Experimental.AI;
 
 public class MyPlayerController : PlayerController
 {
@@ -35,7 +37,6 @@ public class MyPlayerController : PlayerController
     }
     protected override void VirtualUpdate()
     {
-        InputDir();
         base.VirtualUpdate();
     }
 
@@ -69,6 +70,21 @@ public class MyPlayerController : PlayerController
             _coBomb = StartCoroutine(Bomb());
         }
     }
+    protected override void MovePosition()
+    {
+        PlayerState prevState = State;
+        Vector3Int prevCellPos = CellPos;
+
+        InputDir();
+        base.MovePosition();
+
+        if(prevState != State || prevCellPos != CellPos)
+        {
+            C_MOVE movePkt = new C_MOVE();
+            movePkt.PositionInfo = PosInfo;
+            Managers.Net.SessionManager.Broadcast(movePkt);
+        }
+    }
     protected override void UpdateSortOrder()
     {
         base.UpdateSortOrder();
@@ -78,30 +94,32 @@ public class MyPlayerController : PlayerController
 
     protected IEnumerator Bomb()
     {
-        Vector3Int pos = Managers.Map.CurrentGrid.WorldToCell(transform.position + new Vector3(0, -0.3f, 0));
-        if (_bombCool == false && Managers.Object.Find(pos) == null
-            && _bombCount < _maxBombCount)
-        {
-            _bombCool = true;
-            _bombCount++;
-            Managers.Resource.Instantiate("Bomb", null,
-                (bomb) =>
-                {
-                    Managers.Object.Add(_bombId, bomb);
-                    BombController bc = bomb.GetComponent<BombController>();
-                    bc.CellPos = pos;
-                    bomb.transform.position = pos + correction;
-                    bc.BombID = _bombId;
-                    bc.Range = _bombRange;
-                    bc.SortOrder = _sortOrder;
-                    _bombId++;
-                    bc.Init();
-                    bc.Bomb(() => { _bombCount--; });
-                });
+        // Vector3Int pos = Managers.Map.CurrentGrid.WorldToCell(transform.position + new Vector3(0, -0.3f, 0));
+        // if (_bombCool == false && Managers.Object.Find(pos) == null
+        //     && _bombCount < _maxBombCount)
+        // {
+        //     _bombCool = true;
+        //     _bombCount++;
+        //     Managers.Resource.Instantiate("Bomb", null,
+        //         (bomb) =>
+        //         {
+        //             Managers.Object.Add(_bombId, bomb);
+        //             BombController bc = bomb.GetComponent<BombController>();
+        //             bc.CellPos = pos;
+        //             bomb.transform.position = pos + correction;
+        //             bc.BombID = _bombId;
+        //             bc.Range = _bombRange;
+        //             bc.SortOrder = _sortOrder;
+        //             _bombId++;
+        //             bc.Init();
+        //             bc.Bomb(() => { _bombCount--; });
+        //         });
+        // 
+        //     yield return new WaitForSeconds(0.25f);
+        //     _coBomb = null;
+        //     _bombCool = false;
+        // }
 
-            yield return new WaitForSeconds(0.25f);
-            _coBomb = null;
-            _bombCool = false;
-        }
+        yield return new WaitForFixedUpdate();
     }
 }

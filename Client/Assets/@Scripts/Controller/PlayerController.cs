@@ -204,12 +204,12 @@ public class PlayerController : MonoBehaviour
         }
     }
     
-    protected void MovePosition()
+    protected virtual void MovePosition()
     {
         if (State != PlayerState.Moving)
             return;
 
-        Vector3 destPos = new Vector3(transform.position.x, transform.position.y, transform.position.z);
+        Vector3 destPos = WorldPos;
         Vector3 benchmark = destPos;
         Vector3 benchmarkUp = destPos;
         Vector3 benchmarkDown = destPos;
@@ -255,42 +255,42 @@ public class PlayerController : MonoBehaviour
         if (Dir != MoveDir.None)
         {
             Vector3Int destCellPos = Managers.Map.CurrentGrid.WorldToCell(benchmark);
-            bool isBomb = Managers.Object.Find(destCellPos) == null;
+            bool isBomb = true; // Managers.Object.Find(destCellPos) == null;
             if ((Managers.Map.CanGo(destCellPos) && isBomb) || (isBomb == false && destCellPos == CellPos))
             {
-                Vector3 dist = destPos - transform.position;
+                Vector3 dist = destPos - WorldPos;
                 float xrange = Mathf.Abs(destPos.x) - Mathf.Floor(Mathf.Abs(destPos.x));
                 float yrange = Mathf.Abs(destPos.y) - Mathf.Floor(Mathf.Abs(destPos.y));
                 if (dist.y != 0 && (xrange <= 0.51f && xrange >= 0.49f))
                 {
                     // 추가 기준점 2개가 필요하지 않은 경우, y축 이동
-                    transform.position = destPos;
+                    WorldPos = destPos;
                 }
                 else if (dist.x != 0 && (yrange <= 0.51f && yrange >= 0.49f))
                 {
                     // 추가 기준점 2개가 필요하지 않은 경우, x축 이동
-                    transform.position = destPos;
+                    WorldPos = destPos;
                 }
                 else
                 {
                     Vector3Int destCellPosUp = Managers.Map.CurrentGrid.WorldToCell(benchmarkUp);
                     Vector3Int destCellPosDown = Managers.Map.CurrentGrid.WorldToCell(benchmarkDown);
-                    bool upCanGo = Managers.Map.CanGo(destCellPosUp) || ((destCellPos == CellPos) && (Managers.Object.Find(destCellPos) != null));
-                    bool downCanGo = Managers.Map.CanGo(destCellPosDown) || ((destCellPos == CellPos) && (Managers.Object.Find(destCellPos) != null));
+                    bool upCanGo = Managers.Map.CanGo(destCellPosUp) || ((destCellPos == CellPos) && false /*(Managers.Object.Find(destCellPos) != null)*/);
+                    bool downCanGo = Managers.Map.CanGo(destCellPosDown) || ((destCellPos == CellPos) && false /*(Managers.Object.Find(destCellPos) != null)*/);
                     if (upCanGo && downCanGo)
                     {
-                        transform.position = destPos;
+                        WorldPos = destPos;
                     }
                     else if (upCanGo == false)
                     {
-                        transform.position += (benchmark - benchmarkUp).normalized * Time.deltaTime * PlayerInfo.Speed;
+                        WorldPos += (benchmark - benchmarkUp).normalized * Time.deltaTime * PlayerInfo.Speed;
                     }
                     else if (downCanGo == false)
                     {
-                        transform.position += (benchmark - benchmarkDown).normalized * Time.deltaTime * PlayerInfo.Speed;
+                        WorldPos += (benchmark - benchmarkDown).normalized * Time.deltaTime * PlayerInfo.Speed;
                     }
                 }
-                CellPos = Managers.Map.CurrentGrid.WorldToCell(transform.position);
+                CellPos = Managers.Map.CurrentGrid.WorldToCell(WorldPos);
             }
         }
         //Debug.Log($"Move To {_cellPos}");
