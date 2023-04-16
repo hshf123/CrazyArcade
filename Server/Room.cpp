@@ -66,15 +66,31 @@ bool Room::CanGameStart()
 		if (p.second->PlayerInfo.id() == _leaderId)
 			continue;
 
+		// 게임 시작 못하면 로그 남기기
 		if (p.second->PlayerInfo.ready() == false)
 			return false;
 	}
-
-	// TODO 방에있는 모두에게 기본 PositioniInfo 채워주기
-
+	
 	Protocol::S_ROOMSTART roomStartPkt;
 	roomStartPkt.set_success(true);
 	roomStartPkt.set_allocated_room(GetRoomProtocol());
+
+	int32 idx = 0;
+	for (auto& p : _players)
+	{
+		// 모든 플레이어의 기본 PosInfo 초기화 후 Broadcast
+		if (p.second == nullptr)
+		{
+			// TODO 연결 끊긴건지 확인 후 제외하고 플레이
+			return false;
+		}
+		auto basicPosInfo = GetBasicPosInfo(idx++);
+		p.second->PosInfo.CopyFrom(*basicPosInfo);
+		Protocol::PRoomStart* roomStart = roomStartPkt.add_spawn();
+		roomStart->set_allocated_playerinfo(p.second->GetPlayerProtocol());
+		roomStart->set_allocated_posinfo(p.second->GetPositionInfoProtocol());
+	}
+
 	SendBufferRef sendBuffer = ClientPacketHandler::MakeSendBuffer(roomStartPkt);
 	Broadcast(sendBuffer);
 
@@ -83,6 +99,24 @@ bool Room::CanGameStart()
 	// TODO 채널에 있는 사람들한테 게임 시작중인방이라고 broadcast
 
 	return true;
+}
+
+Protocol::PPositionInfo* Room::GetBasicPosInfo(int32 idx)
+{
+	Protocol::PPositionInfo* pkt = new Protocol::PPositionInfo();
+	pkt->set_state(Protocol::PPlayerState::IDLE);
+	pkt->set_movedir(Protocol::PMoveDir::DOWN);
+	int32 posx = _respawnPosX[idx];
+	int32 posy = _respawnPosY[idx];
+	Protocol::PWorldPos* worldPos = new Protocol::PWorldPos();
+	worldPos->set_posx(posx + 0.5f);
+	worldPos->set_posy(posy + 0.5f);
+	pkt->set_allocated_worldpos(worldPos);
+	Protocol::PCellPos* cellPos = new Protocol::PCellPos();
+	cellPos->set_posx(posx);
+	cellPos->set_posy(posy);
+	pkt->set_allocated_cellpos(cellPos);
+	return pkt;
 }
 
 void Room::CopyRoomProtocol(Protocol::PRoom* pkt)

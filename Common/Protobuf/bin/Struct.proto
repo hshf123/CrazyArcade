@@ -59,3 +59,9 @@ message PPositionInfo
 	PWorldPos worldPos = 3;
 	PCellPos cellPos = 4;
 }
+
+message PRoomStart
+{
+	PPlayer playerInfo = 1;
+	PPositionInfo posInfo = 2;
+}

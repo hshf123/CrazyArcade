@@ -18,7 +18,7 @@ void ClientSession::OnConnected(NetAddress netAddr)
 void ClientSession::OnDisconnected()
 {
 	GSessionManager.Remove(static_pointer_cast<ClientSession>(shared_from_this()));
-	PlayerRef player = MyPlayer.lock();
+	PlayerRef player = MyPlayer;
 	if (player == nullptr)
 		return;
 		

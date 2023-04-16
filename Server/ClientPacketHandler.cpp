@@ -113,7 +113,7 @@ bool Handle_C_LOGIN(PacketSessionRef& session, Protocol::C_LOGIN& pkt)
 		Protocol::PChannel* channel = loginPkt.add_channels();
 		channel->CopyFrom(c);
 	}
-	loginPkt.set_playerid(clientSession->MyPlayer.lock()->PlayerInfo.id());
+	loginPkt.set_playerid(clientSession->MyPlayer->PlayerInfo.id());
 	SendBufferRef sendBuffer = ClientPacketHandler::MakeSendBuffer(loginPkt);
 	clientSession->Send(sendBuffer);
 
@@ -239,7 +239,7 @@ bool Handle_C_ROOMREADY(PacketSessionRef& session, Protocol::C_ROOMREADY& pkt)
 {
 	ClientSessionRef clientSession = static_pointer_cast<ClientSession>(session);
 	
-	PlayerRef player = clientSession->MyPlayer.lock();
+	PlayerRef player = clientSession->MyPlayer;
 	if (player == nullptr)
 		return false;
 
@@ -273,7 +273,7 @@ bool Handle_C_ROOMSTART(PacketSessionRef& session, Protocol::C_ROOMSTART& pkt)
 {
 	ClientSessionRef clientSession = static_pointer_cast<ClientSession>(session);
 
-	PlayerRef player = clientSession->MyPlayer.lock();
+	PlayerRef player = clientSession->MyPlayer;
 	if (player == nullptr)
 		return false;
 
@@ -306,21 +306,20 @@ bool Handle_C_ROOMSTART(PacketSessionRef& session, Protocol::C_ROOMSTART& pkt)
 bool Handle_C_MOVE(PacketSessionRef& session, Protocol::C_MOVE& pkt)
 {
 	ClientSessionRef clientSession = static_pointer_cast<ClientSession>(session);
-	Protocol::PPlayer playerPkt =  pkt.player();
 	Protocol::PPositionInfo posInfo = pkt.positioninfo();
 
+	PlayerRef player = clientSession->MyPlayer;
+	if (player == nullptr)
+		return false;
+
 	wstring log = L"[Log] PLAYERID : ";
-	log += playerPkt.id();
+	log += clientSession->MyPlayer->PlayerInfo.id();
 	log += L" | C_MOVE(";
 	log += pkt.positioninfo().worldpos().posx();
 	log += L", ";
 	log += pkt.positioninfo().worldpos().posy();
 	log += L")";
 	Utils::Log(log);
-
-	PlayerRef player = clientSession->MyPlayer.lock();
-	if (player == nullptr)
-		return false;
 
 	ChannelRef channel = ChannelManager::GetInstance()->FindChannel(player->PlayerInfo.channelid());
 	if (channel == nullptr)

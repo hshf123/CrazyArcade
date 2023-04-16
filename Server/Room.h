@@ -14,6 +14,7 @@ public:
 
 public:
 	bool CanGameStart();
+	Protocol::PPositionInfo* GetBasicPosInfo(int32 idx);
 
 public:
 	void CopyRoomProtocol(Protocol::PRoom* pkt);
@@ -40,4 +41,7 @@ private:
 	int64 _leaderId;
 	bool _benList[8];
 	RoomState _state = RoomState::WAITING;
+
+	int32 _respawnPosX[8] = { -7,4,-7,4,-5,0,-5,2 };
+	int32 _respawnPosY[8] = { 5,5,-6,-6,5,5,-6,-6 };
 };

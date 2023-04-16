@@ -16,5 +16,5 @@ public:
 	void OnSend(int32 len) override;
 
 public:
-	PlayerWeakRef MyPlayer;
+	PlayerRef MyPlayer;
 };

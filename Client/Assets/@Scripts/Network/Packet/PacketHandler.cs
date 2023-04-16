@@ -114,6 +114,7 @@ public class PacketHandler
             return;
 
         Managers.Game.Room = pkt.Room;
+        Managers.Game.Spawn = pkt.Spawn;
         Managers.Scene.ChangeScene<GameScene>(Define.SceneType.GameScene);
     }
 

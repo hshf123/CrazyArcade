@@ -2537,9 +2537,28 @@ class S_ROOMSTART final :
   // accessors -------------------------------------------------------
 
   enum : int {
+    kSpawnFieldNumber = 3,
     kRoomFieldNumber = 2,
     kSuccessFieldNumber = 1,
   };
+  // repeated .Protocol.PRoomStart spawn = 3;
+  int spawn_size() const;
+  private:
+  int _internal_spawn_size() const;
+  public:
+  void clear_spawn();
+  ::Protocol::PRoomStart* mutable_spawn(int index);
+  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::Protocol::PRoomStart >*
+      mutable_spawn();
+  private:
+  const ::Protocol::PRoomStart& _internal_spawn(int index) const;
+  ::Protocol::PRoomStart* _internal_add_spawn();
+  public:
+  const ::Protocol::PRoomStart& spawn(int index) const;
+  ::Protocol::PRoomStart* add_spawn();
+  const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::Protocol::PRoomStart >&
+      spawn() const;
+
   // .Protocol.PRoom room = 2;
   bool has_room() const;
   private:
@@ -2574,6 +2593,7 @@ class S_ROOMSTART final :
   template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
   typedef void InternalArenaConstructable_;
   typedef void DestructorSkippable_;
+  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::Protocol::PRoomStart > spawn_;
   ::Protocol::PRoom* room_;
   bool success_;
   mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
@@ -2700,28 +2720,9 @@ class C_MOVE final :
   // accessors -------------------------------------------------------
 
   enum : int {
-    kPlayerFieldNumber = 1,
-    kPositionInfoFieldNumber = 2,
+    kPositionInfoFieldNumber = 1,
   };
-  // .Protocol.PPlayer player = 1;
-  bool has_player() const;
-  private:
-  bool _internal_has_player() const;
-  public:
-  void clear_player();
-  const ::Protocol::PPlayer& player() const;
-  PROTOBUF_NODISCARD ::Protocol::PPlayer* release_player();
-  ::Protocol::PPlayer* mutable_player();
-  void set_allocated_player(::Protocol::PPlayer* player);
-  private:
-  const ::Protocol::PPlayer& _internal_player() const;
-  ::Protocol::PPlayer* _internal_mutable_player();
-  public:
-  void unsafe_arena_set_allocated_player(
-      ::Protocol::PPlayer* player);
-  ::Protocol::PPlayer* unsafe_arena_release_player();
-
-  // .Protocol.PPositionInfo positionInfo = 2;
+  // .Protocol.PPositionInfo positionInfo = 1;
   bool has_positioninfo() const;
   private:
   bool _internal_has_positioninfo() const;
@@ -2746,7 +2747,6 @@ class C_MOVE final :
   template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
   typedef void InternalArenaConstructable_;
   typedef void DestructorSkippable_;
-  ::Protocol::PPlayer* player_;
   ::Protocol::PPositionInfo* positioninfo_;
   mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   friend struct ::TableStruct_Protocol_2eproto;
@@ -4181,96 +4181,48 @@ inline void S_ROOMSTART::set_allocated_room(::Protocol::PRoom* room) {
   // @@protoc_insertion_point(field_set_allocated:Protocol.S_ROOMSTART.room)
 }
 
+// repeated .Protocol.PRoomStart spawn = 3;
+inline int S_ROOMSTART::_internal_spawn_size() const {
+  return spawn_.size();
+}
+inline int S_ROOMSTART::spawn_size() const {
+  return _internal_spawn_size();
+}
+inline ::Protocol::PRoomStart* S_ROOMSTART::mutable_spawn(int index) {
+  // @@protoc_insertion_point(field_mutable:Protocol.S_ROOMSTART.spawn)
+  return spawn_.Mutable(index);
+}
+inline ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::Protocol::PRoomStart >*
+S_ROOMSTART::mutable_spawn() {
+  // @@protoc_insertion_point(field_mutable_list:Protocol.S_ROOMSTART.spawn)
+  return &spawn_;
+}
+inline const ::Protocol::PRoomStart& S_ROOMSTART::_internal_spawn(int index) const {
+  return spawn_.Get(index);
+}
+inline const ::Protocol::PRoomStart& S_ROOMSTART::spawn(int index) const {
+  // @@protoc_insertion_point(field_get:Protocol.S_ROOMSTART.spawn)
+  return _internal_spawn(index);
+}
+inline ::Protocol::PRoomStart* S_ROOMSTART::_internal_add_spawn() {
+  return spawn_.Add();
+}
+inline ::Protocol::PRoomStart* S_ROOMSTART::add_spawn() {
+  ::Protocol::PRoomStart* _add = _internal_add_spawn();
+  // @@protoc_insertion_point(field_add:Protocol.S_ROOMSTART.spawn)
+  return _add;
+}
+inline const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::Protocol::PRoomStart >&
+S_ROOMSTART::spawn() const {
+  // @@protoc_insertion_point(field_list:Protocol.S_ROOMSTART.spawn)
+  return spawn_;
+}
+
 // -------------------------------------------------------------------
 
 // C_MOVE
 
-// .Protocol.PPlayer player = 1;
-inline bool C_MOVE::_internal_has_player() const {
-  return this != internal_default_instance() && player_ != nullptr;
-}
-inline bool C_MOVE::has_player() const {
-  return _internal_has_player();
-}
-inline const ::Protocol::PPlayer& C_MOVE::_internal_player() const {
-  const ::Protocol::PPlayer* p = player_;
-  return p != nullptr ? *p : reinterpret_cast<const ::Protocol::PPlayer&>(
-      ::Protocol::_PPlayer_default_instance_);
-}
-inline const ::Protocol::PPlayer& C_MOVE::player() const {
-  // @@protoc_insertion_point(field_get:Protocol.C_MOVE.player)
-  return _internal_player();
-}
-inline void C_MOVE::unsafe_arena_set_allocated_player(
-    ::Protocol::PPlayer* player) {
-  if (GetArenaForAllocation() == nullptr) {
-    delete reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(player_);
-  }
-  player_ = player;
-  if (player) {
-    
-  } else {
-    
-  }
-  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:Protocol.C_MOVE.player)
-}
-inline ::Protocol::PPlayer* C_MOVE::release_player() {
-  
-  ::Protocol::PPlayer* temp = player_;
-  player_ = nullptr;
-#ifdef PROTOBUF_FORCE_COPY_IN_RELEASE
-  auto* old =  reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(temp);
-  temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
-  if (GetArenaForAllocation() == nullptr) { delete old; }
-#else  // PROTOBUF_FORCE_COPY_IN_RELEASE
-  if (GetArenaForAllocation() != nullptr) {
-    temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
-  }
-#endif  // !PROTOBUF_FORCE_COPY_IN_RELEASE
-  return temp;
-}
-inline ::Protocol::PPlayer* C_MOVE::unsafe_arena_release_player() {
-  // @@protoc_insertion_point(field_release:Protocol.C_MOVE.player)
-  
-  ::Protocol::PPlayer* temp = player_;
-  player_ = nullptr;
-  return temp;
-}
-inline ::Protocol::PPlayer* C_MOVE::_internal_mutable_player() {
-  
-  if (player_ == nullptr) {
-    auto* p = CreateMaybeMessage<::Protocol::PPlayer>(GetArenaForAllocation());
-    player_ = p;
-  }
-  return player_;
-}
-inline ::Protocol::PPlayer* C_MOVE::mutable_player() {
-  ::Protocol::PPlayer* _msg = _internal_mutable_player();
-  // @@protoc_insertion_point(field_mutable:Protocol.C_MOVE.player)
-  return _msg;
-}
-inline void C_MOVE::set_allocated_player(::Protocol::PPlayer* player) {
-  ::PROTOBUF_NAMESPACE_ID::Arena* message_arena = GetArenaForAllocation();
-  if (message_arena == nullptr) {
-    delete reinterpret_cast< ::PROTOBUF_NAMESPACE_ID::MessageLite*>(player_);
-  }
-  if (player) {
-    ::PROTOBUF_NAMESPACE_ID::Arena* submessage_arena =
-        ::PROTOBUF_NAMESPACE_ID::Arena::InternalGetOwningArena(
-                reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(player));
-    if (message_arena != submessage_arena) {
-      player = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
-          message_arena, player, submessage_arena);
-    }
-    
-  } else {
-    
-  }
-  player_ = player;
-  // @@protoc_insertion_point(field_set_allocated:Protocol.C_MOVE.player)
-}
-
-// .Protocol.PPositionInfo positionInfo = 2;
+// .Protocol.PPositionInfo positionInfo = 1;
 inline bool C_MOVE::_internal_has_positioninfo() const {
   return this != internal_default_instance() && positioninfo_ != nullptr;
 }

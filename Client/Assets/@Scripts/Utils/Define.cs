@@ -10,24 +10,6 @@ public class Define
         NonFix = 2,
     }
 
-    public enum PlayerState
-    {
-        Idle,
-        Moving,
-        InTrap,
-        OutTrap,
-        Dead,
-    }
-
-    public enum MoveDir
-    {
-        None,
-        Up,
-        Right,
-        Down,
-        Left,
-    }
-
     public enum UIEvent
     {
         Click,

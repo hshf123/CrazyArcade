@@ -2,10 +2,25 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using static Define;
+using PositionInfo = Protocol.PPositionInfo;
+using MoveDir = Protocol.PMoveDir;
+using PlayerState = Protocol.PPlayerState;
 
 public class MyPlayerController : PlayerController
 {
     protected SpriteRenderer _cursor;
+    #region Bomb
+    protected Coroutine _coBomb;
+    protected bool _bombCool = false;
+    protected int _bombId = 1;
+    [SerializeField]
+    protected float _speed;
+    [SerializeField]
+    protected int _maxBombCount = 1;
+    [SerializeField]
+    protected int _bombRange = 1;
+    protected int _bombCount = 0;
+    #endregion
 
     protected override bool Init()
     {
@@ -58,5 +73,35 @@ public class MyPlayerController : PlayerController
     {
         base.UpdateSortOrder();
         _cursor.sortingOrder = _sortOrder + 1;
+    }
+
+
+    protected IEnumerator Bomb()
+    {
+        Vector3Int pos = Managers.Map.CurrentGrid.WorldToCell(transform.position + new Vector3(0, -0.3f, 0));
+        if (_bombCool == false && Managers.Object.Find(pos) == null
+            && _bombCount < _maxBombCount)
+        {
+            _bombCool = true;
+            _bombCount++;
+            Managers.Resource.Instantiate("Bomb", null,
+                (bomb) =>
+                {
+                    Managers.Object.Add(_bombId, bomb);
+                    BombController bc = bomb.GetComponent<BombController>();
+                    bc.CellPos = pos;
+                    bomb.transform.position = pos + correction;
+                    bc.BombID = _bombId;
+                    bc.Range = _bombRange;
+                    bc.SortOrder = _sortOrder;
+                    _bombId++;
+                    bc.Init();
+                    bc.Bomb(() => { _bombCount--; });
+                });
+
+            yield return new WaitForSeconds(0.25f);
+            _coBomb = null;
+            _bombCool = false;
+        }
     }
 }

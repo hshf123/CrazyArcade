@@ -100,12 +100,12 @@ message S_ROOMSTART
 {
 	bool success = 1;
 	PRoom room = 2;
+	repeated PRoomStart spawn = 3;
 }
 
 message C_MOVE
 {
-	PPlayer player = 1;
-	PPositionInfo positionInfo = 2;
+	PPositionInfo positionInfo = 1;
 }
 
 message S_MOVE

@@ -26,6 +26,9 @@ public class GameManagerEx
     public PRoom Room { get; set; }
     public bool IsLeader { get { return Room.LeaderId == PlayerID; } }
 
+    public RepeatedField<PRoomStart> Spawn { get; set; } = new RepeatedField<PRoomStart>();
+    public MyPlayerController MyPlayer { get; set; } = new MyPlayerController();
+
     GameData _gameData = new GameData();
     public GameData SaveData { get { return _gameData; } set { _gameData = value; } }
 

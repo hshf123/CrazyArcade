@@ -3,57 +3,99 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using static Define;
+using PositionInfo = Protocol.PPositionInfo;
+using MoveDir = Protocol.PMoveDir;
+using PlayerState = Protocol.PPlayerState;
+using PlayerInfo = Protocol.PPlayer;
+using Unity.VisualScripting;
+using Protocol;
 
 public class PlayerController : MonoBehaviour
 {
     protected Vector3 correction = new Vector3(0.5f, 0.5f, 0);
-
+    #region Component
     protected SpriteRenderer _spriteRenderer;
     protected Animator _animator;
     protected SpriteRenderer _shadow;
-    protected Coroutine _coBomb;
-    protected bool _bombCool = false;
-    protected int _bombId = 1;
-
     protected int _sortOrder;
-    [SerializeField]
-    protected float _speed;
-    [SerializeField]
-    protected int _maxBombCount = 1;
-    [SerializeField]
-    protected int _bombRange = 1;
-    protected int _bombCount = 0;
+    #endregion
 
-    protected Vector3Int _cellPos;
+    #region Protocol
+    public PlayerInfo PlayerInfo = new PlayerInfo();
+    protected PositionInfo _posInfo = new PositionInfo()
+    {
+        WorldPos = new PWorldPos(),
+        CellPos = new PCellPos()
+    };
+    protected PositionInfo PosInfo
+    {
+        get
+        {
+            return _posInfo;
+        }
+        set
+        {
+            if (_posInfo.Equals(value))
+                return;
+
+            _posInfo = value;
+            UpdateAnimation();
+        }
+    }
+    #endregion
+
+    public Vector3 WorldPos
+    {
+        get
+        {
+            return transform.position;
+        }
+        set
+        {
+            PosInfo.WorldPos.PosX = value.x;
+            PosInfo.WorldPos.PosY = value.y;
+            transform.position = value;
+        }
+    }
+    public Vector3Int CellPos
+    {
+        get 
+        {
+            return new Vector3Int(PosInfo.CellPos.PosX, PosInfo.CellPos.PosY, 0); 
+        }
+        set
+        {
+            PosInfo.CellPos.PosX = value.x;
+            PosInfo.CellPos.PosY = value.y;
+        }
+    }
     protected MoveDir _lastDir = MoveDir.Down;
-    protected MoveDir _moveDir = MoveDir.Down;
     public MoveDir Dir
     {
         get
         {
-            return _moveDir;
+            return PosInfo.MoveDir;
         }
         set
         {
-            if (_moveDir == value)
+            if (PosInfo.MoveDir == value)
                 return;
 
-            _moveDir = value;
+            PosInfo.MoveDir = value;
             if (value != MoveDir.None)
                 _lastDir = value;
             UpdateAnimation();
         }
     }
-    protected PlayerState _state = PlayerState.Idle;
     public PlayerState State
     {
-        get { return _state; }
+        get { return PosInfo.State; }
         set
         {
-            if (_state == value)
+            if (PosInfo.State == value)
                 return;
 
-            _state = value;
+            PosInfo.State = value;
             UpdateAnimation();
         }
     }
@@ -71,13 +113,14 @@ public class PlayerController : MonoBehaviour
         _spriteRenderer.sortingOrder = _sortOrder;
         #endregion
         #region Charactor Info
-        _speed = 2f;
 
         _shadow = Utils.FindChild<SpriteRenderer>(gameObject, "shadow");
         _shadow.transform.localPosition = new Vector3(0, -0.65f, 0);
         _shadow.sortingOrder = _sortOrder - 1;
         #endregion
 
+        // 애니메이션 동기화용
+        UpdateAnimation();
         return true;
     }
     void Update()
@@ -89,17 +132,12 @@ public class PlayerController : MonoBehaviour
         MovePosition();
         UpdateSortOrder();
     }
-
-    public void SetStartPos(Vector3Int pos)
-    {
-        _cellPos = pos;
-        Vector3 worldPos = Managers.Map.CurrentGrid.CellToWorld(_cellPos);
-        transform.position = worldPos + correction;
-    }
-
     protected void UpdateAnimation()
     {
-        switch(_state)
+        if (_animator == null)
+            return;
+
+        switch(State)
         {
             case PlayerState.Idle:
                 {
@@ -123,7 +161,7 @@ public class PlayerController : MonoBehaviour
                 }
             case PlayerState.Moving:
                 {
-                    switch (_moveDir)
+                    switch (Dir)
                     {
                         case MoveDir.Up:
                             {
@@ -148,12 +186,12 @@ public class PlayerController : MonoBehaviour
                     }
                     break;
                 }
-            case PlayerState.InTrap:
+            case PlayerState.Intrap:
                 {
                     _animator.Play("TRAP");
                     break;
                 }
-            case PlayerState.OutTrap:
+            case PlayerState.Outtrap:
                 {
                     _animator.Play("LIVE");
                     break;
@@ -175,11 +213,11 @@ public class PlayerController : MonoBehaviour
         Vector3 benchmark = destPos;
         Vector3 benchmarkUp = destPos;
         Vector3 benchmarkDown = destPos;
-        switch (_moveDir)
+        switch (Dir)
         {
             case MoveDir.Up:
                 {
-                    Vector3 dir = (Vector3.up * Time.deltaTime * _speed);
+                    Vector3 dir = (Vector3.up * Time.deltaTime * PlayerInfo.Speed);
                     benchmark += dir + new Vector3(0, 0.5f, 0);
                     benchmarkUp += dir + new Vector3(-0.5f, 0.5f, 0);
                     benchmarkDown += dir + new Vector3(0.5f, 0.5f, 0);
@@ -188,7 +226,7 @@ public class PlayerController : MonoBehaviour
                 }
             case MoveDir.Right:
                 {
-                    Vector3 dir = (Vector3.right * Time.deltaTime * _speed);
+                    Vector3 dir = (Vector3.right * Time.deltaTime * PlayerInfo.Speed);
                     benchmark += dir + new Vector3(0.5f, 0, 0);
                     benchmarkUp += dir + new Vector3(0.5f, -0.5f, 0);
                     benchmarkDown += dir + new Vector3(0.5f, 0.5f, 0);
@@ -197,7 +235,7 @@ public class PlayerController : MonoBehaviour
                 }
             case MoveDir.Down:
                 {
-                    Vector3 dir = (Vector3.down * Time.deltaTime * _speed);
+                    Vector3 dir = (Vector3.down * Time.deltaTime * PlayerInfo.Speed);
                     benchmark += dir + new Vector3(0, -0.5f, 0);
                     benchmarkUp += dir + new Vector3(-0.5f, -0.5f, 0);
                     benchmarkDown += dir + new Vector3(0.5f, -0.5f, 0);
@@ -206,7 +244,7 @@ public class PlayerController : MonoBehaviour
                 }
             case MoveDir.Left:
                 {
-                    Vector3 dir = (Vector3.left * Time.deltaTime * _speed);
+                    Vector3 dir = (Vector3.left * Time.deltaTime * PlayerInfo.Speed);
                     benchmark += dir + new Vector3(-0.5f, 0, 0);
                     benchmarkUp += dir + new Vector3(-0.5f, 0.5f, 0);
                     benchmarkDown += dir + new Vector3(-0.5f, -0.5f, 0);
@@ -214,11 +252,11 @@ public class PlayerController : MonoBehaviour
                     break;
                 }
         }
-        if (_moveDir != MoveDir.None)
+        if (Dir != MoveDir.None)
         {
             Vector3Int destCellPos = Managers.Map.CurrentGrid.WorldToCell(benchmark);
             bool isBomb = Managers.Object.Find(destCellPos) == null;
-            if ((Managers.Map.CanGo(destCellPos) && isBomb) || (isBomb == false && destCellPos == _cellPos))
+            if ((Managers.Map.CanGo(destCellPos) && isBomb) || (isBomb == false && destCellPos == CellPos))
             {
                 Vector3 dist = destPos - transform.position;
                 float xrange = Mathf.Abs(destPos.x) - Mathf.Floor(Mathf.Abs(destPos.x));
@@ -237,58 +275,30 @@ public class PlayerController : MonoBehaviour
                 {
                     Vector3Int destCellPosUp = Managers.Map.CurrentGrid.WorldToCell(benchmarkUp);
                     Vector3Int destCellPosDown = Managers.Map.CurrentGrid.WorldToCell(benchmarkDown);
-                    bool upCanGo = Managers.Map.CanGo(destCellPosUp) || ((destCellPos == _cellPos) && (Managers.Object.Find(destCellPos) != null));
-                    bool downCanGo = Managers.Map.CanGo(destCellPosDown) || ((destCellPos == _cellPos) && (Managers.Object.Find(destCellPos) != null));
+                    bool upCanGo = Managers.Map.CanGo(destCellPosUp) || ((destCellPos == CellPos) && (Managers.Object.Find(destCellPos) != null));
+                    bool downCanGo = Managers.Map.CanGo(destCellPosDown) || ((destCellPos == CellPos) && (Managers.Object.Find(destCellPos) != null));
                     if (upCanGo && downCanGo)
                     {
                         transform.position = destPos;
                     }
                     else if (upCanGo == false)
                     {
-                        transform.position += (benchmark - benchmarkUp).normalized * Time.deltaTime * _speed;
+                        transform.position += (benchmark - benchmarkUp).normalized * Time.deltaTime * PlayerInfo.Speed;
                     }
                     else if (downCanGo == false)
                     {
-                        transform.position += (benchmark - benchmarkDown).normalized * Time.deltaTime * _speed;
+                        transform.position += (benchmark - benchmarkDown).normalized * Time.deltaTime * PlayerInfo.Speed;
                     }
                 }
-                _cellPos = Managers.Map.CurrentGrid.WorldToCell(transform.position);
+                CellPos = Managers.Map.CurrentGrid.WorldToCell(transform.position);
             }
         }
         //Debug.Log($"Move To {_cellPos}");
     }
     protected virtual void UpdateSortOrder()
     {
-        _sortOrder = -100 + (Managers.Map.MaxY - _cellPos.y) * 2 + 1;
+        _sortOrder = -100 + (Managers.Map.MaxY - CellPos.y) * 2 + 1;
         _spriteRenderer.sortingOrder = _sortOrder;
         _shadow.sortingOrder = _sortOrder - 1;
-    }
-    protected IEnumerator Bomb()
-    {
-        Vector3Int pos = Managers.Map.CurrentGrid.WorldToCell(transform.position + new Vector3(0, -0.3f, 0));
-        if (_bombCool == false && Managers.Object.Find(pos) == null
-            && _bombCount < _maxBombCount)
-        {
-            _bombCool = true;
-             _bombCount++;      
-            Managers.Resource.Instantiate("Bomb", null,
-                (bomb) =>
-                {
-                    Managers.Object.Add(_bombId, bomb);
-                    BombController bc = bomb.GetComponent<BombController>();
-                    bc.CellPos = pos;
-                    bomb.transform.position = pos + correction;
-                    bc.BombID = _bombId;
-                    bc.Range = _bombRange;
-                    bc.SortOrder = _sortOrder;
-                    _bombId++;
-                    bc.Init();
-                    bc.Bomb(() => { _bombCount--; });
-                });
-
-            yield return new WaitForSeconds(0.25f);
-            _coBomb = null;
-            _bombCool = false;
-        }
     }
 }
