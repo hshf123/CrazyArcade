@@ -1,4 +1,6 @@
 #pragma once
+#include "Protocol.pb.h"
+#include "ClientPacketHandler.h"
 
 using RoomState = Protocol::PRoomState;
 
@@ -26,6 +28,12 @@ public:
 	PlayerRef GetLeader() { return FindPlayer(_leaderId); }
 
 	void Broadcast(SendBufferRef sendBuffer, ClientSessionRef exceptSession = nullptr);
+	template <class T>
+	void Broadcast(T pkt, ClientSessionRef exceptSession = nullptr);
+
+public:
+	void HandleMove(PlayerRef player, Protocol::C_MOVE& pkt);
+	void HandleBomb(PlayerRef player, Protocol::C_BOMB& pkt);
 
 private:
 	USE_LOCK;
@@ -45,3 +53,10 @@ private:
 	int32 _respawnPosX[8] = { -7,4,-7,4,-5,0,-5,2 };
 	int32 _respawnPosY[8] = { 5,5,-6,-6,5,5,-6,-6 };
 };
+
+template <class T>
+void Room::Broadcast(T pkt, ClientSessionRef exceptSession /*= nullptr*/)
+{
+	SendBufferRef sendBuffer = ClientPacketHandler::MakeSendBuffer(pkt);
+	Broadcast(sendBuffer, exceptSession);
+}

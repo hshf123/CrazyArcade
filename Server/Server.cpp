@@ -12,6 +12,67 @@
 #include "DBBind.h"
 #include "ChannelManager.h"
 
+void MakeTestData(int32 idx)
+{
+	{
+		DBConnection* dbConn = GDBConnectionPool->Pop();
+		auto query = L"INSERT INTO [dbo].[UserInfo]			\
+						([id], [password])					\
+						VALUES (?, ?)";
+		DBBind<2, 0> dbBind(*dbConn, query);
+
+		{
+			wstringstream ss;
+			ss << L"Test" << idx;
+			WCHAR id[20];
+			::memset(id, 0, sizeof(id));
+			::memcpy(id, ss.str().c_str(), ss.str().size() * sizeof(WCHAR));
+ 			dbBind.BindParam(0, id);
+		}
+		{
+			wstringstream ss;
+			ss << L"Test" << idx << L"@";
+			WCHAR password[20];
+			::memset(password, 0, sizeof(password));
+			::memcpy(password, ss.str().c_str(), ss.str().size() * sizeof(WCHAR));
+			dbBind.BindParam(1, password);
+		}
+
+		ASSERT_CRASH(dbBind.Execute());
+		GDBConnectionPool->Push(dbConn);
+	}
+	{
+		DBConnection* dbConn = GDBConnectionPool->Pop();
+		auto query = L"INSERT INTO [dbo].[Player]				\
+						([name], [player_id], [level], [exp])	\
+						VALUES (?, ?, ?, ?)";
+		DBBind<4, 0> dbBind(*dbConn, query);
+		{
+			wstringstream ss;
+			ss << L"TestPlayer" << idx;
+			WCHAR name[20];
+			::memset(name, 0, sizeof(name));
+			::memcpy(name, ss.str().c_str(), ss.str().size() * sizeof(WCHAR));
+			dbBind.BindParam(0, name);
+		}
+		{
+			wstringstream ss;
+			ss << L"Test" << idx;
+			WCHAR player_id[20];
+			::memset(player_id, 0, sizeof(player_id));
+			::memcpy(player_id, ss.str().c_str(), ss.str().size() * sizeof(WCHAR));
+			dbBind.BindParam(1, player_id);
+		}
+		int32 level = 1;
+		float exp = 0.f;
+		dbBind.BindParam(2, level);
+		dbBind.BindParam(3, exp);
+
+		ASSERT_CRASH(dbBind.Execute());
+		GDBConnectionPool->Push(dbConn);
+	}
+}
+
 int main()
 {
 	// ASSERT_CRASH(GDBConnectionPool->Connect(1, L"Driver={ODBC Driver 18 for SQL Server};Server=(localdb)\\MSSQLLocalDB;Database=ServerDB;Trusted_Connection=Yes;"));
@@ -57,77 +118,9 @@ int main()
 	}
 
 #pragma region Test Data
+	for (int32 i = 0; i < 20; i++)
 	{
-		DBConnection* dbConn = GDBConnectionPool->Pop();
-		auto query = L"INSERT INTO [dbo].[UserInfo]			\
-						([id], [password])					\
-						VALUES (?, ?)";
-		DBBind<2, 0> dbBind(*dbConn, query);
-
-		WCHAR id[20] = L"Test1";
-		WCHAR password[20] = L"Test1@";
-
-		dbBind.BindParam(0, id);
-		dbBind.BindParam(1, password);
-
-		ASSERT_CRASH(dbBind.Execute());
-		GDBConnectionPool->Push(dbConn);
-	}
-	{
-		DBConnection* dbConn = GDBConnectionPool->Pop();
-		auto query = L"INSERT INTO [dbo].[Player]				\
-						([name], [player_id], [level], [exp])	\
-						VALUES (?, ?, ?, ?)";
-		DBBind<4, 0> dbBind(*dbConn, query);
-
-		WCHAR name[20] = L"TestPlayer1";
-		WCHAR player_id[20] = L"Test1";
-		int32 level = 1;
-		float exp = 0.f;
-
-		dbBind.BindParam(0, name);
-		dbBind.BindParam(1, player_id);
-		dbBind.BindParam(2, level);
-		dbBind.BindParam(3, exp);
-
-		ASSERT_CRASH(dbBind.Execute());
-		GDBConnectionPool->Push(dbConn);
-	}
-	{
-		DBConnection* dbConn = GDBConnectionPool->Pop();
-		auto query = L"INSERT INTO [dbo].[UserInfo]			\
-						([id], [password])					\
-						VALUES (?, ?)";
-		DBBind<2, 0> dbBind(*dbConn, query);
-
-		WCHAR id[20] = L"Test2";
-		WCHAR password[20] = L"Test2@";
-
-		dbBind.BindParam(0, id);
-		dbBind.BindParam(1, password);
-
-		ASSERT_CRASH(dbBind.Execute());
-		GDBConnectionPool->Push(dbConn);
-	}
-	{
-		DBConnection* dbConn = GDBConnectionPool->Pop();
-		auto query = L"INSERT INTO [dbo].[Player]				\
-						([name], [player_id], [level], [exp])	\
-						VALUES (?, ?, ?, ?)";
-		DBBind<4, 0> dbBind(*dbConn, query);
-
-		WCHAR name[20] = L"TestPlayer2";
-		WCHAR player_id[20] = L"Test2";
-		int32 level = 1;
-		float exp = 0.f;
-
-		dbBind.BindParam(0, name);
-		dbBind.BindParam(1, player_id);
-		dbBind.BindParam(2, level);
-		dbBind.BindParam(3, exp);
-
-		ASSERT_CRASH(dbBind.Execute());
-		GDBConnectionPool->Push(dbConn);
+		MakeTestData(i + 1);
 	}
 #pragma endregion
 

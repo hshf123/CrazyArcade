@@ -113,3 +113,14 @@ message S_MOVE
 	PPlayer player = 1;
 	PPositionInfo positionInfo = 2;
 }
+
+message C_BOMB
+{
+	PPositionInfo posInfo = 1;
+}
+
+message S_BOMB
+{
+	PPlayer player = 1;
+	PPositionInfo posInfo = 2;
+}

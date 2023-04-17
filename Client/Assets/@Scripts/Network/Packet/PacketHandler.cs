@@ -18,9 +18,9 @@ public class PacketHandler
             return;
         }
 
-        Managers.Scene.ChangeScene<ChannelScene>(Define.SceneType.ChannelScene);
         Managers.Game.Channels = pkt.Channels;
         Managers.Game.PlayerID = pkt.PlayerId;
+        Managers.Scene.ChangeScene<ChannelScene>(Define.SceneType.ChannelScene);
     }
 
     public static void S_CHANNELCHOICEHandler(PacketSession session, IMessage packet)
@@ -34,9 +34,9 @@ public class PacketHandler
             return;
         }
 
-        Managers.Scene.ChangeScene<LobbyScene>(Define.SceneType.LobbyScene);
         Managers.Game.ChannelID = pkt.ChannelId;
         Managers.Game.Rooms = pkt.Rooms;
+        Managers.Scene.ChangeScene<LobbyScene>(Define.SceneType.LobbyScene);
     }
 
     public static void S_CHANNELCHATHandler(PacketSession session, IMessage packet)
@@ -137,5 +137,21 @@ public class PacketHandler
 
         pc.State = pkt.PositionInfo.State;
         pc.Dir = pkt.PositionInfo.MoveDir;
+    }
+
+    public static void S_BOMBHandler(PacketSession session, IMessage packet)
+    {
+        Debug.Log($"S_BOMBHandler");
+
+        ServerSession serverSession = session as ServerSession;
+        S_BOMB pkt = packet as S_BOMB;
+
+        GameScene gameScene = Managers.Scene.CurrentScene as GameScene;
+        if(gameScene == null)
+        {
+            Debug.Log($"{Managers.Scene.CurrentScene} is not GameScene");
+            return;
+        }
+        gameScene.InstantiateBomb(pkt.Player, pkt.PosInfo);
     }
 }

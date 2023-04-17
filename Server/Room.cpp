@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "Room.h"
 #include "Player.h"
-#include "ClientPacketHandler.h"
+#include "Protocol.pb.h"
 
 Room::Room(int64 id, const string& roomName, int32 maxPlayerCount)
 	:_roomId(id), _maxPlayerCount(maxPlayerCount)
@@ -164,4 +164,51 @@ void Room::Broadcast(SendBufferRef sendBuffer, ClientSessionRef exceptSession /*
 			continue;
 		p.second->Send(sendBuffer);
 	}
+}
+
+void Room::HandleMove(PlayerRef player, Protocol::C_MOVE& pkt)
+{
+	if (player == nullptr)
+		return;
+
+	WRITE_LOCK;
+	// TODO : 검증
+
+	wstringstream log;
+	log << L"[ Log ] Player ID : ";
+	log << player->PlayerInfo.id();
+	log << L" | C_MOVE(";
+	log << pkt.positioninfo().worldpos().posx();
+	log << L", ";
+	log << pkt.positioninfo().worldpos().posy();
+	log << L")";
+	Utils::Log(log);
+
+	player->PosInfo.CopyFrom(pkt.positioninfo());
+	Protocol::S_MOVE movePkt;
+	movePkt.set_allocated_player(player->GetPlayerProtocol());
+	movePkt.set_allocated_positioninfo(player->GetPositionInfoProtocol());
+	Broadcast(movePkt);
+}
+
+void Room::HandleBomb(PlayerRef player, Protocol::C_BOMB& pkt)
+{
+	if (player == nullptr)
+		return;
+	WRITE_LOCK;
+
+	wstringstream log;
+	log << L"[ Log ] ";
+	log <<L"Player ID : " << player->PlayerInfo.id();
+	log << " has placed a Bomb at (" << pkt.posinfo().cellpos().posx() << ", " << pkt.posinfo().cellpos().posy() << ")";
+	Utils::Log(log);
+
+	// TODO 검증
+	// Vector3Int pos = Managers.Map.CurrentGrid.WorldToCell(transform.position + new Vector3(0, -0.3f, 0));
+	// TODO : world position에서 좀 낮은 위치를 기준으로 물풍선 생성
+
+	Protocol::S_BOMB bombPkt;
+	bombPkt.set_allocated_player(player->GetPlayerProtocol());
+	bombPkt.set_allocated_posinfo(player->GetPositionInfoProtocol());
+	Broadcast(bombPkt);
 }

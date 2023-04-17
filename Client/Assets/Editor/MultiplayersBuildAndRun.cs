@@ -5,6 +5,12 @@ using UnityEngine;
 
 public class MultiplayersBuildAndRun
 {
+    [MenuItem("Tools/Build And Run")]
+    static void PerformWin64Build()
+    {
+        PerformWin64Build(1);
+    }
+
     [MenuItem("Tools/Run Multiplayer/2 Players")]
     static void PerformWin64Build2()
     {

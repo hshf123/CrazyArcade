@@ -23,6 +23,8 @@ enum : uint16
 	PKT_S_ROOMSTART = 1014,
 	PKT_C_MOVE = 1015,
 	PKT_S_MOVE = 1016,
+	PKT_C_BOMB = 1017,
+	PKT_S_BOMB = 1018,
 };
 
 bool Handle_INVALID(PacketSessionRef& session, BYTE* buffer, int32 len);
@@ -34,6 +36,7 @@ bool Handle_C_ROOMENTER(PacketSessionRef& session, Protocol::C_ROOMENTER& pkt);
 bool Handle_C_ROOMREADY(PacketSessionRef& session, Protocol::C_ROOMREADY& pkt);
 bool Handle_C_ROOMSTART(PacketSessionRef& session, Protocol::C_ROOMSTART& pkt);
 bool Handle_C_MOVE(PacketSessionRef& session, Protocol::C_MOVE& pkt);
+bool Handle_C_BOMB(PacketSessionRef& session, Protocol::C_BOMB& pkt);
 
 class ClientPacketHandler
 {
@@ -50,6 +53,7 @@ public:
 		GPacketHandler[PKT_C_ROOMREADY] = [](PacketSessionRef& session, BYTE* buffer, int32 len) { return HandlePacket<Protocol::C_ROOMREADY>(Handle_C_ROOMREADY, session, buffer, len); };
 		GPacketHandler[PKT_C_ROOMSTART] = [](PacketSessionRef& session, BYTE* buffer, int32 len) { return HandlePacket<Protocol::C_ROOMSTART>(Handle_C_ROOMSTART, session, buffer, len); };
 		GPacketHandler[PKT_C_MOVE] = [](PacketSessionRef& session, BYTE* buffer, int32 len) { return HandlePacket<Protocol::C_MOVE>(Handle_C_MOVE, session, buffer, len); };
+		GPacketHandler[PKT_C_BOMB] = [](PacketSessionRef& session, BYTE* buffer, int32 len) { return HandlePacket<Protocol::C_BOMB>(Handle_C_BOMB, session, buffer, len); };
 	}
 
 	static bool HandlePacket(PacketSessionRef& session, BYTE* buffer, uint32 len)
@@ -66,6 +70,7 @@ public:
 	static SendBufferRef MakeSendBuffer(Protocol::S_ROOMUPDATE& packet) { return MakeSendBuffer(packet, PKT_S_ROOMUPDATE); }
 	static SendBufferRef MakeSendBuffer(Protocol::S_ROOMSTART& packet) { return MakeSendBuffer(packet, PKT_S_ROOMSTART); }
 	static SendBufferRef MakeSendBuffer(Protocol::S_MOVE& packet) { return MakeSendBuffer(packet, PKT_S_MOVE); }
+	static SendBufferRef MakeSendBuffer(Protocol::S_BOMB& packet) { return MakeSendBuffer(packet, PKT_S_BOMB); }
 
 private:
 	template<class PacketType, class ProcessFunc>

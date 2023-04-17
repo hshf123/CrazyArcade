@@ -20,9 +20,15 @@ public:
 		return str;
 	}
 
-	static void Log(const wstring& str)
+	static void Log(const wstring& log)
 	{
 		wcout.imbue(locale("kor"));
-		wcout << str << endl;
+		wcout << log << endl;
+	}
+
+	static void Log(const wstringstream& log)
+	{
+		wcout.imbue(locale("kor"));
+		wcout << log.str() << endl;
 	}
 };

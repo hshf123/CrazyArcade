@@ -44,7 +44,7 @@ public class PlayerController : MonoBehaviour
     }
     #endregion
 
-    public Vector3 WorldPos
+    public virtual Vector3 WorldPos
     {
         get
         {
@@ -52,12 +52,15 @@ public class PlayerController : MonoBehaviour
         }
         set
         {
+            if (PosInfo.WorldPos.PosX == value.x && PosInfo.WorldPos.PosY == value.y)
+                return;
+
             PosInfo.WorldPos.PosX = value.x;
             PosInfo.WorldPos.PosY = value.y;
             transform.position = value;
         }
     }
-    public Vector3Int CellPos
+    public virtual Vector3Int CellPos
     {
         get 
         {
@@ -65,12 +68,15 @@ public class PlayerController : MonoBehaviour
         }
         set
         {
+            if (PosInfo.CellPos.PosX == value.x && PosInfo.CellPos.PosY == value.y)
+                return;
+
             PosInfo.CellPos.PosX = value.x;
             PosInfo.CellPos.PosY = value.y;
         }
     }
     protected MoveDir _lastDir = MoveDir.Down;
-    public MoveDir Dir
+    public virtual MoveDir Dir
     {
         get
         {
@@ -87,7 +93,7 @@ public class PlayerController : MonoBehaviour
             UpdateAnimation();
         }
     }
-    public PlayerState State
+    public virtual PlayerState State
     {
         get { return PosInfo.State; }
         set

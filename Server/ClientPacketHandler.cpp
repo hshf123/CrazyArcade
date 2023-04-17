@@ -306,20 +306,10 @@ bool Handle_C_ROOMSTART(PacketSessionRef& session, Protocol::C_ROOMSTART& pkt)
 bool Handle_C_MOVE(PacketSessionRef& session, Protocol::C_MOVE& pkt)
 {
 	ClientSessionRef clientSession = static_pointer_cast<ClientSession>(session);
-	Protocol::PPositionInfo posInfo = pkt.positioninfo();
 
 	PlayerRef player = clientSession->MyPlayer;
 	if (player == nullptr)
 		return false;
-
-	wstring log = L"[Log] PLAYERID : ";
-	log += clientSession->MyPlayer->PlayerInfo.id();
-	log += L" | C_MOVE(";
-	log += pkt.positioninfo().worldpos().posx();
-	log += L", ";
-	log += pkt.positioninfo().worldpos().posy();
-	log += L")";
-	Utils::Log(log);
 
 	ChannelRef channel = ChannelManager::GetInstance()->FindChannel(player->PlayerInfo.channelid());
 	if (channel == nullptr)
@@ -329,15 +319,27 @@ bool Handle_C_MOVE(PacketSessionRef& session, Protocol::C_MOVE& pkt)
 	if (room == nullptr)
 		return false;
 
-	// TODO : °ËÁõ
+	room->HandleMove(player, pkt);
 
-	player->PosInfo.CopyFrom(pkt.positioninfo());
+	return true;
+}
 
-	Protocol::S_MOVE movePkt;
-	movePkt.set_allocated_player(player->GetPlayerProtocol());
-	movePkt.set_allocated_positioninfo(player->GetPositionInfoProtocol());
-	SendBufferRef sendBuffer = ClientPacketHandler::MakeSendBuffer(movePkt);
-	room->Broadcast(sendBuffer);
+bool Handle_C_BOMB(PacketSessionRef& session, Protocol::C_BOMB& pkt)
+{
+	ClientSessionRef clientSession = static_pointer_cast<ClientSession>(session);
 
+	PlayerRef player = clientSession->MyPlayer;
+	if (player == nullptr)
+		return false;
+
+	ChannelRef channel = ChannelManager::GetInstance()->FindChannel(player->PlayerInfo.channelid());
+	if (channel == nullptr)
+		return false;
+
+	RoomRef room = channel->FindRoom(player->PlayerInfo.roomid());
+	if (room == nullptr)
+		return false;
+
+	room->HandleBomb(player, pkt);
 	return true;
 }

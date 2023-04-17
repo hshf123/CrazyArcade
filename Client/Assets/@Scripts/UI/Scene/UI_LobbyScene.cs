@@ -10,11 +10,6 @@ using UnityEngine.UI;
 
 public class UI_LobbyScene : UI_Scene
 {
-    List<int> _roomIds = new List<int>();
-    List<string> _roomNames = new List<string>();
-    List<int> _roomCurrentPlayerCounts = new List<int>();
-    List<int> _roomMaxCurrentPlayerCounts = new List<int>();
-
     enum GameObjects
     {
         RoomList,
@@ -78,34 +73,29 @@ public class UI_LobbyScene : UI_Scene
     {
         ClearRoomPage();
 
-        _roomIds.Clear();
-        _roomNames.Clear();
-        _roomCurrentPlayerCounts.Clear();
-        _roomMaxCurrentPlayerCounts.Clear();
-        int idx = 0;
         for (int i = _roomPage * 6; i < (_roomPage + 1) * 6; i++)
         {
-            if (i >= Managers.Game.Rooms.Count)
-            {
-                Managers.UI.MakeSubItem<UI_RoomDummySubItem>(Get<GameObject>((int)GameObjects.RoomList).transform);
-            }
-            else
-            {
-                _roomIds.Add(Managers.Game.Rooms[i].RoomId);
-                _roomNames.Add(Managers.Game.Rooms[i].RoomName);
-                _roomCurrentPlayerCounts.Add(Managers.Game.Rooms[i].CurrentPlayerCount);
-                _roomMaxCurrentPlayerCounts.Add(Managers.Game.Rooms[i].MaxPlayerCount);
-                Managers.UI.MakeSubItem<UI_RoomSubItem>(Get<GameObject>((int)GameObjects.RoomList).transform, null,
-                    (room)=>
-                    {
-                        room.gameObject.BindEvent(OnClickRoom);
-                        room.RoomID = _roomIds[idx];
-                        room.RoomName = _roomNames[idx];
-                        room.CurrentPlayerCount = _roomCurrentPlayerCounts[idx];
-                        room.MaxPlayerCount = _roomMaxCurrentPlayerCounts[idx++];
-                        // room.RoomState;
-                    });
-            }
+            MakeRoomSubItem(i);
+        }
+    }
+    void MakeRoomSubItem(int idx)
+    {
+        if (idx >= Managers.Game.Rooms.Count)
+        {
+            Managers.UI.MakeSubItem<UI_RoomDummySubItem>(Get<GameObject>((int)GameObjects.RoomList).transform);
+        }
+        else
+        {
+            Managers.UI.MakeSubItem<UI_RoomSubItem>(Get<GameObject>((int)GameObjects.RoomList).transform, null,
+                (room) =>
+                {
+                    room.gameObject.BindEvent(OnClickRoom);
+                    room.RoomID = Managers.Game.Rooms[idx].RoomId;
+                    room.RoomName = Managers.Game.Rooms[idx].RoomName;
+                    room.CurrentPlayerCount = Managers.Game.Rooms[idx].CurrentPlayerCount;
+                    room.MaxPlayerCount = Managers.Game.Rooms[idx].MaxPlayerCount;
+                    // TODO : Waiting, Playing | room.RoomState;
+                });
         }
     }
     void ClearRoomPage()

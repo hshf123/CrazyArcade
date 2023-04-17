@@ -7,6 +7,7 @@ using MoveDir = Protocol.PMoveDir;
 using PlayerState = Protocol.PPlayerState;
 using Google.Protobuf.Protocol;
 using UnityEngine.Experimental.AI;
+using Unity.VisualScripting;
 
 public class MyPlayerController : PlayerController
 {
@@ -23,6 +24,55 @@ public class MyPlayerController : PlayerController
     protected int _bombRange = 1;
     protected int _bombCount = 0;
     #endregion
+    bool _updateFlag = false;
+
+    public override Vector3 WorldPos
+    {
+        get => base.WorldPos;
+        set
+        {
+            Vector3 prevValue = base.WorldPos;
+            base.WorldPos = value;
+            if (base.WorldPos == prevValue)
+                return;
+        }
+    }
+    public override Vector3Int CellPos
+    {
+        get => base.CellPos;
+        set
+        {
+            Vector3Int prevValue = base.CellPos;
+            base.CellPos = value;
+            if (base.CellPos == prevValue)
+                return;
+            _updateFlag = true;
+        }
+    }
+    public override MoveDir Dir
+    {
+        get => PosInfo.MoveDir;
+        set
+        {
+            MoveDir prevValue = base.Dir;
+            base.Dir = value;
+            if (base.Dir == prevValue)
+                return;
+            _updateFlag = true;
+        }
+    }
+    public override PlayerState State
+    {
+        get => PosInfo.State;
+        set
+        {
+            PlayerState prevValue = base.State;
+            base.State = value;
+            if (base.State == prevValue)
+                return;
+            _updateFlag = true;
+        }
+    }
 
     protected override bool Init()
     {
@@ -37,27 +87,32 @@ public class MyPlayerController : PlayerController
     }
     protected override void VirtualUpdate()
     {
+        InputDir();
         base.VirtualUpdate();
+        CheckUpdateFlag();
     }
 
     void InputDir()
     {
-        State = PlayerState.Moving;
         if (Input.GetKey(KeyCode.UpArrow))
         {
             Dir = MoveDir.Up;
+            State = PlayerState.Moving;
         }
         else if (Input.GetKey(KeyCode.RightArrow))
         {
             Dir = MoveDir.Right;
+            State = PlayerState.Moving;
         }
         else if (Input.GetKey(KeyCode.DownArrow))
         {
             Dir = MoveDir.Down;
+            State = PlayerState.Moving;
         }
         else if (Input.GetKey(KeyCode.LeftArrow))
         {
             Dir = MoveDir.Left;
+            State = PlayerState.Moving;
         }
         else
         {
@@ -68,21 +123,7 @@ public class MyPlayerController : PlayerController
         if (Input.GetKey(KeyCode.Space))
         {
             _coBomb = StartCoroutine(Bomb());
-        }
-    }
-    protected override void MovePosition()
-    {
-        PlayerState prevState = State;
-        Vector3Int prevCellPos = CellPos;
-
-        InputDir();
-        base.MovePosition();
-
-        if(prevState != State || prevCellPos != CellPos)
-        {
-            C_MOVE movePkt = new C_MOVE();
-            movePkt.PositionInfo = PosInfo;
-            Managers.Net.SessionManager.Broadcast(movePkt);
+            // Bomb();
         }
     }
     protected override void UpdateSortOrder()
@@ -90,36 +131,27 @@ public class MyPlayerController : PlayerController
         base.UpdateSortOrder();
         _cursor.sortingOrder = _sortOrder + 1;
     }
-
-
-    protected IEnumerator Bomb()
+    void CheckUpdateFlag()
     {
-        // Vector3Int pos = Managers.Map.CurrentGrid.WorldToCell(transform.position + new Vector3(0, -0.3f, 0));
-        // if (_bombCool == false && Managers.Object.Find(pos) == null
-        //     && _bombCount < _maxBombCount)
-        // {
-        //     _bombCool = true;
-        //     _bombCount++;
-        //     Managers.Resource.Instantiate("Bomb", null,
-        //         (bomb) =>
-        //         {
-        //             Managers.Object.Add(_bombId, bomb);
-        //             BombController bc = bomb.GetComponent<BombController>();
-        //             bc.CellPos = pos;
-        //             bomb.transform.position = pos + correction;
-        //             bc.BombID = _bombId;
-        //             bc.Range = _bombRange;
-        //             bc.SortOrder = _sortOrder;
-        //             _bombId++;
-        //             bc.Init();
-        //             bc.Bomb(() => { _bombCount--; });
-        //         });
-        // 
-        //     yield return new WaitForSeconds(0.25f);
-        //     _coBomb = null;
-        //     _bombCool = false;
-        // }
+        if (_updateFlag)
+        {
+            C_MOVE movePkt = new C_MOVE();
+            movePkt.PositionInfo = PosInfo;
+            Managers.Net.SessionManager.Broadcast(movePkt);
+            _updateFlag = false;
+        }
+    }
+    IEnumerator Bomb()
+    {
+        if (_bombCool)
+            yield break;
 
-        yield return new WaitForFixedUpdate();
+        _bombCool = true;
+        C_BOMB bombPkt = new C_BOMB();
+        bombPkt.PosInfo = PosInfo;
+        Managers.Net.SessionManager.Broadcast(bombPkt);
+        yield return new WaitForSeconds(0.25f);
+        _coBomb = null;
+        _bombCool = false;
     }
 }

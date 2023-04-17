@@ -1,7 +1,9 @@
+using Protocol;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using CellPos = Protocol.PCellPos;
 
 public class BombController : MonoBehaviour
 {
@@ -15,7 +17,7 @@ public class BombController : MonoBehaviour
     Coroutine _coBomb;
 
     public int SortOrder { get; set; }
-    public Vector3Int CellPos { get; set; }
+    public CellPos CellPos { get; set; }
     public int BombID { get; set; }
     public int Range { get; set; }
 
@@ -35,10 +37,10 @@ public class BombController : MonoBehaviour
         _leftRangeList = new Vector3Int[Range];
         for (int i = 0; i < Range; i++)
         {
-            _upRangeList[i] = CellPos + new Vector3Int(0, i + 1, 0);
-            _rightRangeList[i] = CellPos + new Vector3Int(i + 1, 0, 0);
-            _downRangeList[i] = CellPos + new Vector3Int(0, -(i + 1), 0);
-            _leftRangeList[i] = CellPos + new Vector3Int(-(i + 1), 0, 0);
+            _upRangeList[i] = new Vector3Int(CellPos.PosX, CellPos.PosY, 0) + new Vector3Int(0, i + 1, 0);
+            _rightRangeList[i] = new Vector3Int(CellPos.PosX, CellPos.PosY, 0) + new Vector3Int(i + 1, 0, 0);
+            _downRangeList[i] = new Vector3Int(CellPos.PosX, CellPos.PosY, 0) + new Vector3Int(0, -(i + 1), 0);
+            _leftRangeList[i] = new Vector3Int(CellPos.PosX, CellPos.PosY, 0) + new Vector3Int(-(i + 1), 0, 0);
         }
     }
 
@@ -58,7 +60,8 @@ public class BombController : MonoBehaviour
         LeftWaterCourse();
         Managers.Resource.Instantiate("WaterCourse", null, (course) =>
         {
-            course.transform.position = CellPos + correction; Managers.Resource.Destroy(course, 0.54f); course.GetComponent<Animator>().Play("CENTER"); course.GetComponent<SpriteRenderer>().sortingOrder = SortOrder;
+            course.transform.position = new Vector3(CellPos.PosX + correction.x, CellPos.PosY + correction.y, 0);
+            Managers.Resource.Destroy(course, 0.54f); course.GetComponent<Animator>().Play("CENTER"); course.GetComponent<SpriteRenderer>().sortingOrder = SortOrder;
             Managers.Resource.Destroy(gameObject);
             Managers.Object.Remove(BombID);
             callback?.Invoke();

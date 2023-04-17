@@ -64,4 +64,23 @@ public class GameScene : BaseScene
             });
         }
     }
+    public void InstantiateBomb(PPlayer playerInfo, PPositionInfo posInfo)
+    {
+        //if (/*Managers.Object.Find(posInfo.CellPos) == null &&*/ _bombCount < _maxBombCount) 
+            // _bombCount++;
+        Managers.Resource.Instantiate("Bomb", null,
+            (bomb) =>
+            {
+                // Managers.Object.Add(_bombId, bomb);
+                BombController bc = bomb.GetComponent<BombController>();
+                bc.CellPos = posInfo.CellPos;
+                bomb.transform.position = new Vector3(bc.CellPos.PosX + correction.x, bc.CellPos.PosY + correction.y, 0);
+                // bc.BombID = _bombId;
+                bc.Range = playerInfo.BombRange;
+                bc.SortOrder = 100; // TODO
+                // _bombId++;
+                bc.Init();
+                bc.Bomb(() => { Debug.Log("Bomb"); });
+            });
+    }
 }
