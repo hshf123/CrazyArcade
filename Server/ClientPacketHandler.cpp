@@ -58,8 +58,11 @@ bool Handle_C_LOGIN(PacketSessionRef& session, Protocol::C_LOGIN& pkt)
 		}
 	}
 
-	wcout.imbue(locale("kor"));
-	wcout << L"로그인 성공!" << endl;
+	{
+		wstringstream log;
+		log << L"LOGIN : " << id;
+		Utils::Log(log);
+	}
 
 	{
 		// TODO : 정보가 없으면 새로 만들기
@@ -98,12 +101,16 @@ bool Handle_C_LOGIN(PacketSessionRef& session, Protocol::C_LOGIN& pkt)
 		player->PlayerInfo.set_ready(false);
 		player->PlayerInfo.set_speed(2.f);
 		player->PlayerInfo.set_maxbombcount(1);
-		player->PlayerInfo.set_bombcount(1);
+		player->PlayerInfo.set_bombcount(0);
 		player->PlayerInfo.set_bombrange(1);
 
 		clientSession->MyPlayer = player;
 		player->SetClientSession(clientSession);
 		ChannelManager::GetInstance()->AddPlayer(player);
+
+		wstringstream log;
+		log << L"ENTER NEW PLAYER / ID : " << player->PlayerInfo.id();
+		Utils::Log(log);
 	}
 
 	Protocol::S_LOGIN loginPkt;
@@ -122,6 +129,7 @@ bool Handle_C_LOGIN(PacketSessionRef& session, Protocol::C_LOGIN& pkt)
 
 bool Handle_C_CHANNELCHOICE(PacketSessionRef& session, Protocol::C_CHANNELCHOICE& pkt)
 {
+	wstringstream log;
 	// success false, 입장가능한지 체크
 	ClientSessionRef clientSession = static_pointer_cast<ClientSession>(session);
 
@@ -129,12 +137,16 @@ bool Handle_C_CHANNELCHOICE(PacketSessionRef& session, Protocol::C_CHANNELCHOICE
 	if (player == nullptr)
 		return false;
 
+	log << L"PLAYER ID " << player->PlayerInfo.id();
+
 	ChannelRef channel = ChannelManager::GetInstance()->FindChannel(pkt.channelid());
 	if (channel == nullptr)
 		return false;
 
 	channel->InsertPlayer(player);
 	ChannelManager::GetInstance()->RemovePlayer(pkt.playerid());
+
+	log << L" ENTER CHANNEL ID " << player->PlayerInfo.channelid();
 
 	Protocol::S_CHANNELCHOICE channelChoicePkt;
 	channelChoicePkt.set_success(true);
@@ -147,11 +159,14 @@ bool Handle_C_CHANNELCHOICE(PacketSessionRef& session, Protocol::C_CHANNELCHOICE
 	SendBufferRef sendBuffer = ClientPacketHandler::MakeSendBuffer(channelChoicePkt);
 	clientSession->Send(sendBuffer);
 
+	Utils::Log(log);
+
 	return true;
 }
 
 bool Handle_C_CHANNELCHAT(PacketSessionRef& session, Protocol::C_CHANNELCHAT& pkt)
 {
+	wstringstream log;
 	ClientSessionRef clientSession = static_pointer_cast<ClientSession>(session);
 
 	ChannelRef channel = ChannelManager::GetInstance()->FindChannel(pkt.channelid());
@@ -162,11 +177,15 @@ bool Handle_C_CHANNELCHAT(PacketSessionRef& session, Protocol::C_CHANNELCHAT& pk
 	if (player == nullptr)
 		return false;
 
+	log << "PLAYER ID : " << player->PlayerInfo.id() << L" SEND CHAT MESSAGE" << channel->ChannelInfo.channelid();
+
 	Protocol::S_CHANNELCHAT chatPkt;
 	chatPkt.set_name(player->PlayerInfo.name());
 	chatPkt.set_chat(pkt.chat());
 	SendBufferRef sendBuffer = ClientPacketHandler::MakeSendBuffer(chatPkt);
 	channel->Broadcast(sendBuffer);
+
+	Utils::Log(log);
 
 	return true;
 }
@@ -187,6 +206,7 @@ bool Handle_C_MAKEROOM(PacketSessionRef& session, Protocol::C_MAKEROOM& pkt)
 bool Handle_C_ROOMENTER(PacketSessionRef& session, Protocol::C_ROOMENTER& pkt)
 {
 	ClientSessionRef clientSession = static_pointer_cast<ClientSession>(session);
+	wstringstream log;
 
 	ChannelRef channel = ChannelManager::GetInstance()->FindChannel(pkt.channelid());
 	if (channel == nullptr)
@@ -196,9 +216,13 @@ bool Handle_C_ROOMENTER(PacketSessionRef& session, Protocol::C_ROOMENTER& pkt)
 	if (player == nullptr)
 		return false;
 
+	log << L"PLYAER ID : " << player->PlayerInfo.id() << L" ENTER ROOM, ROOM ID : ";
+
 	RoomRef room = channel->FindRoom(pkt.roomid());
 	if (room == nullptr)
 		return false;
+
+	log << room->GetId();
 
 	room->InsertPlayer(player);
 	channel->RemovePlayer(pkt.playerid());
@@ -232,17 +256,19 @@ bool Handle_C_ROOMENTER(PacketSessionRef& session, Protocol::C_ROOMENTER& pkt)
 		channel->Broadcast(sendBuffer);
 	}
 
+	Utils::Log(log);
+
 	return true;
 }
 
 bool Handle_C_ROOMREADY(PacketSessionRef& session, Protocol::C_ROOMREADY& pkt)
 {
 	ClientSessionRef clientSession = static_pointer_cast<ClientSession>(session);
-	
+	wstringstream log;
 	PlayerRef player = clientSession->MyPlayer;
 	if (player == nullptr)
 		return false;
-
+	log << L"PLAYER ID : " << player->PlayerInfo.id() << L"SET READY : ";
 	if (player->PlayerInfo.id() != pkt.playerid())
 		return false;
 
@@ -266,17 +292,20 @@ bool Handle_C_ROOMREADY(PacketSessionRef& session, Protocol::C_ROOMREADY& pkt)
 	SendBufferRef sendBuffer = ClientPacketHandler::MakeSendBuffer(roomUpdatePkt);
 	room->Broadcast(sendBuffer);
 
+	log << player->PlayerInfo.ready() ? L"READY" : L"NONREADY";
+	Utils::Log(log);
+
 	return true;
 }
 
 bool Handle_C_ROOMSTART(PacketSessionRef& session, Protocol::C_ROOMSTART& pkt)
 {
 	ClientSessionRef clientSession = static_pointer_cast<ClientSession>(session);
-
+	wstringstream log;
 	PlayerRef player = clientSession->MyPlayer;
 	if (player == nullptr)
 		return false;
-
+	log << L"PLAYER ID : " << player->PlayerInfo.id() << L"ROOM START, ";
 	if (player->PlayerInfo.id() != pkt.playerid())
 		return false;
 
@@ -299,6 +328,9 @@ bool Handle_C_ROOMSTART(PacketSessionRef& session, Protocol::C_ROOMSTART& pkt)
 
 	if (room->CanGameStart() == false)
 		return false;
+
+	log << L"ROOM ID : " << room->GetId() << L" START";
+	Utils::Log(log);
 
 	return true;
 }

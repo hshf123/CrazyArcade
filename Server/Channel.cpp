@@ -7,6 +7,7 @@
 
 void Channel::AddRoom(int64 playerId, const string& roomName, int32 maxPlayerCount /*= 8*/)
 {
+	wstringstream log;
 	WRITE_LOCK;
 	// TODO : increaseId Á¶Àý
 	RoomRef room = MakeShared<Room>(_increaseId, roomName, maxPlayerCount);
@@ -40,6 +41,9 @@ void Channel::AddRoom(int64 playerId, const string& roomName, int32 maxPlayerCou
 		SendBufferRef sendBuffer = ClientPacketHandler::MakeSendBuffer(channelUpdatePkt);
 		Broadcast(sendBuffer);
 	}
+
+	log << "PLAYER ID : " << player->PlayerInfo.id() << L" MAKE ROOM, ROOM ID : " << player->PlayerInfo.roomid();
+	Utils::Log(log);
 }
 
 void Channel::RemoveRoom(int32 roomId)

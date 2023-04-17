@@ -23,12 +23,15 @@ public:
 	static void Log(const wstring& log)
 	{
 		wcout.imbue(locale("kor"));
+		wcout << L"[ LOG ]";
 		wcout << log << endl;
 	}
 
 	static void Log(const wstringstream& log)
 	{
 		wcout.imbue(locale("kor"));
-		wcout << log.str() << endl;
+		wstringstream ws;
+		ws << L"[ LOG ]" << log.str();
+		wcout << ws.str() << endl;
 	}
 };

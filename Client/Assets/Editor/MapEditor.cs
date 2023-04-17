@@ -175,7 +175,17 @@ public class MapEditor
                 writer.WriteLine();
             }
         }
+        StreamReader reader = new StreamReader(Application.dataPath + "/@Resources/MapInfo/ForestMapInfo.txt");
+        using (var writer = File.CreateText($"../Common/MapData/ForestMapInfo.txt"))
+        {
+            while (!reader.EndOfStream)
+            {
+                string line = reader.ReadLine();
+                writer.WriteLine(line);
+            }
 
+        }
+        reader.Close();
         PrefabUtility.SaveAsPrefabAsset(prefabMap, $"Assets/@Resources/Prefabs/Map/{go.name}.prefab");
 
         return;

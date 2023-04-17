@@ -39,6 +39,33 @@ struct Vector2Int
 	int32 y;
 };
 
+struct Vector2
+{
+	Vector2(float x, float y) { x = x; y = y; }
+
+	static Vector2 up() { return Vector2(0.f, 1.f); };
+	static Vector2 down() { return Vector2(0, -1.f); };
+	static Vector2 left() { return Vector2(-1.f, 0.f); };
+	static Vector2 right() { return Vector2(1.f, 0.f); };
+
+	Vector2 operator+(const Vector2& other) const
+	{
+		return Vector2(x + other.x, y + other.y);
+	}
+
+	Vector2 operator-(const Vector2& other) const
+	{
+		return Vector2(x - other.x, y - other.y);
+	}
+
+	float magnitude() { return static_cast<float>(sqrt(sqrMagnitude())); };
+	int32 sqrMagnitude() { return (x * x + y * y); };
+	int32 cellDistFromZero() { return abs(x) + abs(y); };
+
+	float x;
+	float y;
+};
+
 class MapManager
 {
 public:
