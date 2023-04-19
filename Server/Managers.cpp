@@ -3,13 +3,12 @@
 
 int64 Managers::GenerateID(const wstring& name)
 {
-	// djb2 algorithm
-	int64 hash = 5381;
+	uint64 hash = 0;
 
-	for (wchar_t c : name)
+	for (const auto& c : name)
 	{
-		hash = ((hash << 5) + hash) + static_cast<int64>(c);
+		hash = (hash * 31) + static_cast<uint32>(c);
 	}
 
-	return hash;
+	return static_cast<int64>(hash & 0x7FFFFFFFFFFFFFFF);
 }

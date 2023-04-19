@@ -1,7 +1,5 @@
 #pragma once
 
-using ChannelRef = shared_ptr<class Channel>;
-
 class ChannelManager
 {
 private:

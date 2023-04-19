@@ -4,19 +4,22 @@
 class Utils
 {
 public:
-	static wstring ConvertStringToWString(string str)
+	static std::wstring ConvertStringToWString(std::string str)
 	{
-		wstring_convert<codecvt_utf8_utf16<wchar_t>> converter;
-		wstring wstr = converter.from_bytes(str);
-		if(wstr[wstr.size() - 1] == 8203)
-			return wstring(wstr.begin(), wstr.end() - 1);
+		int size_needed = MultiByteToWideChar(CP_UTF8, 0, &str[0], static_cast<int>(str.size()), nullptr, 0);
+		std::wstring wstr(size_needed, 0);
+		MultiByteToWideChar(CP_UTF8, 0, &str[0], static_cast<int>(str.size()), &wstr[0], size_needed);
+		if (wstr[wstr.size() - 1] == 8203) {
+			return std::wstring(wstr.begin(), wstr.end() - 1);
+		}
 		return wstr;
 	}
 
-	static string ConvertWStringToString(wstring wstr)
+	static std::string ConvertWStringToString(std::wstring wstr)
 	{
-		wstring_convert<codecvt_utf8_utf16<wchar_t>> converter;
-		string str = converter.to_bytes(wstr);
+		int size_needed = WideCharToMultiByte(CP_UTF8, 0, &wstr[0], static_cast<int>(wstr.size()), nullptr, 0, nullptr, nullptr);
+		std::string str(size_needed, 0);
+		WideCharToMultiByte(CP_UTF8, 0, &wstr[0], static_cast<int>(wstr.size()), &str[0], size_needed, nullptr, nullptr);
 		return str;
 	}
 

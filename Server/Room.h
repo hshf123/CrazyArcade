@@ -16,6 +16,7 @@ public:
 
 public:
 	bool CanGameStart();
+	void GameInit();
 	Protocol::PPositionInfo* GetBasicPosInfo(int32 idx);
 
 public:
@@ -50,6 +51,7 @@ private:
 	bool _benList[8];
 	RoomState _state = RoomState::WAITING;
 
+	ForestMapRef _forestMap;
 	int32 _respawnPosX[8] = { -7,4,-7,4,-5,0,-5,2 };
 	int32 _respawnPosY[8] = { 5,5,-6,-6,5,5,-6,-6 };
 };

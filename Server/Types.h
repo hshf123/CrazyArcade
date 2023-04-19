@@ -1,25 +1,41 @@
 #pragma once
-
-using PositionInfo = Protocol::PPositionInfo;
-using CellPos = Protocol::PCellPos;
-using WorldPos = Protocol::PWorldPos;
-using GameObjectRef = shared_ptr<class GameObject>;
+#include "pch.h"
 
 struct Pos
 {
-	Pos(float y, float x) { Y = y; X = x; }
-	float Y;
-	float X;
+	Pos(float y, float x) { this->y = y; this->x = x; }
+	float x;
+	float y;
 };
 
 struct Vector2Int
 {
-	Vector2Int(int32 x, int32 y) { x = x; y = y; }
+	Vector2Int(int32 x, int32 y) { this->x = x; this->y = y; }
 
 	static Vector2Int up() { return Vector2Int(0, 1); };
 	static Vector2Int down() { return Vector2Int(0, -1); };
 	static Vector2Int left() { return Vector2Int(-1, 0); };
 	static Vector2Int right() { return Vector2Int(1, 0); };
+
+	Vector2Int& operator=(const Vector2Int& other)
+	{
+		if (this != &other)
+		{
+			this->x = other.x;
+			this->y = other.y;
+		}
+		return *this;
+	}
+
+	bool operator==(const Vector2Int& other) const
+ 	{
+		return x == other.x && y == other.y;
+	}
+
+	bool operator!=(const Vector2Int& other) const
+	{
+		return !(x == other.x && y == other.y);
+	}
 
 	Vector2Int operator+(const Vector2Int& other) const
 	{
@@ -41,14 +57,34 @@ struct Vector2Int
 
 struct Vector2
 {
-	Vector2(float x, float y) { x = x; y = y; }
+	Vector2(float x, float y) { this->x = x; this->y = y; }
 
 	static Vector2 up() { return Vector2(0.f, 1.f); };
 	static Vector2 down() { return Vector2(0, -1.f); };
 	static Vector2 left() { return Vector2(-1.f, 0.f); };
 	static Vector2 right() { return Vector2(1.f, 0.f); };
 
+	Vector2& operator=(const Vector2& other)
+	{
+		if (this != &other)
+		{
+			this->x = other.x;
+			this->y = other.y;
+		}
+		return *this;
+	}
+
+	Vector2 operator*(const float& value) const
+	{
+		return Vector2(x * value, y * value);
+	}
+
 	Vector2 operator+(const Vector2& other) const
+	{
+		return Vector2(x + other.x, y + other.y);
+	}
+
+	Vector2 operator+=(const Vector2& other) const
 	{
 		return Vector2(x + other.x, y + other.y);
 	}
@@ -64,35 +100,4 @@ struct Vector2
 
 	float x;
 	float y;
-};
-
-class MapManager
-{
-public:
-	int32 MinX;
-	int32 MaxX;
-	int32 MinY;
-	int32 MaxY;
-
-	int SizeX() { return MaxX - MinX + 1; }
-	int SizeY() { return MaxY - MinY + 1; }
-
-	vector<vector<bool>> _collision;
-	vector<vector<GameObjectRef>> _objects;
-
-	bool CanGo(Vector2Int cellPos, bool checkObjects = true);
-
-	GameObjectRef Find(Vector2Int cellPos);
-
-	bool ApplyLeave(GameObject gameObject);
-
-	bool ApplyMove(GameObject gameObject, Vector2Int dest);
-
-	void LoadMap(int32 mapId, string pathPrefix = "../../../../../Common/MapData");
-
-	vector<Vector2Int> CalcCellPathFromParent(vector<vector<Pos>> parent, Pos dest);
-
-	Pos Cell2Pos(Vector2Int cell);
-
-	Vector2Int Pos2Cell(Pos pos);
 };

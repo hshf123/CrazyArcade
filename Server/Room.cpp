@@ -2,6 +2,8 @@
 #include "Room.h"
 #include "Player.h"
 #include "Protocol.pb.h"
+#include "ForestMap.h"
+#include "Timer.h"
 
 Room::Room(int64 id, const string& roomName, int32 maxPlayerCount)
 	:_roomId(id), _maxPlayerCount(maxPlayerCount)
@@ -56,49 +58,56 @@ void Room::SetIdx(PlayerRef player)
 
 bool Room::CanGameStart()
 {
-	READ_LOCK;
-
-	if (_currentPlayerCount < 2)
-		return false;
-
-	for (auto& p : _players)
 	{
-		if (p.second->PlayerInfo.id() == _leaderId)
-			continue;
-
-		// 게임 시작 못하면 로그 남기기
-		if (p.second->PlayerInfo.ready() == false)
+		READ_LOCK;
+		if (_currentPlayerCount < 2)
 			return false;
-	}
-	
-	Protocol::S_ROOMSTART roomStartPkt;
-	roomStartPkt.set_success(true);
-	roomStartPkt.set_allocated_room(GetRoomProtocol());
 
-	int32 idx = 0;
-	for (auto& p : _players)
-	{
-		// 모든 플레이어의 기본 PosInfo 초기화 후 Broadcast
-		if (p.second == nullptr)
+		for (auto& p : _players)
 		{
-			// TODO 연결 끊긴건지 확인 후 제외하고 플레이
-			return false;
+			if (p.second->PlayerInfo.id() == _leaderId)
+				continue;
+
+			// 게임 시작 못하면 로그 남기기
+			if (p.second->PlayerInfo.ready() == false)
+				return false;
 		}
-		auto basicPosInfo = GetBasicPosInfo(idx++);
-		p.second->PosInfo.CopyFrom(*basicPosInfo);
-		Protocol::PRoomStart* roomStart = roomStartPkt.add_spawn();
-		roomStart->set_allocated_playerinfo(p.second->GetPlayerProtocol());
-		roomStart->set_allocated_posinfo(p.second->GetPositionInfoProtocol());
+
+		Protocol::S_ROOMSTART roomStartPkt;
+		roomStartPkt.set_success(true);
+		roomStartPkt.set_allocated_room(GetRoomProtocol());
+
+		int32 idx = 0;
+		for (auto& p : _players)
+		{
+			// 모든 플레이어의 기본 PosInfo 초기화 후 Broadcast
+			if (p.second == nullptr)
+			{
+				// TODO 연결 끊긴건지 확인 후 제외하고 플레이
+				return false;
+			}
+			auto basicPosInfo = GetBasicPosInfo(idx++);
+			p.second->PosInfo.CopyFrom(*basicPosInfo);
+			Protocol::PRoomStart* roomStart = roomStartPkt.add_spawn();
+			roomStart->set_allocated_playerinfo(p.second->GetPlayerProtocol());
+			roomStart->set_allocated_posinfo(p.second->GetPositionInfoProtocol());
+		}
+
+		SendBufferRef sendBuffer = ClientPacketHandler::MakeSendBuffer(roomStartPkt);
+		Broadcast(sendBuffer);
+
+		_state = RoomState::GAMESTART;
 	}
-
-	SendBufferRef sendBuffer = ClientPacketHandler::MakeSendBuffer(roomStartPkt);
-	Broadcast(sendBuffer);
-
-	_state = RoomState::GAMESTART;
-
 	// TODO 채널에 있는 사람들한테 게임 시작중인방이라고 broadcast
-
+	GameInit();
 	return true;
+}
+
+void Room::GameInit()
+{
+	WRITE_LOCK;
+	_forestMap = MakeShared<ForestMap>();
+	_forestMap->LoadMap();
 }
 
 Protocol::PPositionInfo* Room::GetBasicPosInfo(int32 idx)
@@ -172,23 +181,61 @@ void Room::HandleMove(PlayerRef player, Protocol::C_MOVE& pkt)
 		return;
 
 	WRITE_LOCK;
-	// TODO : 검증
+#pragma region LOG
+		wstringstream log;
+		log << L"[ Log ] Player ID : ";
+		log << player->PlayerInfo.id();
+		log << L" | C_MOVE(";
+		log << pkt.positioninfo().cellpos().posx();
+		log << L", ";
+		log << pkt.positioninfo().cellpos().posy();
+		log << L")";
+		Utils::Log(log);
+#pragma endregion
 
-	wstringstream log;
-	log << L"[ Log ] Player ID : ";
-	log << player->PlayerInfo.id();
-	log << L" | C_MOVE(";
-	log << pkt.positioninfo().worldpos().posx();
-	log << L", ";
-	log << pkt.positioninfo().worldpos().posy();
-	log << L")";
-	Utils::Log(log);
+	/*
+		1. 이동이 시작되면 상태를 변경해서 클라에서 움직이도록 한다. 이 때 시작 위치가 이상하면 강제로 맞추고 시작
+		2. 이동 중일 때 CellPos가 변경되면 충돌 판정을 한다.
+		3. 멈추면 클라에서 멈춘 위치를 보낼텐데 그 위치를 검사해서 너무 많이 틀어졌다 싶으면 강제로 맞추는 패킷을 보낸다.
+		4. 멈췄을 때 위치의 cellpos가 이상하면 그것도 검사
+	*/
 
-	player->PosInfo.CopyFrom(pkt.positioninfo());
-	Protocol::S_MOVE movePkt;
-	movePkt.set_allocated_player(player->GetPlayerProtocol());
-	movePkt.set_allocated_positioninfo(player->GetPositionInfoProtocol());
-	Broadcast(movePkt);
+	Protocol::PPlayerState s_state = player->PosInfo.state();
+	Protocol::PPlayerState c_state = pkt.positioninfo().state();
+	Vector2Int pktCellPos = Vector2Int(pkt.positioninfo().cellpos().posx(), pkt.positioninfo().cellpos().posy());
+	if (s_state == c_state && s_state == Protocol::PPlayerState::MOVING)
+	{
+		if (_forestMap->CanGo(pktCellPos))
+		{
+			player->PosInfo.CopyFrom(pkt.positioninfo());
+			Protocol::S_MOVE movePkt;
+			movePkt.set_allocated_player(player->GetPlayerProtocol());
+			movePkt.set_allocated_positioninfo(player->GetPositionInfoProtocol());
+			Broadcast(movePkt);
+		}
+	}
+	else if (s_state == Protocol::PPlayerState::IDLE)
+	{
+		// IDLE -> MOVE
+		Protocol::PMoveDir moveDir = pkt.positioninfo().movedir();
+		player->PosInfo.CopyFrom(pkt.positioninfo());
+		Protocol::S_MOVE movePkt;
+		movePkt.set_allocated_player(player->GetPlayerProtocol());
+		movePkt.set_allocated_positioninfo(player->GetPositionInfoProtocol());
+		Broadcast(movePkt);
+	}
+	else if (s_state == Protocol::PPlayerState::MOVING)
+	{
+		// MOVE -> IDLE
+		if (pktCellPos == player->GetCellPos())
+		{
+			player->PosInfo.CopyFrom(pkt.positioninfo());
+			Protocol::S_MOVE movePkt;
+			movePkt.set_allocated_player(player->GetPlayerProtocol());
+			movePkt.set_allocated_positioninfo(player->GetPositionInfoProtocol());
+			Broadcast(movePkt);
+		}
+	}
 }
 
 void Room::HandleBomb(PlayerRef player, Protocol::C_BOMB& pkt)
@@ -197,18 +244,47 @@ void Room::HandleBomb(PlayerRef player, Protocol::C_BOMB& pkt)
 		return;
 	WRITE_LOCK;
 
-	wstringstream log;
-	log << L"[ Log ] ";
-	log <<L"Player ID : " << player->PlayerInfo.id();
-	log << " has placed a Bomb at (" << pkt.posinfo().cellpos().posx() << ", " << pkt.posinfo().cellpos().posy() << ")";
-	Utils::Log(log);
+	Vector2 bombPos = player->GetWorldPos() + Vector2(0, -0.3f);
+	Vector2Int bombCellPos = _forestMap->WorldToCell(bombPos);
+	if (_forestMap->SetBomb(bombCellPos) == false)
+		return;
+	
+	if (player->AddBomb() == false)
+		return;
 
-	// TODO 검증
-	// Vector3Int pos = Managers.Map.CurrentGrid.WorldToCell(transform.position + new Vector3(0, -0.3f, 0));
-	// TODO : world position에서 좀 낮은 위치를 기준으로 물풍선 생성
+	{
+		wstringstream log;
+		log << L"[ Log ] ";
+		log << L"Player ID : " << player->PlayerInfo.id();
+		log << L" has placed a Bomb at (" << bombCellPos.x << ", " << bombCellPos.y << ")";
+		Utils::Log(log);
+	}
 
 	Protocol::S_BOMB bombPkt;
 	bombPkt.set_allocated_player(player->GetPlayerProtocol());
-	bombPkt.set_allocated_posinfo(player->GetPositionInfoProtocol());
+	bombPkt.set_allocated_cellpos(_forestMap->GetCellPosProtocol(bombCellPos));
 	Broadcast(bombPkt);
+
+	// 2.8 초 후 물풍선 터지기
+	chrono::steady_clock::time_point targetTime = chrono::steady_clock::now() + chrono::milliseconds(2800);
+	while (chrono::steady_clock::now() < targetTime)
+	{
+		this_thread::yield(); // 대기 상태로 만들지 않고, 다른 스레드에게 CPU를 양보함
+	}
+
+	_forestMap->DestroyBomb(bombCellPos, player->PlayerInfo.bombrange());
+	player->SubBomb();
+
+	{
+		wstringstream log;
+		log << L"[ Log ] ";
+		log << L"Player ID : " << player->PlayerInfo.id();
+		log << L" A bomb located at (" << bombCellPos.x << ", " << bombCellPos.y << ")" << L"explded.";
+		Utils::Log(log);
+	}
+
+	Protocol::S_BOMBEND bombEndPkt;
+	bombEndPkt.set_allocated_player(player->GetPlayerProtocol());
+	bombEndPkt.set_allocated_cellpos(_forestMap->GetCellPosProtocol(bombCellPos));
+	Broadcast(bombEndPkt);
 }

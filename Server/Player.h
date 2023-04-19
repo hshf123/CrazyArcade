@@ -1,15 +1,20 @@
 #pragma once
+#include "GameObject.h"
 
-using PositionInfo = Protocol::PPositionInfo;
 using PlayerInfo = Protocol::PPlayer;
 
-class Player
+class Player : public GameObject
 {
+public:
+	Vector2Int GetCellPos() { return Vector2Int(PosInfo.cellpos().posx(), PosInfo.cellpos().posy()); }
+	Vector2 GetWorldPos() { return Vector2(PosInfo.worldpos().posx(), PosInfo.worldpos().posy()); }
+
+	bool AddBomb();
+	void SubBomb();
+
 public:
 	void CopyPlayerProtocol(Protocol::PPlayer* pkt);
 	Protocol::PPlayer* GetPlayerProtocol();
-	void CopyPositionInfoProtocol(Protocol::PPositionInfo* pkt);
-	Protocol::PPositionInfo* GetPositionInfoProtocol();
 
 	void SetClientSession(ClientSessionRef session) { _ownerSession = session; }
 	ClientSessionRef GetClientSession() { return _ownerSession.lock(); }
@@ -18,7 +23,7 @@ public:
 
 public:
 	PlayerInfo PlayerInfo;
-	PositionInfo PosInfo;
+	uint64 MoveStartTime;
 
 private:
 	ClientSessionWeakRef _ownerSession;

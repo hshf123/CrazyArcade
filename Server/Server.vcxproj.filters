@@ -48,9 +48,6 @@
     <ClCompile Include="Struct.pb.cc">
       <Filter>Protocol</Filter>
     </ClCompile>
-    <ClCompile Include="Player.cpp">
-      <Filter>GameContents</Filter>
-    </ClCompile>
     <ClCompile Include="Managers.cpp">
       <Filter>GameContents</Filter>
     </ClCompile>
@@ -63,11 +60,17 @@
     <ClCompile Include="Room.cpp">
       <Filter>GameContents\Room</Filter>
     </ClCompile>
-    <ClCompile Include="MapManager.cpp">
+    <ClCompile Include="ForestMap.cpp">
       <Filter>GameContents\Room</Filter>
     </ClCompile>
     <ClCompile Include="GameObject.cpp">
       <Filter>GameContents\Object</Filter>
+    </ClCompile>
+    <ClCompile Include="Player.cpp">
+      <Filter>GameContents\Object</Filter>
+    </ClCompile>
+    <ClCompile Include="Timer.cpp">
+      <Filter>Utils</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -92,9 +95,6 @@
     <ClInclude Include="Struct.pb.h">
       <Filter>Protocol</Filter>
     </ClInclude>
-    <ClInclude Include="Player.h">
-      <Filter>GameContents</Filter>
-    </ClInclude>
     <ClInclude Include="Managers.h">
       <Filter>GameContents</Filter>
     </ClInclude>
@@ -107,11 +107,20 @@
     <ClInclude Include="Room.h">
       <Filter>GameContents\Room</Filter>
     </ClInclude>
-    <ClInclude Include="MapManager.h">
+    <ClInclude Include="ForestMap.h">
       <Filter>GameContents\Room</Filter>
     </ClInclude>
     <ClInclude Include="GameObject.h">
       <Filter>GameContents\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="Player.h">
+      <Filter>GameContents\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="Timer.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="Types.h">
+      <Filter>Utils</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

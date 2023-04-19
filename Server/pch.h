@@ -16,8 +16,12 @@
 #include "DBConnection.h"
 #include "DBConnectionPool.h"
 #include "DBBind.h"
+#include "Types.h"
 
 using ClientSessionRef = shared_ptr<class ClientSession>;
 using ClientSessionWeakRef = weak_ptr<class ClientSession>;
 using PlayerRef = shared_ptr<class Player>;
 using PlayerWeakRef = weak_ptr<class Player>;
+using ChannelRef = shared_ptr<class Channel>;
+using RoomRef = shared_ptr<class Room>;
+using ForestMapRef = shared_ptr<class ForestMap>;

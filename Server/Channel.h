@@ -1,6 +1,5 @@
 #pragma once
 
-using RoomRef = shared_ptr<class Room>;
 using ChannelInfo = Protocol::PChannel;
 
 // RoomManager °â¿ë

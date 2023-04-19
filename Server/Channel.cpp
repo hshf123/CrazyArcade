@@ -29,7 +29,6 @@ void Channel::AddRoom(int64 playerId, const string& roomName, int32 maxPlayerCou
 		SendBufferRef sendBuffer = ClientPacketHandler::MakeSendBuffer(makeRoomPkt);
 		player->Send(sendBuffer);
 	}
-
 	{
 		// 로비에 있는 플레이어들에게 전송
 		Protocol::S_CHANNELUPDATE channelUpdatePkt;
