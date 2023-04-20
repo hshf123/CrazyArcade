@@ -208,12 +208,22 @@ void Room::HandleMove(PlayerRef player, Protocol::C_MOVE& pkt)
 	Vector2Int pktCellPos = Vector2Int(pkt.positioninfo().cellpos().posx(), pkt.positioninfo().cellpos().posy());
 	if (s_state == c_state && (s_state == Protocol::PPlayerState::MOVING || s_state == Protocol::PPlayerState::INTRAP))
 	{
-		// cellpos가 변경되었을 경우
-		if (_forestMap->MovePlayer(player->GetCellPos(), pktCellPos, player))
+		if ((player->GetCellPos() != pktCellPos) && _forestMap->MovePlayer(player->GetCellPos(), pktCellPos, player))
 		{
+			// cellpos가 변경되었을 경우
 			player->PosInfo.CopyFrom(pkt.positioninfo());
 			Protocol::S_MOVE movePkt;
 			movePkt.set_force(false);
+			movePkt.set_allocated_player(player->GetPlayerProtocol());
+			movePkt.set_allocated_positioninfo(player->GetPositionInfoProtocol());
+			Broadcast(movePkt);
+		}
+		else if(player->PosInfo.movedir() != pkt.positioninfo().movedir())
+		{
+			// 방향을 튼 경우
+			player->PosInfo.CopyFrom(pkt.positioninfo());
+			Protocol::S_MOVE movePkt;
+			movePkt.set_force(true);
 			movePkt.set_allocated_player(player->GetPlayerProtocol());
 			movePkt.set_allocated_positioninfo(player->GetPositionInfoProtocol());
 			Broadcast(movePkt);
