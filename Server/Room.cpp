@@ -18,6 +18,7 @@ void Room::InsertPlayer(PlayerRef player)
 	_currentPlayerCount++;
 	SetIdx(player);
 	player->PlayerInfo.set_roomid(_roomId);
+	player->SetRoom(shared_from_this());
 }
 
 void Room::RemovePlayer(int64 playerId)
@@ -31,6 +32,7 @@ void Room::RemovePlayer(int64 playerId)
 	_currentPlayerCount--;
 	_idxes[player->PlayerInfo.roomidx()] = nullptr;
 	player->PlayerInfo.set_roomid(-1);
+	player->SetRoom(nullptr);
 }
 
 PlayerRef Room::FindPlayer(int64 playerId)
@@ -204,12 +206,14 @@ void Room::HandleMove(PlayerRef player, Protocol::C_MOVE& pkt)
 	Protocol::PPlayerState s_state = player->PosInfo.state();
 	Protocol::PPlayerState c_state = pkt.positioninfo().state();
 	Vector2Int pktCellPos = Vector2Int(pkt.positioninfo().cellpos().posx(), pkt.positioninfo().cellpos().posy());
-	if (s_state == c_state && s_state == Protocol::PPlayerState::MOVING)
+	if (s_state == c_state && (s_state == Protocol::PPlayerState::MOVING || s_state == Protocol::PPlayerState::INTRAP))
 	{
+		// cellpos가 변경되었을 경우
 		if (_forestMap->MovePlayer(player->GetCellPos(), pktCellPos, player))
 		{
 			player->PosInfo.CopyFrom(pkt.positioninfo());
 			Protocol::S_MOVE movePkt;
+			movePkt.set_force(false);
 			movePkt.set_allocated_player(player->GetPlayerProtocol());
 			movePkt.set_allocated_positioninfo(player->GetPositionInfoProtocol());
 			Broadcast(movePkt);
@@ -218,9 +222,13 @@ void Room::HandleMove(PlayerRef player, Protocol::C_MOVE& pkt)
 	else if (s_state == Protocol::PPlayerState::IDLE)
 	{
 		// IDLE -> MOVE
+		if ((player->GetCellPos() - pktCellPos).sqrMagnitude() > 1)
+			return;
+
 		Protocol::PMoveDir moveDir = pkt.positioninfo().movedir();
 		player->PosInfo.CopyFrom(pkt.positioninfo());
 		Protocol::S_MOVE movePkt;
+		movePkt.set_force(false);
 		movePkt.set_allocated_player(player->GetPlayerProtocol());
 		movePkt.set_allocated_positioninfo(player->GetPositionInfoProtocol());
 		Broadcast(movePkt);
@@ -232,6 +240,7 @@ void Room::HandleMove(PlayerRef player, Protocol::C_MOVE& pkt)
 		{
 			player->PosInfo.CopyFrom(pkt.positioninfo());
 			Protocol::S_MOVE movePkt;
+			movePkt.set_force(true);
 			movePkt.set_allocated_player(player->GetPlayerProtocol());
 			movePkt.set_allocated_positioninfo(player->GetPositionInfoProtocol());
 			Broadcast(movePkt);
@@ -294,4 +303,11 @@ void Room::HandleBomb(PlayerRef player, Protocol::C_BOMB& pkt)
 
 		Broadcast(bombEndPkt);
 	});
+}
+
+void Room::PlayerDead(PlayerRef player)
+{
+	WRITE_LOCK;
+	player->OnDead();
+	_forestMap->LeavePlayer(player->GetCellPos(), player);
 }

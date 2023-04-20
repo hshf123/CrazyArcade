@@ -21,13 +21,13 @@ public:
 	void EnterPlayer(Vector2Int cellPos, PlayerRef player);
 	bool MovePlayer(Vector2Int prevPos, Vector2Int afterPos, PlayerRef player);
 	void LeavePlayer(Vector2Int cellPos, PlayerRef player);
-	PlayerRef FindPlayer(Vector2Int cellPos);
+	Vector2Int FindPlayer(PlayerRef player);
+	Vector<PlayerRef> FindPlayer(Vector2Int cellPos, PlayerRef exceptPlayer = nullptr);
 
 	bool FindBomb(Vector2Int cellPos);
-
 	bool SetBomb(Vector2Int bomb);
-
 	void DestroyBomb(Vector2Int pos, int32 range, Protocol::S_BOMBEND* pkt);
+
 	void LoadMap(wstring pathPrefix = L"../Common/MapData");
 
 public:
@@ -37,6 +37,6 @@ public:
 	int32 MaxY;
 
 private:
-	vector<vector<int>> _blocks;
-	vector<vector<PlayerRef>> _players;
+	Vector<Vector<int>> _blocks;
+	HashMap<PlayerRef, Vector2Int> _players;
 };

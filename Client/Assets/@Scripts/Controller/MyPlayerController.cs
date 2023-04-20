@@ -96,6 +96,9 @@ public class MyPlayerController : PlayerController
 
     void InputDir()
     {
+        if (State == PlayerState.Dead)
+            return;
+
         if(State == PlayerState.Intrap)
         {
             TrapInputDir();

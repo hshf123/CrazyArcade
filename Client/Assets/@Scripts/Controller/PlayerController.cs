@@ -17,9 +17,9 @@ public class PlayerController : MonoBehaviour
     protected SpriteRenderer _spriteRenderer;
     protected Animator _animator;
     protected SpriteRenderer _shadow;
+    Coroutine _coDead = null;
     protected int _sortOrder;
     #endregion
-
     #region Protocol
     public PlayerInfo PlayerInfo = new PlayerInfo();
     protected PositionInfo _posInfo = new PositionInfo()
@@ -209,10 +209,14 @@ public class PlayerController : MonoBehaviour
                 }
         }
     }
+    public void OnDead()
+    {
+        _coDead = StartCoroutine(CoOnDead());
+    }
     
     protected virtual void MovePosition()
     {
-        if (State != PlayerState.Moving)
+        if (State != PlayerState.Moving && State != PlayerState.Intrap)
             return;
 
         Vector3 destPos = WorldPos;
@@ -305,5 +309,14 @@ public class PlayerController : MonoBehaviour
         _sortOrder = -100 + (Managers.Map.MaxY - CellPos.y) * 2 + 1;
         _spriteRenderer.sortingOrder = _sortOrder;
         _shadow.sortingOrder = _sortOrder - 1;
+    }
+
+    IEnumerator CoOnDead()
+    {
+        yield return new WaitForSeconds(0.5f);
+
+        Managers.Object.Remove(PlayerInfo.Id);
+        Managers.Resource.Destroy(gameObject);
+        _coDead = null;
     }
 }

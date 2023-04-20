@@ -4,7 +4,7 @@
 
 using RoomState = Protocol::PRoomState;
 
-class Room
+class Room : public enable_shared_from_this<Room>
 {
 public:
 	Room(int64 id, const string& roomName, int32 maxPlayerCount);
@@ -35,6 +35,7 @@ public:
 public:
 	void HandleMove(PlayerRef player, Protocol::C_MOVE& pkt);
 	void HandleBomb(PlayerRef player, Protocol::C_BOMB& pkt);
+	void PlayerDead(PlayerRef player);
 
 private:
 	USE_LOCK;

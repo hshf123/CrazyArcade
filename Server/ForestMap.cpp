@@ -3,6 +3,7 @@
 #include <filesystem>
 #include <fstream>
 #include "Player.h"
+#include "Room.h"
 namespace fs = std::filesystem;
 
 Vector2Int ForestMap::WorldToCell(Vector2 pos)
@@ -49,9 +50,10 @@ bool ForestMap::CanGo(Vector2Int cellPos, bool checkObjects /*= true*/)
 
 void ForestMap::EnterPlayer(Vector2Int cellPos, PlayerRef player)
 {
-	int32 x = cellPos.x - MinX;
-	int32 y = MaxY - cellPos.y;
-	_players[y][x] = player;
+	if (player == nullptr)
+		return;
+
+	_players[player] = cellPos;
 }
 
 bool ForestMap::MovePlayer(Vector2Int prevPos, Vector2Int afterPos, PlayerRef player)
@@ -59,40 +61,66 @@ bool ForestMap::MovePlayer(Vector2Int prevPos, Vector2Int afterPos, PlayerRef pl
 	if (CanGo(afterPos) == false)
 		return false;
 
-	if (FindPlayer(prevPos) == nullptr)
+	if (FindPlayer(player) != prevPos)
 		return false;
 
-	int32 x = afterPos.x - MinX;
-	int32 y = MaxY - afterPos.y;
-	_players[y][x] = player;
+	if ((afterPos - prevPos).sqrMagnitude() != 1)
+		return false;
 
-	x = afterPos.x - MinX;
-	y = MaxY - afterPos.y;
-	_players[y][x] = player;
+	_players[player] = afterPos;
+
+	if (player->PosInfo.state() == Protocol::PPlayerState::MOVING)
+	{
+		Vector<PlayerRef> pvec = FindPlayer(afterPos, player);
+		if (pvec.size() == 0)
+			return true;
+
+		// TODO : 같은 팀이라면 살려주기
+		for (PlayerRef p : pvec)
+		{
+			if (p->PosInfo.state() == Protocol::PPlayerState::INTRAP)
+				p->GetRoom()->PlayerDead(p);
+		}
+	}
 
 	return true;
 }
 
 void ForestMap::LeavePlayer(Vector2Int cellPos, PlayerRef player)
 {
-	if (FindPlayer(cellPos) == nullptr)
+	if (FindPlayer(player) == Vector2Int::null())
 		return;
 
-	int32 x = cellPos.x - MinX;
-	int32 y = MaxY - cellPos.y;
-	_players[y][x] = nullptr;
+	_players.erase(player);
 }
 
-PlayerRef ForestMap::FindPlayer(Vector2Int cellPos)
+Vector<PlayerRef> ForestMap::FindPlayer(Vector2Int cellPos, PlayerRef exceptPlayer/*= nullptr*/)
 {
+	Vector<PlayerRef> ret;
 	if (cellPos.x < MinX || cellPos.x > MaxX)
-		return nullptr;
+		return ret;
 	if (cellPos.y < MinY || cellPos.y > MaxY)
-		return nullptr;
+		return ret;
 
-	int x = cellPos.x - MinX;
-	int y = MaxY - cellPos.y;
-	return _players[y][x];
+	for (auto& p : _players)
+	{
+		if (exceptPlayer != nullptr && exceptPlayer == p.first)
+			continue;
+
+		if (p.second == cellPos)
+			ret.push_back(p.first);
+	}
+
+	return ret;
+}
+
+Vector2Int ForestMap::FindPlayer(PlayerRef player)
+{
+	auto findIt = _players.find(player);
+	if (findIt == _players.end())
+		return Vector2Int::null();
+
+	return findIt->second;
 }
 
 bool ForestMap::FindBomb(Vector2Int cellPos)
@@ -122,6 +150,17 @@ void ForestMap::DestroyBomb(Vector2Int pos, int32 range, Protocol::S_BOMBEND* pk
 	cellpos->set_posx(pos.x);
 	cellpos->set_posy(pos.y);
 	_blocks[y][x] = 0;
+	Vector<PlayerRef> vec = FindPlayer(pos);
+	for (PlayerRef player : vec)
+	{
+		if (player != nullptr)
+		{
+			// TRAP
+			auto* trapPlayer = pkt->add_trapplayers();
+			player->OnTrap();
+			trapPlayer->CopyFrom(player->PlayerInfo);
+		}
+	}
 
 	// 범위 내에 destroy and 플레이어면 물풍선 가두기
 	for (int32 i = 1; i <= range; i++)
@@ -145,13 +184,16 @@ void ForestMap::DestroyBomb(Vector2Int pos, int32 range, Protocol::S_BOMBEND* pk
 				_blocks[y][x] = 0;
 			}
 
-			PlayerRef player = FindPlayer(range);
-			if (player != nullptr)
+			Vector<PlayerRef> vec = FindPlayer(range);
+			for(PlayerRef player : vec)
 			{
-				// TRAP
-				auto* trapPlayer = pkt->add_trapplayers();
-				player->OnTrap();
-				trapPlayer->CopyFrom(player->PlayerInfo);
+				if (player != nullptr)
+				{
+					// TRAP
+					auto* trapPlayer = pkt->add_trapplayers();
+					player->OnTrap();
+					trapPlayer->CopyFrom(player->PlayerInfo);
+				}
 			}
 		}
 	}
@@ -189,8 +231,7 @@ void ForestMap::LoadMap(wstring pathPrefix /*= L"../Common/MapData"*/)
 			int xCount = MaxX - MinX + 1;
 			int yCount = MaxY - MinY + 1;
 
-			_blocks = vector<vector<int>>(yCount, vector<int>(xCount));
-			_players = vector<vector<PlayerRef>>(yCount, vector<PlayerRef>(xCount));
+			_blocks = Vector<Vector<int>>(yCount, Vector<int>(xCount));
 			for (int y = 0; y < yCount; y++)
 			{
 				getline(infile, line);

@@ -17,6 +17,7 @@ struct Vector2Int
 	static Vector2Int down() { return Vector2Int(0, -1); };
 	static Vector2Int left() { return Vector2Int(-1, 0); };
 	static Vector2Int right() { return Vector2Int(1, 0); };
+	static Vector2Int null() { return Vector2Int(INT32_MIN, INT32_MIN); }
 
 	Vector2Int& operator=(const Vector2Int& other)
 	{

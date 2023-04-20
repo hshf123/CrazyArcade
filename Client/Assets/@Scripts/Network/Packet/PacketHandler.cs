@@ -128,13 +128,16 @@ public class PacketHandler
         PlayerController pc = Managers.Object.Find(playerId);
         if (pc == null)
             return;
-
+        
+        // TODO : 내가 이상한 놈이면...?
         if (pc.PlayerInfo.Id == Managers.Object.MyPlayer.PlayerInfo.Id)
-        {
-            // TODO 서버와의 포지션을 보정 해주는 작업
             return;
-        }
 
+        if(pkt.Force)
+        {
+            pc.WorldPos = new Vector3(pkt.PositionInfo.WorldPos.PosX, pkt.PositionInfo.WorldPos.PosY, 0);
+            pc.CellPos = new Vector3Int(pkt.PositionInfo.CellPos.PosX, pkt.PositionInfo.CellPos.PosY, 0);
+        }
         pc.State = pkt.PositionInfo.State;
         pc.Dir = pkt.PositionInfo.MoveDir;
     }
@@ -165,10 +168,11 @@ public class PacketHandler
         // pkt.Player -> 물풍선 주인이 누군지
         foreach(PCellPos cellpos in pkt.CellPoses)
             Managers.Map.Break(new Vector3Int(cellpos.PosX, cellpos.PosY, 0));
-        foreach(var player in pkt.TrapPlayers)
+        foreach(var playerInfo in pkt.TrapPlayers)
         {
-            PlayerController pc = Managers.Object.Find(player.Id);
+            PlayerController pc = Managers.Object.Find(playerInfo.Id);
             pc.State = PPlayerState.Intrap;
+            pc.PlayerInfo = playerInfo;
         }
         BombController bc = Managers.Object.FindBomb(new Vector3Int(pkt.CellPoses[0].PosX, pkt.CellPoses[0].PosY, 0));
         if (bc == null)
@@ -178,5 +182,21 @@ public class PacketHandler
         {
             Managers.Object.BombEnd(new Vector3Int(pkt.CellPoses[0].PosX, pkt.CellPoses[0].PosY, 0));
         });
+    }
+
+    public static void S_DEADHandler(PacketSession session, IMessage packet)
+    {
+        Debug.Log($"S_DEADHandler");
+
+        ServerSession serverSession = session as ServerSession;
+        S_DEAD pkt = packet as S_DEAD;
+
+        PlayerController pc = Managers.Object.Find(pkt.Player.Id);
+        if (pc == null)
+            return;
+
+        pc.PlayerInfo = pkt.Player;
+        pc.State = pkt.PosInfo.State;
+        pc.OnDead();
     }
 }

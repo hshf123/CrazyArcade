@@ -110,8 +110,9 @@ message C_MOVE
 
 message S_MOVE
 {
-	PPlayer player = 1;
-	PPositionInfo positionInfo = 2;
+	bool force = 1;
+	PPlayer player = 2;
+	PPositionInfo positionInfo = 3;
 }
 
 message C_BOMB
@@ -130,4 +131,10 @@ message S_BOMBEND
 	PPlayer player = 1;
 	repeated PCellPos cellPoses = 2;
 	repeated PPlayer trapPlayers = 3;
+}
+
+message S_DEAD
+{
+	PPlayer player = 1;
+	PPositionInfo posInfo = 2;
 }

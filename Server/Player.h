@@ -13,6 +13,8 @@ public:
 	void SubBomb();
 
 	void OnTrap();
+	void OutTrap();
+	void OnDead();
 
 public:
 	void CopyPlayerProtocol(Protocol::PPlayer* pkt);
@@ -20,13 +22,16 @@ public:
 
 	void SetClientSession(ClientSessionRef session) { _ownerSession = session; }
 	ClientSessionRef GetClientSession() { return _ownerSession.lock(); }
+	void SetRoom(RoomRef room) { _room = room; }
+	RoomRef GetRoom() { return _room; }
 	
 	void Send(SendBufferRef sendBuffer);
 
 public:
 	PlayerInfo PlayerInfo;
-	uint64 MoveStartTime;
 
 private:
 	ClientSessionWeakRef _ownerSession;
+	RoomRef _room;
+	float _originalSpeed;
 };
