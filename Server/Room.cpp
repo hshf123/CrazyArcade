@@ -58,8 +58,9 @@ void Room::SetIdx(PlayerRef player)
 
 bool Room::CanGameStart()
 {
+	GameInit();
 	{
-		READ_LOCK;
+		WRITE_LOCK;
 		if (_currentPlayerCount < 2)
 			return false;
 
@@ -91,15 +92,15 @@ bool Room::CanGameStart()
 			Protocol::PRoomStart* roomStart = roomStartPkt.add_spawn();
 			roomStart->set_allocated_playerinfo(p.second->GetPlayerProtocol());
 			roomStart->set_allocated_posinfo(p.second->GetPositionInfoProtocol());
+
+			_forestMap->EnterPlayer(p.second->GetCellPos(), p.second);
 		}
 
-		SendBufferRef sendBuffer = ClientPacketHandler::MakeSendBuffer(roomStartPkt);
-		Broadcast(sendBuffer);
+		Broadcast(roomStartPkt);
 
 		_state = RoomState::GAMESTART;
 	}
 	// TODO 채널에 있는 사람들한테 게임 시작중인방이라고 broadcast
-	GameInit();
 	return true;
 }
 
@@ -205,7 +206,7 @@ void Room::HandleMove(PlayerRef player, Protocol::C_MOVE& pkt)
 	Vector2Int pktCellPos = Vector2Int(pkt.positioninfo().cellpos().posx(), pkt.positioninfo().cellpos().posy());
 	if (s_state == c_state && s_state == Protocol::PPlayerState::MOVING)
 	{
-		if (_forestMap->CanGo(pktCellPos))
+		if (_forestMap->MovePlayer(player->GetCellPos(), pktCellPos, player))
 		{
 			player->PosInfo.CopyFrom(pkt.positioninfo());
 			Protocol::S_MOVE movePkt;

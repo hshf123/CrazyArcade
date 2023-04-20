@@ -18,6 +18,9 @@ public:
 
 	bool CanGo(Vector2Int cellPos, bool checkObjects = true);
 
+	void EnterPlayer(Vector2Int cellPos, PlayerRef player);
+	bool MovePlayer(Vector2Int prevPos, Vector2Int afterPos, PlayerRef player);
+	void LeavePlayer(Vector2Int cellPos, PlayerRef player);
 	PlayerRef FindPlayer(Vector2Int cellPos);
 
 	bool FindBomb(Vector2Int cellPos);

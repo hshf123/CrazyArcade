@@ -47,6 +47,42 @@ bool ForestMap::CanGo(Vector2Int cellPos, bool checkObjects /*= true*/)
 	return true;
 }
 
+void ForestMap::EnterPlayer(Vector2Int cellPos, PlayerRef player)
+{
+	int32 x = cellPos.x - MinX;
+	int32 y = MaxY - cellPos.y;
+	_players[y][x] = player;
+}
+
+bool ForestMap::MovePlayer(Vector2Int prevPos, Vector2Int afterPos, PlayerRef player)
+{
+	if (CanGo(afterPos) == false)
+		return false;
+
+	if (FindPlayer(prevPos) == nullptr)
+		return false;
+
+	int32 x = afterPos.x - MinX;
+	int32 y = MaxY - afterPos.y;
+	_players[y][x] = player;
+
+	x = afterPos.x - MinX;
+	y = MaxY - afterPos.y;
+	_players[y][x] = player;
+
+	return true;
+}
+
+void ForestMap::LeavePlayer(Vector2Int cellPos, PlayerRef player)
+{
+	if (FindPlayer(cellPos) == nullptr)
+		return;
+
+	int32 x = cellPos.x - MinX;
+	int32 y = MaxY - cellPos.y;
+	_players[y][x] = nullptr;
+}
+
 PlayerRef ForestMap::FindPlayer(Vector2Int cellPos)
 {
 	if (cellPos.x < MinX || cellPos.x > MaxX)
