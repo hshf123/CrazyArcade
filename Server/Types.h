@@ -10,6 +10,7 @@ struct Pos
 
 struct Vector2Int
 {
+	Vector2Int() { }
 	Vector2Int(int32 x, int32 y) { this->x = x; this->y = y; }
 
 	static Vector2Int up() { return Vector2Int(0, 1); };
@@ -57,6 +58,7 @@ struct Vector2Int
 
 struct Vector2
 {
+	Vector2 () { }
 	Vector2(float x, float y) { this->x = x; this->y = y; }
 
 	static Vector2 up() { return Vector2(0.f, 1.f); };

@@ -3,7 +3,7 @@
 #include "Player.h"
 #include "Protocol.pb.h"
 #include "ForestMap.h"
-#include "Timer.h"
+#include "ThreadManager.h"
 
 Room::Room(int64 id, const string& roomName, int32 maxPlayerCount)
 	:_roomId(id), _maxPlayerCount(maxPlayerCount)
@@ -182,15 +182,15 @@ void Room::HandleMove(PlayerRef player, Protocol::C_MOVE& pkt)
 
 	WRITE_LOCK;
 #pragma region LOG
-		wstringstream log;
-		log << L"[ Log ] Player ID : ";
-		log << player->PlayerInfo.id();
-		log << L" | C_MOVE(";
-		log << pkt.positioninfo().cellpos().posx();
-		log << L", ";
-		log << pkt.positioninfo().cellpos().posy();
-		log << L")";
-		Utils::Log(log);
+	wstringstream log;
+	log << L"[ Log ] Player ID : ";
+	log << player->PlayerInfo.id();
+	log << L" | C_MOVE(";
+	log << pkt.positioninfo().cellpos().posx();
+	log << L", ";
+	log << pkt.positioninfo().cellpos().posy();
+	log << L")";
+	Utils::Log(log);
 #pragma endregion
 
 	/*
@@ -242,49 +242,55 @@ void Room::HandleBomb(PlayerRef player, Protocol::C_BOMB& pkt)
 {
 	if (player == nullptr)
 		return;
-	WRITE_LOCK;
-
-	Vector2 bombPos = player->GetWorldPos() + Vector2(0, -0.3f);
-	Vector2Int bombCellPos = _forestMap->WorldToCell(bombPos);
-	if (_forestMap->SetBomb(bombCellPos) == false)
-		return;
-	
-	if (player->AddBomb() == false)
-		return;
+	Vector2 bombPos;
+	Vector2Int bombCellPos;
+	{
+		READ_LOCK;
+		bombPos = player->GetWorldPos() + Vector2(0, -0.3f);
+		bombCellPos = _forestMap->WorldToCell(bombPos);
+	}
 
 	{
+		WRITE_LOCK;
+
+
+		if (_forestMap->SetBomb(bombCellPos) == false)
+			return;
+
+		if (player->AddBomb() == false)
+			return;
+
+		{
+			wstringstream log;
+			log << L"Player ID : " << player->PlayerInfo.id();
+			log << L" has placed a Bomb at (" << bombCellPos.x << ", " << bombCellPos.y << ")";
+			Utils::Log(log);
+		}
+
+		Protocol::S_BOMB bombPkt;
+		bombPkt.set_allocated_player(player->GetPlayerProtocol());
+		bombPkt.set_allocated_cellpos(_forestMap->GetCellPosProtocol(bombCellPos));
+		Broadcast(bombPkt);
+	}
+
+	GThreadManager->Launch([=]()
+	{
+		// 2.8 초 후 물풍선 터지기
+		this_thread::sleep_for(2.8s);
+
+		WRITE_LOCK;
+		// 2.8 초 후 물풍선 터지기
+		Protocol::S_BOMBEND bombEndPkt;
+		bombEndPkt.set_allocated_player(player->GetPlayerProtocol());
+		_forestMap->DestroyBomb(bombCellPos, player->PlayerInfo.bombrange(), &bombEndPkt);
+		player->SubBomb();
+
 		wstringstream log;
 		log << L"[ Log ] ";
 		log << L"Player ID : " << player->PlayerInfo.id();
-		log << L" has placed a Bomb at (" << bombCellPos.x << ", " << bombCellPos.y << ")";
+		log << L" A bomb located at (" << bombCellPos.x << ", " << bombCellPos.y << ")" << L"exploded.";
 		Utils::Log(log);
-	}
 
-	Protocol::S_BOMB bombPkt;
-	bombPkt.set_allocated_player(player->GetPlayerProtocol());
-	bombPkt.set_allocated_cellpos(_forestMap->GetCellPosProtocol(bombCellPos));
-	Broadcast(bombPkt);
-
-	// 2.8 초 후 물풍선 터지기
-	chrono::steady_clock::time_point targetTime = chrono::steady_clock::now() + chrono::milliseconds(2800);
-	while (chrono::steady_clock::now() < targetTime)
-	{
-		this_thread::yield(); // 대기 상태로 만들지 않고, 다른 스레드에게 CPU를 양보함
-	}
-
-	_forestMap->DestroyBomb(bombCellPos, player->PlayerInfo.bombrange());
-	player->SubBomb();
-
-	{
-		wstringstream log;
-		log << L"[ Log ] ";
-		log << L"Player ID : " << player->PlayerInfo.id();
-		log << L" A bomb located at (" << bombCellPos.x << ", " << bombCellPos.y << ")" << L"explded.";
-		Utils::Log(log);
-	}
-
-	Protocol::S_BOMBEND bombEndPkt;
-	bombEndPkt.set_allocated_player(player->GetPlayerProtocol());
-	bombEndPkt.set_allocated_cellpos(_forestMap->GetCellPosProtocol(bombCellPos));
-	Broadcast(bombEndPkt);
+		Broadcast(bombEndPkt);
+	});
 }

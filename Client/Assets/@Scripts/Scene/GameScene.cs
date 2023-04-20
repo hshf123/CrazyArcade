@@ -2,6 +2,7 @@ using Protocol;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEngine.Tilemaps.TilemapRenderer;
 
 public class GameScene : BaseScene
 {
@@ -64,23 +65,18 @@ public class GameScene : BaseScene
             });
         }
     }
-    public void InstantiateBomb(PPlayer playerInfo, PPositionInfo posInfo)
+    public void InstantiateBomb(PPlayer playerInfo, PCellPos cellPos)
     {
-        //if (/*Managers.Object.Find(posInfo.CellPos) == null &&*/ _bombCount < _maxBombCount) 
-            // _bombCount++;
         Managers.Resource.Instantiate("Bomb", null,
             (bomb) =>
             {
-                // Managers.Object.Add(_bombId, bomb);
                 BombController bc = bomb.GetComponent<BombController>();
-                bc.CellPos = posInfo.CellPos;
+                bc.CellPos = cellPos;
                 bomb.transform.position = new Vector3(bc.CellPos.PosX + correction.x, bc.CellPos.PosY + correction.y, 0);
-                // bc.BombID = _bombId;
                 bc.Range = playerInfo.BombRange;
-                bc.SortOrder = 100; // TODO
-                // _bombId++;
+                bc.SortOrder = -100 + (Managers.Map.MaxY - cellPos.PosY) * 2 + 1;
+                Managers.Object.SetBomb(new Vector3Int(cellPos.PosX, cellPos.PosY, 0), bomb.GetComponent<BombController>());
                 bc.Init();
-                bc.Bomb(() => { Debug.Log("Bomb"); });
             });
     }
 }

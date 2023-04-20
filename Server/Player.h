@@ -12,6 +12,8 @@ public:
 	bool AddBomb();
 	void SubBomb();
 
+	void OnTrap();
+
 public:
 	void CopyPlayerProtocol(Protocol::PPlayer* pkt);
 	Protocol::PPlayer* GetPlayerProtocol();

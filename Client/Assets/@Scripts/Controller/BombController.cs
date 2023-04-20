@@ -14,7 +14,6 @@ public class BombController : MonoBehaviour
     Vector3 correction = new Vector3(0.5f, 0.5f, 0);
 
     Animator _animator;
-    Coroutine _coBomb;
 
     public int SortOrder { get; set; }
     public CellPos CellPos { get; set; }
@@ -46,14 +45,6 @@ public class BombController : MonoBehaviour
 
     public void Bomb(Action callback)
     {
-        _coBomb = StartCoroutine(CoBomb(callback));
-    }
-
-    IEnumerator CoBomb(Action callback)
-    {
-        yield return new WaitForSeconds(2.8f);
-
-
         UpWaterCourse();
         RightWaterCourse();
         DownWaterCourse();
@@ -63,9 +54,8 @@ public class BombController : MonoBehaviour
             course.transform.position = new Vector3(CellPos.PosX + correction.x, CellPos.PosY + correction.y, 0);
             Managers.Resource.Destroy(course, 0.54f); course.GetComponent<Animator>().Play("CENTER"); course.GetComponent<SpriteRenderer>().sortingOrder = SortOrder;
             Managers.Resource.Destroy(gameObject);
-            Managers.Object.Remove(BombID);
+            // Managers.Object.Remove(BombID);
             callback?.Invoke();
-            _coBomb = null;
         });
     }
 
@@ -76,7 +66,7 @@ public class BombController : MonoBehaviour
             Vector3Int pos = _upRangeList[i];
             if (Managers.Map.CanGo(_upRangeList[i]) == false)
             {
-                Managers.Map.Break(pos);
+                // Managers.Map.Break(pos);
                 break;
             }
 
@@ -93,7 +83,7 @@ public class BombController : MonoBehaviour
             Vector3Int pos = _rightRangeList[i];
             if (Managers.Map.CanGo(pos) == false)
             {
-                Managers.Map.Break(pos);
+                // Managers.Map.Break(pos);
                 break;
             }
 
@@ -110,7 +100,7 @@ public class BombController : MonoBehaviour
             Vector3Int pos = _downRangeList[i];
             if (Managers.Map.CanGo(_downRangeList[i]) == false)
             {
-                Managers.Map.Break(pos);
+                // Managers.Map.Break(pos);
                 break;
             }
 
@@ -127,7 +117,7 @@ public class BombController : MonoBehaviour
             Vector3Int pos = _leftRangeList[i];
             if (Managers.Map.CanGo(_leftRangeList[i]) == false)
             {
-                Managers.Map.Break(pos);
+                // Managers.Map.Break(pos);
                 break;
             }
 

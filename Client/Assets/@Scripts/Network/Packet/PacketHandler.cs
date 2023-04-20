@@ -152,6 +152,31 @@ public class PacketHandler
             Debug.Log($"{Managers.Scene.CurrentScene} is not GameScene");
             return;
         }
-        gameScene.InstantiateBomb(pkt.Player, pkt.PosInfo);
+        gameScene.InstantiateBomb(pkt.Player, pkt.Cellpos);
+    }
+
+    public static void S_BOMBENDHandler(PacketSession session, IMessage packet)
+    {
+        Debug.Log($"S_BOMBENDHandler");
+
+        ServerSession serverSession = session as ServerSession;
+        S_BOMBEND pkt = packet as S_BOMBEND;
+
+        // pkt.Player -> 물풍선 주인이 누군지
+        foreach(PCellPos cellpos in pkt.CellPoses)
+            Managers.Map.Break(new Vector3Int(cellpos.PosX, cellpos.PosY, 0));
+        foreach(var player in pkt.TrapPlayers)
+        {
+            PlayerController pc = Managers.Object.Find(player.Id);
+            pc.State = PPlayerState.Intrap;
+        }
+        BombController bc = Managers.Object.FindBomb(new Vector3Int(pkt.CellPoses[0].PosX, pkt.CellPoses[0].PosY, 0));
+        if (bc == null)
+            return;
+
+        bc.Bomb(()=> 
+        {
+            Managers.Object.BombEnd(new Vector3Int(pkt.CellPoses[0].PosX, pkt.CellPoses[0].PosY, 0));
+        });
     }
 }

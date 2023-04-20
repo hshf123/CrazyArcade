@@ -78,6 +78,9 @@ extern C_ROOMSTARTDefaultTypeInternal _C_ROOMSTART_default_instance_;
 class S_BOMB;
 struct S_BOMBDefaultTypeInternal;
 extern S_BOMBDefaultTypeInternal _S_BOMB_default_instance_;
+class S_BOMBEND;
+struct S_BOMBENDDefaultTypeInternal;
+extern S_BOMBENDDefaultTypeInternal _S_BOMBEND_default_instance_;
 class S_CHANNELCHAT;
 struct S_CHANNELCHATDefaultTypeInternal;
 extern S_CHANNELCHATDefaultTypeInternal _S_CHANNELCHAT_default_instance_;
@@ -117,6 +120,7 @@ template<> ::Protocol::C_ROOMENTER* Arena::CreateMaybeMessage<::Protocol::C_ROOM
 template<> ::Protocol::C_ROOMREADY* Arena::CreateMaybeMessage<::Protocol::C_ROOMREADY>(Arena*);
 template<> ::Protocol::C_ROOMSTART* Arena::CreateMaybeMessage<::Protocol::C_ROOMSTART>(Arena*);
 template<> ::Protocol::S_BOMB* Arena::CreateMaybeMessage<::Protocol::S_BOMB>(Arena*);
+template<> ::Protocol::S_BOMBEND* Arena::CreateMaybeMessage<::Protocol::S_BOMBEND>(Arena*);
 template<> ::Protocol::S_CHANNELCHAT* Arena::CreateMaybeMessage<::Protocol::S_CHANNELCHAT>(Arena*);
 template<> ::Protocol::S_CHANNELCHOICE* Arena::CreateMaybeMessage<::Protocol::S_CHANNELCHOICE>(Arena*);
 template<> ::Protocol::S_CHANNELUPDATE* Arena::CreateMaybeMessage<::Protocol::S_CHANNELUPDATE>(Arena*);
@@ -3205,7 +3209,7 @@ class S_BOMB final :
 
   enum : int {
     kPlayerFieldNumber = 1,
-    kPosInfoFieldNumber = 2,
+    kCellposFieldNumber = 2,
   };
   // .Protocol.PPlayer player = 1;
   bool has_player() const;
@@ -3225,23 +3229,23 @@ class S_BOMB final :
       ::Protocol::PPlayer* player);
   ::Protocol::PPlayer* unsafe_arena_release_player();
 
-  // .Protocol.PPositionInfo posInfo = 2;
-  bool has_posinfo() const;
+  // .Protocol.PCellPos cellpos = 2;
+  bool has_cellpos() const;
   private:
-  bool _internal_has_posinfo() const;
+  bool _internal_has_cellpos() const;
   public:
-  void clear_posinfo();
-  const ::Protocol::PPositionInfo& posinfo() const;
-  PROTOBUF_NODISCARD ::Protocol::PPositionInfo* release_posinfo();
-  ::Protocol::PPositionInfo* mutable_posinfo();
-  void set_allocated_posinfo(::Protocol::PPositionInfo* posinfo);
+  void clear_cellpos();
+  const ::Protocol::PCellPos& cellpos() const;
+  PROTOBUF_NODISCARD ::Protocol::PCellPos* release_cellpos();
+  ::Protocol::PCellPos* mutable_cellpos();
+  void set_allocated_cellpos(::Protocol::PCellPos* cellpos);
   private:
-  const ::Protocol::PPositionInfo& _internal_posinfo() const;
-  ::Protocol::PPositionInfo* _internal_mutable_posinfo();
+  const ::Protocol::PCellPos& _internal_cellpos() const;
+  ::Protocol::PCellPos* _internal_mutable_cellpos();
   public:
-  void unsafe_arena_set_allocated_posinfo(
-      ::Protocol::PPositionInfo* posinfo);
-  ::Protocol::PPositionInfo* unsafe_arena_release_posinfo();
+  void unsafe_arena_set_allocated_cellpos(
+      ::Protocol::PCellPos* cellpos);
+  ::Protocol::PCellPos* unsafe_arena_release_cellpos();
 
   // @@protoc_insertion_point(class_scope:Protocol.S_BOMB)
  private:
@@ -3251,7 +3255,199 @@ class S_BOMB final :
   typedef void InternalArenaConstructable_;
   typedef void DestructorSkippable_;
   ::Protocol::PPlayer* player_;
-  ::Protocol::PPositionInfo* posinfo_;
+  ::Protocol::PCellPos* cellpos_;
+  mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
+  friend struct ::TableStruct_Protocol_2eproto;
+};
+// -------------------------------------------------------------------
+
+class S_BOMBEND final :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:Protocol.S_BOMBEND) */ {
+ public:
+  inline S_BOMBEND() : S_BOMBEND(nullptr) {}
+  ~S_BOMBEND() override;
+  explicit PROTOBUF_CONSTEXPR S_BOMBEND(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
+
+  S_BOMBEND(const S_BOMBEND& from);
+  S_BOMBEND(S_BOMBEND&& from) noexcept
+    : S_BOMBEND() {
+    *this = ::std::move(from);
+  }
+
+  inline S_BOMBEND& operator=(const S_BOMBEND& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline S_BOMBEND& operator=(S_BOMBEND&& from) noexcept {
+    if (this == &from) return *this;
+    if (GetOwningArena() == from.GetOwningArena()
+  #ifdef PROTOBUF_FORCE_COPY_IN_MOVE
+        && GetOwningArena() != nullptr
+  #endif  // !PROTOBUF_FORCE_COPY_IN_MOVE
+    ) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const S_BOMBEND& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const S_BOMBEND* internal_default_instance() {
+    return reinterpret_cast<const S_BOMBEND*>(
+               &_S_BOMBEND_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    19;
+
+  friend void swap(S_BOMBEND& a, S_BOMBEND& b) {
+    a.Swap(&b);
+  }
+  inline void Swap(S_BOMBEND* other) {
+    if (other == this) return;
+  #ifdef PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetOwningArena() != nullptr &&
+        GetOwningArena() == other->GetOwningArena()) {
+   #else  // PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetOwningArena() == other->GetOwningArena()) {
+  #endif  // !PROTOBUF_FORCE_COPY_IN_SWAP
+      InternalSwap(other);
+    } else {
+      ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(S_BOMBEND* other) {
+    if (other == this) return;
+    GOOGLE_DCHECK(GetOwningArena() == other->GetOwningArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  S_BOMBEND* New(::PROTOBUF_NAMESPACE_ID::Arena* arena = nullptr) const final {
+    return CreateMaybeMessage<S_BOMBEND>(arena);
+  }
+  using ::PROTOBUF_NAMESPACE_ID::Message::CopyFrom;
+  void CopyFrom(const S_BOMBEND& from);
+  using ::PROTOBUF_NAMESPACE_ID::Message::MergeFrom;
+  void MergeFrom(const S_BOMBEND& from);
+  private:
+  static void MergeImpl(::PROTOBUF_NAMESPACE_ID::Message* to, const ::PROTOBUF_NAMESPACE_ID::Message& from);
+  public:
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  size_t ByteSizeLong() const final;
+  const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
+  uint8_t* _InternalSerialize(
+      uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
+  int GetCachedSize() const final { return _cached_size_.Get(); }
+
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(S_BOMBEND* other);
+
+  private:
+  friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
+  static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
+    return "Protocol.S_BOMBEND";
+  }
+  protected:
+  explicit S_BOMBEND(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+                       bool is_message_owned = false);
+  public:
+
+  static const ClassData _class_data_;
+  const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*GetClassData() const final;
+
+  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  enum : int {
+    kCellPosesFieldNumber = 2,
+    kTrapPlayersFieldNumber = 3,
+    kPlayerFieldNumber = 1,
+  };
+  // repeated .Protocol.PCellPos cellPoses = 2;
+  int cellposes_size() const;
+  private:
+  int _internal_cellposes_size() const;
+  public:
+  void clear_cellposes();
+  ::Protocol::PCellPos* mutable_cellposes(int index);
+  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::Protocol::PCellPos >*
+      mutable_cellposes();
+  private:
+  const ::Protocol::PCellPos& _internal_cellposes(int index) const;
+  ::Protocol::PCellPos* _internal_add_cellposes();
+  public:
+  const ::Protocol::PCellPos& cellposes(int index) const;
+  ::Protocol::PCellPos* add_cellposes();
+  const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::Protocol::PCellPos >&
+      cellposes() const;
+
+  // repeated .Protocol.PPlayer trapPlayers = 3;
+  int trapplayers_size() const;
+  private:
+  int _internal_trapplayers_size() const;
+  public:
+  void clear_trapplayers();
+  ::Protocol::PPlayer* mutable_trapplayers(int index);
+  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::Protocol::PPlayer >*
+      mutable_trapplayers();
+  private:
+  const ::Protocol::PPlayer& _internal_trapplayers(int index) const;
+  ::Protocol::PPlayer* _internal_add_trapplayers();
+  public:
+  const ::Protocol::PPlayer& trapplayers(int index) const;
+  ::Protocol::PPlayer* add_trapplayers();
+  const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::Protocol::PPlayer >&
+      trapplayers() const;
+
+  // .Protocol.PPlayer player = 1;
+  bool has_player() const;
+  private:
+  bool _internal_has_player() const;
+  public:
+  void clear_player();
+  const ::Protocol::PPlayer& player() const;
+  PROTOBUF_NODISCARD ::Protocol::PPlayer* release_player();
+  ::Protocol::PPlayer* mutable_player();
+  void set_allocated_player(::Protocol::PPlayer* player);
+  private:
+  const ::Protocol::PPlayer& _internal_player() const;
+  ::Protocol::PPlayer* _internal_mutable_player();
+  public:
+  void unsafe_arena_set_allocated_player(
+      ::Protocol::PPlayer* player);
+  ::Protocol::PPlayer* unsafe_arena_release_player();
+
+  // @@protoc_insertion_point(class_scope:Protocol.S_BOMBEND)
+ private:
+  class _Internal;
+
+  template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
+  typedef void InternalArenaConstructable_;
+  typedef void DestructorSkippable_;
+  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::Protocol::PCellPos > cellposes_;
+  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::Protocol::PPlayer > trapplayers_;
+  ::Protocol::PPlayer* player_;
   mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   friend struct ::TableStruct_Protocol_2eproto;
 };
@@ -4991,39 +5187,39 @@ inline void S_BOMB::set_allocated_player(::Protocol::PPlayer* player) {
   // @@protoc_insertion_point(field_set_allocated:Protocol.S_BOMB.player)
 }
 
-// .Protocol.PPositionInfo posInfo = 2;
-inline bool S_BOMB::_internal_has_posinfo() const {
-  return this != internal_default_instance() && posinfo_ != nullptr;
+// .Protocol.PCellPos cellpos = 2;
+inline bool S_BOMB::_internal_has_cellpos() const {
+  return this != internal_default_instance() && cellpos_ != nullptr;
 }
-inline bool S_BOMB::has_posinfo() const {
-  return _internal_has_posinfo();
+inline bool S_BOMB::has_cellpos() const {
+  return _internal_has_cellpos();
 }
-inline const ::Protocol::PPositionInfo& S_BOMB::_internal_posinfo() const {
-  const ::Protocol::PPositionInfo* p = posinfo_;
-  return p != nullptr ? *p : reinterpret_cast<const ::Protocol::PPositionInfo&>(
-      ::Protocol::_PPositionInfo_default_instance_);
+inline const ::Protocol::PCellPos& S_BOMB::_internal_cellpos() const {
+  const ::Protocol::PCellPos* p = cellpos_;
+  return p != nullptr ? *p : reinterpret_cast<const ::Protocol::PCellPos&>(
+      ::Protocol::_PCellPos_default_instance_);
 }
-inline const ::Protocol::PPositionInfo& S_BOMB::posinfo() const {
-  // @@protoc_insertion_point(field_get:Protocol.S_BOMB.posInfo)
-  return _internal_posinfo();
+inline const ::Protocol::PCellPos& S_BOMB::cellpos() const {
+  // @@protoc_insertion_point(field_get:Protocol.S_BOMB.cellpos)
+  return _internal_cellpos();
 }
-inline void S_BOMB::unsafe_arena_set_allocated_posinfo(
-    ::Protocol::PPositionInfo* posinfo) {
+inline void S_BOMB::unsafe_arena_set_allocated_cellpos(
+    ::Protocol::PCellPos* cellpos) {
   if (GetArenaForAllocation() == nullptr) {
-    delete reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(posinfo_);
+    delete reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(cellpos_);
   }
-  posinfo_ = posinfo;
-  if (posinfo) {
+  cellpos_ = cellpos;
+  if (cellpos) {
     
   } else {
     
   }
-  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:Protocol.S_BOMB.posInfo)
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:Protocol.S_BOMB.cellpos)
 }
-inline ::Protocol::PPositionInfo* S_BOMB::release_posinfo() {
+inline ::Protocol::PCellPos* S_BOMB::release_cellpos() {
   
-  ::Protocol::PPositionInfo* temp = posinfo_;
-  posinfo_ = nullptr;
+  ::Protocol::PCellPos* temp = cellpos_;
+  cellpos_ = nullptr;
 #ifdef PROTOBUF_FORCE_COPY_IN_RELEASE
   auto* old =  reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(temp);
   temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
@@ -5035,50 +5231,215 @@ inline ::Protocol::PPositionInfo* S_BOMB::release_posinfo() {
 #endif  // !PROTOBUF_FORCE_COPY_IN_RELEASE
   return temp;
 }
-inline ::Protocol::PPositionInfo* S_BOMB::unsafe_arena_release_posinfo() {
-  // @@protoc_insertion_point(field_release:Protocol.S_BOMB.posInfo)
+inline ::Protocol::PCellPos* S_BOMB::unsafe_arena_release_cellpos() {
+  // @@protoc_insertion_point(field_release:Protocol.S_BOMB.cellpos)
   
-  ::Protocol::PPositionInfo* temp = posinfo_;
-  posinfo_ = nullptr;
+  ::Protocol::PCellPos* temp = cellpos_;
+  cellpos_ = nullptr;
   return temp;
 }
-inline ::Protocol::PPositionInfo* S_BOMB::_internal_mutable_posinfo() {
+inline ::Protocol::PCellPos* S_BOMB::_internal_mutable_cellpos() {
   
-  if (posinfo_ == nullptr) {
-    auto* p = CreateMaybeMessage<::Protocol::PPositionInfo>(GetArenaForAllocation());
-    posinfo_ = p;
+  if (cellpos_ == nullptr) {
+    auto* p = CreateMaybeMessage<::Protocol::PCellPos>(GetArenaForAllocation());
+    cellpos_ = p;
   }
-  return posinfo_;
+  return cellpos_;
 }
-inline ::Protocol::PPositionInfo* S_BOMB::mutable_posinfo() {
-  ::Protocol::PPositionInfo* _msg = _internal_mutable_posinfo();
-  // @@protoc_insertion_point(field_mutable:Protocol.S_BOMB.posInfo)
+inline ::Protocol::PCellPos* S_BOMB::mutable_cellpos() {
+  ::Protocol::PCellPos* _msg = _internal_mutable_cellpos();
+  // @@protoc_insertion_point(field_mutable:Protocol.S_BOMB.cellpos)
   return _msg;
 }
-inline void S_BOMB::set_allocated_posinfo(::Protocol::PPositionInfo* posinfo) {
+inline void S_BOMB::set_allocated_cellpos(::Protocol::PCellPos* cellpos) {
   ::PROTOBUF_NAMESPACE_ID::Arena* message_arena = GetArenaForAllocation();
   if (message_arena == nullptr) {
-    delete reinterpret_cast< ::PROTOBUF_NAMESPACE_ID::MessageLite*>(posinfo_);
+    delete reinterpret_cast< ::PROTOBUF_NAMESPACE_ID::MessageLite*>(cellpos_);
   }
-  if (posinfo) {
+  if (cellpos) {
     ::PROTOBUF_NAMESPACE_ID::Arena* submessage_arena =
         ::PROTOBUF_NAMESPACE_ID::Arena::InternalGetOwningArena(
-                reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(posinfo));
+                reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(cellpos));
     if (message_arena != submessage_arena) {
-      posinfo = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
-          message_arena, posinfo, submessage_arena);
+      cellpos = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
+          message_arena, cellpos, submessage_arena);
     }
     
   } else {
     
   }
-  posinfo_ = posinfo;
-  // @@protoc_insertion_point(field_set_allocated:Protocol.S_BOMB.posInfo)
+  cellpos_ = cellpos;
+  // @@protoc_insertion_point(field_set_allocated:Protocol.S_BOMB.cellpos)
+}
+
+// -------------------------------------------------------------------
+
+// S_BOMBEND
+
+// .Protocol.PPlayer player = 1;
+inline bool S_BOMBEND::_internal_has_player() const {
+  return this != internal_default_instance() && player_ != nullptr;
+}
+inline bool S_BOMBEND::has_player() const {
+  return _internal_has_player();
+}
+inline const ::Protocol::PPlayer& S_BOMBEND::_internal_player() const {
+  const ::Protocol::PPlayer* p = player_;
+  return p != nullptr ? *p : reinterpret_cast<const ::Protocol::PPlayer&>(
+      ::Protocol::_PPlayer_default_instance_);
+}
+inline const ::Protocol::PPlayer& S_BOMBEND::player() const {
+  // @@protoc_insertion_point(field_get:Protocol.S_BOMBEND.player)
+  return _internal_player();
+}
+inline void S_BOMBEND::unsafe_arena_set_allocated_player(
+    ::Protocol::PPlayer* player) {
+  if (GetArenaForAllocation() == nullptr) {
+    delete reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(player_);
+  }
+  player_ = player;
+  if (player) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:Protocol.S_BOMBEND.player)
+}
+inline ::Protocol::PPlayer* S_BOMBEND::release_player() {
+  
+  ::Protocol::PPlayer* temp = player_;
+  player_ = nullptr;
+#ifdef PROTOBUF_FORCE_COPY_IN_RELEASE
+  auto* old =  reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(temp);
+  temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
+  if (GetArenaForAllocation() == nullptr) { delete old; }
+#else  // PROTOBUF_FORCE_COPY_IN_RELEASE
+  if (GetArenaForAllocation() != nullptr) {
+    temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
+  }
+#endif  // !PROTOBUF_FORCE_COPY_IN_RELEASE
+  return temp;
+}
+inline ::Protocol::PPlayer* S_BOMBEND::unsafe_arena_release_player() {
+  // @@protoc_insertion_point(field_release:Protocol.S_BOMBEND.player)
+  
+  ::Protocol::PPlayer* temp = player_;
+  player_ = nullptr;
+  return temp;
+}
+inline ::Protocol::PPlayer* S_BOMBEND::_internal_mutable_player() {
+  
+  if (player_ == nullptr) {
+    auto* p = CreateMaybeMessage<::Protocol::PPlayer>(GetArenaForAllocation());
+    player_ = p;
+  }
+  return player_;
+}
+inline ::Protocol::PPlayer* S_BOMBEND::mutable_player() {
+  ::Protocol::PPlayer* _msg = _internal_mutable_player();
+  // @@protoc_insertion_point(field_mutable:Protocol.S_BOMBEND.player)
+  return _msg;
+}
+inline void S_BOMBEND::set_allocated_player(::Protocol::PPlayer* player) {
+  ::PROTOBUF_NAMESPACE_ID::Arena* message_arena = GetArenaForAllocation();
+  if (message_arena == nullptr) {
+    delete reinterpret_cast< ::PROTOBUF_NAMESPACE_ID::MessageLite*>(player_);
+  }
+  if (player) {
+    ::PROTOBUF_NAMESPACE_ID::Arena* submessage_arena =
+        ::PROTOBUF_NAMESPACE_ID::Arena::InternalGetOwningArena(
+                reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(player));
+    if (message_arena != submessage_arena) {
+      player = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
+          message_arena, player, submessage_arena);
+    }
+    
+  } else {
+    
+  }
+  player_ = player;
+  // @@protoc_insertion_point(field_set_allocated:Protocol.S_BOMBEND.player)
+}
+
+// repeated .Protocol.PCellPos cellPoses = 2;
+inline int S_BOMBEND::_internal_cellposes_size() const {
+  return cellposes_.size();
+}
+inline int S_BOMBEND::cellposes_size() const {
+  return _internal_cellposes_size();
+}
+inline ::Protocol::PCellPos* S_BOMBEND::mutable_cellposes(int index) {
+  // @@protoc_insertion_point(field_mutable:Protocol.S_BOMBEND.cellPoses)
+  return cellposes_.Mutable(index);
+}
+inline ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::Protocol::PCellPos >*
+S_BOMBEND::mutable_cellposes() {
+  // @@protoc_insertion_point(field_mutable_list:Protocol.S_BOMBEND.cellPoses)
+  return &cellposes_;
+}
+inline const ::Protocol::PCellPos& S_BOMBEND::_internal_cellposes(int index) const {
+  return cellposes_.Get(index);
+}
+inline const ::Protocol::PCellPos& S_BOMBEND::cellposes(int index) const {
+  // @@protoc_insertion_point(field_get:Protocol.S_BOMBEND.cellPoses)
+  return _internal_cellposes(index);
+}
+inline ::Protocol::PCellPos* S_BOMBEND::_internal_add_cellposes() {
+  return cellposes_.Add();
+}
+inline ::Protocol::PCellPos* S_BOMBEND::add_cellposes() {
+  ::Protocol::PCellPos* _add = _internal_add_cellposes();
+  // @@protoc_insertion_point(field_add:Protocol.S_BOMBEND.cellPoses)
+  return _add;
+}
+inline const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::Protocol::PCellPos >&
+S_BOMBEND::cellposes() const {
+  // @@protoc_insertion_point(field_list:Protocol.S_BOMBEND.cellPoses)
+  return cellposes_;
+}
+
+// repeated .Protocol.PPlayer trapPlayers = 3;
+inline int S_BOMBEND::_internal_trapplayers_size() const {
+  return trapplayers_.size();
+}
+inline int S_BOMBEND::trapplayers_size() const {
+  return _internal_trapplayers_size();
+}
+inline ::Protocol::PPlayer* S_BOMBEND::mutable_trapplayers(int index) {
+  // @@protoc_insertion_point(field_mutable:Protocol.S_BOMBEND.trapPlayers)
+  return trapplayers_.Mutable(index);
+}
+inline ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::Protocol::PPlayer >*
+S_BOMBEND::mutable_trapplayers() {
+  // @@protoc_insertion_point(field_mutable_list:Protocol.S_BOMBEND.trapPlayers)
+  return &trapplayers_;
+}
+inline const ::Protocol::PPlayer& S_BOMBEND::_internal_trapplayers(int index) const {
+  return trapplayers_.Get(index);
+}
+inline const ::Protocol::PPlayer& S_BOMBEND::trapplayers(int index) const {
+  // @@protoc_insertion_point(field_get:Protocol.S_BOMBEND.trapPlayers)
+  return _internal_trapplayers(index);
+}
+inline ::Protocol::PPlayer* S_BOMBEND::_internal_add_trapplayers() {
+  return trapplayers_.Add();
+}
+inline ::Protocol::PPlayer* S_BOMBEND::add_trapplayers() {
+  ::Protocol::PPlayer* _add = _internal_add_trapplayers();
+  // @@protoc_insertion_point(field_add:Protocol.S_BOMBEND.trapPlayers)
+  return _add;
+}
+inline const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::Protocol::PPlayer >&
+S_BOMBEND::trapplayers() const {
+  // @@protoc_insertion_point(field_list:Protocol.S_BOMBEND.trapPlayers)
+  return trapplayers_;
 }
 
 #ifdef __GNUC__
   #pragma GCC diagnostic pop
 #endif  // __GNUC__
+// -------------------------------------------------------------------
+
 // -------------------------------------------------------------------
 
 // -------------------------------------------------------------------

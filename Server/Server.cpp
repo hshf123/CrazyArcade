@@ -11,6 +11,9 @@
 #include "DBConnectionPool.h"
 #include "DBBind.h"
 #include "ChannelManager.h"
+#include "Timer.h"
+
+#include "ForestMap.h"
 
 void MakeTestData(int32 idx)
 {
@@ -125,6 +128,7 @@ int main()
 #pragma endregion
 
 	ClientPacketHandler::Init();
+	Timer::GetInstance()->Init();
 
 	for (int i = 0; i < 5; i++)
 	{
@@ -148,6 +152,11 @@ int main()
 					service->GetIocpCore()->Dispatch();
 				}
 			});
+	}
+
+	while (true)
+	{
+		Timer::GetInstance()->Update();
 	}
 
 	GThreadManager->Join();

@@ -1,9 +1,9 @@
 #pragma once
+#include "Protocol.pb.h"
 
 using PositionInfo = Protocol::PPositionInfo;
 using CellPos = Protocol::PCellPos;
 using WorldPos = Protocol::PWorldPos;
-using BombRef = shared_ptr<class Bomb>;
 
 class ForestMap
 {
@@ -20,11 +20,11 @@ public:
 
 	PlayerRef FindPlayer(Vector2Int cellPos);
 
-	BombRef FindBomb(Vector2Int cellPos);
+	bool FindBomb(Vector2Int cellPos);
 
 	bool SetBomb(Vector2Int bomb);
 
-	void DestroyBomb(Vector2Int pos, int32 range);
+	void DestroyBomb(Vector2Int pos, int32 range, Protocol::S_BOMBEND* pkt);
 	void LoadMap(wstring pathPrefix = L"../Common/MapData");
 
 public:

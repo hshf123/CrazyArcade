@@ -261,7 +261,7 @@ public class PlayerController : MonoBehaviour
         if (Dir != MoveDir.None)
         {
             Vector3Int destCellPos = Managers.Map.CurrentGrid.WorldToCell(benchmark);
-            bool isBomb = true; // Managers.Object.Find(destCellPos) == null;
+            bool isBomb = Managers.Object.FindBomb(destCellPos) == null;
             if ((Managers.Map.CanGo(destCellPos) && isBomb) || (isBomb == false && destCellPos == CellPos))
             {
                 Vector3 dist = destPos - WorldPos;
@@ -281,8 +281,8 @@ public class PlayerController : MonoBehaviour
                 {
                     Vector3Int destCellPosUp = Managers.Map.CurrentGrid.WorldToCell(benchmarkUp);
                     Vector3Int destCellPosDown = Managers.Map.CurrentGrid.WorldToCell(benchmarkDown);
-                    bool upCanGo = Managers.Map.CanGo(destCellPosUp) || ((destCellPos == CellPos) && false /*(Managers.Object.Find(destCellPos) != null)*/);
-                    bool downCanGo = Managers.Map.CanGo(destCellPosDown) || ((destCellPos == CellPos) && false /*(Managers.Object.Find(destCellPos) != null)*/);
+                    bool upCanGo = Managers.Map.CanGo(destCellPosUp) || ((destCellPos == CellPos) && (Managers.Object.FindBomb(destCellPos) != null));
+                    bool downCanGo = Managers.Map.CanGo(destCellPosDown) || ((destCellPos == CellPos) && (Managers.Object.FindBomb(destCellPos) != null));
                     if (upCanGo && downCanGo)
                     {
                         WorldPos = destPos;
@@ -299,7 +299,6 @@ public class PlayerController : MonoBehaviour
                 CellPos = Managers.Map.CurrentGrid.WorldToCell(WorldPos);
             }
         }
-        //Debug.Log($"Move To {_cellPos}");
     }
     protected virtual void UpdateSortOrder()
     {

@@ -122,5 +122,12 @@ message C_BOMB
 message S_BOMB
 {
 	PPlayer player = 1;
-	PPositionInfo posInfo = 2;
+	PCellPos cellpos = 2;
+}
+
+message S_BOMBEND
+{
+	PPlayer player = 1;
+	repeated PCellPos cellPoses = 2;
+	repeated PPlayer trapPlayers = 3;
 }

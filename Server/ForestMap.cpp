@@ -59,9 +59,9 @@ PlayerRef ForestMap::FindPlayer(Vector2Int cellPos)
 	return _players[y][x];
 }
 
-BombRef ForestMap::FindBomb(Vector2Int cellPos)
+bool ForestMap::FindBomb(Vector2Int cellPos)
 {
-	return nullptr;
+	return _blocks[cellPos.x][cellPos.y] == 3;
 }
 
 bool ForestMap::SetBomb(Vector2Int pos)
@@ -69,17 +69,59 @@ bool ForestMap::SetBomb(Vector2Int pos)
 	if (CanGo(pos) == false)
 		return false;
 
-	_blocks[pos.y][pos.x] = 3;
+	int x = pos.x - MinX;
+	int y = MaxY - pos.y;
+	_blocks[y][x] = 3;
 	return true;
 }
 
-void ForestMap::DestroyBomb(Vector2Int pos, int32 range)
+void ForestMap::DestroyBomb(Vector2Int pos, int32 range, Protocol::S_BOMBEND* pkt)
 {
-	if (_blocks[pos.x][pos.y] != 3)
+	int x = pos.x - MinX;
+	int y = MaxY - pos.y;
+	if (_blocks[y][x] != 3)
 		return;
+
+	auto* cellpos = pkt->add_cellposes();
+	cellpos->set_posx(pos.x);
+	cellpos->set_posy(pos.y);
+	_blocks[y][x] = 0;
+
+	// 범위 내에 destroy and 플레이어면 물풍선 가두기
+	for (int32 i = 1; i <= range; i++)
+	{
+		Vector2Int ranges[4];
+		ranges[0] = pos + Vector2Int(0, i);
+		ranges[1] = pos + Vector2Int(i, 0);
+		ranges[2] = pos + Vector2Int(0, -i);
+		ranges[3] = pos + Vector2Int(-i, 0);
+		for (int32 i = 0; i < 4; i++)
+		{
+			Vector2Int range = ranges[i];
+			int32 x = range.x - MinX;
+			int32 y = MaxY - range.y;
+			if (CanGo(range) == false && _blocks[y][x] == 2)
+			{
+				// Destroy
+				auto* cellpos = pkt->add_cellposes();
+				cellpos->set_posx(range.x);
+				cellpos->set_posy(range.y);
+				_blocks[y][x] = 0;
+			}
+
+			PlayerRef player = FindPlayer(range);
+			if (player != nullptr)
+			{
+				// TRAP
+				auto* trapPlayer = pkt->add_trapplayers();
+				player->OnTrap();
+				trapPlayer->CopyFrom(player->PlayerInfo);
+			}
+		}
+	}
 }
 
-void ForestMap::LoadMap(wstring pathPrefix /*= L"../Common/MapData/ForestMapInfo.txt"*/)
+void ForestMap::LoadMap(wstring pathPrefix /*= L"../Common/MapData"*/)
 {
 	// 폴더 경로 설정
 	fs::path folder_path = fs::path(pathPrefix).lexically_normal();

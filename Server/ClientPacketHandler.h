@@ -25,6 +25,7 @@ enum : uint16
 	PKT_S_MOVE = 1016,
 	PKT_C_BOMB = 1017,
 	PKT_S_BOMB = 1018,
+	PKT_S_BOMBEND = 1019,
 };
 
 bool Handle_INVALID(PacketSessionRef& session, BYTE* buffer, int32 len);
@@ -71,6 +72,7 @@ public:
 	static SendBufferRef MakeSendBuffer(Protocol::S_ROOMSTART& packet) { return MakeSendBuffer(packet, PKT_S_ROOMSTART); }
 	static SendBufferRef MakeSendBuffer(Protocol::S_MOVE& packet) { return MakeSendBuffer(packet, PKT_S_MOVE); }
 	static SendBufferRef MakeSendBuffer(Protocol::S_BOMB& packet) { return MakeSendBuffer(packet, PKT_S_BOMB); }
+	static SendBufferRef MakeSendBuffer(Protocol::S_BOMBEND& packet) { return MakeSendBuffer(packet, PKT_S_BOMBEND); }
 
 private:
 	template<class PacketType, class ProcessFunc>

@@ -21,6 +21,11 @@ void Player::SubBomb()
 		PlayerInfo.set_bombcount(currentBombCount - 1);
 }
 
+void Player::OnTrap()
+{
+	PosInfo.set_state(Protocol::INTRAP);
+}
+
 void Player::CopyPlayerProtocol(Protocol::PPlayer* pkt)
 {
 	pkt->CopyFrom(PlayerInfo);

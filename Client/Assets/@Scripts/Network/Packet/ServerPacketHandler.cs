@@ -24,6 +24,7 @@ public enum MsgId : ushort
 	PKT_S_MOVE = 1016,
 	PKT_C_BOMB = 1017,
 	PKT_S_BOMB = 1018,
+	PKT_S_BOMBEND = 1019,
 };
 
 class PacketManager
@@ -65,6 +66,8 @@ class PacketManager
         _handler.Add((ushort)MsgId.PKT_S_MOVE, PacketHandler.S_MOVEHandler);
         _onRecv.Add((ushort)MsgId.PKT_S_BOMB, MakePacket<S_BOMB>);
         _handler.Add((ushort)MsgId.PKT_S_BOMB, PacketHandler.S_BOMBHandler);
+        _onRecv.Add((ushort)MsgId.PKT_S_BOMBEND, MakePacket<S_BOMBEND>);
+        _handler.Add((ushort)MsgId.PKT_S_BOMBEND, PacketHandler.S_BOMBENDHandler);
     }
 
     public void OnRecvPacket(PacketSession session, ArraySegment<byte> buffer)

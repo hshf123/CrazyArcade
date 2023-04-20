@@ -71,6 +71,8 @@ public class MyPlayerController : PlayerController
             if (base.State == prevValue)
                 return;
             _updateFlag = true;
+
+            Debug.Log($"Change State : {prevValue} -> {value}");
         }
     }
 
@@ -94,6 +96,12 @@ public class MyPlayerController : PlayerController
 
     void InputDir()
     {
+        if(State == PlayerState.Intrap)
+        {
+            TrapInputDir();
+            return;
+        }
+
         if (Input.GetKey(KeyCode.UpArrow))
         {
             Dir = MoveDir.Up;
@@ -124,6 +132,29 @@ public class MyPlayerController : PlayerController
         {
             _coBomb = StartCoroutine(Bomb());
             // Bomb();
+        }
+    }
+    void TrapInputDir()
+    {
+        if (Input.GetKey(KeyCode.UpArrow))
+        {
+            Dir = MoveDir.Up;
+        }
+        else if (Input.GetKey(KeyCode.RightArrow))
+        {
+            Dir = MoveDir.Right;
+        }
+        else if (Input.GetKey(KeyCode.DownArrow))
+        {
+            Dir = MoveDir.Down;
+        }
+        else if (Input.GetKey(KeyCode.LeftArrow))
+        {
+            Dir = MoveDir.Left;
+        }
+        else
+        {
+            Dir = MoveDir.None;
         }
     }
     protected override void UpdateSortOrder()
