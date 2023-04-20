@@ -3,7 +3,6 @@
 #include "Player.h"
 #include "Room.h"
 #include "Protocol.pb.h"
-#include "ClientPacketHandler.h"
 
 void Channel::AddRoom(int64 playerId, const string& roomName, int32 maxPlayerCount /*= 8*/)
 {
@@ -11,6 +10,7 @@ void Channel::AddRoom(int64 playerId, const string& roomName, int32 maxPlayerCou
 	WRITE_LOCK;
 	// TODO : increaseId 조절
 	RoomRef room = MakeShared<Room>(_increaseId, roomName, maxPlayerCount);
+	room->SetChannel(shared_from_this());
 	_rooms.insert({ _increaseId++, room });
 
 	PlayerRef player = FindPlayer(playerId);
@@ -48,7 +48,25 @@ void Channel::AddRoom(int64 playerId, const string& roomName, int32 maxPlayerCou
 void Channel::RemoveRoom(int32 roomId)
 {
 	WRITE_LOCK;
+	RoomRef room = FindRoom(roomId);
 	_rooms.erase(roomId);
+	if (room == nullptr)
+		return;
+
+	room->SetChannel(nullptr);
+	room = nullptr;
+
+	Protocol::S_CHANNELUPDATE channelUpdatePkt;
+	for (Protocol::PRoom r : GetRoomsProtocol())
+	{
+		Protocol::PRoom* room = channelUpdatePkt.add_rooms();
+		room->CopyFrom(r);
+	}
+	Broadcast(channelUpdatePkt);
+
+	wstringstream log;
+	log << L" CHANNEL ID : " << ChannelInfo.channelid() << L" REMOVE ROOM ID : " << roomId;
+	Utils::Log(log);
 }
 
 RoomRef Channel::FindRoom(int32 roomId)
@@ -66,6 +84,30 @@ void Channel::InsertPlayer(PlayerRef player)
 	WRITE_LOCK;
 	_players.insert({ player->PlayerInfo.id(), player });
 	player->PlayerInfo.set_channelid(ChannelInfo.channelid());
+
+	Protocol::S_CHANNELCHOICE channelChoicePkt;
+	channelChoicePkt.set_success(true);
+	channelChoicePkt.set_channelid(ChannelInfo.channelid());
+	for (auto room : GetRoomsProtocol())
+	{
+		auto* r = channelChoicePkt.add_rooms();
+		room.CopyFrom(*r);
+	}
+	SendBufferRef sendBuffer = ClientPacketHandler::MakeSendBuffer(channelChoicePkt);
+	player->Send(sendBuffer);
+
+	// // 해당 채널 로비에 broadcast
+	// Protocol::S_CHANNELUPDATE channelUpdatePkt;
+	// for (Protocol::PRoom r : GetRoomsProtocol())
+	// {
+	// 	Protocol::PRoom* room = channelUpdatePkt.add_rooms();
+	// 	room->CopyFrom(r);
+	// }
+	// Broadcast(channelUpdatePkt, player->GetClientSession());
+
+	wstringstream log;
+	log << L"PLAYER ID : " << player->PlayerInfo.id() << L" ENTER CHANNEL LOBBY ID : " << ChannelInfo.channelid();
+	Utils::Log(log);
 }
 
 void Channel::RemovePlayer(int64 playerId)
@@ -108,11 +150,13 @@ Vector<Protocol::PRoom> Channel::GetRoomsProtocol()
 	return res;
 }
 
-void Channel::Broadcast(SendBufferRef sendBuffer)
+void Channel::Broadcast(SendBufferRef sendBuffer, ClientSessionRef exceptSession /*= nullptr*/)
 {
 	READ_LOCK;
 	for (auto& p : _players)
 	{
+		if (exceptSession != nullptr && p.second->GetClientSession() == exceptSession)
+			continue;
 		p.second->Send(sendBuffer);
 	}
 }

@@ -8,7 +8,7 @@ public class UI_ChannelScene : UI_Scene
 {
     enum GameObjects
     {
-        ChannelItem,
+        Content,
     }
 
     List<UI_ChannelSubItem> _subItems;
@@ -26,7 +26,7 @@ public class UI_ChannelScene : UI_Scene
 
         for (int i = 0; i < Managers.Game.Channels.Count; i++)
         {
-            Managers.UI.MakeSubItem<UI_ChannelSubItem>(Get<GameObject>((int)GameObjects.ChannelItem).transform, null,
+            Managers.UI.MakeSubItem<UI_ChannelSubItem>(Get<GameObject>((int)GameObjects.Content).transform, null,
                 (subItem) =>
                 {
                     subItem.Channel = Managers.Game.Channels[_subItems.Count];

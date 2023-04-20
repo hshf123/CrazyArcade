@@ -81,5 +81,8 @@ Protocol::PPlayer* Player::GetPlayerProtocol()
 
 void Player::Send(SendBufferRef sendBuffer)
 {
-	_ownerSession.lock()->Send(sendBuffer);
+	ClientSessionRef session = _ownerSession.lock();
+	if (session == nullptr)
+		return;
+	session->Send(sendBuffer);
 }

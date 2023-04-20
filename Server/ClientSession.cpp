@@ -19,31 +19,24 @@ void ClientSession::OnDisconnected()
 {
 	GSessionManager.Remove(static_pointer_cast<ClientSession>(shared_from_this()));
 	PlayerRef player = MyPlayer;
-	if (player == nullptr)
-		return;
-		
-	ChannelRef channel = ChannelManager::GetInstance()->FindChannel(player->PlayerInfo.channelid());
-	if (channel == nullptr)
+	if (player != nullptr)
 	{
-		player = nullptr;
-		return;
+		RoomRef room = player->GetRoom();
+		if (room != nullptr)
+		{
+			room->RemovePlayer(player->PlayerInfo.id());
+
+			ChannelRef channel = room->GetChannel();
+			if (channel != nullptr)
+			{
+				channel->RemovePlayer(player->PlayerInfo.id());
+			}
+		}
 	}
 
-	if (channel->FindPlayer(player->PlayerInfo.id()) != nullptr)
-	{
-		channel->RemovePlayer(player->PlayerInfo.id());
-		player = nullptr;
-		return;
-	}
-
-	RoomRef room = channel->FindRoom(player->PlayerInfo.roomid());
-	if (room == nullptr)
-	{
-		player = nullptr;
-		return;
-	}
-
-	room->RemovePlayer(player->PlayerInfo.id());
+	wstringstream log;
+	log << L"PLAYER ID : " << player->PlayerInfo.id() << L" DISCONNECTED";
+	Utils::Log(log);
 	player = nullptr;
 }
 

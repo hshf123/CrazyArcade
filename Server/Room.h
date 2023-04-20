@@ -28,11 +28,15 @@ public:
 	void SetLeader(int64 playerId);
 	PlayerRef GetLeader() { return FindPlayer(_leaderId); }
 
+	void SetChannel(ChannelRef channel) { _channel = channel; }
+	ChannelRef GetChannel() { return _channel; }
+
 	void Broadcast(SendBufferRef sendBuffer, ClientSessionRef exceptSession = nullptr);
 	template <class T>
 	void Broadcast(T pkt, ClientSessionRef exceptSession = nullptr);
 
 public:
+	void HandleChat(PlayerRef player, Protocol::C_ROOMCHAT& pkt);
 	void HandleMove(PlayerRef player, Protocol::C_MOVE& pkt);
 	void HandleBomb(PlayerRef player, Protocol::C_BOMB& pkt);
 	void PlayerDead(PlayerRef player);
@@ -43,6 +47,8 @@ private:
 	HashMap<int32, PlayerRef> _idxes;
 
 private:
+	ChannelRef _channel;
+
 	int32 _roomId;
 	wstring _roomName;
 	int32 _maxPlayerCount = 0;

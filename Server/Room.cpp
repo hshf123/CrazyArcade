@@ -4,6 +4,7 @@
 #include "Protocol.pb.h"
 #include "ForestMap.h"
 #include "ThreadManager.h"
+#include "Channel.h"
 
 Room::Room(int64 id, const string& roomName, int32 maxPlayerCount)
 	:_roomId(id), _maxPlayerCount(maxPlayerCount)
@@ -23,16 +24,57 @@ void Room::InsertPlayer(PlayerRef player)
 
 void Room::RemovePlayer(int64 playerId)
 {
-	WRITE_LOCK;
 	PlayerRef player = FindPlayer(playerId);
 	if (player == nullptr)
 		return;
-	_idxes.erase(player->PlayerInfo.roomidx());
-	_players.erase(playerId);
-	_currentPlayerCount--;
-	_idxes[player->PlayerInfo.roomidx()] = nullptr;
-	player->PlayerInfo.set_roomid(-1);
-	player->SetRoom(nullptr);
+
+	if (player == GetLeader())
+	{
+		Vector<PlayerRef> players;
+		{
+			WRITE_LOCK;
+			for(auto& p : _players)
+			{
+				p.second->PlayerInfo.set_roomid(-1);
+				p.second->SetRoom(nullptr);
+				_currentPlayerCount--;
+				players.push_back(p.second);
+			}
+			_players.clear();
+			_idxes.clear();
+		}
+
+		ChannelRef channel = GetChannel();
+		channel->RemoveRoom(_roomId);
+		for(auto& p : players)
+		{
+			channel->InsertPlayer(p);
+		}
+
+		wstringstream log;
+		log << L"PLAYER ID : " << player->PlayerInfo.id() << L" LEAVE ROOM ID : " << _roomId;
+		Utils::Log(log);
+
+		return;
+	}
+	{
+		WRITE_LOCK;
+		player->PlayerInfo.set_roomid(-1);
+		player->SetRoom(nullptr);
+		_players.erase(playerId);
+		_idxes.erase(player->PlayerInfo.roomidx());
+		_currentPlayerCount--;
+	}
+
+	_channel->InsertPlayer(player);
+
+	Protocol::S_ROOMUPDATE roomUpdatePkt;
+	roomUpdatePkt.set_allocated_room(GetRoomProtocol());
+	Broadcast(roomUpdatePkt, player->GetClientSession());
+
+	wstringstream log;
+	log << L"PLAYER ID : " << player->PlayerInfo.id() << L" LEAVE ROOM ID : " << _roomId;
+	Utils::Log(log);
 }
 
 PlayerRef Room::FindPlayer(int64 playerId)
@@ -144,7 +186,6 @@ void Room::CopyRoomProtocol(Protocol::PRoom* pkt)
 Protocol::PRoom* Room::GetRoomProtocol()
 {
 	Protocol::PRoom* pkt = new Protocol::PRoom();
-	READ_LOCK;
 	pkt->set_roomid(_roomId);
 	pkt->set_roomname(GetRoomName());
 	pkt->set_leaderid(_leaderId);
@@ -176,6 +217,14 @@ void Room::Broadcast(SendBufferRef sendBuffer, ClientSessionRef exceptSession /*
 			continue;
 		p.second->Send(sendBuffer);
 	}
+}
+
+void Room::HandleChat(PlayerRef player, Protocol::C_ROOMCHAT& pkt)
+{
+	Protocol::S_ROOMCHAT roomChatPkt;
+	roomChatPkt.set_allocated_player(player->GetPlayerProtocol());
+	roomChatPkt.set_msg(pkt.msg());
+	Broadcast(roomChatPkt);
 }
 
 void Room::HandleMove(PlayerRef player, Protocol::C_MOVE& pkt)

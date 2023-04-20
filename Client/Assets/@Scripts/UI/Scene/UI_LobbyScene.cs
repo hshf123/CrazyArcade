@@ -14,7 +14,6 @@ public class UI_LobbyScene : UI_Scene
     {
         RoomList,
     }
-
     enum Buttons
     {
         MakeRoomButton,
@@ -22,15 +21,17 @@ public class UI_LobbyScene : UI_Scene
         LeftButton,
         ChatSendButton,
     }
-
     enum InputFields
     {
         ChatInputField,
     }
-
     enum Texts
     {
         ChatText,
+    }
+    enum Scrollbars
+    {
+        ScrollbarVertical,
     }
 
     int _roomPage = 0;
@@ -45,6 +46,7 @@ public class UI_LobbyScene : UI_Scene
         Bind<Button>(typeof(Buttons));
         BindInputField(typeof(InputFields));
         BindText(typeof(Texts));
+        Bind<Scrollbar>(typeof(Scrollbars));
 
         Get<Button>((int)Buttons.ChatSendButton).gameObject.BindEvent(OnClickChatSendButton);
         Get<Button>((int)Buttons.RightButton).gameObject.BindEvent(OnClickRightButton);
@@ -67,6 +69,7 @@ public class UI_LobbyScene : UI_Scene
     {
         string msg = $"{name} : {chat}\n";
         GetText((int)Texts.ChatText).text += msg;
+        Get<Scrollbar>((int)Scrollbars.ScrollbarVertical).value = 0;
     }
 
     public void RefreshLobbyPage()
@@ -118,8 +121,6 @@ public class UI_LobbyScene : UI_Scene
             return;
 
         C_CHANNELCHAT chatPkt = new C_CHANNELCHAT();
-        chatPkt.ChannelId = Managers.Game.ChannelID;
-        chatPkt.PlayerId = Managers.Game.PlayerID;
         chatPkt.Chat = msg;
         GetInputField((int)InputFields.ChatInputField).text = "";
         Managers.Net.SessionManager.Broadcast(chatPkt);
@@ -145,8 +146,6 @@ public class UI_LobbyScene : UI_Scene
         Debug.Log($"{room.RoomID}번 방에 들어가려고 시도!");
 
         C_ROOMENTER roomEnterPkt = new C_ROOMENTER();
-        roomEnterPkt.ChannelId = Managers.Game.ChannelID;
-        roomEnterPkt.PlayerId = Managers.Game.PlayerID;
         roomEnterPkt.RoomId = room.RoomID;
         Managers.Net.SessionManager.Broadcast(roomEnterPkt);
     }

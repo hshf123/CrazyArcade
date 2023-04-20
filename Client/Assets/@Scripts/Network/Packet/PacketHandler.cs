@@ -19,7 +19,7 @@ public class PacketHandler
         }
 
         Managers.Game.Channels = pkt.Channels;
-        Managers.Game.PlayerID = pkt.PlayerId;
+        Managers.Game.PlayerID = pkt.Player.Id;
         Managers.Scene.ChangeScene<ChannelScene>(Define.SceneType.ChannelScene);
     }
 
@@ -102,6 +102,15 @@ public class PacketHandler
 
         Managers.Game.Room = pkt.Room;
         Managers.Game.RoomUI.RefreshRoomPage();
+    }
+
+    public static void S_ROOMCHATHandler(PacketSession session, IMessage packet)
+    {
+        Debug.Log($"S_ROOMCHATHandler");
+        ServerSession serverSession = session as ServerSession;
+        S_ROOMCHAT pkt = packet as S_ROOMCHAT;
+
+        Managers.Game.RoomUI.RecvChat(pkt.Player.Name, pkt.Msg);
     }
 
     public static void S_ROOMSTARTHandler(PacketSession session, IMessage packet)

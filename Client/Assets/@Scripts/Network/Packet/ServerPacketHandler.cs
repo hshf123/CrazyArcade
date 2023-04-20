@@ -16,16 +16,19 @@ public enum MsgId : ushort
 	PKT_S_CHANNELUPDATE = 1008,
 	PKT_C_ROOMENTER = 1009,
 	PKT_S_ROOMENTER = 1010,
-	PKT_S_ROOMUPDATE = 1011,
-	PKT_C_ROOMREADY = 1012,
-	PKT_C_ROOMSTART = 1013,
-	PKT_S_ROOMSTART = 1014,
-	PKT_C_MOVE = 1015,
-	PKT_S_MOVE = 1016,
-	PKT_C_BOMB = 1017,
-	PKT_S_BOMB = 1018,
-	PKT_S_BOMBEND = 1019,
-	PKT_S_DEAD = 1020,
+	PKT_C_ROOMLEAVE = 1011,
+	PKT_S_ROOMUPDATE = 1012,
+	PKT_C_ROOMREADY = 1013,
+	PKT_C_ROOMCHAT = 1014,
+	PKT_S_ROOMCHAT = 1015,
+	PKT_C_ROOMSTART = 1016,
+	PKT_S_ROOMSTART = 1017,
+	PKT_C_MOVE = 1018,
+	PKT_S_MOVE = 1019,
+	PKT_C_BOMB = 1020,
+	PKT_S_BOMB = 1021,
+	PKT_S_BOMBEND = 1022,
+	PKT_S_DEAD = 1023,
 };
 
 class PacketManager
@@ -61,6 +64,8 @@ class PacketManager
         _handler.Add((ushort)MsgId.PKT_S_ROOMENTER, PacketHandler.S_ROOMENTERHandler);
         _onRecv.Add((ushort)MsgId.PKT_S_ROOMUPDATE, MakePacket<S_ROOMUPDATE>);
         _handler.Add((ushort)MsgId.PKT_S_ROOMUPDATE, PacketHandler.S_ROOMUPDATEHandler);
+        _onRecv.Add((ushort)MsgId.PKT_S_ROOMCHAT, MakePacket<S_ROOMCHAT>);
+        _handler.Add((ushort)MsgId.PKT_S_ROOMCHAT, PacketHandler.S_ROOMCHATHandler);
         _onRecv.Add((ushort)MsgId.PKT_S_ROOMSTART, MakePacket<S_ROOMSTART>);
         _handler.Add((ushort)MsgId.PKT_S_ROOMSTART, PacketHandler.S_ROOMSTARTHandler);
         _onRecv.Add((ushort)MsgId.PKT_S_MOVE, MakePacket<S_MOVE>);

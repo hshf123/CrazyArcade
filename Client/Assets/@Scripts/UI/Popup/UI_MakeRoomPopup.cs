@@ -9,6 +9,7 @@ public class UI_MakeRoomPopup : UI_Popup
     enum Buttons
     {
         MakeRoomButton,
+        ExitButton,
     }
 
     enum InputFields
@@ -31,6 +32,7 @@ public class UI_MakeRoomPopup : UI_Popup
         BindText(typeof(Texts));
 
         Get<Button>((int)Buttons.MakeRoomButton).gameObject.BindEvent(OnClickMakeRoomButton);
+        Get<Button>((int)Buttons.ExitButton).gameObject.BindEvent(OnClickExitButton);
 
         return true;
     }
@@ -43,8 +45,10 @@ public class UI_MakeRoomPopup : UI_Popup
 
         C_MAKEROOM makeRoomPkt = new C_MAKEROOM();
         makeRoomPkt.RoomName = roomName;
-        makeRoomPkt.PlayerId = Managers.Game.PlayerID;
-        makeRoomPkt.ChannelId = Managers.Game.ChannelID;
         Managers.Net.SessionManager.Broadcast(makeRoomPkt);
+    }
+    void OnClickExitButton()
+    {
+        ClosePopupUI();
     }
 }

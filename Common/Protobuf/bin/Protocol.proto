@@ -17,13 +17,12 @@ message S_LOGIN
 {
 	bool success = 1;
 	repeated PChannel channels = 2;
-	int64 playerId = 3;
+	PPlayer player = 3;
 }
 
 message C_CHANNELCHOICE
 {
 	int32 channelId = 1;
-	int64 playerId = 2;
 }
 
 message S_CHANNELCHOICE
@@ -35,9 +34,7 @@ message S_CHANNELCHOICE
 
 message C_CHANNELCHAT
 {
-	int64 playerId = 1;
-	int32 channelId = 2;
-	string chat = 3;
+	string chat = 1;
 }
 
 message S_CHANNELCHAT
@@ -49,8 +46,6 @@ message S_CHANNELCHAT
 message C_MAKEROOM
 {
 	string roomName = 1;
-	int64 playerId = 2;
-	int32 channelId = 3;
 }
 
 message S_MAKEROOM
@@ -66,15 +61,18 @@ message S_CHANNELUPDATE
 
 message C_ROOMENTER
 {
-	int32 channelId = 1;
-	int64 playerId = 2;
-	int32 roomId = 3;
+	int32 roomId = 1;
 }
 
 message S_ROOMENTER
 {
 	bool success = 1;
 	PRoom room = 2;
+}
+
+message C_ROOMLEAVE
+{
+
 }
 
 message S_ROOMUPDATE
@@ -84,16 +82,23 @@ message S_ROOMUPDATE
 
 message C_ROOMREADY
 {
-	int64 playerId = 1;
-	int32 channelId = 2;
-	int32 roomId = 3;
+	
+}
+
+message C_ROOMCHAT
+{
+	string msg = 1;
+}
+
+message S_ROOMCHAT
+{
+	PPlayer player = 1;
+	string msg = 2;
 }
 
 message C_ROOMSTART
 {
-	int64 playerId = 1;
-	int32 channelId = 2;
-	int32 roomId = 3;
+	
 }
 
 message S_ROOMSTART

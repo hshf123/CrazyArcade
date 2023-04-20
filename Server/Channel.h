@@ -1,9 +1,10 @@
 #pragma once
+#include "ClientPacketHandler.h"
 
 using ChannelInfo = Protocol::PChannel;
 
 // RoomManager °â¿ë
-class Channel
+class Channel : public enable_shared_from_this<Channel>
 {
 public:
 	void AddRoom(int64 playerId, const string& roomName, int32 maxPlayerCount = 8);
@@ -19,7 +20,8 @@ public:
 	Vector<Protocol::PRoom> GetRoomsProtocol();
 
 public:
-	void Broadcast(SendBufferRef sendBuffer);
+	void Broadcast(SendBufferRef sendBuffer, ClientSessionRef exceptSession = nullptr);
+	template <class T> void Broadcast(T pkt, ClientSessionRef exceptSession = nullptr);
 
 public:
 	ChannelInfo ChannelInfo;
@@ -32,3 +34,10 @@ private:
 private:
 	int32 _increaseId = 1;
 };
+
+template <class T>
+void Channel::Broadcast(T pkt, ClientSessionRef exceptSession/*= nullptr*/)
+{
+	SendBufferRef sendBuffer = ClientPacketHandler::MakeSendBuffer(pkt);
+	Broadcast(sendBuffer, exceptSession);
+}

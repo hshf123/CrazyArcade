@@ -36,7 +36,6 @@ public class UI_ChannelSubItem : UI_Base
         Debug.Log($"{Channel.ChannelId}번 채널 선택");
         C_CHANNELCHOICE channelChoicePkt = new C_CHANNELCHOICE();
         channelChoicePkt.ChannelId = Channel.ChannelId;
-        channelChoicePkt.PlayerId = Managers.Game.PlayerID;
         Managers.Net.SessionManager.Broadcast(channelChoicePkt);
     }
 }

@@ -48,6 +48,10 @@ public class UI_RoomScene : UI_Scene
     {
         MapIcon,
     }
+    enum Scrollbars
+    {
+        ScrollbarVertical,
+    }
 
     public override bool Init()
     {
@@ -60,6 +64,7 @@ public class UI_RoomScene : UI_Scene
         BindInputField(typeof(InputFields));
         BindText(typeof(Texts));
         Bind<Image>(typeof(Images));
+        Bind<Scrollbar>(typeof(Scrollbars));
         
         Get<Button>((int)Buttons.BackButton).gameObject.BindEvent(OnClickBackButton);
         Get<Button>((int)Buttons.ChatSendButton).gameObject.BindEvent(OnClickChatSendButton);
@@ -139,31 +144,33 @@ public class UI_RoomScene : UI_Scene
     {
         string msg = $"{name} : {chat}\n";
         GetText((int)Texts.ChatText).text += msg;
+        Get<Scrollbar>((int)Scrollbars.ScrollbarVertical).value = 0;
     }
 
     void OnClickStartButton()
     {
         C_ROOMSTART roomStartPkt = new C_ROOMSTART();
-        roomStartPkt.PlayerId = Managers.Game.PlayerID;
-        roomStartPkt.ChannelId = Managers.Game.ChannelID;
-        roomStartPkt.RoomId = Managers.Game.Room.RoomId;
         Managers.Net.SessionManager.Broadcast(roomStartPkt);
     }
     void OnClickReadyButton()
     {
         C_ROOMREADY roomReadyPkt = new C_ROOMREADY();
-        roomReadyPkt.PlayerId = Managers.Game.PlayerID;
-        roomReadyPkt.ChannelId = Managers.Game.ChannelID;
-        roomReadyPkt.RoomId = Managers.Game.Room.RoomId;
         Managers.Net.SessionManager.Broadcast(roomReadyPkt);
     }
     void OnClickBackButton()
     {
-
+        C_ROOMLEAVE roomLeavePkt = new C_ROOMLEAVE();
+        Managers.Net.SessionManager.Broadcast(roomLeavePkt);
     }
     void OnClickChatSendButton()
     {
+        if (string.IsNullOrEmpty(GetInputField((int)InputFields.ChatInputField).text))
+            return;
 
+        C_ROOMCHAT roomChatPkt = new C_ROOMCHAT();
+        roomChatPkt.Msg = GetInputField((int)InputFields.ChatInputField).text;
+        Managers.Net.SessionManager.Broadcast(roomChatPkt);
+        GetInputField((int)InputFields.ChatInputField).text = "";
     }
     void OnClickBenButton(int n)
     {
