@@ -11,9 +11,6 @@
 #include "DBConnectionPool.h"
 #include "DBBind.h"
 #include "ChannelManager.h"
-#include "Timer.h"
-
-#include "ForestMap.h"
 
 void MakeTestData(int32 idx)
 {
@@ -80,7 +77,6 @@ int main()
 {
 	// ASSERT_CRASH(GDBConnectionPool->Connect(1, L"Driver={ODBC Driver 18 for SQL Server};Server=(localdb)\\MSSQLLocalDB;Database=ServerDB;Trusted_Connection=Yes;"));
 	ASSERT_CRASH(GDBConnectionPool->Connect(1, L"Driver={ODBC Driver 17 for SQL Server};Server=SANGHYUN\\SQLEXPRESS;Database=CrazyArcadeDB;Trusted_Connection=Yes;"));
-	auto testFunc = []() {};
 	{
 		// FOREIGN KEY 제약 조건 삭제
 		auto query1 = L"IF EXISTS (SELECT * FROM sys.foreign_keys WHERE name = 'FK_Player_UserInfo') \
@@ -128,7 +124,6 @@ int main()
 #pragma endregion
 
 	ClientPacketHandler::Init();
-	Timer::GetInstance()->Init();
 
 	for (int i = 0; i < 5; i++)
 	{
@@ -152,11 +147,6 @@ int main()
 					service->GetIocpCore()->Dispatch();
 				}
 			});
-	}
-
-	while (true)
-	{
-		Timer::GetInstance()->Update();
 	}
 
 	GThreadManager->Join();

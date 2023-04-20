@@ -246,7 +246,7 @@ void Room::HandleMove(PlayerRef player, Protocol::C_MOVE& pkt)
 	else if (s_state == Protocol::PPlayerState::MOVING)
 	{
 		// MOVE -> IDLE
-		if (pktCellPos == player->GetCellPos())
+		if (pktCellPos == player->GetCellPos() || (pktCellPos - player->GetCellPos()).sqrMagnitude() == 1)
 		{
 			player->PosInfo.CopyFrom(pkt.positioninfo());
 			Protocol::S_MOVE movePkt;
@@ -272,7 +272,6 @@ void Room::HandleBomb(PlayerRef player, Protocol::C_BOMB& pkt)
 
 	{
 		WRITE_LOCK;
-
 
 		if (_forestMap->SetBomb(bombCellPos) == false)
 			return;
