@@ -235,7 +235,7 @@ void Room::HandleMove(PlayerRef player, Protocol::C_MOVE& pkt)
 	WRITE_LOCK;
 #pragma region LOG
 	wstringstream log;
-	log << L"[ Log ] Player ID : ";
+	log << L"Player ID : ";
 	log << player->PlayerInfo.id();
 	log << L" | C_MOVE(";
 	log << pkt.positioninfo().cellpos().posx();
@@ -246,63 +246,80 @@ void Room::HandleMove(PlayerRef player, Protocol::C_MOVE& pkt)
 #pragma endregion
 
 	/*
-		1. 이동이 시작되면 상태를 변경해서 클라에서 움직이도록 한다. 이 때 시작 위치가 이상하면 강제로 맞추고 시작
-		2. 이동 중일 때 CellPos가 변경되면 충돌 판정을 한다.
-		3. 멈추면 클라에서 멈춘 위치를 보낼텐데 그 위치를 검사해서 너무 많이 틀어졌다 싶으면 강제로 맞추는 패킷을 보낸다.
-		4. 멈췄을 때 위치의 cellpos가 이상하면 그것도 검사
+		1. CellPos가 변경된 경우
+		2. MoveDir이 변경된 경우
+		3. State가 변경된 경우
 	*/
 
-	Protocol::PPlayerState s_state = player->PosInfo.state();
-	Protocol::PPlayerState c_state = pkt.positioninfo().state();
-	Vector2Int pktCellPos = Vector2Int(pkt.positioninfo().cellpos().posx(), pkt.positioninfo().cellpos().posy());
-	if (s_state == c_state && (s_state == Protocol::PPlayerState::MOVING || s_state == Protocol::PPlayerState::INTRAP))
 	{
-		if ((player->GetCellPos() != pktCellPos) && _forestMap->MovePlayer(player->GetCellPos(), pktCellPos, player))
+		// CellPos가 변경된 경우
+		Vector2Int prevCellPos = player->GetCellPos();
+		Vector2Int afterCellPos = Vector2Int(pkt.positioninfo().cellpos().posx(), pkt.positioninfo().cellpos().posy());
+		WRITE_LOCK; 
+		if (prevCellPos != afterCellPos && _forestMap->MovePlayer(prevCellPos, afterCellPos, player))
 		{
-			// cellpos가 변경되었을 경우
 			player->PosInfo.CopyFrom(pkt.positioninfo());
+			Protocol::S_MOVE movePkt;
+			movePkt.set_force(true);
+			movePkt.set_allocated_player(player->GetPlayerProtocol());
+			movePkt.set_allocated_positioninfo(player->GetPositionInfoProtocol());
+			Broadcast(movePkt);
+			return;
+		}
+	}
+	{
+		READ_LOCK;
+		// State가 변경된 경우
+		auto prevState = player->PosInfo.state();
+		auto afterState = pkt.positioninfo().state();
+		if (prevState != afterState)
+		{
+			player->PosInfo.CopyFrom(pkt.positioninfo());
+			Protocol::S_MOVE movePkt;
+			movePkt.set_force(true);
+			movePkt.set_allocated_player(player->GetPlayerProtocol());
+			movePkt.set_allocated_positioninfo(player->GetPositionInfoProtocol());
+			Broadcast(movePkt);
+			// TODO
+			// switch (afterState)
+			// {
+			// case Protocol::PPlayerState::IDLE:
+			// {
+			// 	break;
+			// }
+			// case Protocol::PPlayerState::MOVING:
+			// {
+			// 	break;
+			// }
+			// case Protocol::PPlayerState::INTRAP:
+			// {
+			// 	break;
+			// }
+			// case Protocol::PPlayerState::OUTTRAP:
+			// {
+			// 	break;
+			// }
+			// case Protocol::PPlayerState::DEAD:
+			// {
+			// 	break;
+			// }
+			// }
+		}
+	}
+	{
+		READ_LOCK;
+		// MoveDir이 변경된 경우
+		auto prevMoveDir = player->PosInfo.movedir();
+		auto afterMoveDir = pkt.positioninfo().movedir();
+		if (prevMoveDir != afterMoveDir)
+		{
+			player->PosInfo.set_movedir(afterMoveDir);
 			Protocol::S_MOVE movePkt;
 			movePkt.set_force(false);
 			movePkt.set_allocated_player(player->GetPlayerProtocol());
 			movePkt.set_allocated_positioninfo(player->GetPositionInfoProtocol());
 			Broadcast(movePkt);
-		}
-		else if(player->PosInfo.movedir() != pkt.positioninfo().movedir())
-		{
-			// 방향을 튼 경우
-			player->PosInfo.CopyFrom(pkt.positioninfo());
-			Protocol::S_MOVE movePkt;
-			movePkt.set_force(true);
-			movePkt.set_allocated_player(player->GetPlayerProtocol());
-			movePkt.set_allocated_positioninfo(player->GetPositionInfoProtocol());
-			Broadcast(movePkt);
-		}
-	}
-	else if (s_state == Protocol::PPlayerState::IDLE)
-	{
-		// IDLE -> MOVE
-		if ((player->GetCellPos() - pktCellPos).sqrMagnitude() > 1)
 			return;
-
-		Protocol::PMoveDir moveDir = pkt.positioninfo().movedir();
-		player->PosInfo.CopyFrom(pkt.positioninfo());
-		Protocol::S_MOVE movePkt;
-		movePkt.set_force(false);
-		movePkt.set_allocated_player(player->GetPlayerProtocol());
-		movePkt.set_allocated_positioninfo(player->GetPositionInfoProtocol());
-		Broadcast(movePkt);
-	}
-	else if (s_state == Protocol::PPlayerState::MOVING)
-	{
-		// MOVE -> IDLE
-		if (pktCellPos == player->GetCellPos() || (pktCellPos - player->GetCellPos()).sqrMagnitude() == 1)
-		{
-			player->PosInfo.CopyFrom(pkt.positioninfo());
-			Protocol::S_MOVE movePkt;
-			movePkt.set_force(true);
-			movePkt.set_allocated_player(player->GetPlayerProtocol());
-			movePkt.set_allocated_positioninfo(player->GetPositionInfoProtocol());
-			Broadcast(movePkt);
 		}
 	}
 }
@@ -354,9 +371,8 @@ void Room::HandleBomb(PlayerRef player, Protocol::C_BOMB& pkt)
 		player->SubBomb();
 
 		wstringstream log;
-		log << L"[ Log ] ";
 		log << L"Player ID : " << player->PlayerInfo.id();
-		log << L" A bomb located at (" << bombCellPos.x << ", " << bombCellPos.y << ")" << L"exploded.";
+		log << L" A bomb located at (" << bombCellPos.x << ", " << bombCellPos.y << ")" << L" exploded.";
 		Utils::Log(log);
 
 		Broadcast(bombEndPkt);
@@ -365,7 +381,6 @@ void Room::HandleBomb(PlayerRef player, Protocol::C_BOMB& pkt)
 
 void Room::PlayerDead(PlayerRef player)
 {
-	WRITE_LOCK;
 	player->OnDead();
 	_forestMap->LeavePlayer(player->GetCellPos(), player);
 }

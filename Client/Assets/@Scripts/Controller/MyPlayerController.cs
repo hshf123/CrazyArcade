@@ -54,9 +54,9 @@ public class MyPlayerController : PlayerController
         get => PosInfo.MoveDir;
         set
         {
-            MoveDir prevValue = base.Dir;
+            MoveDir prevValue = _lastDir;
             base.Dir = value;
-            if (base.Dir == prevValue)
+            if (_lastDir == prevValue)
                 return;
             _updateFlag = true;
         }

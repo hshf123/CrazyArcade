@@ -91,7 +91,7 @@ void Channel::InsertPlayer(PlayerRef player)
 	for (auto room : GetRoomsProtocol())
 	{
 		auto* r = channelChoicePkt.add_rooms();
-		room.CopyFrom(*r);
+		r->CopyFrom(room);
 	}
 	SendBufferRef sendBuffer = ClientPacketHandler::MakeSendBuffer(channelChoicePkt);
 	player->Send(sendBuffer);

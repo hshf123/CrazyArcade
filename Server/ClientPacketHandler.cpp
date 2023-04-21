@@ -202,7 +202,7 @@ bool Handle_C_ROOMENTER(PacketSessionRef& session, Protocol::C_ROOMENTER& pkt)
 
 	log << L"PLYAER ID : " << player->PlayerInfo.id() << L" ENTER ROOM, ROOM ID : ";
 
-	RoomRef room = player->GetRoom();
+	RoomRef room = channel->FindRoom(pkt.roomid());
 	if (room == nullptr)
 		return false;
 

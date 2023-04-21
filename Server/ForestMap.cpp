@@ -64,7 +64,7 @@ bool ForestMap::MovePlayer(Vector2Int prevPos, Vector2Int afterPos, PlayerRef pl
 	if (FindPlayer(player) != prevPos)
 		return false;
 
-	if ((afterPos - prevPos).sqrMagnitude() != 1)
+	if ((afterPos - prevPos).sqrMagnitude() > 1)
 		return false;
 
 	_players[player] = afterPos;
@@ -82,6 +82,10 @@ bool ForestMap::MovePlayer(Vector2Int prevPos, Vector2Int afterPos, PlayerRef pl
 				p->GetRoom()->PlayerDead(p);
 		}
 	}
+
+	auto* cellPos = player->PosInfo.cellpos().New();
+	cellPos->set_posx(afterPos.x);
+	cellPos->set_posy(afterPos.y);
 
 	return true;
 }
@@ -162,38 +166,203 @@ void ForestMap::DestroyBomb(Vector2Int pos, int32 range, Protocol::S_BOMBEND* pk
 		}
 	}
 
-	// 범위 내에 destroy and 플레이어면 물풍선 가두기
 	for (int32 i = 1; i <= range; i++)
 	{
-		Vector2Int ranges[4];
-		ranges[0] = pos + Vector2Int(0, i);
-		ranges[1] = pos + Vector2Int(i, 0);
-		ranges[2] = pos + Vector2Int(0, -i);
-		ranges[3] = pos + Vector2Int(-i, 0);
-		for (int32 i = 0; i < 4; i++)
+		Vector2Int upRange = pos + Vector2Int(0, i);
+		int32 x = upRange.x - MinX;
+		int32 y = MaxY - upRange.y;
+		if (CanGo(upRange) == false)
 		{
-			Vector2Int range = ranges[i];
-			int32 x = range.x - MinX;
-			int32 y = MaxY - range.y;
-			if (CanGo(range) == false && _blocks[y][x] == 2)
+			// Destroy
+			if (_blocks[y][x] == 2)
 			{
-				// Destroy
 				auto* cellpos = pkt->add_cellposes();
-				cellpos->set_posx(range.x);
-				cellpos->set_posy(range.y);
+				cellpos->set_posx(upRange.x);
+				cellpos->set_posy(upRange.y);
 				_blocks[y][x] = 0;
+				break;
 			}
-
-			Vector<PlayerRef> vec = FindPlayer(range);
-			for(PlayerRef player : vec)
+			else if (_blocks[y][x] == 3)
 			{
-				if (player != nullptr)
+				// 연달아 터지게
+				
+				Vector<PlayerRef> vec = FindPlayer(upRange);
+				for (PlayerRef player : vec)
 				{
-					// TRAP
-					auto* trapPlayer = pkt->add_trapplayers();
-					player->OnTrap();
-					trapPlayer->CopyFrom(player->PlayerInfo);
+					if (player != nullptr)
+					{
+						// TRAP
+						auto* trapPlayer = pkt->add_trapplayers();
+						player->OnTrap();
+						trapPlayer->CopyFrom(player->PlayerInfo);
+					}
 				}
+			}
+			else
+			{
+				break;
+			}
+		}
+
+		Vector<PlayerRef> vec = FindPlayer(upRange);
+		for (PlayerRef player : vec)
+		{
+			if (player != nullptr)
+			{
+				// TRAP
+				auto* trapPlayer = pkt->add_trapplayers();
+				player->OnTrap();
+				trapPlayer->CopyFrom(player->PlayerInfo);
+			}
+		}
+	}
+	for (int32 i = 1; i <= range; i++)
+	{
+		Vector2Int rightRange = pos + Vector2Int(i, 0);
+		int32 x = rightRange.x - MinX;
+		int32 y = MaxY - rightRange.y;
+		if (CanGo(rightRange) == false)
+		{
+			// Destroy
+			if (_blocks[y][x] == 2)
+			{
+				auto* cellpos = pkt->add_cellposes();
+				cellpos->set_posx(rightRange.x);
+				cellpos->set_posy(rightRange.y);
+				_blocks[y][x] = 0;
+				break;
+			}
+			else if (_blocks[y][x] == 3)
+			{
+				// 연달아 터지게
+
+				Vector<PlayerRef> vec = FindPlayer(rightRange);
+				for (PlayerRef player : vec)
+				{
+					if (player != nullptr)
+					{
+						// TRAP
+						auto* trapPlayer = pkt->add_trapplayers();
+						player->OnTrap();
+						trapPlayer->CopyFrom(player->PlayerInfo);
+					}
+				}
+			}
+			else
+			{
+				break;
+			}
+		}
+
+		Vector<PlayerRef> vec = FindPlayer(rightRange);
+		for (PlayerRef player : vec)
+		{
+			if (player != nullptr)
+			{
+				// TRAP
+				auto* trapPlayer = pkt->add_trapplayers();
+				player->OnTrap();
+				trapPlayer->CopyFrom(player->PlayerInfo);
+			}
+		}
+	}
+	for (int32 i = 1; i <= range; i++)
+	{
+		Vector2Int downRange = pos + Vector2Int(0, -i);
+		int32 x = downRange.x - MinX;
+		int32 y = MaxY - downRange.y;
+		if (CanGo(downRange) == false)
+		{
+			// Destroy
+			if (_blocks[y][x] == 2)
+			{
+				auto* cellpos = pkt->add_cellposes();
+				cellpos->set_posx(downRange.x);
+				cellpos->set_posy(downRange.y);
+				_blocks[y][x] = 0;
+				break;
+			}
+			else if (_blocks[y][x] == 3)
+			{
+				// 연달아 터지게
+
+				Vector<PlayerRef> vec = FindPlayer(downRange);
+				for (PlayerRef player : vec)
+				{
+					if (player != nullptr)
+					{
+						// TRAP
+						auto* trapPlayer = pkt->add_trapplayers();
+						player->OnTrap();
+						trapPlayer->CopyFrom(player->PlayerInfo);
+					}
+				}
+			}
+			else
+			{
+				break;
+			}
+		}
+
+		Vector<PlayerRef> vec = FindPlayer(downRange);
+		for (PlayerRef player : vec)
+		{
+			if (player != nullptr)
+			{
+				// TRAP
+				auto* trapPlayer = pkt->add_trapplayers();
+				player->OnTrap();
+				trapPlayer->CopyFrom(player->PlayerInfo);
+			}
+		}
+	}
+	for (int32 i = 1; i <= range; i++)
+	{
+		Vector2Int leftRange = pos + Vector2Int(-i, 0);
+		int32 x = leftRange.x - MinX;
+		int32 y = MaxY - leftRange.y;
+		if (CanGo(leftRange) == false)
+		{
+			// Destroy
+			if (_blocks[y][x] == 2)
+			{
+				auto* cellpos = pkt->add_cellposes();
+				cellpos->set_posx(leftRange.x);
+				cellpos->set_posy(leftRange.y);
+				_blocks[y][x] = 0;
+				break;
+			}
+			else if (_blocks[y][x] == 3)
+			{
+				// 연달아 터지게
+
+				Vector<PlayerRef> vec = FindPlayer(leftRange);
+				for (PlayerRef player : vec)
+				{
+					if (player != nullptr)
+					{
+						// TRAP
+						auto* trapPlayer = pkt->add_trapplayers();
+						player->OnTrap();
+						trapPlayer->CopyFrom(player->PlayerInfo);
+					}
+				}
+			}
+			else
+			{
+				break;
+			}
+		}
+
+		Vector<PlayerRef> vec = FindPlayer(leftRange);
+		for (PlayerRef player : vec)
+		{
+			if (player != nullptr)
+			{
+				// TRAP
+				auto* trapPlayer = pkt->add_trapplayers();
+				player->OnTrap();
+				trapPlayer->CopyFrom(player->PlayerInfo);
 			}
 		}
 	}
