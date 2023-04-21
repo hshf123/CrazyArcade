@@ -15,14 +15,6 @@ public class MyPlayerController : PlayerController
     #region Bomb
     protected Coroutine _coBomb;
     protected bool _bombCool = false;
-    protected int _bombId = 1;
-    [SerializeField]
-    protected float _speed;
-    [SerializeField]
-    protected int _maxBombCount = 1;
-    [SerializeField]
-    protected int _bombRange = 1;
-    protected int _bombCount = 0;
     #endregion
     bool _updateFlag = false;
 

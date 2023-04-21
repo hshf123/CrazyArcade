@@ -4,6 +4,7 @@
 #include <fstream>
 #include "Player.h"
 #include "Room.h"
+#include "Protocol.pb.h"
 namespace fs = std::filesystem;
 
 Vector2Int ForestMap::WorldToCell(Vector2 pos)
@@ -48,53 +49,74 @@ bool ForestMap::CanGo(Vector2Int cellPos, bool checkObjects /*= true*/)
 	return true;
 }
 
-void ForestMap::EnterPlayer(Vector2Int cellPos, PlayerRef player)
+void ForestMap::ApplyMove(PlayerRef player, Vector2Int dest)
 {
-	if (player == nullptr)
+	ApplyLeave(player);
+
+	if (CanGo(dest, true) == false)
 		return;
 
-	_players[player] = cellPos;
-}
+	_players[player] = dest;
 
-bool ForestMap::MovePlayer(Vector2Int prevPos, Vector2Int afterPos, PlayerRef player)
-{
-	if (CanGo(afterPos) == false)
-		return false;
+	// 실제 좌표 이동
+	player->SetCellPos(dest);
 
-	if (FindPlayer(player) != prevPos)
-		return false;
+#pragma region LOG
+	{
+		wstringstream log;
+		log << L"Player ID : ";
+		log << player->PlayerInfo.id();
+		log << L" | MOVE(";
+		log << player->PosInfo.cellpos().posx();
+		log << L", ";
+		log << player->PosInfo.cellpos().posy();
+		log << L")";
+		Utils::Log(log);
+	}
+#pragma endregion
 
-	if ((afterPos - prevPos).sqrMagnitude() > 1)
-		return false;
-
-	_players[player] = afterPos;
-
+	// 이동 중에 물풍선 갇힌 애들 발견했을 때
 	if (player->PosInfo.state() == Protocol::PPlayerState::MOVING)
 	{
-		Vector<PlayerRef> pvec = FindPlayer(afterPos, player);
-		if (pvec.size() == 0)
-			return true;
-
-		// TODO : 같은 팀이라면 살려주기
-		for (PlayerRef p : pvec)
+		Vector<PlayerRef> pvec = FindPlayer(player->GetCellPos(), player);
+		if (pvec.size() != 0)
 		{
-			if (p->PosInfo.state() == Protocol::PPlayerState::INTRAP)
-				p->GetRoom()->PlayerDead(p);
+			// TODO : 같은 팀이라면 살려주기
+			for (PlayerRef p : pvec)
+			{
+				if (p->PosInfo.state() == Protocol::PPlayerState::INTRAP)
+				{
+					p->GetRoom()->PlayerDead(p);
+					wstringstream log;
+					log << L"Player ID : ";
+					log << player->PlayerInfo.id();
+					log << L" killed ";
+					log << p->PlayerInfo.id();
+					Utils::Log(log);
+				}
+			}
 		}
 	}
 
-	auto* cellPos = player->PosInfo.cellpos().New();
-	cellPos->set_posx(afterPos.x);
-	cellPos->set_posy(afterPos.y);
-
-	return true;
+	// 아이템 획득
+	auto findIt = _spawnItems.find(player->GetCellPos());
+	if (findIt != _spawnItems.end())
+	{
+		Protocol::PItemType type = findIt->second;
+		Protocol::S_ITEMACQUISITION itemSpawnPkt;
+		player->ApplyItemAbility(type);
+		itemSpawnPkt.set_allocated_playerinfo(player->GetPlayerProtocol());
+		auto* itemCellPos = new Protocol::PCellPos();
+		itemCellPos->set_posx(findIt->first.x);
+		itemCellPos->set_posy(findIt->first.y);
+		itemSpawnPkt.set_allocated_itempos(itemCellPos);
+		_spawnItems.erase(player->GetCellPos());
+		OwnerRoom->Broadcast(itemSpawnPkt);
+	}
 }
 
-void ForestMap::LeavePlayer(Vector2Int cellPos, PlayerRef player)
+void ForestMap::ApplyLeave(PlayerRef player)
 {
-	if (FindPlayer(player) == Vector2Int::null())
-		return;
-
 	_players.erase(player);
 }
 
@@ -150,10 +172,10 @@ void ForestMap::DestroyBomb(Vector2Int pos, int32 range, Protocol::S_BOMBEND* pk
 	if (_blocks[y][x] != 3)
 		return;
 
-	auto* cellpos = pkt->add_cellposes();
-	cellpos->set_posx(pos.x);
-	cellpos->set_posy(pos.y);
+	pkt->set_allocated_bombcellpos(GetCellPosProtocol(pos));
+
 	_blocks[y][x] = 0;
+
 	Vector<PlayerRef> vec = FindPlayer(pos);
 	for (PlayerRef player : vec)
 	{
@@ -166,206 +188,139 @@ void ForestMap::DestroyBomb(Vector2Int pos, int32 range, Protocol::S_BOMBEND* pk
 		}
 	}
 
+	// 위 방향 물줄기
 	for (int32 i = 1; i <= range; i++)
 	{
 		Vector2Int upRange = pos + Vector2Int(0, i);
-		int32 x = upRange.x - MinX;
-		int32 y = MaxY - upRange.y;
-		if (CanGo(upRange) == false)
-		{
-			// Destroy
-			if (_blocks[y][x] == 2)
-			{
-				auto* cellpos = pkt->add_cellposes();
-				cellpos->set_posx(upRange.x);
-				cellpos->set_posy(upRange.y);
-				_blocks[y][x] = 0;
-				break;
-			}
-			else if (_blocks[y][x] == 3)
-			{
-				// 연달아 터지게
-				
-				Vector<PlayerRef> vec = FindPlayer(upRange);
-				for (PlayerRef player : vec)
-				{
-					if (player != nullptr)
-					{
-						// TRAP
-						auto* trapPlayer = pkt->add_trapplayers();
-						player->OnTrap();
-						trapPlayer->CopyFrom(player->PlayerInfo);
-					}
-				}
-			}
-			else
-			{
-				break;
-			}
-		}
-
-		Vector<PlayerRef> vec = FindPlayer(upRange);
-		for (PlayerRef player : vec)
-		{
-			if (player != nullptr)
-			{
-				// TRAP
-				auto* trapPlayer = pkt->add_trapplayers();
-				player->OnTrap();
-				trapPlayer->CopyFrom(player->PlayerInfo);
-			}
-		}
+		if (CheckWaterCourse(upRange, pkt) == false)
+			break;
 	}
+	// 오른쪽 방향 물줄기
 	for (int32 i = 1; i <= range; i++)
 	{
 		Vector2Int rightRange = pos + Vector2Int(i, 0);
-		int32 x = rightRange.x - MinX;
-		int32 y = MaxY - rightRange.y;
-		if (CanGo(rightRange) == false)
-		{
-			// Destroy
-			if (_blocks[y][x] == 2)
-			{
-				auto* cellpos = pkt->add_cellposes();
-				cellpos->set_posx(rightRange.x);
-				cellpos->set_posy(rightRange.y);
-				_blocks[y][x] = 0;
-				break;
-			}
-			else if (_blocks[y][x] == 3)
-			{
-				// 연달아 터지게
-
-				Vector<PlayerRef> vec = FindPlayer(rightRange);
-				for (PlayerRef player : vec)
-				{
-					if (player != nullptr)
-					{
-						// TRAP
-						auto* trapPlayer = pkt->add_trapplayers();
-						player->OnTrap();
-						trapPlayer->CopyFrom(player->PlayerInfo);
-					}
-				}
-			}
-			else
-			{
-				break;
-			}
-		}
-
-		Vector<PlayerRef> vec = FindPlayer(rightRange);
-		for (PlayerRef player : vec)
-		{
-			if (player != nullptr)
-			{
-				// TRAP
-				auto* trapPlayer = pkt->add_trapplayers();
-				player->OnTrap();
-				trapPlayer->CopyFrom(player->PlayerInfo);
-			}
-		}
+		if (CheckWaterCourse(rightRange, pkt) == false)
+			break;
 	}
+	// 아래 방향 물줄기
 	for (int32 i = 1; i <= range; i++)
 	{
 		Vector2Int downRange = pos + Vector2Int(0, -i);
-		int32 x = downRange.x - MinX;
-		int32 y = MaxY - downRange.y;
-		if (CanGo(downRange) == false)
-		{
-			// Destroy
-			if (_blocks[y][x] == 2)
-			{
-				auto* cellpos = pkt->add_cellposes();
-				cellpos->set_posx(downRange.x);
-				cellpos->set_posy(downRange.y);
-				_blocks[y][x] = 0;
-				break;
-			}
-			else if (_blocks[y][x] == 3)
-			{
-				// 연달아 터지게
-
-				Vector<PlayerRef> vec = FindPlayer(downRange);
-				for (PlayerRef player : vec)
-				{
-					if (player != nullptr)
-					{
-						// TRAP
-						auto* trapPlayer = pkt->add_trapplayers();
-						player->OnTrap();
-						trapPlayer->CopyFrom(player->PlayerInfo);
-					}
-				}
-			}
-			else
-			{
-				break;
-			}
-		}
-
-		Vector<PlayerRef> vec = FindPlayer(downRange);
-		for (PlayerRef player : vec)
-		{
-			if (player != nullptr)
-			{
-				// TRAP
-				auto* trapPlayer = pkt->add_trapplayers();
-				player->OnTrap();
-				trapPlayer->CopyFrom(player->PlayerInfo);
-			}
-		}
+		if (CheckWaterCourse(downRange, pkt) == false)
+			break;
 	}
+	// 왼쪽 방향 물줄기
 	for (int32 i = 1; i <= range; i++)
 	{
 		Vector2Int leftRange = pos + Vector2Int(-i, 0);
-		int32 x = leftRange.x - MinX;
-		int32 y = MaxY - leftRange.y;
-		if (CanGo(leftRange) == false)
-		{
-			// Destroy
-			if (_blocks[y][x] == 2)
-			{
-				auto* cellpos = pkt->add_cellposes();
-				cellpos->set_posx(leftRange.x);
-				cellpos->set_posy(leftRange.y);
-				_blocks[y][x] = 0;
-				break;
-			}
-			else if (_blocks[y][x] == 3)
-			{
-				// 연달아 터지게
+		if (CheckWaterCourse(leftRange, pkt) == false)
+			break;
+	}
 
-				Vector<PlayerRef> vec = FindPlayer(leftRange);
-				for (PlayerRef player : vec)
+	::srand(static_cast<uint32>(time(nullptr)));
+	for (auto& cellpos : pkt->destroyobjectcellposes())
+	{
+		int32 probability = ::rand() % 10;
+		if (probability < 2)
+			SpawnItem(Vector2Int(cellpos.posx(), cellpos.posy()));
+	}
+}
+
+bool ForestMap::CheckWaterCourse(Vector2Int pos, Protocol::S_BOMBEND* pkt)
+{
+	int32 x = pos.x - MinX;
+	int32 y = MaxY - pos.y;
+	if (CanGo(pos) == false)
+	{
+		// Destroy
+		if (_blocks[y][x] == 2)
+		{
+			auto* cellpos = pkt->add_destroyobjectcellposes();
+			cellpos->set_posx(pos.x);
+			cellpos->set_posy(pos.y);
+			_blocks[y][x] = 0;
+			return false;
+		}
+		else if (_blocks[y][x] == 3)
+		{
+			// TODO : 연달아 터지게
+
+			Vector<PlayerRef> vec = FindPlayer(pos);
+			for (PlayerRef player : vec)
+			{
+				if (player != nullptr)
 				{
-					if (player != nullptr)
-					{
-						// TRAP
-						auto* trapPlayer = pkt->add_trapplayers();
-						player->OnTrap();
-						trapPlayer->CopyFrom(player->PlayerInfo);
-					}
+					// TRAP
+					auto* trapPlayer = pkt->add_trapplayers();
+					player->OnTrap();
+					trapPlayer->CopyFrom(player->PlayerInfo);
 				}
 			}
-			else
-			{
-				break;
-			}
 		}
-
-		Vector<PlayerRef> vec = FindPlayer(leftRange);
-		for (PlayerRef player : vec)
+		else
 		{
-			if (player != nullptr)
-			{
-				// TRAP
-				auto* trapPlayer = pkt->add_trapplayers();
-				player->OnTrap();
-				trapPlayer->CopyFrom(player->PlayerInfo);
-			}
+			return false;
 		}
 	}
+
+	Vector<PlayerRef> vec = FindPlayer(pos);
+	for (PlayerRef player : vec)
+	{
+		if (player != nullptr)
+		{
+			// TRAP
+			auto* trapPlayer = pkt->add_trapplayers();
+			player->OnTrap();
+			trapPlayer->CopyFrom(player->PlayerInfo);
+		}
+	}
+
+	return true;
+}
+
+void ForestMap::SpawnItem(Vector2Int pos)
+{
+	// 물풍선 : 물병 : 스케이트 : 해골
+	//    3   :   3  :     3    :   1
+	Protocol::S_ITEMSPAWN itemSpawnPkt;
+	Protocol::PCellPos* cellpos = new Protocol::PCellPos();
+	cellpos->set_posx(pos.x);
+	cellpos->set_posy(pos.y);
+	itemSpawnPkt.set_allocated_cellpos(cellpos);
+
+	wstringstream log;
+	log << L"ITEM SPAWN AT (" << pos.x << L", " << pos.y << L")";
+	int32 probability = ::rand() % 10;
+	switch (probability)
+	{
+	case 0:
+	case 1:
+	case 2:
+		itemSpawnPkt.set_itemtype(Protocol::PItemType::INCBOMBCOUNT);
+		log << L" BOMBCOUNT+1 ITEM";
+		break;
+	case 3:
+	case 4:
+	case 5:
+		itemSpawnPkt.set_itemtype(Protocol::PItemType::INCBOMBRANGE);
+		log << L" BOMBRANGE+1 ITEM";
+		break;
+	case 6:
+	case 7:
+	case 8:
+		itemSpawnPkt.set_itemtype(Protocol::PItemType::INCSPEED);
+		log << L" SPEED+1 ITEM";
+		break;
+	case 9:
+		itemSpawnPkt.set_itemtype(Protocol::PItemType::MAXBOMBRANGE);
+		log << L" BOMBRANGEMAX ITEM";
+		break;
+	default:
+		break;
+	}
+	Utils::Log(log);
+	_spawnItems[pos] = itemSpawnPkt.itemtype();
+	OwnerRoom->Broadcast(itemSpawnPkt);
 }
 
 void ForestMap::LoadMap(wstring pathPrefix /*= L"../Common/MapData"*/)
@@ -388,13 +343,13 @@ void ForestMap::LoadMap(wstring pathPrefix /*= L"../Common/MapData"*/)
 			}
 
 			std::wstring line;
-			getline(infile, line);
+			::getline(infile, line);
 			MinX = stoi(line);
-			getline(infile, line);
+			::getline(infile, line);
 			MaxX = stoi(line);
-			getline(infile, line);
+			::getline(infile, line);
 			MinY = stoi(line);
-			getline(infile, line);
+			::getline(infile, line);
 			MaxY = stoi(line);
 
 			int xCount = MaxX - MinX + 1;
@@ -403,7 +358,7 @@ void ForestMap::LoadMap(wstring pathPrefix /*= L"../Common/MapData"*/)
 			_blocks = Vector<Vector<int>>(yCount, Vector<int>(xCount));
 			for (int y = 0; y < yCount; y++)
 			{
-				getline(infile, line);
+				::getline(infile, line);
 				for (int x = 0; x < xCount; x++)
 				{
 					_blocks[y][x] = line[x] - '0';
@@ -411,4 +366,8 @@ void ForestMap::LoadMap(wstring pathPrefix /*= L"../Common/MapData"*/)
 			}
 		}
 	}
+
+	wstringstream log;
+	log << L"LOAD FORESTMAP";
+	Utils::Log(log);
 }

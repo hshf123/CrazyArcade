@@ -128,6 +128,33 @@ inline bool PMoveDir_Parse(
   return ::PROTOBUF_NAMESPACE_ID::internal::ParseNamedEnum<PMoveDir>(
     PMoveDir_descriptor(), name, value);
 }
+enum PItemType : int {
+  INCBOMBCOUNT = 0,
+  INCBOMBRANGE = 1,
+  MAXBOMBRANGE = 2,
+  INCSPEED = 3,
+  PItemType_INT_MIN_SENTINEL_DO_NOT_USE_ = std::numeric_limits<int32_t>::min(),
+  PItemType_INT_MAX_SENTINEL_DO_NOT_USE_ = std::numeric_limits<int32_t>::max()
+};
+bool PItemType_IsValid(int value);
+constexpr PItemType PItemType_MIN = INCBOMBCOUNT;
+constexpr PItemType PItemType_MAX = INCSPEED;
+constexpr int PItemType_ARRAYSIZE = PItemType_MAX + 1;
+
+const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* PItemType_descriptor();
+template<typename T>
+inline const std::string& PItemType_Name(T enum_t_value) {
+  static_assert(::std::is_same<T, PItemType>::value ||
+    ::std::is_integral<T>::value,
+    "Incorrect type passed to function PItemType_Name.");
+  return ::PROTOBUF_NAMESPACE_ID::internal::NameOfEnum(
+    PItemType_descriptor(), enum_t_value);
+}
+inline bool PItemType_Parse(
+    ::PROTOBUF_NAMESPACE_ID::ConstStringParam name, PItemType* value) {
+  return ::PROTOBUF_NAMESPACE_ID::internal::ParseNamedEnum<PItemType>(
+    PItemType_descriptor(), name, value);
+}
 // ===================================================================
 
 
@@ -164,6 +191,11 @@ template <> struct is_proto_enum< ::Protocol::PMoveDir> : ::std::true_type {};
 template <>
 inline const EnumDescriptor* GetEnumDescriptor< ::Protocol::PMoveDir>() {
   return ::Protocol::PMoveDir_descriptor();
+}
+template <> struct is_proto_enum< ::Protocol::PItemType> : ::std::true_type {};
+template <>
+inline const EnumDescriptor* GetEnumDescriptor< ::Protocol::PItemType>() {
+  return ::Protocol::PItemType_descriptor();
 }
 
 PROTOBUF_NAMESPACE_CLOSE

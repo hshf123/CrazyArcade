@@ -24,3 +24,11 @@ enum PMoveDir
     DOWN = 3;
     LEFT = 4;
 }
+
+enum PItemType
+{
+    INCBOMBCOUNT = 0;
+    INCBOMBRANGE = 1;
+    MAXBOMBRANGE = 2;
+    INCSPEED = 3;
+}

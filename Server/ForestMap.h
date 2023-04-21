@@ -18,15 +18,16 @@ public:
 
 	bool CanGo(Vector2Int cellPos, bool checkObjects = true);
 
-	void EnterPlayer(Vector2Int cellPos, PlayerRef player);
-	bool MovePlayer(Vector2Int prevPos, Vector2Int afterPos, PlayerRef player);
-	void LeavePlayer(Vector2Int cellPos, PlayerRef player);
+	void ApplyMove(PlayerRef player, Vector2Int dest);
+	void ApplyLeave(PlayerRef player);
 	Vector2Int FindPlayer(PlayerRef player);
 	Vector<PlayerRef> FindPlayer(Vector2Int cellPos, PlayerRef exceptPlayer = nullptr);
 
 	bool FindBomb(Vector2Int cellPos);
 	bool SetBomb(Vector2Int bomb);
 	void DestroyBomb(Vector2Int pos, int32 range, Protocol::S_BOMBEND* pkt);
+	bool CheckWaterCourse(Vector2Int pos, Protocol::S_BOMBEND* pkt);
+	void SpawnItem(Vector2Int pos);
 
 	void LoadMap(wstring pathPrefix = L"../Common/MapData");
 
@@ -35,8 +36,10 @@ public:
 	int32 MaxX;
 	int32 MinY;
 	int32 MaxY;
+	RoomRef OwnerRoom;
 
 private:
-	Vector<Vector<int>> _blocks;
+	Vector<Vector<int32>> _blocks;
 	HashMap<PlayerRef, Vector2Int> _players;
+	Map<Vector2Int, Protocol::PItemType> _spawnItems;
 };

@@ -1,6 +1,7 @@
 <linker>
   <assembly fullname="Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
     <type fullname="BombController" preserve="all" />
+    <type fullname="ItemController" preserve="all" />
     <type fullname="MyPlayerController" preserve="all" />
     <type fullname="NonFixObjectController" preserve="all" />
     <type fullname="PlayerController" preserve="all" />

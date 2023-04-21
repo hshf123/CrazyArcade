@@ -5,31 +5,42 @@ using UnityEngine;
 
 public class MultiplayersBuildAndRun
 {
-    [MenuItem("Tools/Build And Run")]
+    [MenuItem("Tools/Build Not Run")]
     static void PerformWin64Build()
     {
-        PerformWin64Build(1);
+        EditorUserBuildSettings.SwitchActiveBuildTarget(
+            BuildTargetGroup.Standalone, BuildTarget.StandaloneWindows);
+
+        BuildPipeline.BuildPlayer(GetScenePaths(),
+            "Builds/Win64/" + GetProjectName() + "/" + GetProjectName() + ".exe",
+            BuildTarget.StandaloneWindows64, BuildOptions.None);
+    }
+
+    [MenuItem("Tools/Build And Run")]
+    static void PerformWin64Build1()
+    {
+        PerformWin64BuildN(1);
     }
 
     [MenuItem("Tools/Run Multiplayer/2 Players")]
     static void PerformWin64Build2()
     {
-        PerformWin64Build(2);
+        PerformWin64BuildN(2);
     }
 
     [MenuItem("Tools/Run Multiplayer/3 Players")]
     static void PerformWin64Build3()
     {
-        PerformWin64Build(3);
+        PerformWin64BuildN(3);
     }
 
     [MenuItem("Tools/Run Multiplayer/4 Players")]
     static void PerformWin64Build4()
     {
-        PerformWin64Build(4);
+        PerformWin64BuildN(4);
     }
 
-    static void PerformWin64Build(int playerCount)
+    static void PerformWin64BuildN(int playerCount)
     {
         EditorUserBuildSettings.SwitchActiveBuildTarget(
             BuildTargetGroup.Standalone, BuildTarget.StandaloneWindows);

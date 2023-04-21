@@ -134,7 +134,7 @@ public class PacketHandler
         S_MOVE pkt = packet as S_MOVE;
 
         long playerId = pkt.Player.Id;
-        PlayerController pc = Managers.Object.Find(playerId);
+        PlayerController pc = Managers.Object.FindPlayer(playerId);
         if (pc == null)
             return;
         
@@ -175,22 +175,37 @@ public class PacketHandler
         S_BOMBEND pkt = packet as S_BOMBEND;
 
         // pkt.Player -> 물풍선 주인이 누군지
-        foreach(PCellPos cellpos in pkt.CellPoses)
+        foreach(PCellPos cellpos in pkt.DestroyObjectCellPoses)
             Managers.Map.Break(new Vector3Int(cellpos.PosX, cellpos.PosY, 0));
         foreach(var playerInfo in pkt.TrapPlayers)
         {
-            PlayerController pc = Managers.Object.Find(playerInfo.Id);
+            PlayerController pc = Managers.Object.FindPlayer(playerInfo.Id);
             pc.State = PPlayerState.Intrap;
             pc.PlayerInfo = playerInfo;
         }
-        BombController bc = Managers.Object.FindBomb(new Vector3Int(pkt.CellPoses[0].PosX, pkt.CellPoses[0].PosY, 0));
+        Vector3Int bombCellPos = new Vector3Int(pkt.BombCellPos.PosX, pkt.BombCellPos.PosY, 0);
+        BombController bc = Managers.Object.FindBomb(bombCellPos);
         if (bc == null)
             return;
 
         bc.Bomb(()=> 
         {
-            Managers.Object.BombEnd(new Vector3Int(pkt.CellPoses[0].PosX, pkt.CellPoses[0].PosY, 0));
+            Managers.Object.RemoveBomb(bombCellPos);
         });
+    }
+
+    public static void S_ITEMSPAWNHandler(PacketSession session, IMessage packet)
+    {
+        Debug.Log($"S_ITEMSPAWNHandler");
+
+        ServerSession serverSession = session as ServerSession;
+        S_ITEMSPAWN pkt = packet as S_ITEMSPAWN;
+
+        GameScene scene = Managers.Scene.CurrentScene as GameScene;
+        if (scene == null)
+            return;
+
+        scene.InstantiateItem(new Vector3Int(pkt.CellPos.PosX, pkt.CellPos.PosY, 0), pkt.ItemType);
     }
 
     public static void S_DEADHandler(PacketSession session, IMessage packet)
@@ -200,12 +215,33 @@ public class PacketHandler
         ServerSession serverSession = session as ServerSession;
         S_DEAD pkt = packet as S_DEAD;
 
-        PlayerController pc = Managers.Object.Find(pkt.Player.Id);
+        PlayerController pc = Managers.Object.FindPlayer(pkt.Player.Id);
         if (pc == null)
             return;
 
         pc.PlayerInfo = pkt.Player;
         pc.State = pkt.PosInfo.State;
         pc.OnDead();
+    }
+
+    public static void S_ITEMACQUISITIONHandler(PacketSession session, IMessage packet)
+    {
+        Debug.Log($"S_ITEMACQUISITIONHandler");
+
+        ServerSession serverSession = session as ServerSession;
+        S_ITEMACQUISITION pkt = packet as S_ITEMACQUISITION;
+
+        PlayerController pc = Managers.Object.FindPlayer(pkt.PlayerInfo.Id);
+        if (pc == null)
+            return;
+        
+        pc.PlayerInfo = pkt.PlayerInfo;
+
+        ItemController ic = Managers.Object.FindItem(new Vector3Int(pkt.ItemPos.PosX, pkt.ItemPos.PosY, 0));
+        if (ic == null)
+            return;
+
+        Managers.Resource.Destroy(ic.gameObject);
+        Managers.Object.RemoveItem(new Vector3Int(pkt.ItemPos.PosX, pkt.ItemPos.PosY, 0));
     }
 }

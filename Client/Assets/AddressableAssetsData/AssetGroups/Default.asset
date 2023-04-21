@@ -89,6 +89,10 @@ MonoBehaviour:
     m_Address: MyBazzi
     m_ReadOnly: 0
     m_SerializedLabels: []
+  - m_GUID: d2a4cc9538f3b6242b695ef51766c156
+    m_Address: Item
+    m_ReadOnly: 0
+    m_SerializedLabels: []
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 37d63db9dee568844aed5ef436298665, type: 2}
   m_SchemaSet:

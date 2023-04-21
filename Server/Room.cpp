@@ -131,13 +131,13 @@ bool Room::CanGameStart()
 				// TODO 연결 끊긴건지 확인 후 제외하고 플레이
 				return false;
 			}
-			auto basicPosInfo = GetBasicPosInfo(idx++);
+			Protocol::PPositionInfo* basicPosInfo = GetBasicPosInfo(idx++);
 			p.second->PosInfo.CopyFrom(*basicPosInfo);
 			Protocol::PRoomStart* roomStart = roomStartPkt.add_spawn();
 			roomStart->set_allocated_playerinfo(p.second->GetPlayerProtocol());
 			roomStart->set_allocated_posinfo(p.second->GetPositionInfoProtocol());
 
-			_forestMap->EnterPlayer(p.second->GetCellPos(), p.second);
+			_forestMap->ApplyMove(p.second, p.second->GetCellPos());
 		}
 
 		Broadcast(roomStartPkt);
@@ -153,6 +153,7 @@ void Room::GameInit()
 	WRITE_LOCK;
 	_forestMap = MakeShared<ForestMap>();
 	_forestMap->LoadMap();
+	_forestMap->OwnerRoom = shared_from_this();
 }
 
 Protocol::PPositionInfo* Room::GetBasicPosInfo(int32 idx)
@@ -232,19 +233,6 @@ void Room::HandleMove(PlayerRef player, Protocol::C_MOVE& pkt)
 	if (player == nullptr)
 		return;
 
-	WRITE_LOCK;
-#pragma region LOG
-	wstringstream log;
-	log << L"Player ID : ";
-	log << player->PlayerInfo.id();
-	log << L" | C_MOVE(";
-	log << pkt.positioninfo().cellpos().posx();
-	log << L", ";
-	log << pkt.positioninfo().cellpos().posy();
-	log << L")";
-	Utils::Log(log);
-#pragma endregion
-
 	/*
 		1. CellPos가 변경된 경우
 		2. MoveDir이 변경된 경우
@@ -252,75 +240,28 @@ void Room::HandleMove(PlayerRef player, Protocol::C_MOVE& pkt)
 	*/
 
 	{
-		// CellPos가 변경된 경우
-		Vector2Int prevCellPos = player->GetCellPos();
-		Vector2Int afterCellPos = Vector2Int(pkt.positioninfo().cellpos().posx(), pkt.positioninfo().cellpos().posy());
-		WRITE_LOCK; 
-		if (prevCellPos != afterCellPos && _forestMap->MovePlayer(prevCellPos, afterCellPos, player))
+		WRITE_LOCK;
+		Protocol::PPlayerState pktState = pkt.positioninfo().state();
+		Protocol::PMoveDir pktMoveDir = pkt.positioninfo().movedir();
+		Protocol::PWorldPos pktWorldPos = pkt.positioninfo().worldpos();
+		Protocol::PCellPos pktCellpos = pkt.positioninfo().cellpos();
+		Vector2Int cellPos = Vector2Int(pktCellpos.posx(), pktCellpos.posy());
+		if (cellPos != player->GetCellPos())
 		{
-			player->PosInfo.CopyFrom(pkt.positioninfo());
-			Protocol::S_MOVE movePkt;
-			movePkt.set_force(true);
-			movePkt.set_allocated_player(player->GetPlayerProtocol());
-			movePkt.set_allocated_positioninfo(player->GetPositionInfoProtocol());
-			Broadcast(movePkt);
-			return;
+			if (_forestMap->CanGo(cellPos) == false)
+				return;
 		}
-	}
-	{
-		READ_LOCK;
-		// State가 변경된 경우
-		auto prevState = player->PosInfo.state();
-		auto afterState = pkt.positioninfo().state();
-		if (prevState != afterState)
-		{
-			player->PosInfo.CopyFrom(pkt.positioninfo());
-			Protocol::S_MOVE movePkt;
-			movePkt.set_force(true);
-			movePkt.set_allocated_player(player->GetPlayerProtocol());
-			movePkt.set_allocated_positioninfo(player->GetPositionInfoProtocol());
-			Broadcast(movePkt);
-			// TODO
-			// switch (afterState)
-			// {
-			// case Protocol::PPlayerState::IDLE:
-			// {
-			// 	break;
-			// }
-			// case Protocol::PPlayerState::MOVING:
-			// {
-			// 	break;
-			// }
-			// case Protocol::PPlayerState::INTRAP:
-			// {
-			// 	break;
-			// }
-			// case Protocol::PPlayerState::OUTTRAP:
-			// {
-			// 	break;
-			// }
-			// case Protocol::PPlayerState::DEAD:
-			// {
-			// 	break;
-			// }
-			// }
-		}
-	}
-	{
-		READ_LOCK;
-		// MoveDir이 변경된 경우
-		auto prevMoveDir = player->PosInfo.movedir();
-		auto afterMoveDir = pkt.positioninfo().movedir();
-		if (prevMoveDir != afterMoveDir)
-		{
-			player->PosInfo.set_movedir(afterMoveDir);
-			Protocol::S_MOVE movePkt;
-			movePkt.set_force(false);
-			movePkt.set_allocated_player(player->GetPlayerProtocol());
-			movePkt.set_allocated_positioninfo(player->GetPositionInfoProtocol());
-			Broadcast(movePkt);
-			return;
-		}
+
+		player->PosInfo.set_state(pktState);
+		player->PosInfo.set_movedir(pktMoveDir);
+		player->SetWorldPos(&pktWorldPos);
+		_forestMap->ApplyMove(player, cellPos);
+
+		// 다른 플레이어한테도 알려준다
+		Protocol::S_MOVE movePkt;
+		movePkt.set_allocated_player(player->GetPlayerProtocol());
+		movePkt.set_allocated_positioninfo(player->GetPositionInfoProtocol());
+		Broadcast(movePkt);
 	}
 }
 
@@ -328,21 +269,16 @@ void Room::HandleBomb(PlayerRef player, Protocol::C_BOMB& pkt)
 {
 	if (player == nullptr)
 		return;
-	Vector2 bombPos;
-	Vector2Int bombCellPos;
-	{
-		READ_LOCK;
-		bombPos = player->GetWorldPos() + Vector2(0, -0.3f);
-		bombCellPos = _forestMap->WorldToCell(bombPos);
-	}
+	
+	WRITE_LOCK;
 
+	Vector2 bombPos = player->GetWorldPos() + Vector2(0, -0.3f);
+	Vector2Int bombCellPos = _forestMap->WorldToCell(bombPos);
 	{
-		WRITE_LOCK;
-
-		if (_forestMap->SetBomb(bombCellPos) == false)
+		if (player->AddBomb() == false)
 			return;
 
-		if (player->AddBomb() == false)
+		if (_forestMap->SetBomb(bombCellPos) == false)
 			return;
 
 		{
@@ -369,18 +305,17 @@ void Room::HandleBomb(PlayerRef player, Protocol::C_BOMB& pkt)
 		bombEndPkt.set_allocated_player(player->GetPlayerProtocol());
 		_forestMap->DestroyBomb(bombCellPos, player->PlayerInfo.bombrange(), &bombEndPkt);
 		player->SubBomb();
+		Broadcast(bombEndPkt);
 
 		wstringstream log;
 		log << L"Player ID : " << player->PlayerInfo.id();
 		log << L" A bomb located at (" << bombCellPos.x << ", " << bombCellPos.y << ")" << L" exploded.";
 		Utils::Log(log);
-
-		Broadcast(bombEndPkt);
 	});
 }
 
 void Room::PlayerDead(PlayerRef player)
 {
 	player->OnDead();
-	_forestMap->LeavePlayer(player->GetCellPos(), player);
+	_forestMap->ApplyLeave(player);
 }

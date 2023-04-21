@@ -19,6 +19,10 @@ struct Vector2Int
 	static Vector2Int right() { return Vector2Int(1, 0); };
 	static Vector2Int null() { return Vector2Int(INT32_MIN, INT32_MIN); }
 
+	bool operator<(const Vector2Int& other) const
+	{
+		return (x * x + y * y) < (other.x * other.x + other.y * other.y);
+	}
 	Vector2Int& operator=(const Vector2Int& other)
 	{
 		if (this != &other)
@@ -28,22 +32,18 @@ struct Vector2Int
 		}
 		return *this;
 	}
-
 	bool operator==(const Vector2Int& other) const
  	{
 		return x == other.x && y == other.y;
 	}
-
 	bool operator!=(const Vector2Int& other) const
 	{
 		return !(x == other.x && y == other.y);
 	}
-
 	Vector2Int operator+(const Vector2Int& other) const
 	{
 		return Vector2Int(x + other.x, y + other.y);
 	}
-
 	Vector2Int operator-(const Vector2Int& other) const
 	{
 		return Vector2Int(x - other.x, y - other.y);
@@ -67,6 +67,10 @@ struct Vector2
 	static Vector2 left() { return Vector2(-1.f, 0.f); };
 	static Vector2 right() { return Vector2(1.f, 0.f); };
 
+	bool operator<(const Vector2& other) const
+	{
+		return (x * x + y * y) < (other.x * other.x + other.y * other.y);
+	}
 	Vector2& operator=(const Vector2& other)
 	{
 		if (this != &other)
@@ -76,22 +80,18 @@ struct Vector2
 		}
 		return *this;
 	}
-
 	Vector2 operator*(const float& value) const
 	{
 		return Vector2(x * value, y * value);
 	}
-
 	Vector2 operator+(const Vector2& other) const
 	{
 		return Vector2(x + other.x, y + other.y);
 	}
-
 	Vector2 operator+=(const Vector2& other) const
 	{
 		return Vector2(x + other.x, y + other.y);
 	}
-
 	Vector2 operator-(const Vector2& other) const
 	{
 		return Vector2(x - other.x, y - other.y);

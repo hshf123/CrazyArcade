@@ -1,8 +1,10 @@
 using Protocol;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using static UnityEngine.Tilemaps.TilemapRenderer;
+using ItemType = Protocol.PItemType;
 
 public class GameScene : BaseScene
 {
@@ -45,7 +47,7 @@ public class GameScene : BaseScene
                 pc.CellPos = new Vector3Int(posInfo.CellPos.PosX, posInfo.CellPos.PosY, 0);
 
                 Managers.Object.MyPlayer = pc;
-                Managers.Object.Add(pc.PlayerInfo.Id, pc);
+                Managers.Object.AddPlayer(pc.PlayerInfo.Id, pc);
                 Debug.Log($"MyPlayer : {posInfo.CellPos.PosX}, {posInfo.CellPos.PosY}");
             });
         }
@@ -60,13 +62,17 @@ public class GameScene : BaseScene
                 pc.Dir = posInfo.MoveDir;
                 pc.WorldPos = new Vector3(posInfo.WorldPos.PosX, posInfo.WorldPos.PosY, 0);
                 pc.CellPos = new Vector3Int(posInfo.CellPos.PosX, posInfo.CellPos.PosY, 0);
-                Managers.Object.Add(pc.PlayerInfo.Id, pc);
+                Managers.Object.AddPlayer(pc.PlayerInfo.Id, pc);
                 Debug.Log($"Player : {posInfo.CellPos.PosX}, {posInfo.CellPos.PosY}");
             });
         }
     }
     public void InstantiateBomb(PPlayer playerInfo, PCellPos cellPos)
     {
+        if (Managers.Game.PlayerID == playerInfo.Id)
+        {
+        }
+
         Managers.Resource.Instantiate("Bomb", null,
             (bomb) =>
             {
@@ -75,8 +81,18 @@ public class GameScene : BaseScene
                 bomb.transform.position = new Vector3(bc.CellPos.PosX + correction.x, bc.CellPos.PosY + correction.y, 0);
                 bc.Range = playerInfo.BombRange;
                 bc.SortOrder = -100 + (Managers.Map.MaxY - cellPos.PosY) * 2 + 1;
-                Managers.Object.SetBomb(new Vector3Int(cellPos.PosX, cellPos.PosY, 0), bomb.GetComponent<BombController>());
+                Managers.Object.AddBomb(new Vector3Int(cellPos.PosX, cellPos.PosY, 0), bomb.GetComponent<BombController>());
                 bc.Init();
             });
+    }
+    public void InstantiateItem(Vector3Int pos, ItemType itemType)
+    {
+        Managers.Resource.Instantiate("Item", null, (item) => 
+        {
+            ItemController ic = item.GetComponent<ItemController>();
+            ic.SetItemType(itemType);
+            item.transform.position = pos + new Vector3(0.5f, 0.5f, 0);
+            Managers.Object.AddItem(pos, ic);
+        });
     }
 }

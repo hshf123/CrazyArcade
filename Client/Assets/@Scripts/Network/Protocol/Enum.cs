@@ -28,10 +28,12 @@ namespace Protocol {
             "TkcQABINCglHQU1FU1RBUlQQASpHCgxQUGxheWVyU3RhdGUSCAoESURMRRAA",
             "EgoKBk1PVklORxABEgoKBklOVFJBUBACEgsKB09VVFRSQVAQAxIICgRERUFE",
             "EAQqOwoIUE1vdmVEaXISCAoETk9ORRAAEgYKAlVQEAESCQoFUklHSFQQAhII",
-            "CgRET1dOEAMSCAoETEVGVBAEYgZwcm90bzM="));
+            "CgRET1dOEAMSCAoETEVGVBAEKk8KCVBJdGVtVHlwZRIQCgxJTkNCT01CQ09V",
+            "TlQQABIQCgxJTkNCT01CUkFOR0UQARIQCgxNQVhCT01CUkFOR0UQAhIMCghJ",
+            "TkNTUEVFRBADYgZwcm90bzM="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
-          new pbr::GeneratedClrTypeInfo(new[] {typeof(global::Protocol.PRoomState), typeof(global::Protocol.PPlayerState), typeof(global::Protocol.PMoveDir), }, null, null));
+          new pbr::GeneratedClrTypeInfo(new[] {typeof(global::Protocol.PRoomState), typeof(global::Protocol.PPlayerState), typeof(global::Protocol.PMoveDir), typeof(global::Protocol.PItemType), }, null, null));
     }
     #endregion
 
@@ -56,6 +58,13 @@ namespace Protocol {
     [pbr::OriginalName("RIGHT")] Right = 2,
     [pbr::OriginalName("DOWN")] Down = 3,
     [pbr::OriginalName("LEFT")] Left = 4,
+  }
+
+  public enum PItemType {
+    [pbr::OriginalName("INCBOMBCOUNT")] Incbombcount = 0,
+    [pbr::OriginalName("INCBOMBRANGE")] Incbombrange = 1,
+    [pbr::OriginalName("MAXBOMBRANGE")] Maxbombrange = 2,
+    [pbr::OriginalName("INCSPEED")] Incspeed = 3,
   }
 
   #endregion

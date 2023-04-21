@@ -11,6 +11,10 @@ bool Player::AddBomb()
 	if (currentBombCount < PlayerInfo.maxbombcount())
 	{
 		PlayerInfo.set_bombcount(currentBombCount + 1);
+		wstringstream log;
+		log << L"PLAYER ID : " << PlayerInfo.id() << L" BOMB COUNT ";
+		log << PlayerInfo.bombcount() << L"/" << PlayerInfo.maxbombcount();
+		Utils::Log(log);
 		return true;
 	}
 	return false;
@@ -20,7 +24,46 @@ void Player::SubBomb()
 {
 	int32 currentBombCount = PlayerInfo.bombcount();
 	if (currentBombCount >= 0)
+	{
 		PlayerInfo.set_bombcount(currentBombCount - 1);
+		wstringstream log;
+		log << L"PLAYER ID : " << PlayerInfo.id() << L" BOMB COUNT ";
+		log << PlayerInfo.bombcount() << L"/" << PlayerInfo.maxbombcount();
+		Utils::Log(log);
+	}
+}
+
+void Player::ApplyItemAbility(ItemType type)
+{
+	switch (type)
+	{
+	case ItemType::INCBOMBCOUNT:
+		if(PlayerInfo.maxbombcount() < 9)
+			PlayerInfo.set_maxbombcount(PlayerInfo.bombcount() + 1);
+		break;
+	case ItemType::INCBOMBRANGE:
+		if(PlayerInfo.bombrange() < 8)
+			PlayerInfo.set_bombrange(PlayerInfo.bombrange() + 1);
+		break;
+	case ItemType::INCSPEED:
+		PlayerInfo.set_speed(PlayerInfo.speed() + 0.5f);
+		break; break;
+	case ItemType::MAXBOMBRANGE:
+		PlayerInfo.set_bombrange(9);
+		break;
+	default:
+		break;
+	}
+
+#pragma region LOG
+	wstringstream log;
+	log << L"Player ID : ";
+	log << PlayerInfo.id();
+	log << L" | GET ITEM TYPE (";
+	log << typeid(type).name();
+	log << L")";
+	Utils::Log(log);
+#pragma endregion
 }
 
 void Player::OnTrap()
@@ -65,6 +108,38 @@ void Player::OnDead()
 	wstringstream log;
 	log << PlayerInfo.id() << L" is DEAD";
 	Utils::Log(log);
+}
+
+void Player::SetCellPos(Vector2Int pos)
+{
+	Protocol::PCellPos* cellpos = new Protocol::PCellPos();
+	cellpos->set_posx(pos.x);
+	cellpos->set_posy(pos.y);
+	PosInfo.set_allocated_cellpos(cellpos);
+}
+
+void Player::SetCellPos(Protocol::PCellPos* pkt)
+{
+	auto cellpos = pkt->New();
+	cellpos->set_posx(pkt->posx());
+	cellpos->set_posy(pkt->posy());
+	PosInfo.set_allocated_cellpos(cellpos);
+}
+
+void Player::SetWorldPos(Vector2 pos)
+{
+	Protocol::PWorldPos* worldPos = new Protocol::PWorldPos();
+	worldPos->set_posx(pos.x);
+	worldPos->set_posy(pos.y);
+	PosInfo.set_allocated_worldpos(worldPos);
+}
+
+void Player::SetWorldPos(Protocol::PWorldPos* pkt)
+{
+	auto worldPos = pkt->New();
+	worldPos->set_posx(pkt->posx());
+	worldPos->set_posy(pkt->posy());
+	PosInfo.set_allocated_worldpos(worldPos);
 }
 
 void Player::CopyPlayerProtocol(Protocol::PPlayer* pkt)

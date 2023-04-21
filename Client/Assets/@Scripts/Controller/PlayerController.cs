@@ -315,7 +315,7 @@ public class PlayerController : MonoBehaviour
     {
         yield return new WaitForSeconds(0.5f);
 
-        Managers.Object.Remove(PlayerInfo.Id);
+        Managers.Object.RemovePlayer(PlayerInfo.Id);
         Managers.Resource.Destroy(gameObject);
         _coDead = null;
     }
