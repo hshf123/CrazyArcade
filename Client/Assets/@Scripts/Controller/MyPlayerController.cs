@@ -174,7 +174,7 @@ public class MyPlayerController : PlayerController
 
         _bombCool = true;
         C_BOMB bombPkt = new C_BOMB();
-        bombPkt.PosInfo = PosInfo;
+        bombPkt.CellPos = PosInfo.CellPos;
         Managers.Net.SessionManager.Broadcast(bombPkt);
         yield return new WaitForSeconds(0.25f);
         _coBomb = null;

@@ -142,11 +142,9 @@ public class PacketHandler
         if (pc.PlayerInfo.Id == Managers.Object.MyPlayer.PlayerInfo.Id)
             return;
 
-        if(pkt.Force)
-        {
-            pc.WorldPos = new Vector3(pkt.PositionInfo.WorldPos.PosX, pkt.PositionInfo.WorldPos.PosY, 0);
-            pc.CellPos = new Vector3Int(pkt.PositionInfo.CellPos.PosX, pkt.PositionInfo.CellPos.PosY, 0);
-        }
+        // pkt.Force
+        pc.WorldPos = new Vector3(pkt.PositionInfo.WorldPos.PosX, pkt.PositionInfo.WorldPos.PosY, 0);
+        pc.CellPos = new Vector3Int(pkt.PositionInfo.CellPos.PosX, pkt.PositionInfo.CellPos.PosY, 0);
         pc.State = pkt.PositionInfo.State;
         pc.Dir = pkt.PositionInfo.MoveDir;
     }
@@ -164,7 +162,7 @@ public class PacketHandler
             Debug.Log($"{Managers.Scene.CurrentScene} is not GameScene");
             return;
         }
-        gameScene.InstantiateBomb(pkt.Player, pkt.Cellpos);
+        gameScene.InstantiateBomb(pkt.Player, pkt.Cellpos, pkt.Player.Id);
     }
 
     public static void S_BOMBENDHandler(PacketSession session, IMessage packet)
@@ -174,24 +172,27 @@ public class PacketHandler
         ServerSession serverSession = session as ServerSession;
         S_BOMBEND pkt = packet as S_BOMBEND;
 
-        // pkt.Player -> 물풍선 주인이 누군지
-        foreach(PCellPos cellpos in pkt.DestroyObjectCellPoses)
-            Managers.Map.Break(new Vector3Int(cellpos.PosX, cellpos.PosY, 0));
-        foreach(var playerInfo in pkt.TrapPlayers)
-        {
-            PlayerController pc = Managers.Object.FindPlayer(playerInfo.Id);
-            pc.State = PPlayerState.Intrap;
-            pc.PlayerInfo = playerInfo;
-        }
         Vector3Int bombCellPos = new Vector3Int(pkt.BombCellPos.PosX, pkt.BombCellPos.PosY, 0);
         BombController bc = Managers.Object.FindBomb(bombCellPos);
         if (bc == null)
             return;
 
-        bc.Bomb(()=> 
+        bc.Bomb(() =>
         {
             Managers.Object.RemoveBomb(bombCellPos);
         });
+
+        // pkt.Player -> 물풍선 주인이 누군지
+        foreach (PCellPos cellpos in pkt.DestroyObjectCellPoses)
+            Managers.Map.Break(new Vector3Int(cellpos.PosX, cellpos.PosY, 0));
+        foreach(var playerInfo in pkt.TrapPlayers)
+        {
+            PlayerController pc = Managers.Object.FindPlayer(playerInfo.Id);
+            if (pc == null)
+                continue;
+            pc.State = PPlayerState.Intrap;
+            pc.PlayerInfo = playerInfo;
+        }
     }
 
     public static void S_ITEMSPAWNHandler(PacketSession session, IMessage packet)

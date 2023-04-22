@@ -13,6 +13,7 @@ public:
 	void RemovePlayer(int64 playerId);
 	PlayerRef FindPlayer(int64 playerId);
 	void SetIdx(PlayerRef player);
+	void PlayerDead(PlayerRef player);
 
 public:
 	bool CanGameStart();
@@ -39,7 +40,7 @@ public:
 	void HandleChat(PlayerRef player, Protocol::C_ROOMCHAT& pkt);
 	void HandleMove(PlayerRef player, Protocol::C_MOVE& pkt);
 	void HandleBomb(PlayerRef player, Protocol::C_BOMB& pkt);
-	void PlayerDead(PlayerRef player);
+	void HandleBombEnd(PlayerRef player, Protocol::C_BOMBEND& pkt);
 
 private:
 	USE_LOCK;

@@ -273,7 +273,7 @@ struct S_MOVEDefaultTypeInternal {
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 S_MOVEDefaultTypeInternal _S_MOVE_default_instance_;
 PROTOBUF_CONSTEXPR C_BOMB::C_BOMB(
     ::_pbi::ConstantInitialized)
-  : posinfo_(nullptr){}
+  : cellpos_(nullptr){}
 struct C_BOMBDefaultTypeInternal {
   PROTOBUF_CONSTEXPR C_BOMBDefaultTypeInternal()
       : _instance(::_pbi::ConstantInitialized{}) {}
@@ -296,6 +296,18 @@ struct S_BOMBDefaultTypeInternal {
   };
 };
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 S_BOMBDefaultTypeInternal _S_BOMB_default_instance_;
+PROTOBUF_CONSTEXPR C_BOMBEND::C_BOMBEND(
+    ::_pbi::ConstantInitialized)
+  : cellpos_(nullptr){}
+struct C_BOMBENDDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR C_BOMBENDDefaultTypeInternal()
+      : _instance(::_pbi::ConstantInitialized{}) {}
+  ~C_BOMBENDDefaultTypeInternal() {}
+  union {
+    C_BOMBEND _instance;
+  };
+};
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 C_BOMBENDDefaultTypeInternal _C_BOMBEND_default_instance_;
 PROTOBUF_CONSTEXPR S_BOMBEND::S_BOMBEND(
     ::_pbi::ConstantInitialized)
   : destroyobjectcellposes_()
@@ -352,7 +364,7 @@ struct S_ITEMACQUISITIONDefaultTypeInternal {
 };
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 S_ITEMACQUISITIONDefaultTypeInternal _S_ITEMACQUISITION_default_instance_;
 }  // namespace Protocol
-static ::_pb::Metadata file_level_metadata_Protocol_2eproto[26];
+static ::_pb::Metadata file_level_metadata_Protocol_2eproto[27];
 static constexpr ::_pb::EnumDescriptor const** file_level_enum_descriptors_Protocol_2eproto = nullptr;
 static constexpr ::_pb::ServiceDescriptor const** file_level_service_descriptors_Protocol_2eproto = nullptr;
 
@@ -513,7 +525,7 @@ const uint32_t TableStruct_Protocol_2eproto::offsets[] PROTOBUF_SECTION_VARIABLE
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
   ~0u,  // no _inlined_string_donated_
-  PROTOBUF_FIELD_OFFSET(::Protocol::C_BOMB, posinfo_),
+  PROTOBUF_FIELD_OFFSET(::Protocol::C_BOMB, cellpos_),
   ~0u,  // no _has_bits_
   PROTOBUF_FIELD_OFFSET(::Protocol::S_BOMB, _internal_metadata_),
   ~0u,  // no _extensions_
@@ -522,6 +534,13 @@ const uint32_t TableStruct_Protocol_2eproto::offsets[] PROTOBUF_SECTION_VARIABLE
   ~0u,  // no _inlined_string_donated_
   PROTOBUF_FIELD_OFFSET(::Protocol::S_BOMB, player_),
   PROTOBUF_FIELD_OFFSET(::Protocol::S_BOMB, cellpos_),
+  ~0u,  // no _has_bits_
+  PROTOBUF_FIELD_OFFSET(::Protocol::C_BOMBEND, _internal_metadata_),
+  ~0u,  // no _extensions_
+  ~0u,  // no _oneof_case_
+  ~0u,  // no _weak_field_map_
+  ~0u,  // no _inlined_string_donated_
+  PROTOBUF_FIELD_OFFSET(::Protocol::C_BOMBEND, cellpos_),
   ~0u,  // no _has_bits_
   PROTOBUF_FIELD_OFFSET(::Protocol::S_BOMBEND, _internal_metadata_),
   ~0u,  // no _extensions_
@@ -580,10 +599,11 @@ static const ::_pbi::MigrationSchema schemas[] PROTOBUF_SECTION_VARIABLE(protode
   { 141, -1, -1, sizeof(::Protocol::S_MOVE)},
   { 150, -1, -1, sizeof(::Protocol::C_BOMB)},
   { 157, -1, -1, sizeof(::Protocol::S_BOMB)},
-  { 165, -1, -1, sizeof(::Protocol::S_BOMBEND)},
-  { 175, -1, -1, sizeof(::Protocol::S_ITEMSPAWN)},
-  { 183, -1, -1, sizeof(::Protocol::S_DEAD)},
-  { 191, -1, -1, sizeof(::Protocol::S_ITEMACQUISITION)},
+  { 165, -1, -1, sizeof(::Protocol::C_BOMBEND)},
+  { 172, -1, -1, sizeof(::Protocol::S_BOMBEND)},
+  { 182, -1, -1, sizeof(::Protocol::S_ITEMSPAWN)},
+  { 190, -1, -1, sizeof(::Protocol::S_DEAD)},
+  { 198, -1, -1, sizeof(::Protocol::S_ITEMACQUISITION)},
 };
 
 static const ::_pb::Message* const file_default_instances[] = {
@@ -609,6 +629,7 @@ static const ::_pb::Message* const file_default_instances[] = {
   &::Protocol::_S_MOVE_default_instance_._instance,
   &::Protocol::_C_BOMB_default_instance_._instance,
   &::Protocol::_S_BOMB_default_instance_._instance,
+  &::Protocol::_C_BOMBEND_default_instance_._instance,
   &::Protocol::_S_BOMBEND_default_instance_._instance,
   &::Protocol::_S_ITEMSPAWN_default_instance_._instance,
   &::Protocol::_S_DEAD_default_instance_._instance,
@@ -643,23 +664,24 @@ const char descriptor_table_protodef_Protocol_2eproto[] PROTOBUF_SECTION_VARIABL
   "tionInfo\030\001 \001(\0132\027.Protocol.PPositionInfo\""
   "i\n\006S_MOVE\022\r\n\005force\030\001 \001(\010\022!\n\006player\030\002 \001(\013"
   "2\021.Protocol.PPlayer\022-\n\014positionInfo\030\003 \001("
-  "\0132\027.Protocol.PPositionInfo\"2\n\006C_BOMB\022(\n\007"
-  "posInfo\030\001 \001(\0132\027.Protocol.PPositionInfo\"P"
-  "\n\006S_BOMB\022!\n\006player\030\001 \001(\0132\021.Protocol.PPla"
-  "yer\022#\n\007cellpos\030\002 \001(\0132\022.Protocol.PCellPos"
-  "\"\263\001\n\tS_BOMBEND\022!\n\006player\030\001 \001(\0132\021.Protoco"
-  "l.PPlayer\022\'\n\013bombCellPos\030\002 \001(\0132\022.Protoco"
-  "l.PCellPos\0222\n\026destroyObjectCellPoses\030\003 \003"
-  "(\0132\022.Protocol.PCellPos\022&\n\013trapPlayers\030\004 "
-  "\003(\0132\021.Protocol.PPlayer\"Y\n\013S_ITEMSPAWN\022#\n"
-  "\007cellPos\030\001 \001(\0132\022.Protocol.PCellPos\022%\n\010it"
-  "emType\030\002 \001(\0162\023.Protocol.PItemType\"U\n\006S_D"
-  "EAD\022!\n\006player\030\001 \001(\0132\021.Protocol.PPlayer\022("
-  "\n\007posInfo\030\002 \001(\0132\027.Protocol.PPositionInfo"
-  "\"_\n\021S_ITEMACQUISITION\022%\n\nplayerInfo\030\001 \001("
-  "\0132\021.Protocol.PPlayer\022#\n\007itemPos\030\002 \001(\0132\022."
-  "Protocol.PCellPosB\033\252\002\030Google.Protobuf.Pr"
-  "otocolb\006proto3"
+  "\0132\027.Protocol.PPositionInfo\"-\n\006C_BOMB\022#\n\007"
+  "cellPos\030\001 \001(\0132\022.Protocol.PCellPos\"P\n\006S_B"
+  "OMB\022!\n\006player\030\001 \001(\0132\021.Protocol.PPlayer\022#"
+  "\n\007cellpos\030\002 \001(\0132\022.Protocol.PCellPos\"0\n\tC"
+  "_BOMBEND\022#\n\007cellPos\030\001 \001(\0132\022.Protocol.PCe"
+  "llPos\"\263\001\n\tS_BOMBEND\022!\n\006player\030\001 \001(\0132\021.Pr"
+  "otocol.PPlayer\022\'\n\013bombCellPos\030\002 \001(\0132\022.Pr"
+  "otocol.PCellPos\0222\n\026destroyObjectCellPose"
+  "s\030\003 \003(\0132\022.Protocol.PCellPos\022&\n\013trapPlaye"
+  "rs\030\004 \003(\0132\021.Protocol.PPlayer\"Y\n\013S_ITEMSPA"
+  "WN\022#\n\007cellPos\030\001 \001(\0132\022.Protocol.PCellPos\022"
+  "%\n\010itemType\030\002 \001(\0162\023.Protocol.PItemType\"U"
+  "\n\006S_DEAD\022!\n\006player\030\001 \001(\0132\021.Protocol.PPla"
+  "yer\022(\n\007posInfo\030\002 \001(\0132\027.Protocol.PPositio"
+  "nInfo\"_\n\021S_ITEMACQUISITION\022%\n\nplayerInfo"
+  "\030\001 \001(\0132\021.Protocol.PPlayer\022#\n\007itemPos\030\002 \001"
+  "(\0132\022.Protocol.PCellPosB\033\252\002\030Google.Protob"
+  "uf.Protocolb\006proto3"
   ;
 static const ::_pbi::DescriptorTable* const descriptor_table_Protocol_2eproto_deps[3] = {
   &::descriptor_table_Enum_2eproto,
@@ -668,9 +690,9 @@ static const ::_pbi::DescriptorTable* const descriptor_table_Protocol_2eproto_de
 };
 static ::_pbi::once_flag descriptor_table_Protocol_2eproto_once;
 const ::_pbi::DescriptorTable descriptor_table_Protocol_2eproto = {
-    false, false, 1734, descriptor_table_protodef_Protocol_2eproto,
+    false, false, 1779, descriptor_table_protodef_Protocol_2eproto,
     "Protocol.proto",
-    &descriptor_table_Protocol_2eproto_once, descriptor_table_Protocol_2eproto_deps, 3, 26,
+    &descriptor_table_Protocol_2eproto_once, descriptor_table_Protocol_2eproto_deps, 3, 27,
     schemas, file_default_instances, TableStruct_Protocol_2eproto::offsets,
     file_level_metadata_Protocol_2eproto, file_level_enum_descriptors_Protocol_2eproto,
     file_level_service_descriptors_Protocol_2eproto,
@@ -4511,18 +4533,18 @@ void S_MOVE::InternalSwap(S_MOVE* other) {
 
 class C_BOMB::_Internal {
  public:
-  static const ::Protocol::PPositionInfo& posinfo(const C_BOMB* msg);
+  static const ::Protocol::PCellPos& cellpos(const C_BOMB* msg);
 };
 
-const ::Protocol::PPositionInfo&
-C_BOMB::_Internal::posinfo(const C_BOMB* msg) {
-  return *msg->posinfo_;
+const ::Protocol::PCellPos&
+C_BOMB::_Internal::cellpos(const C_BOMB* msg) {
+  return *msg->cellpos_;
 }
-void C_BOMB::clear_posinfo() {
-  if (GetArenaForAllocation() == nullptr && posinfo_ != nullptr) {
-    delete posinfo_;
+void C_BOMB::clear_cellpos() {
+  if (GetArenaForAllocation() == nullptr && cellpos_ != nullptr) {
+    delete cellpos_;
   }
-  posinfo_ = nullptr;
+  cellpos_ = nullptr;
 }
 C_BOMB::C_BOMB(::PROTOBUF_NAMESPACE_ID::Arena* arena,
                          bool is_message_owned)
@@ -4533,16 +4555,16 @@ C_BOMB::C_BOMB(::PROTOBUF_NAMESPACE_ID::Arena* arena,
 C_BOMB::C_BOMB(const C_BOMB& from)
   : ::PROTOBUF_NAMESPACE_ID::Message() {
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
-  if (from._internal_has_posinfo()) {
-    posinfo_ = new ::Protocol::PPositionInfo(*from.posinfo_);
+  if (from._internal_has_cellpos()) {
+    cellpos_ = new ::Protocol::PCellPos(*from.cellpos_);
   } else {
-    posinfo_ = nullptr;
+    cellpos_ = nullptr;
   }
   // @@protoc_insertion_point(copy_constructor:Protocol.C_BOMB)
 }
 
 inline void C_BOMB::SharedCtor() {
-posinfo_ = nullptr;
+cellpos_ = nullptr;
 }
 
 C_BOMB::~C_BOMB() {
@@ -4556,7 +4578,7 @@ C_BOMB::~C_BOMB() {
 
 inline void C_BOMB::SharedDtor() {
   GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
-  if (this != internal_default_instance()) delete posinfo_;
+  if (this != internal_default_instance()) delete cellpos_;
 }
 
 void C_BOMB::SetCachedSize(int size) const {
@@ -4569,10 +4591,10 @@ void C_BOMB::Clear() {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  if (GetArenaForAllocation() == nullptr && posinfo_ != nullptr) {
-    delete posinfo_;
+  if (GetArenaForAllocation() == nullptr && cellpos_ != nullptr) {
+    delete cellpos_;
   }
-  posinfo_ = nullptr;
+  cellpos_ = nullptr;
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
@@ -4582,10 +4604,10 @@ const char* C_BOMB::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
     uint32_t tag;
     ptr = ::_pbi::ReadTag(ptr, &tag);
     switch (tag >> 3) {
-      // .Protocol.PPositionInfo posInfo = 1;
+      // .Protocol.PCellPos cellPos = 1;
       case 1:
         if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 10)) {
-          ptr = ctx->ParseMessage(_internal_mutable_posinfo(), ptr);
+          ptr = ctx->ParseMessage(_internal_mutable_cellpos(), ptr);
           CHK_(ptr);
         } else
           goto handle_unusual;
@@ -4619,11 +4641,11 @@ uint8_t* C_BOMB::_InternalSerialize(
   uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
-  // .Protocol.PPositionInfo posInfo = 1;
-  if (this->_internal_has_posinfo()) {
+  // .Protocol.PCellPos cellPos = 1;
+  if (this->_internal_has_cellpos()) {
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
-      InternalWriteMessage(1, _Internal::posinfo(this),
-        _Internal::posinfo(this).GetCachedSize(), target, stream);
+      InternalWriteMessage(1, _Internal::cellpos(this),
+        _Internal::cellpos(this).GetCachedSize(), target, stream);
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
@@ -4642,11 +4664,11 @@ size_t C_BOMB::ByteSizeLong() const {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  // .Protocol.PPositionInfo posInfo = 1;
-  if (this->_internal_has_posinfo()) {
+  // .Protocol.PCellPos cellPos = 1;
+  if (this->_internal_has_cellpos()) {
     total_size += 1 +
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
-        *posinfo_);
+        *cellpos_);
   }
 
   return MaybeComputeUnknownFieldsSize(total_size, &_cached_size_);
@@ -4671,8 +4693,8 @@ void C_BOMB::MergeFrom(const C_BOMB& from) {
   uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
-  if (from._internal_has_posinfo()) {
-    _internal_mutable_posinfo()->::Protocol::PPositionInfo::MergeFrom(from._internal_posinfo());
+  if (from._internal_has_cellpos()) {
+    _internal_mutable_cellpos()->::Protocol::PCellPos::MergeFrom(from._internal_cellpos());
   }
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
 }
@@ -4691,7 +4713,7 @@ bool C_BOMB::IsInitialized() const {
 void C_BOMB::InternalSwap(C_BOMB* other) {
   using std::swap;
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
-  swap(posinfo_, other->posinfo_);
+  swap(cellpos_, other->cellpos_);
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata C_BOMB::GetMetadata() const {
@@ -4945,6 +4967,199 @@ void S_BOMB::InternalSwap(S_BOMB* other) {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_Protocol_2eproto_getter, &descriptor_table_Protocol_2eproto_once,
       file_level_metadata_Protocol_2eproto[21]);
+}
+
+// ===================================================================
+
+class C_BOMBEND::_Internal {
+ public:
+  static const ::Protocol::PCellPos& cellpos(const C_BOMBEND* msg);
+};
+
+const ::Protocol::PCellPos&
+C_BOMBEND::_Internal::cellpos(const C_BOMBEND* msg) {
+  return *msg->cellpos_;
+}
+void C_BOMBEND::clear_cellpos() {
+  if (GetArenaForAllocation() == nullptr && cellpos_ != nullptr) {
+    delete cellpos_;
+  }
+  cellpos_ = nullptr;
+}
+C_BOMBEND::C_BOMBEND(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+                         bool is_message_owned)
+  : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned) {
+  SharedCtor();
+  // @@protoc_insertion_point(arena_constructor:Protocol.C_BOMBEND)
+}
+C_BOMBEND::C_BOMBEND(const C_BOMBEND& from)
+  : ::PROTOBUF_NAMESPACE_ID::Message() {
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  if (from._internal_has_cellpos()) {
+    cellpos_ = new ::Protocol::PCellPos(*from.cellpos_);
+  } else {
+    cellpos_ = nullptr;
+  }
+  // @@protoc_insertion_point(copy_constructor:Protocol.C_BOMBEND)
+}
+
+inline void C_BOMBEND::SharedCtor() {
+cellpos_ = nullptr;
+}
+
+C_BOMBEND::~C_BOMBEND() {
+  // @@protoc_insertion_point(destructor:Protocol.C_BOMBEND)
+  if (auto *arena = _internal_metadata_.DeleteReturnArena<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>()) {
+  (void)arena;
+    return;
+  }
+  SharedDtor();
+}
+
+inline void C_BOMBEND::SharedDtor() {
+  GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
+  if (this != internal_default_instance()) delete cellpos_;
+}
+
+void C_BOMBEND::SetCachedSize(int size) const {
+  _cached_size_.Set(size);
+}
+
+void C_BOMBEND::Clear() {
+// @@protoc_insertion_point(message_clear_start:Protocol.C_BOMBEND)
+  uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  if (GetArenaForAllocation() == nullptr && cellpos_ != nullptr) {
+    delete cellpos_;
+  }
+  cellpos_ = nullptr;
+  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+}
+
+const char* C_BOMBEND::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
+#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  while (!ctx->Done(&ptr)) {
+    uint32_t tag;
+    ptr = ::_pbi::ReadTag(ptr, &tag);
+    switch (tag >> 3) {
+      // .Protocol.PCellPos cellPos = 1;
+      case 1:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 10)) {
+          ptr = ctx->ParseMessage(_internal_mutable_cellpos(), ptr);
+          CHK_(ptr);
+        } else
+          goto handle_unusual;
+        continue;
+      default:
+        goto handle_unusual;
+    }  // switch
+  handle_unusual:
+    if ((tag == 0) || ((tag & 7) == 4)) {
+      CHK_(ptr);
+      ctx->SetLastTag(tag);
+      goto message_done;
+    }
+    ptr = UnknownFieldParse(
+        tag,
+        _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
+        ptr, ctx);
+    CHK_(ptr != nullptr);
+  }  // while
+message_done:
+  return ptr;
+failure:
+  ptr = nullptr;
+  goto message_done;
+#undef CHK_
+}
+
+uint8_t* C_BOMBEND::_InternalSerialize(
+    uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+  // @@protoc_insertion_point(serialize_to_array_start:Protocol.C_BOMBEND)
+  uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  // .Protocol.PCellPos cellPos = 1;
+  if (this->_internal_has_cellpos()) {
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
+      InternalWriteMessage(1, _Internal::cellpos(this),
+        _Internal::cellpos(this).GetCachedSize(), target, stream);
+  }
+
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:Protocol.C_BOMBEND)
+  return target;
+}
+
+size_t C_BOMBEND::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:Protocol.C_BOMBEND)
+  size_t total_size = 0;
+
+  uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  // .Protocol.PCellPos cellPos = 1;
+  if (this->_internal_has_cellpos()) {
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
+        *cellpos_);
+  }
+
+  return MaybeComputeUnknownFieldsSize(total_size, &_cached_size_);
+}
+
+const ::PROTOBUF_NAMESPACE_ID::Message::ClassData C_BOMBEND::_class_data_ = {
+    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSizeCheck,
+    C_BOMBEND::MergeImpl
+};
+const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*C_BOMBEND::GetClassData() const { return &_class_data_; }
+
+void C_BOMBEND::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message* to,
+                      const ::PROTOBUF_NAMESPACE_ID::Message& from) {
+  static_cast<C_BOMBEND *>(to)->MergeFrom(
+      static_cast<const C_BOMBEND &>(from));
+}
+
+
+void C_BOMBEND::MergeFrom(const C_BOMBEND& from) {
+// @@protoc_insertion_point(class_specific_merge_from_start:Protocol.C_BOMBEND)
+  GOOGLE_DCHECK_NE(&from, this);
+  uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  if (from._internal_has_cellpos()) {
+    _internal_mutable_cellpos()->::Protocol::PCellPos::MergeFrom(from._internal_cellpos());
+  }
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+}
+
+void C_BOMBEND::CopyFrom(const C_BOMBEND& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:Protocol.C_BOMBEND)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool C_BOMBEND::IsInitialized() const {
+  return true;
+}
+
+void C_BOMBEND::InternalSwap(C_BOMBEND* other) {
+  using std::swap;
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+  swap(cellpos_, other->cellpos_);
+}
+
+::PROTOBUF_NAMESPACE_ID::Metadata C_BOMBEND::GetMetadata() const {
+  return ::_pbi::AssignDescriptors(
+      &descriptor_table_Protocol_2eproto_getter, &descriptor_table_Protocol_2eproto_once,
+      file_level_metadata_Protocol_2eproto[22]);
 }
 
 // ===================================================================
@@ -5263,7 +5478,7 @@ void S_BOMBEND::InternalSwap(S_BOMBEND* other) {
 ::PROTOBUF_NAMESPACE_ID::Metadata S_BOMBEND::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_Protocol_2eproto_getter, &descriptor_table_Protocol_2eproto_once,
-      file_level_metadata_Protocol_2eproto[22]);
+      file_level_metadata_Protocol_2eproto[23]);
 }
 
 // ===================================================================
@@ -5491,7 +5706,7 @@ void S_ITEMSPAWN::InternalSwap(S_ITEMSPAWN* other) {
 ::PROTOBUF_NAMESPACE_ID::Metadata S_ITEMSPAWN::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_Protocol_2eproto_getter, &descriptor_table_Protocol_2eproto_once,
-      file_level_metadata_Protocol_2eproto[23]);
+      file_level_metadata_Protocol_2eproto[24]);
 }
 
 // ===================================================================
@@ -5738,7 +5953,7 @@ void S_DEAD::InternalSwap(S_DEAD* other) {
 ::PROTOBUF_NAMESPACE_ID::Metadata S_DEAD::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_Protocol_2eproto_getter, &descriptor_table_Protocol_2eproto_once,
-      file_level_metadata_Protocol_2eproto[24]);
+      file_level_metadata_Protocol_2eproto[25]);
 }
 
 // ===================================================================
@@ -5985,7 +6200,7 @@ void S_ITEMACQUISITION::InternalSwap(S_ITEMACQUISITION* other) {
 ::PROTOBUF_NAMESPACE_ID::Metadata S_ITEMACQUISITION::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_Protocol_2eproto_getter, &descriptor_table_Protocol_2eproto_once,
-      file_level_metadata_Protocol_2eproto[25]);
+      file_level_metadata_Protocol_2eproto[26]);
 }
 
 // @@protoc_insertion_point(namespace_scope)
@@ -6078,6 +6293,10 @@ Arena::CreateMaybeMessage< ::Protocol::C_BOMB >(Arena* arena) {
 template<> PROTOBUF_NOINLINE ::Protocol::S_BOMB*
 Arena::CreateMaybeMessage< ::Protocol::S_BOMB >(Arena* arena) {
   return Arena::CreateMessageInternal< ::Protocol::S_BOMB >(arena);
+}
+template<> PROTOBUF_NOINLINE ::Protocol::C_BOMBEND*
+Arena::CreateMaybeMessage< ::Protocol::C_BOMBEND >(Arena* arena) {
+  return Arena::CreateMessageInternal< ::Protocol::C_BOMBEND >(arena);
 }
 template<> PROTOBUF_NOINLINE ::Protocol::S_BOMBEND*
 Arena::CreateMaybeMessage< ::Protocol::S_BOMBEND >(Arena* arena) {

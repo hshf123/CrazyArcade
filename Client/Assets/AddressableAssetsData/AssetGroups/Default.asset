@@ -93,6 +93,10 @@ MonoBehaviour:
     m_Address: Item
     m_ReadOnly: 0
     m_SerializedLabels: []
+  - m_GUID: 759eca2ddbf270949989edd52124cf23
+    m_Address: UI_SettingsPopup
+    m_ReadOnly: 0
+    m_SerializedLabels: []
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 37d63db9dee568844aed5ef436298665, type: 2}
   m_SchemaSet:

@@ -44,7 +44,5 @@ public class NonFixObjectController : MonoBehaviour
             _animator.Play("FLOWER_DESTROY");
         }
         Managers.Resource.Destroy(gameObject, 0.4f);
-
-        // TODO æ∆¿Ã≈€ Instantiate
     }
 }

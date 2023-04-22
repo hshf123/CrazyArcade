@@ -1,12 +1,16 @@
+using Google.Protobuf.Protocol;
 using Protocol;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UIElements;
 using CellPos = Protocol.PCellPos;
 
 public class BombController : MonoBehaviour
 {
+    Coroutine _coRegisterBomb;
+
     Vector3Int[] _upRangeList;
     Vector3Int[] _rightRangeList;
     Vector3Int[] _downRangeList;
@@ -17,7 +21,7 @@ public class BombController : MonoBehaviour
 
     public int SortOrder { get; set; }
     public CellPos CellPos { get; set; }
-    public int BombID { get; set; }
+    public long OwnerId { get; set; }
     public int Range { get; set; }
 
     void Start()
@@ -43,6 +47,26 @@ public class BombController : MonoBehaviour
         }
     }
 
+    public void RegisterBomb()
+    {
+        _coRegisterBomb = StartCoroutine(CoRegisterBomb());
+    }
+    IEnumerator CoRegisterBomb()
+    {
+        if (OwnerId != Managers.Game.PlayerID)
+        {
+            _coRegisterBomb = null;
+            yield break;
+        }
+
+        yield return new WaitForSeconds(2.8f);
+
+        C_BOMBEND bombEndPkt = new C_BOMBEND();
+        bombEndPkt.CellPos = CellPos;
+        Managers.Net.SessionManager.Broadcast(bombEndPkt);
+        _coRegisterBomb = null;
+    }
+
     public void Bomb(Action callback)
     {
         UpWaterCourse();
@@ -58,7 +82,6 @@ public class BombController : MonoBehaviour
             callback?.Invoke();
         });
     }
-
     void UpWaterCourse()
     {
         for (int i = 0; i < Range; i++)

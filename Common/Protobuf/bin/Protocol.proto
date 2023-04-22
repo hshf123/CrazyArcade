@@ -122,13 +122,18 @@ message S_MOVE
 
 message C_BOMB
 {
-	PPositionInfo posInfo = 1;
+	PCellPos cellPos = 1;
 }
 
 message S_BOMB
 {
 	PPlayer player = 1;
 	PCellPos cellpos = 2;
+}
+
+message C_BOMBEND
+{
+	PCellPos cellPos = 1;
 }
 
 message S_BOMBEND

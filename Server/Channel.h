@@ -28,7 +28,7 @@ public:
 
 private:
 	USE_LOCK;
-	HashMap<int64, RoomRef> _rooms;
+	HashMap<int32, RoomRef> _rooms;
 	HashMap<int64, PlayerRef> _players;
 
 private:

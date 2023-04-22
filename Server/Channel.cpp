@@ -84,6 +84,13 @@ void Channel::InsertPlayer(PlayerRef player)
 	WRITE_LOCK;
 	_players.insert({ player->PlayerInfo.id(), player });
 	player->PlayerInfo.set_channelid(ChannelInfo.channelid());
+	ChannelInfo.set_currentplayercount(_players.size());
+
+	if (ChannelInfo.currentplayercount() > ChannelInfo.maxplayercount())
+	{
+		RemovePlayer(player->PlayerInfo.id());
+		return;
+	}
 
 	Protocol::S_CHANNELCHOICE channelChoicePkt;
 	channelChoicePkt.set_success(true);

@@ -55,8 +55,8 @@ public class PlayerController : MonoBehaviour
             if (PosInfo.WorldPos.PosX == value.x && PosInfo.WorldPos.PosY == value.y)
                 return;
 
-            PosInfo.WorldPos.PosX = value.x;
-            PosInfo.WorldPos.PosY = value.y;
+            _posInfo.WorldPos.PosX = value.x;
+            _posInfo.WorldPos.PosY = value.y;
             transform.position = value;
         }
     }
@@ -71,8 +71,8 @@ public class PlayerController : MonoBehaviour
             if (PosInfo.CellPos.PosX == value.x && PosInfo.CellPos.PosY == value.y)
                 return;
 
-            PosInfo.CellPos.PosX = value.x;
-            PosInfo.CellPos.PosY = value.y;
+            _posInfo.CellPos.PosX = value.x;
+            _posInfo.CellPos.PosY = value.y;
         }
     }
     protected MoveDir _lastDir = MoveDir.Down;
@@ -87,7 +87,7 @@ public class PlayerController : MonoBehaviour
             if (PosInfo.MoveDir == value)
                 return;
 
-            PosInfo.MoveDir = value;
+            _posInfo.MoveDir = value;
             if (value != MoveDir.None)
                 _lastDir = value;
             UpdateAnimation();
@@ -101,7 +101,7 @@ public class PlayerController : MonoBehaviour
             if (PosInfo.State == value)
                 return;
 
-            PosInfo.State = value;
+            _posInfo.State = value;
             UpdateAnimation();
         }
     }

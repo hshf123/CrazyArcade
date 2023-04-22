@@ -52,6 +52,9 @@ namespace Protocol {
 class C_BOMB;
 struct C_BOMBDefaultTypeInternal;
 extern C_BOMBDefaultTypeInternal _C_BOMB_default_instance_;
+class C_BOMBEND;
+struct C_BOMBENDDefaultTypeInternal;
+extern C_BOMBENDDefaultTypeInternal _C_BOMBEND_default_instance_;
 class C_CHANNELCHAT;
 struct C_CHANNELCHATDefaultTypeInternal;
 extern C_CHANNELCHATDefaultTypeInternal _C_CHANNELCHAT_default_instance_;
@@ -130,6 +133,7 @@ extern S_ROOMUPDATEDefaultTypeInternal _S_ROOMUPDATE_default_instance_;
 }  // namespace Protocol
 PROTOBUF_NAMESPACE_OPEN
 template<> ::Protocol::C_BOMB* Arena::CreateMaybeMessage<::Protocol::C_BOMB>(Arena*);
+template<> ::Protocol::C_BOMBEND* Arena::CreateMaybeMessage<::Protocol::C_BOMBEND>(Arena*);
 template<> ::Protocol::C_CHANNELCHAT* Arena::CreateMaybeMessage<::Protocol::C_CHANNELCHAT>(Arena*);
 template<> ::Protocol::C_CHANNELCHOICE* Arena::CreateMaybeMessage<::Protocol::C_CHANNELCHOICE>(Arena*);
 template<> ::Protocol::C_LOGIN* Arena::CreateMaybeMessage<::Protocol::C_LOGIN>(Arena*);
@@ -3358,25 +3362,25 @@ class C_BOMB final :
   // accessors -------------------------------------------------------
 
   enum : int {
-    kPosInfoFieldNumber = 1,
+    kCellPosFieldNumber = 1,
   };
-  // .Protocol.PPositionInfo posInfo = 1;
-  bool has_posinfo() const;
+  // .Protocol.PCellPos cellPos = 1;
+  bool has_cellpos() const;
   private:
-  bool _internal_has_posinfo() const;
+  bool _internal_has_cellpos() const;
   public:
-  void clear_posinfo();
-  const ::Protocol::PPositionInfo& posinfo() const;
-  PROTOBUF_NODISCARD ::Protocol::PPositionInfo* release_posinfo();
-  ::Protocol::PPositionInfo* mutable_posinfo();
-  void set_allocated_posinfo(::Protocol::PPositionInfo* posinfo);
+  void clear_cellpos();
+  const ::Protocol::PCellPos& cellpos() const;
+  PROTOBUF_NODISCARD ::Protocol::PCellPos* release_cellpos();
+  ::Protocol::PCellPos* mutable_cellpos();
+  void set_allocated_cellpos(::Protocol::PCellPos* cellpos);
   private:
-  const ::Protocol::PPositionInfo& _internal_posinfo() const;
-  ::Protocol::PPositionInfo* _internal_mutable_posinfo();
+  const ::Protocol::PCellPos& _internal_cellpos() const;
+  ::Protocol::PCellPos* _internal_mutable_cellpos();
   public:
-  void unsafe_arena_set_allocated_posinfo(
-      ::Protocol::PPositionInfo* posinfo);
-  ::Protocol::PPositionInfo* unsafe_arena_release_posinfo();
+  void unsafe_arena_set_allocated_cellpos(
+      ::Protocol::PCellPos* cellpos);
+  ::Protocol::PCellPos* unsafe_arena_release_cellpos();
 
   // @@protoc_insertion_point(class_scope:Protocol.C_BOMB)
  private:
@@ -3385,7 +3389,7 @@ class C_BOMB final :
   template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
   typedef void InternalArenaConstructable_;
   typedef void DestructorSkippable_;
-  ::Protocol::PPositionInfo* posinfo_;
+  ::Protocol::PCellPos* cellpos_;
   mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   friend struct ::TableStruct_Protocol_2eproto;
 };
@@ -3563,6 +3567,158 @@ class S_BOMB final :
 };
 // -------------------------------------------------------------------
 
+class C_BOMBEND final :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:Protocol.C_BOMBEND) */ {
+ public:
+  inline C_BOMBEND() : C_BOMBEND(nullptr) {}
+  ~C_BOMBEND() override;
+  explicit PROTOBUF_CONSTEXPR C_BOMBEND(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
+
+  C_BOMBEND(const C_BOMBEND& from);
+  C_BOMBEND(C_BOMBEND&& from) noexcept
+    : C_BOMBEND() {
+    *this = ::std::move(from);
+  }
+
+  inline C_BOMBEND& operator=(const C_BOMBEND& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline C_BOMBEND& operator=(C_BOMBEND&& from) noexcept {
+    if (this == &from) return *this;
+    if (GetOwningArena() == from.GetOwningArena()
+  #ifdef PROTOBUF_FORCE_COPY_IN_MOVE
+        && GetOwningArena() != nullptr
+  #endif  // !PROTOBUF_FORCE_COPY_IN_MOVE
+    ) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const C_BOMBEND& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const C_BOMBEND* internal_default_instance() {
+    return reinterpret_cast<const C_BOMBEND*>(
+               &_C_BOMBEND_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    22;
+
+  friend void swap(C_BOMBEND& a, C_BOMBEND& b) {
+    a.Swap(&b);
+  }
+  inline void Swap(C_BOMBEND* other) {
+    if (other == this) return;
+  #ifdef PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetOwningArena() != nullptr &&
+        GetOwningArena() == other->GetOwningArena()) {
+   #else  // PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetOwningArena() == other->GetOwningArena()) {
+  #endif  // !PROTOBUF_FORCE_COPY_IN_SWAP
+      InternalSwap(other);
+    } else {
+      ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(C_BOMBEND* other) {
+    if (other == this) return;
+    GOOGLE_DCHECK(GetOwningArena() == other->GetOwningArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  C_BOMBEND* New(::PROTOBUF_NAMESPACE_ID::Arena* arena = nullptr) const final {
+    return CreateMaybeMessage<C_BOMBEND>(arena);
+  }
+  using ::PROTOBUF_NAMESPACE_ID::Message::CopyFrom;
+  void CopyFrom(const C_BOMBEND& from);
+  using ::PROTOBUF_NAMESPACE_ID::Message::MergeFrom;
+  void MergeFrom(const C_BOMBEND& from);
+  private:
+  static void MergeImpl(::PROTOBUF_NAMESPACE_ID::Message* to, const ::PROTOBUF_NAMESPACE_ID::Message& from);
+  public:
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  size_t ByteSizeLong() const final;
+  const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
+  uint8_t* _InternalSerialize(
+      uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
+  int GetCachedSize() const final { return _cached_size_.Get(); }
+
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(C_BOMBEND* other);
+
+  private:
+  friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
+  static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
+    return "Protocol.C_BOMBEND";
+  }
+  protected:
+  explicit C_BOMBEND(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+                       bool is_message_owned = false);
+  public:
+
+  static const ClassData _class_data_;
+  const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*GetClassData() const final;
+
+  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  enum : int {
+    kCellPosFieldNumber = 1,
+  };
+  // .Protocol.PCellPos cellPos = 1;
+  bool has_cellpos() const;
+  private:
+  bool _internal_has_cellpos() const;
+  public:
+  void clear_cellpos();
+  const ::Protocol::PCellPos& cellpos() const;
+  PROTOBUF_NODISCARD ::Protocol::PCellPos* release_cellpos();
+  ::Protocol::PCellPos* mutable_cellpos();
+  void set_allocated_cellpos(::Protocol::PCellPos* cellpos);
+  private:
+  const ::Protocol::PCellPos& _internal_cellpos() const;
+  ::Protocol::PCellPos* _internal_mutable_cellpos();
+  public:
+  void unsafe_arena_set_allocated_cellpos(
+      ::Protocol::PCellPos* cellpos);
+  ::Protocol::PCellPos* unsafe_arena_release_cellpos();
+
+  // @@protoc_insertion_point(class_scope:Protocol.C_BOMBEND)
+ private:
+  class _Internal;
+
+  template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
+  typedef void InternalArenaConstructable_;
+  typedef void DestructorSkippable_;
+  ::Protocol::PCellPos* cellpos_;
+  mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
+  friend struct ::TableStruct_Protocol_2eproto;
+};
+// -------------------------------------------------------------------
+
 class S_BOMBEND final :
     public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:Protocol.S_BOMBEND) */ {
  public:
@@ -3611,7 +3767,7 @@ class S_BOMBEND final :
                &_S_BOMBEND_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    22;
+    23;
 
   friend void swap(S_BOMBEND& a, S_BOMBEND& b) {
     a.Swap(&b);
@@ -3823,7 +3979,7 @@ class S_ITEMSPAWN final :
                &_S_ITEMSPAWN_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    23;
+    24;
 
   friend void swap(S_ITEMSPAWN& a, S_ITEMSPAWN& b) {
     a.Swap(&b);
@@ -3986,7 +4142,7 @@ class S_DEAD final :
                &_S_DEAD_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    24;
+    25;
 
   friend void swap(S_DEAD& a, S_DEAD& b) {
     a.Swap(&b);
@@ -4158,7 +4314,7 @@ class S_ITEMACQUISITION final :
                &_S_ITEMACQUISITION_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    25;
+    26;
 
   friend void swap(S_ITEMACQUISITION& a, S_ITEMACQUISITION& b) {
     a.Swap(&b);
@@ -5864,39 +6020,39 @@ inline void S_MOVE::set_allocated_positioninfo(::Protocol::PPositionInfo* positi
 
 // C_BOMB
 
-// .Protocol.PPositionInfo posInfo = 1;
-inline bool C_BOMB::_internal_has_posinfo() const {
-  return this != internal_default_instance() && posinfo_ != nullptr;
+// .Protocol.PCellPos cellPos = 1;
+inline bool C_BOMB::_internal_has_cellpos() const {
+  return this != internal_default_instance() && cellpos_ != nullptr;
 }
-inline bool C_BOMB::has_posinfo() const {
-  return _internal_has_posinfo();
+inline bool C_BOMB::has_cellpos() const {
+  return _internal_has_cellpos();
 }
-inline const ::Protocol::PPositionInfo& C_BOMB::_internal_posinfo() const {
-  const ::Protocol::PPositionInfo* p = posinfo_;
-  return p != nullptr ? *p : reinterpret_cast<const ::Protocol::PPositionInfo&>(
-      ::Protocol::_PPositionInfo_default_instance_);
+inline const ::Protocol::PCellPos& C_BOMB::_internal_cellpos() const {
+  const ::Protocol::PCellPos* p = cellpos_;
+  return p != nullptr ? *p : reinterpret_cast<const ::Protocol::PCellPos&>(
+      ::Protocol::_PCellPos_default_instance_);
 }
-inline const ::Protocol::PPositionInfo& C_BOMB::posinfo() const {
-  // @@protoc_insertion_point(field_get:Protocol.C_BOMB.posInfo)
-  return _internal_posinfo();
+inline const ::Protocol::PCellPos& C_BOMB::cellpos() const {
+  // @@protoc_insertion_point(field_get:Protocol.C_BOMB.cellPos)
+  return _internal_cellpos();
 }
-inline void C_BOMB::unsafe_arena_set_allocated_posinfo(
-    ::Protocol::PPositionInfo* posinfo) {
+inline void C_BOMB::unsafe_arena_set_allocated_cellpos(
+    ::Protocol::PCellPos* cellpos) {
   if (GetArenaForAllocation() == nullptr) {
-    delete reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(posinfo_);
+    delete reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(cellpos_);
   }
-  posinfo_ = posinfo;
-  if (posinfo) {
+  cellpos_ = cellpos;
+  if (cellpos) {
     
   } else {
     
   }
-  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:Protocol.C_BOMB.posInfo)
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:Protocol.C_BOMB.cellPos)
 }
-inline ::Protocol::PPositionInfo* C_BOMB::release_posinfo() {
+inline ::Protocol::PCellPos* C_BOMB::release_cellpos() {
   
-  ::Protocol::PPositionInfo* temp = posinfo_;
-  posinfo_ = nullptr;
+  ::Protocol::PCellPos* temp = cellpos_;
+  cellpos_ = nullptr;
 #ifdef PROTOBUF_FORCE_COPY_IN_RELEASE
   auto* old =  reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(temp);
   temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
@@ -5908,45 +6064,45 @@ inline ::Protocol::PPositionInfo* C_BOMB::release_posinfo() {
 #endif  // !PROTOBUF_FORCE_COPY_IN_RELEASE
   return temp;
 }
-inline ::Protocol::PPositionInfo* C_BOMB::unsafe_arena_release_posinfo() {
-  // @@protoc_insertion_point(field_release:Protocol.C_BOMB.posInfo)
+inline ::Protocol::PCellPos* C_BOMB::unsafe_arena_release_cellpos() {
+  // @@protoc_insertion_point(field_release:Protocol.C_BOMB.cellPos)
   
-  ::Protocol::PPositionInfo* temp = posinfo_;
-  posinfo_ = nullptr;
+  ::Protocol::PCellPos* temp = cellpos_;
+  cellpos_ = nullptr;
   return temp;
 }
-inline ::Protocol::PPositionInfo* C_BOMB::_internal_mutable_posinfo() {
+inline ::Protocol::PCellPos* C_BOMB::_internal_mutable_cellpos() {
   
-  if (posinfo_ == nullptr) {
-    auto* p = CreateMaybeMessage<::Protocol::PPositionInfo>(GetArenaForAllocation());
-    posinfo_ = p;
+  if (cellpos_ == nullptr) {
+    auto* p = CreateMaybeMessage<::Protocol::PCellPos>(GetArenaForAllocation());
+    cellpos_ = p;
   }
-  return posinfo_;
+  return cellpos_;
 }
-inline ::Protocol::PPositionInfo* C_BOMB::mutable_posinfo() {
-  ::Protocol::PPositionInfo* _msg = _internal_mutable_posinfo();
-  // @@protoc_insertion_point(field_mutable:Protocol.C_BOMB.posInfo)
+inline ::Protocol::PCellPos* C_BOMB::mutable_cellpos() {
+  ::Protocol::PCellPos* _msg = _internal_mutable_cellpos();
+  // @@protoc_insertion_point(field_mutable:Protocol.C_BOMB.cellPos)
   return _msg;
 }
-inline void C_BOMB::set_allocated_posinfo(::Protocol::PPositionInfo* posinfo) {
+inline void C_BOMB::set_allocated_cellpos(::Protocol::PCellPos* cellpos) {
   ::PROTOBUF_NAMESPACE_ID::Arena* message_arena = GetArenaForAllocation();
   if (message_arena == nullptr) {
-    delete reinterpret_cast< ::PROTOBUF_NAMESPACE_ID::MessageLite*>(posinfo_);
+    delete reinterpret_cast< ::PROTOBUF_NAMESPACE_ID::MessageLite*>(cellpos_);
   }
-  if (posinfo) {
+  if (cellpos) {
     ::PROTOBUF_NAMESPACE_ID::Arena* submessage_arena =
         ::PROTOBUF_NAMESPACE_ID::Arena::InternalGetOwningArena(
-                reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(posinfo));
+                reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(cellpos));
     if (message_arena != submessage_arena) {
-      posinfo = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
-          message_arena, posinfo, submessage_arena);
+      cellpos = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
+          message_arena, cellpos, submessage_arena);
     }
     
   } else {
     
   }
-  posinfo_ = posinfo;
-  // @@protoc_insertion_point(field_set_allocated:Protocol.C_BOMB.posInfo)
+  cellpos_ = cellpos;
+  // @@protoc_insertion_point(field_set_allocated:Protocol.C_BOMB.cellPos)
 }
 
 // -------------------------------------------------------------------
@@ -6121,6 +6277,95 @@ inline void S_BOMB::set_allocated_cellpos(::Protocol::PCellPos* cellpos) {
   }
   cellpos_ = cellpos;
   // @@protoc_insertion_point(field_set_allocated:Protocol.S_BOMB.cellpos)
+}
+
+// -------------------------------------------------------------------
+
+// C_BOMBEND
+
+// .Protocol.PCellPos cellPos = 1;
+inline bool C_BOMBEND::_internal_has_cellpos() const {
+  return this != internal_default_instance() && cellpos_ != nullptr;
+}
+inline bool C_BOMBEND::has_cellpos() const {
+  return _internal_has_cellpos();
+}
+inline const ::Protocol::PCellPos& C_BOMBEND::_internal_cellpos() const {
+  const ::Protocol::PCellPos* p = cellpos_;
+  return p != nullptr ? *p : reinterpret_cast<const ::Protocol::PCellPos&>(
+      ::Protocol::_PCellPos_default_instance_);
+}
+inline const ::Protocol::PCellPos& C_BOMBEND::cellpos() const {
+  // @@protoc_insertion_point(field_get:Protocol.C_BOMBEND.cellPos)
+  return _internal_cellpos();
+}
+inline void C_BOMBEND::unsafe_arena_set_allocated_cellpos(
+    ::Protocol::PCellPos* cellpos) {
+  if (GetArenaForAllocation() == nullptr) {
+    delete reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(cellpos_);
+  }
+  cellpos_ = cellpos;
+  if (cellpos) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:Protocol.C_BOMBEND.cellPos)
+}
+inline ::Protocol::PCellPos* C_BOMBEND::release_cellpos() {
+  
+  ::Protocol::PCellPos* temp = cellpos_;
+  cellpos_ = nullptr;
+#ifdef PROTOBUF_FORCE_COPY_IN_RELEASE
+  auto* old =  reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(temp);
+  temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
+  if (GetArenaForAllocation() == nullptr) { delete old; }
+#else  // PROTOBUF_FORCE_COPY_IN_RELEASE
+  if (GetArenaForAllocation() != nullptr) {
+    temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
+  }
+#endif  // !PROTOBUF_FORCE_COPY_IN_RELEASE
+  return temp;
+}
+inline ::Protocol::PCellPos* C_BOMBEND::unsafe_arena_release_cellpos() {
+  // @@protoc_insertion_point(field_release:Protocol.C_BOMBEND.cellPos)
+  
+  ::Protocol::PCellPos* temp = cellpos_;
+  cellpos_ = nullptr;
+  return temp;
+}
+inline ::Protocol::PCellPos* C_BOMBEND::_internal_mutable_cellpos() {
+  
+  if (cellpos_ == nullptr) {
+    auto* p = CreateMaybeMessage<::Protocol::PCellPos>(GetArenaForAllocation());
+    cellpos_ = p;
+  }
+  return cellpos_;
+}
+inline ::Protocol::PCellPos* C_BOMBEND::mutable_cellpos() {
+  ::Protocol::PCellPos* _msg = _internal_mutable_cellpos();
+  // @@protoc_insertion_point(field_mutable:Protocol.C_BOMBEND.cellPos)
+  return _msg;
+}
+inline void C_BOMBEND::set_allocated_cellpos(::Protocol::PCellPos* cellpos) {
+  ::PROTOBUF_NAMESPACE_ID::Arena* message_arena = GetArenaForAllocation();
+  if (message_arena == nullptr) {
+    delete reinterpret_cast< ::PROTOBUF_NAMESPACE_ID::MessageLite*>(cellpos_);
+  }
+  if (cellpos) {
+    ::PROTOBUF_NAMESPACE_ID::Arena* submessage_arena =
+        ::PROTOBUF_NAMESPACE_ID::Arena::InternalGetOwningArena(
+                reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(cellpos));
+    if (message_arena != submessage_arena) {
+      cellpos = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
+          message_arena, cellpos, submessage_arena);
+    }
+    
+  } else {
+    
+  }
+  cellpos_ = cellpos;
+  // @@protoc_insertion_point(field_set_allocated:Protocol.C_BOMBEND.cellPos)
 }
 
 // -------------------------------------------------------------------
@@ -6831,6 +7076,8 @@ inline void S_ITEMACQUISITION::set_allocated_itempos(::Protocol::PCellPos* itemp
 #ifdef __GNUC__
   #pragma GCC diagnostic pop
 #endif  // __GNUC__
+// -------------------------------------------------------------------
+
 // -------------------------------------------------------------------
 
 // -------------------------------------------------------------------

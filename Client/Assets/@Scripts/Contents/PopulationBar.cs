@@ -5,7 +5,7 @@ using UnityEngine;
 public class PopulationBar : MonoBehaviour
 {
     [SerializeField]
-    Transform _populationBar = null;
+    Transform _populationBar;
 
     public void SetPopulationBar(float ratio)
     {

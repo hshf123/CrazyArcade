@@ -15,6 +15,7 @@
     <type fullname="UI_RoomDummySubItem" preserve="all" />
     <type fullname="UI_RoomScene" preserve="all" />
     <type fullname="UI_RoomSubItem" preserve="all" />
+    <type fullname="UI_SettingsPopup" preserve="all" />
   </assembly>
   <assembly fullname="Unity.Addressables, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null" preserve="all">
     <type fullname="UnityEngine.AddressableAssets.Addressables" preserve="all" />

@@ -100,6 +100,12 @@ void Room::SetIdx(PlayerRef player)
 	}
 }
 
+void Room::PlayerDead(PlayerRef player)
+{
+	player->OnDead();
+	_forestMap->ApplyLeave(player);
+}
+
 bool Room::CanGameStart()
 {
 	GameInit();
@@ -293,29 +299,21 @@ void Room::HandleBomb(PlayerRef player, Protocol::C_BOMB& pkt)
 		bombPkt.set_allocated_cellpos(_forestMap->GetCellPosProtocol(bombCellPos));
 		Broadcast(bombPkt);
 	}
-
-	GThreadManager->Launch([=]()
-	{
-		// 2.8 초 후 물풍선 터지기
-		this_thread::sleep_for(2.8s);
-
-		WRITE_LOCK;
-		// 2.8 초 후 물풍선 터지기
-		Protocol::S_BOMBEND bombEndPkt;
-		bombEndPkt.set_allocated_player(player->GetPlayerProtocol());
-		_forestMap->DestroyBomb(bombCellPos, player->PlayerInfo.bombrange(), &bombEndPkt);
-		player->SubBomb();
-		Broadcast(bombEndPkt);
-
-		wstringstream log;
-		log << L"Player ID : " << player->PlayerInfo.id();
-		log << L" A bomb located at (" << bombCellPos.x << ", " << bombCellPos.y << ")" << L" exploded.";
-		Utils::Log(log);
-	});
 }
 
-void Room::PlayerDead(PlayerRef player)
+void Room::HandleBombEnd(PlayerRef player, Protocol::C_BOMBEND& pkt)
 {
-	player->OnDead();
-	_forestMap->ApplyLeave(player);
+	WRITE_LOCK;
+	Vector2Int bombCellPos = Vector2Int(pkt.cellpos().posx(), pkt.cellpos().posy());
+
+	Protocol::S_BOMBEND bombEndPkt;
+	bombEndPkt.set_allocated_player(player->GetPlayerProtocol());
+	_forestMap->DestroyBomb(bombCellPos, player->PlayerInfo.bombrange(), &bombEndPkt);
+	player->SubBomb();
+	Broadcast(bombEndPkt);
+
+	wstringstream log;
+	log << L"Player ID : " << player->PlayerInfo.id();
+	log << L" A bomb located at (" << bombCellPos.x << ", " << bombCellPos.y << ")" << L" exploded.";
+	Utils::Log(log);
 }

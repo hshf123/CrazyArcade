@@ -67,7 +67,7 @@ public class GameScene : BaseScene
             });
         }
     }
-    public void InstantiateBomb(PPlayer playerInfo, PCellPos cellPos)
+    public void InstantiateBomb(PPlayer playerInfo, PCellPos cellPos, long ownerId)
     {
         if (Managers.Game.PlayerID == playerInfo.Id)
         {
@@ -78,11 +78,13 @@ public class GameScene : BaseScene
             {
                 BombController bc = bomb.GetComponent<BombController>();
                 bc.CellPos = cellPos;
-                bomb.transform.position = new Vector3(bc.CellPos.PosX + correction.x, bc.CellPos.PosY + correction.y, 0);
                 bc.Range = playerInfo.BombRange;
                 bc.SortOrder = -100 + (Managers.Map.MaxY - cellPos.PosY) * 2 + 1;
+                bc.OwnerId = ownerId;
                 Managers.Object.AddBomb(new Vector3Int(cellPos.PosX, cellPos.PosY, 0), bomb.GetComponent<BombController>());
+                bomb.transform.position = new Vector3(bc.CellPos.PosX + correction.x, bc.CellPos.PosY + correction.y, 0);
                 bc.Init();
+                bc.RegisterBomb();
             });
     }
     public void InstantiateItem(Vector3Int pos, ItemType itemType)

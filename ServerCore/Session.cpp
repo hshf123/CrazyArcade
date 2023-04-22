@@ -45,7 +45,7 @@ void Session::Disconnect(const WCHAR* cause)
 		return;
 
 	wcout.imbue(locale("kor"));
-	wcout << "Disconnect : " << cause << endl;
+	wcout << L"Disconnect : " << cause << endl;
 
 	RegisterDisconnect();
 }
