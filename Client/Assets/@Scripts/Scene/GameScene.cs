@@ -92,7 +92,7 @@ public class GameScene : BaseScene
         Managers.Resource.Instantiate("Item", null, (item) => 
         {
             ItemController ic = item.GetComponent<ItemController>();
-            ic.SetItemType(itemType);
+            ic.ItemType = itemType;
             item.transform.position = pos + new Vector3(0.5f, 0.5f, 0);
             Managers.Object.AddItem(pos, ic);
         });

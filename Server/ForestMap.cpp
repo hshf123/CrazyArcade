@@ -5,6 +5,7 @@
 #include "Player.h"
 #include "Room.h"
 #include "Protocol.pb.h"
+#include "Bomb.h"
 namespace fs = std::filesystem;
 
 Vector2Int ForestMap::WorldToCell(Vector2 pos)
@@ -33,7 +34,7 @@ Protocol::PWorldPos* ForestMap::GetWorldPosProtocol(Vector2 worldPos)
 	return pworldpos;
 }
 
-bool ForestMap::CanGo(Vector2Int cellPos, bool checkObjects /*= true*/)
+bool ForestMap::CanGo(Vector2Int cellPos)
 {
 	if (cellPos.x < MinX || cellPos.x > MaxX)
 		return false;
@@ -46,6 +47,10 @@ bool ForestMap::CanGo(Vector2Int cellPos, bool checkObjects /*= true*/)
 	if (_blocks[y][x] != 0)
 		return false;
 
+	auto findIt = _bombs.find(cellPos);
+	if (findIt != _bombs.end())
+		return false;
+
 	return true;
 }
 
@@ -53,7 +58,7 @@ void ForestMap::ApplyMove(PlayerRef player, Vector2Int dest)
 {
 	ApplyLeave(player);
 
-	if (CanGo(dest, true) == false)
+	if (CanGo(dest) == false)
 		return;
 
 	_players[player] = dest;
@@ -78,7 +83,7 @@ void ForestMap::ApplyMove(PlayerRef player, Vector2Int dest)
 	// 이동 중에 물풍선 갇힌 애들 발견했을 때
 	if (player->PosInfo.state() == Protocol::PPlayerState::MOVING)
 	{
-		Vector<PlayerRef> pvec = FindPlayer(player->GetCellPos(), player);
+		Vector<PlayerRef> pvec = FindPlayer(dest, player);
 		if (pvec.size() != 0)
 		{
 			// TODO : 같은 팀이라면 살려주기
@@ -99,7 +104,7 @@ void ForestMap::ApplyMove(PlayerRef player, Vector2Int dest)
 	}
 
 	// 아이템 획득
-	auto findIt = _spawnItems.find(player->GetCellPos());
+	auto findIt = _spawnItems.find(dest);
 	if (findIt != _spawnItems.end())
 	{
 		Protocol::PItemType type = findIt->second;
@@ -110,7 +115,7 @@ void ForestMap::ApplyMove(PlayerRef player, Vector2Int dest)
 		itemCellPos->set_posx(findIt->first.x);
 		itemCellPos->set_posy(findIt->first.y);
 		itemSpawnPkt.set_allocated_itempos(itemCellPos);
-		_spawnItems.erase(player->GetCellPos());
+		_spawnItems.erase(dest);
 		OwnerRoom->Broadcast(itemSpawnPkt);
 	}
 }
@@ -149,32 +154,40 @@ Vector2Int ForestMap::FindPlayer(PlayerRef player)
 	return findIt->second;
 }
 
-bool ForestMap::FindBomb(Vector2Int cellPos)
+BombRef ForestMap::FindBomb(Vector2Int cellPos)
 {
-	return _blocks[cellPos.x][cellPos.y] == 3;
+	auto findIt = _bombs.find(cellPos);
+	if (findIt == _bombs.end())
+		return nullptr;
+
+	return findIt->second;
 }
 
-bool ForestMap::SetBomb(Vector2Int pos)
+bool ForestMap::SetBomb(Vector2Int pos, PlayerRef ownerPlayer)
 {
 	if (CanGo(pos) == false)
 		return false;
 
-	int x = pos.x - MinX;
-	int y = MaxY - pos.y;
-	_blocks[y][x] = 3;
+	if (ownerPlayer->AddBomb() == false)
+		return false;
+
+	BombRef bomb = MakeShared<Bomb>();
+	bomb->OwnerPlayer = ownerPlayer;
+
+	_bombs[pos] = bomb;
 	return true;
 }
 
-void ForestMap::DestroyBomb(Vector2Int pos, int32 range, Protocol::S_BOMBEND* pkt)
+void ForestMap::DestroyBomb(Vector2Int pos, int32 range, Protocol::S_BOMBEND& pkt)
 {
-	int x = pos.x - MinX;
-	int y = MaxY - pos.y;
-	if (_blocks[y][x] != 3)
+	auto findIt = _bombs.find(pos);
+	if (findIt == _bombs.end())
 		return;
 
-	pkt->set_allocated_bombcellpos(GetCellPosProtocol(pos));
+	pkt.set_allocated_bombcellpos(GetCellPosProtocol(pos));
 
-	_blocks[y][x] = 0;
+	findIt->second->OwnerPlayer->SubBomb();
+	_bombs.erase(pos);
 
 	Vector<PlayerRef> vec = FindPlayer(pos);
 	for (PlayerRef player : vec)
@@ -182,7 +195,7 @@ void ForestMap::DestroyBomb(Vector2Int pos, int32 range, Protocol::S_BOMBEND* pk
 		if (player != nullptr)
 		{
 			// TRAP
-			auto* trapPlayer = pkt->add_trapplayers();
+			auto* trapPlayer = pkt.add_trapplayers();
 			player->OnTrap();
 			trapPlayer->CopyFrom(player->PlayerInfo);
 		}
@@ -192,41 +205,33 @@ void ForestMap::DestroyBomb(Vector2Int pos, int32 range, Protocol::S_BOMBEND* pk
 	for (int32 i = 1; i <= range; i++)
 	{
 		Vector2Int upRange = pos + Vector2Int(0, i);
-		if (CheckWaterCourse(upRange, pkt) == false)
+		if (CheckWaterCourse(upRange) == false)
 			break;
 	}
 	// 오른쪽 방향 물줄기
 	for (int32 i = 1; i <= range; i++)
 	{
 		Vector2Int rightRange = pos + Vector2Int(i, 0);
-		if (CheckWaterCourse(rightRange, pkt) == false)
+		if (CheckWaterCourse(rightRange) == false)
 			break;
 	}
 	// 아래 방향 물줄기
 	for (int32 i = 1; i <= range; i++)
 	{
 		Vector2Int downRange = pos + Vector2Int(0, -i);
-		if (CheckWaterCourse(downRange, pkt) == false)
+		if (CheckWaterCourse(downRange) == false)
 			break;
 	}
 	// 왼쪽 방향 물줄기
 	for (int32 i = 1; i <= range; i++)
 	{
 		Vector2Int leftRange = pos + Vector2Int(-i, 0);
-		if (CheckWaterCourse(leftRange, pkt) == false)
+		if (CheckWaterCourse(leftRange) == false)
 			break;
-	}
-
-	::srand(static_cast<uint32>(time(nullptr)));
-	for (auto& cellpos : pkt->destroyobjectcellposes())
-	{
-		int32 probability = ::rand() % 10;
-		if (probability < 2)
-			SpawnItem(Vector2Int(cellpos.posx(), cellpos.posy()));
 	}
 }
 
-bool ForestMap::CheckWaterCourse(Vector2Int pos, Protocol::S_BOMBEND* pkt)
+bool ForestMap::CheckWaterCourse(Vector2Int pos)
 {
 	int32 x = pos.x - MinX;
 	int32 y = MaxY - pos.y;
@@ -235,33 +240,28 @@ bool ForestMap::CheckWaterCourse(Vector2Int pos, Protocol::S_BOMBEND* pkt)
 		// Destroy
 		if (_blocks[y][x] == 2)
 		{
-			auto* cellpos = pkt->add_destroyobjectcellposes();
-			cellpos->set_posx(pos.x);
-			cellpos->set_posy(pos.y);
-			_blocks[y][x] = 0;
+			_destroyObjects.insert(pos);
 			return false;
 		}
-		else if (_blocks[y][x] == 3)
-		{
-			// TODO : 연달아 터지게
 
-			Vector<PlayerRef> vec = FindPlayer(pos);
-			for (PlayerRef player : vec)
-			{
-				if (player != nullptr)
-				{
-					// TRAP
-					auto* trapPlayer = pkt->add_trapplayers();
-					player->OnTrap();
-					trapPlayer->CopyFrom(player->PlayerInfo);
-				}
-			}
-		}
-		else
+		auto findIt = _bombs.find(pos);
+		if (findIt != _bombs.end())
 		{
-			return false;
+			// 연달아 터지게
+			BombRef bomb = findIt->second;
+			Protocol::S_BOMBEND bombEndPkt;
+			bombEndPkt.set_allocated_player(bomb->OwnerPlayer->GetPlayerProtocol());
+			DestroyBomb(pos, bomb->OwnerPlayer->PlayerInfo.bombrange(), bombEndPkt);
+			OwnerRoom->Broadcast(bombEndPkt);
+			wstringstream log;
+			log << L"Player ID : " << bomb->OwnerPlayer->PlayerInfo.id();
+			log << L" A bomb located at (" << pos.x << ", " << pos.y << ")" << L" exploded.";
+			Utils::Log(log);
 		}
+
+		return false;
 	}
+	// TODO : 아이템은 사라지게
 
 	Vector<PlayerRef> vec = FindPlayer(pos);
 	for (PlayerRef player : vec)
@@ -269,13 +269,37 @@ bool ForestMap::CheckWaterCourse(Vector2Int pos, Protocol::S_BOMBEND* pkt)
 		if (player != nullptr)
 		{
 			// TRAP
-			auto* trapPlayer = pkt->add_trapplayers();
-			player->OnTrap();
-			trapPlayer->CopyFrom(player->PlayerInfo);
+			_trapPlayers.insert(player);
 		}
 	}
 
 	return true;
+}
+
+void ForestMap::BombResult(Protocol::S_BOMBEND& pkt)
+{
+	::srand(static_cast<uint32>(time(nullptr)));
+	for (Vector2Int pos : _destroyObjects)
+	{
+		auto* cellpos = pkt.add_destroyobjectcellposes();
+		cellpos->set_posx(pos.x);
+		cellpos->set_posy(pos.y);
+		int32 x = pos.x - MinX;
+		int32 y = MaxY - pos.y;
+		_blocks[y][x] = 0;
+
+		int32 probability = ::rand() % 10;
+		if (probability < 2)
+			SpawnItem(pos);
+	}
+	for (PlayerRef player : _trapPlayers)
+	{
+		auto* trapPlayer = pkt.add_trapplayers();
+		player->OnTrap();
+		trapPlayer->CopyFrom(player->PlayerInfo);
+	}
+	_destroyObjects.clear();
+	_trapPlayers.clear();
 }
 
 void ForestMap::SpawnItem(Vector2Int pos)

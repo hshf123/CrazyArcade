@@ -104,6 +104,12 @@ void Room::PlayerDead(PlayerRef player)
 {
 	player->OnDead();
 	_forestMap->ApplyLeave(player);
+	_forestMap->PlayerCount--;
+
+	if (_forestMap->PlayerCount == 1)
+	{
+		// TODO : 게임 결과 보여주기
+	}
 }
 
 bool Room::CanGameStart()
@@ -160,6 +166,7 @@ void Room::GameInit()
 	_forestMap = MakeShared<ForestMap>();
 	_forestMap->LoadMap();
 	_forestMap->OwnerRoom = shared_from_this();
+	_forestMap->PlayerCount = _currentPlayerCount;
 }
 
 Protocol::PPositionInfo* Room::GetBasicPosInfo(int32 idx)
@@ -239,36 +246,28 @@ void Room::HandleMove(PlayerRef player, Protocol::C_MOVE& pkt)
 	if (player == nullptr)
 		return;
 
-	/*
-		1. CellPos가 변경된 경우
-		2. MoveDir이 변경된 경우
-		3. State가 변경된 경우
-	*/
-
+	WRITE_LOCK;
+	Protocol::PPlayerState pktState = pkt.positioninfo().state();
+	Protocol::PMoveDir pktMoveDir = pkt.positioninfo().movedir();
+	Protocol::PWorldPos pktWorldPos = pkt.positioninfo().worldpos();
+	Protocol::PCellPos pktCellpos = pkt.positioninfo().cellpos();
+	Vector2Int cellPos = Vector2Int(pktCellpos.posx(), pktCellpos.posy());
+	if (cellPos != player->GetCellPos())
 	{
-		WRITE_LOCK;
-		Protocol::PPlayerState pktState = pkt.positioninfo().state();
-		Protocol::PMoveDir pktMoveDir = pkt.positioninfo().movedir();
-		Protocol::PWorldPos pktWorldPos = pkt.positioninfo().worldpos();
-		Protocol::PCellPos pktCellpos = pkt.positioninfo().cellpos();
-		Vector2Int cellPos = Vector2Int(pktCellpos.posx(), pktCellpos.posy());
-		if (cellPos != player->GetCellPos())
-		{
-			if (_forestMap->CanGo(cellPos) == false)
-				return;
-		}
-
-		player->PosInfo.set_state(pktState);
-		player->PosInfo.set_movedir(pktMoveDir);
-		player->SetWorldPos(&pktWorldPos);
-		_forestMap->ApplyMove(player, cellPos);
-
-		// 다른 플레이어한테도 알려준다
-		Protocol::S_MOVE movePkt;
-		movePkt.set_allocated_player(player->GetPlayerProtocol());
-		movePkt.set_allocated_positioninfo(player->GetPositionInfoProtocol());
-		Broadcast(movePkt);
+		if (_forestMap->CanGo(cellPos) == false)
+			return;
 	}
+
+	player->PosInfo.set_state(pktState);
+	player->PosInfo.set_movedir(pktMoveDir);
+	player->SetWorldPos(&pktWorldPos);
+	_forestMap->ApplyMove(player, cellPos);
+
+	// 다른 플레이어한테도 알려준다
+	Protocol::S_MOVE movePkt;
+	movePkt.set_allocated_player(player->GetPlayerProtocol());
+	movePkt.set_allocated_positioninfo(player->GetPositionInfoProtocol());
+	Broadcast(movePkt);
 }
 
 void Room::HandleBomb(PlayerRef player, Protocol::C_BOMB& pkt)
@@ -277,28 +276,23 @@ void Room::HandleBomb(PlayerRef player, Protocol::C_BOMB& pkt)
 		return;
 	
 	WRITE_LOCK;
-
 	Vector2 bombPos = player->GetWorldPos() + Vector2(0, -0.3f);
 	Vector2Int bombCellPos = _forestMap->WorldToCell(bombPos);
+
+	if (_forestMap->SetBomb(bombCellPos, player) == false)
+		return;
+
 	{
-		if (player->AddBomb() == false)
-			return;
-
-		if (_forestMap->SetBomb(bombCellPos) == false)
-			return;
-
-		{
-			wstringstream log;
-			log << L"Player ID : " << player->PlayerInfo.id();
-			log << L" has placed a Bomb at (" << bombCellPos.x << ", " << bombCellPos.y << ")";
-			Utils::Log(log);
-		}
-
-		Protocol::S_BOMB bombPkt;
-		bombPkt.set_allocated_player(player->GetPlayerProtocol());
-		bombPkt.set_allocated_cellpos(_forestMap->GetCellPosProtocol(bombCellPos));
-		Broadcast(bombPkt);
+		wstringstream log;
+		log << L"Player ID : " << player->PlayerInfo.id();
+		log << L" has placed a Bomb at (" << bombCellPos.x << ", " << bombCellPos.y << ")";
+		Utils::Log(log);
 	}
+
+	Protocol::S_BOMB bombPkt;
+	bombPkt.set_allocated_player(player->GetPlayerProtocol());
+	bombPkt.set_allocated_cellpos(_forestMap->GetCellPosProtocol(bombCellPos));
+	Broadcast(bombPkt);
 }
 
 void Room::HandleBombEnd(PlayerRef player, Protocol::C_BOMBEND& pkt)
@@ -308,7 +302,8 @@ void Room::HandleBombEnd(PlayerRef player, Protocol::C_BOMBEND& pkt)
 
 	Protocol::S_BOMBEND bombEndPkt;
 	bombEndPkt.set_allocated_player(player->GetPlayerProtocol());
-	_forestMap->DestroyBomb(bombCellPos, player->PlayerInfo.bombrange(), &bombEndPkt);
+	_forestMap->DestroyBomb(bombCellPos, player->PlayerInfo.bombrange(), bombEndPkt);
+	_forestMap->BombResult(bombEndPkt);
 	player->SubBomb();
 	Broadcast(bombEndPkt);
 

@@ -16,17 +16,18 @@ public:
 	Protocol::PCellPos* GetCellPosProtocol(Vector2Int cellPos);
 	Protocol::PWorldPos* GetWorldPosProtocol(Vector2 worldPos);
 
-	bool CanGo(Vector2Int cellPos, bool checkObjects = true);
+	bool CanGo(Vector2Int cellPos);
 
 	void ApplyMove(PlayerRef player, Vector2Int dest);
 	void ApplyLeave(PlayerRef player);
 	Vector2Int FindPlayer(PlayerRef player);
 	Vector<PlayerRef> FindPlayer(Vector2Int cellPos, PlayerRef exceptPlayer = nullptr);
 
-	bool FindBomb(Vector2Int cellPos);
-	bool SetBomb(Vector2Int bomb);
-	void DestroyBomb(Vector2Int pos, int32 range, Protocol::S_BOMBEND* pkt);
-	bool CheckWaterCourse(Vector2Int pos, Protocol::S_BOMBEND* pkt);
+	BombRef FindBomb(Vector2Int cellPos);
+	bool SetBomb(Vector2Int pos, PlayerRef ownerPlayer);
+	void DestroyBomb(Vector2Int pos, int32 range, Protocol::S_BOMBEND& pkt);
+	bool CheckWaterCourse(Vector2Int pos);
+	void BombResult(Protocol::S_BOMBEND& pkt);
 	void SpawnItem(Vector2Int pos);
 
 	void LoadMap(wstring pathPrefix = L"../Common/MapData");
@@ -36,10 +37,15 @@ public:
 	int32 MaxX;
 	int32 MinY;
 	int32 MaxY;
+	int32 PlayerCount;
 	RoomRef OwnerRoom;
 
 private:
 	Vector<Vector<int32>> _blocks;
 	HashMap<PlayerRef, Vector2Int> _players;
 	Map<Vector2Int, Protocol::PItemType> _spawnItems;
+	Map<Vector2Int, BombRef> _bombs;
+
+	Set<Vector2Int> _destroyObjects;
+	Set<PlayerRef> _trapPlayers;
 };

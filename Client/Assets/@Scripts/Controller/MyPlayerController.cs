@@ -126,7 +126,6 @@ public class MyPlayerController : PlayerController
         if (Input.GetKey(KeyCode.Space))
         {
             _coBomb = StartCoroutine(Bomb());
-            // Bomb();
         }
     }
     void TrapInputDir()
@@ -176,7 +175,7 @@ public class MyPlayerController : PlayerController
         C_BOMB bombPkt = new C_BOMB();
         bombPkt.CellPos = PosInfo.CellPos;
         Managers.Net.SessionManager.Broadcast(bombPkt);
-        yield return new WaitForSeconds(0.25f);
+        yield return new WaitForSeconds(0.2f);
         _coBomb = null;
         _bombCool = false;
     }

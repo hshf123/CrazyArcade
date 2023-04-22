@@ -171,6 +171,7 @@
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Bomb.cpp" />
     <ClCompile Include="Channel.cpp" />
     <ClCompile Include="ChannelManager.cpp" />
     <ClCompile Include="Enum.pb.cc">
@@ -212,6 +213,7 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Bomb.h" />
     <ClInclude Include="Channel.h" />
     <ClInclude Include="ChannelManager.h" />
     <ClInclude Include="Enum.pb.h" />

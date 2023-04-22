@@ -25,3 +25,4 @@ using PlayerWeakRef = weak_ptr<class Player>;
 using ChannelRef = shared_ptr<class Channel>;
 using RoomRef = shared_ptr<class Room>;
 using ForestMapRef = shared_ptr<class ForestMap>;
+using BombRef = shared_ptr<class Bomb>;

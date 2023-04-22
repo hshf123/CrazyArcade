@@ -33,35 +33,52 @@ void Player::SubBomb()
 
 void Player::ApplyItemAbility(ItemType type)
 {
-	switch (type)
-	{
-	case ItemType::INCBOMBCOUNT:
-		if(PlayerInfo.maxbombcount() < 9)
-			PlayerInfo.set_maxbombcount(PlayerInfo.maxbombcount() + 1);
-		break;
-	case ItemType::INCBOMBRANGE:
-		if(PlayerInfo.bombrange() < 8)
-			PlayerInfo.set_bombrange(PlayerInfo.bombrange() + 1);
-		break;
-	case ItemType::INCSPEED:
-		PlayerInfo.set_speed(PlayerInfo.speed() + 0.5f);
-		break; break;
-	case ItemType::MAXBOMBRANGE:
-		PlayerInfo.set_bombrange(9);
-		break;
-	default:
-		break;
-	}
-
-#pragma region LOG
 	wstringstream log;
 	log << L"Player ID : ";
 	log << PlayerInfo.id();
 	log << L" | GET ITEM TYPE (";
-	log << typeid(type).name();
+	switch (type)
+	{
+	case ItemType::INCBOMBCOUNT:
+	{
+		if (PlayerInfo.maxbombcount() < 9)
+		{
+			log << L"INCBOMBCOUNT" << PlayerInfo.maxbombcount() << L" -> ";
+			PlayerInfo.set_maxbombcount(PlayerInfo.maxbombcount() + 1);
+			log << PlayerInfo.maxbombcount();
+		}
+		break;
+	}
+	case ItemType::INCBOMBRANGE:
+	{
+		if (PlayerInfo.bombrange() < 8)
+		{
+			log << L"INCBOMBRANGE" << PlayerInfo.bombrange() << L" -> ";
+			PlayerInfo.set_bombrange(PlayerInfo.bombrange() + 1);
+			log << PlayerInfo.bombrange();
+		}
+		break;
+	}
+	case ItemType::INCSPEED:
+	{
+		log << L"INCSPEED" << PlayerInfo.speed() << L" -> ";
+		PlayerInfo.set_speed(PlayerInfo.speed() + 0.5f);
+		log << PlayerInfo.speed();
+		break; break;
+	}
+	case ItemType::MAXBOMBRANGE:
+	{
+		log << L"MAXBOMBRANGE" << PlayerInfo.bombrange() << L" -> ";
+		PlayerInfo.set_bombrange(9);
+		log << PlayerInfo.bombrange();
+		break;
+	}
+	default:
+		break;
+	}
+	
 	log << L")";
 	Utils::Log(log);
-#pragma endregion
 }
 
 void Player::OnTrap()
