@@ -19,9 +19,9 @@ public:
 	Vector2Int GetCellPos() { return Vector2Int(PosInfo.cellpos().posx(), PosInfo.cellpos().posy()); }
 	Vector2 GetWorldPos() { return Vector2(PosInfo.worldpos().posx(), PosInfo.worldpos().posy()); }
 	void SetCellPos(Vector2Int pos);
-	void SetCellPos(Protocol::PCellPos* pkt);
+	void SetCellPos(Protocol::PCellPos& pkt);
 	void SetWorldPos(Vector2 pos);
-	void SetWorldPos(Protocol::PWorldPos* pkt);
+	void SetWorldPos(Protocol::PWorldPos& pkt);
 
 public:
 	void CopyPlayerProtocol(Protocol::PPlayer* pkt);

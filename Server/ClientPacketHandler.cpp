@@ -270,7 +270,7 @@ bool Handle_C_ROOMREADY(PacketSessionRef& session, Protocol::C_ROOMREADY& pkt)
 
 	wstringstream log;
 	
-	log << L"PLAYER ID : " << player->PlayerInfo.id() << L"SET READY : ";
+	log << L"PLAYER ID : " << player->PlayerInfo.id() << L" SET READY : ";
 
 	RoomRef room = player->GetRoom();
 	if (room == nullptr)

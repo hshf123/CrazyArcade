@@ -133,7 +133,7 @@ void Player::SetCellPos(Vector2Int pos)
 	PosInfo.set_allocated_cellpos(cellpos);
 }
 
-void Player::SetCellPos(Protocol::PCellPos* pkt)
+void Player::SetCellPos(Protocol::PCellPos& pkt)
 {
 	auto cellpos = pkt->New();
 	cellpos->set_posx(pkt->posx());
@@ -149,7 +149,7 @@ void Player::SetWorldPos(Vector2 pos)
 	PosInfo.set_allocated_worldpos(worldPos);
 }
 
-void Player::SetWorldPos(Protocol::PWorldPos* pkt)
+void Player::SetWorldPos(Protocol::PWorldPos& pkt)
 {
 	auto worldPos = pkt->New();
 	worldPos->set_posx(pkt->posx());

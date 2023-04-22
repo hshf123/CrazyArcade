@@ -260,7 +260,7 @@ void Room::HandleMove(PlayerRef player, Protocol::C_MOVE& pkt)
 
 	player->PosInfo.set_state(pktState);
 	player->PosInfo.set_movedir(pktMoveDir);
-	player->SetWorldPos(&pktWorldPos);
+	player->SetWorldPos(pktWorldPos);
 	_forestMap->ApplyMove(player, cellPos);
 
 	// 다른 플레이어한테도 알려준다

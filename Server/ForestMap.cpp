@@ -63,10 +63,8 @@ void ForestMap::ApplyMove(PlayerRef player, Vector2Int dest)
 
 	_players[player] = dest;
 
-	// 실제 좌표 이동
-	player->SetCellPos(dest);
-
 #pragma region LOG
+	if(dest != player->GetCellPos())
 	{
 		wstringstream log;
 		log << L"Player ID : ";
@@ -79,6 +77,9 @@ void ForestMap::ApplyMove(PlayerRef player, Vector2Int dest)
 		Utils::Log(log);
 	}
 #pragma endregion
+
+	// 실제 좌표 이동
+	player->SetCellPos(dest);
 
 	// 이동 중에 물풍선 갇힌 애들 발견했을 때
 	if (player->PosInfo.state() == Protocol::PPlayerState::MOVING)
