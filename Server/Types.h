@@ -1,13 +1,6 @@
 #pragma once
 #include "pch.h"
 
-struct Pos
-{
-	Pos(float y, float x) { this->y = y; this->x = x; }
-	float x;
-	float y;
-};
-
 struct Vector2Int
 {
 	Vector2Int() { }

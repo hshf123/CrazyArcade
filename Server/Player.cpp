@@ -127,7 +127,7 @@ void Player::OnDead()
 
 void Player::SetCellPos(Vector2Int pos)
 {
-	Protocol::PCellPos* cellpos = new Protocol::PCellPos();
+	Protocol::PCellPos* cellpos = PosInfo.cellpos().New();
 	cellpos->set_posx(pos.x);
 	cellpos->set_posy(pos.y);
 	PosInfo.set_allocated_cellpos(cellpos);
@@ -135,15 +135,15 @@ void Player::SetCellPos(Vector2Int pos)
 
 void Player::SetCellPos(Protocol::PCellPos& pkt)
 {
-	auto cellpos = pkt->New();
-	cellpos->set_posx(pkt->posx());
-	cellpos->set_posy(pkt->posy());
+	auto cellpos = pkt.New();
+	cellpos->set_posx(pkt.posx());
+	cellpos->set_posy(pkt.posy());
 	PosInfo.set_allocated_cellpos(cellpos);
 }
 
 void Player::SetWorldPos(Vector2 pos)
 {
-	Protocol::PWorldPos* worldPos = new Protocol::PWorldPos();
+	Protocol::PWorldPos* worldPos = PosInfo.worldpos().New();
 	worldPos->set_posx(pos.x);
 	worldPos->set_posy(pos.y);
 	PosInfo.set_allocated_worldpos(worldPos);
@@ -151,9 +151,9 @@ void Player::SetWorldPos(Vector2 pos)
 
 void Player::SetWorldPos(Protocol::PWorldPos& pkt)
 {
-	auto worldPos = pkt->New();
-	worldPos->set_posx(pkt->posx());
-	worldPos->set_posy(pkt->posy());
+	auto worldPos = pkt.New();
+	worldPos->set_posx(pkt.posx());
+	worldPos->set_posy(pkt.posy());
 	PosInfo.set_allocated_worldpos(worldPos);
 }
 
@@ -164,7 +164,7 @@ void Player::CopyPlayerProtocol(Protocol::PPlayer* pkt)
 
 Protocol::PPlayer* Player::GetPlayerProtocol()
 {
-	Protocol::PPlayer* pkt = new Protocol::PPlayer();
+	Protocol::PPlayer* pkt = PlayerInfo.New();
 	pkt->CopyFrom(PlayerInfo);
 	return pkt;
 }

@@ -282,6 +282,8 @@ void Room::HandleBomb(PlayerRef player, Protocol::C_BOMB& pkt)
 	if (_forestMap->SetBomb(bombCellPos, player) == false)
 		return;
 
+
+
 	{
 		wstringstream log;
 		log << L"Player ID : " << player->PlayerInfo.id();
