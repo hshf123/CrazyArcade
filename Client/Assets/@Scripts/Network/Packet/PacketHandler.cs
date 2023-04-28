@@ -185,7 +185,16 @@ public class PacketHandler
         // pkt.Player -> 물풍선 주인이 누군지
         foreach (PCellPos cellpos in pkt.DestroyObjectCellPoses)
             Managers.Map.Break(new Vector3Int(cellpos.PosX, cellpos.PosY, 0));
-        foreach(var playerInfo in pkt.TrapPlayers)
+        foreach (PCellPos cellpos in pkt.DestroyItemCellPoses)
+        {
+            ItemController ic = Managers.Object.FindItem(new Vector3Int(cellpos.PosX, cellpos.PosY, 0));
+            if (ic == null)
+                continue;
+
+            Managers.Resource.Destroy(ic.gameObject);
+            Managers.Object.RemoveItem(new Vector3Int(cellpos.PosX, cellpos.PosY, 0));
+        }
+        foreach (var playerInfo in pkt.TrapPlayers)
         {
             PlayerController pc = Managers.Object.FindPlayer(playerInfo.Id);
             if (pc == null)
@@ -244,5 +253,13 @@ public class PacketHandler
 
         Managers.Resource.Destroy(ic.gameObject);
         Managers.Object.RemoveItem(new Vector3Int(pkt.ItemPos.PosX, pkt.ItemPos.PosY, 0));
+    }
+
+    public static void S_GAMEENDHandler(PacketSession session, IMessage packet)
+    {
+        Debug.Log($"S_GAMEENDHandler");
+
+        ServerSession serverSession = session as ServerSession;
+        S_GAMEEND pkt = packet as S_GAMEEND;
     }
 }

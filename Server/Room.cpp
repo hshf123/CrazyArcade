@@ -102,13 +102,30 @@ void Room::SetIdx(PlayerRef player)
 
 void Room::PlayerDead(PlayerRef player)
 {
+	if (player == nullptr)
+	{
+		wstringstream log;
+		log << L"PLYAERDEAD FUNC ERROR PLYAER IS NULLPTR";
+		Utils::Log(log);
+		return;
+	}
+
 	player->OnDead();
 	_forestMap->ApplyLeave(player);
 	_forestMap->PlayerCount--;
+	player->Rank = _rank--;
 
 	if (_forestMap->PlayerCount == 1)
 	{
 		// TODO : 게임 결과 보여주기
+		Protocol::S_GAMEEND gameEndPkt;
+		for (auto& p : _players)
+		{
+			Protocol::PRoomEnd* roomEnd = gameEndPkt.add_endinfo();
+			roomEnd->set_rank(player->Rank);
+			roomEnd->set_allocated_player(p.second->GetPlayerProtocol());
+		}
+		Broadcast(gameEndPkt);
 	}
 }
 
@@ -167,6 +184,11 @@ void Room::GameInit()
 	_forestMap->LoadMap();
 	_forestMap->OwnerRoom = shared_from_this();
 	_forestMap->PlayerCount = _currentPlayerCount;
+	for (auto& p : _players)
+	{
+		p.second->Kill = 0;
+	}
+	_rank = _players.size();
 }
 
 Protocol::PPositionInfo* Room::GetBasicPosInfo(int32 idx)
@@ -247,21 +269,23 @@ void Room::HandleMove(PlayerRef player, Protocol::C_MOVE& pkt)
 		return;
 
 	WRITE_LOCK;
-	Protocol::PPlayerState pktState = pkt.positioninfo().state();
-	Protocol::PMoveDir pktMoveDir = pkt.positioninfo().movedir();
-	Protocol::PWorldPos pktWorldPos = pkt.positioninfo().worldpos();
-	Protocol::PCellPos pktCellpos = pkt.positioninfo().cellpos();
-	Vector2Int cellPos = Vector2Int(pktCellpos.posx(), pktCellpos.posy());
-	if (cellPos != player->GetCellPos())
-	{
-		if (_forestMap->CanGo(cellPos) == false)
-			return;
-	}
+	//Protocol::PPlayerState pktState = pkt.positioninfo().state();
+	//Protocol::PMoveDir pktMoveDir = pkt.positioninfo().movedir();
+	//Protocol::PWorldPos pktWorldPos = pkt.positioninfo().worldpos();
+	//Protocol::PCellPos pktCellpos = pkt.positioninfo().cellpos();
+	// Vector2Int cellPos = Vector2Int(pktCellpos.posx(), pktCellpos.posy());
+	//if (cellPos != player->GetCellPos())
+	//{
+	//	if (_forestMap->CanGo(cellPos) == false)
+	//		return;
+	//}
+	//
+	//player->PosInfo.set_state(pktState);
+	//player->PosInfo.set_movedir(pktMoveDir);
+	//player->SetWorldPos(pktWorldPos);
 
-	player->PosInfo.set_state(pktState);
-	player->PosInfo.set_movedir(pktMoveDir);
-	player->SetWorldPos(pktWorldPos);
-	_forestMap->ApplyMove(player, cellPos);
+	player->PosInfo = pkt.positioninfo();
+	_forestMap->ApplyMove(player, player->GetCellPos());
 
 	// 다른 플레이어한테도 알려준다
 	Protocol::S_MOVE movePkt;
@@ -281,8 +305,6 @@ void Room::HandleBomb(PlayerRef player, Protocol::C_BOMB& pkt)
 
 	if (_forestMap->SetBomb(bombCellPos, player) == false)
 		return;
-
-
 
 	{
 		wstringstream log;

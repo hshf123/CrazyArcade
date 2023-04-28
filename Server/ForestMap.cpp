@@ -183,7 +183,12 @@ void ForestMap::DestroyBomb(Vector2Int pos, int32 range, Protocol::S_BOMBEND& pk
 {
 	auto findIt = _bombs.find(pos);
 	if (findIt == _bombs.end())
+	{
+		wstringstream log;
+		log << L"POSITION (" << pos.x << L", " << pos.y << L") HAS NO BOMB";
+		Utils::Log(log);
 		return;
+	}
 
 	pkt.set_allocated_bombcellpos(GetCellPosProtocol(pos));
 
@@ -238,13 +243,6 @@ bool ForestMap::CheckWaterCourse(Vector2Int pos)
 	int32 y = MaxY - pos.y;
 	if (CanGo(pos) == false)
 	{
-		// Destroy
-		if (_blocks[y][x] == 2)
-		{
-			_destroyObjects.insert(pos);
-			return false;
-		}
-
 		auto findIt = _bombs.find(pos);
 		if (findIt != _bombs.end())
 		{
@@ -259,10 +257,33 @@ bool ForestMap::CheckWaterCourse(Vector2Int pos)
 			log << L" A bomb located at (" << pos.x << ", " << pos.y << ")" << L" exploded.";
 			Utils::Log(log);
 		}
+		else if (_blocks[y][x] == 2)
+		{
+			// Destroy
+			_destroyObjects.insert(pos);
+			wstringstream log;
+			log << L"POSITION (" << pos.x << ", " << pos.y << ")" << L" OBJECT WILL BE DESTROY";
+			Utils::Log(log);
+			return false;
+		}
+		else
+		{
+			wstringstream log;
+			log << L"POSITION (" << pos.x << ", " << pos.y << ")" << L" IS A FIXOBJECT";
+			Utils::Log(log);
+		}
 
 		return false;
 	}
 	// TODO : 아이템은 사라지게
+	auto findIt = _spawnItems.find(pos);
+	if (findIt != _spawnItems.end())
+	{
+		_destroyItems.insert(pos);
+		wstringstream log;
+		log << L"POSITION (" << pos.x << ", " << pos.y << ")" << L" ITEM WILL BE DESTROY";
+		Utils::Log(log);
+	}
 
 	Vector<PlayerRef> vec = FindPlayer(pos);
 	for (PlayerRef player : vec)
@@ -289,9 +310,24 @@ void ForestMap::BombResult(Protocol::S_BOMBEND& pkt)
 		int32 y = MaxY - pos.y;
 		_blocks[y][x] = 0;
 
+		wstringstream log;
+		log << L"DESTROY OBJECT POSITION : (" << pos.x << L", " << pos.y << L")";
+		Utils::Log(log);
+
 		int32 probability = ::rand() % 10;
-		if (probability < 2)
+		if (probability < 4)
 			SpawnItem(pos);
+	}
+	for (Vector2Int pos : _destroyItems)
+	{
+		auto* cellpos = pkt.add_destroyitemcellposes();
+		cellpos->set_posx(pos.x);
+		cellpos->set_posy(pos.y);
+		_spawnItems.erase(pos);
+
+		wstringstream log;
+		log << L"DESTROY ITEM POSITION : (" << pos.x << L", " << pos.y << L")";
+		Utils::Log(log);
 	}
 	for (PlayerRef player : _trapPlayers)
 	{
@@ -300,6 +336,7 @@ void ForestMap::BombResult(Protocol::S_BOMBEND& pkt)
 		trapPlayer->CopyFrom(player->PlayerInfo);
 	}
 	_destroyObjects.clear();
+	_destroyItems.clear();
 	_trapPlayers.clear();
 }
 

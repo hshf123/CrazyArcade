@@ -141,7 +141,8 @@ message S_BOMBEND
 	PPlayer player = 1;
 	PCellPos bombCellPos = 2;
 	repeated PCellPos destroyObjectCellPoses = 3;
-	repeated PPlayer trapPlayers = 4;
+	repeated PCellPos destroyItemCellPoses = 4;
+	repeated PPlayer trapPlayers = 5;
 }
 
 message S_ITEMSPAWN
@@ -160,4 +161,9 @@ message S_ITEMACQUISITION
 {
 	PPlayer playerInfo = 1;
 	PCellPos itemPos = 2;
+}
+
+message S_GAMEEND
+{
+	repeated PRoomEnd endInfo = 1;
 }

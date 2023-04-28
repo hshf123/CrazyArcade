@@ -34,6 +34,8 @@ public:
 
 public:
 	PlayerInfo PlayerInfo;
+	int32 Kill;
+	int32 Rank;
 
 private:
 	ClientSessionWeakRef _ownerSession;

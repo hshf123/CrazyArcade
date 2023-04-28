@@ -19,6 +19,7 @@ public class Define
     public enum SceneType
     {
         Unknown,
+        DevScene,
         LoginScene,
         ChannelScene,
         LobbyScene,

@@ -43,9 +43,10 @@ public:
 private:
 	Vector<Vector<int32>> _blocks;
 	HashMap<PlayerRef, Vector2Int> _players;
-	Map<Vector2Int, Protocol::PItemType> _spawnItems;
-	Map<Vector2Int, BombRef> _bombs;
+	HashMap<Vector2Int, Protocol::PItemType> _spawnItems;
+	HashMap<Vector2Int, BombRef> _bombs;
 
-	Set<Vector2Int> _destroyObjects;
+	HashSet<Vector2Int> _destroyObjects;
+	HashSet<Vector2Int> _destroyItems;
 	Set<PlayerRef> _trapPlayers;
 };

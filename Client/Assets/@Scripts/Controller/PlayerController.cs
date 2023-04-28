@@ -271,12 +271,12 @@ public class PlayerController : MonoBehaviour
                 Vector3 dist = destPos - WorldPos;
                 float xrange = Mathf.Abs(destPos.x) - Mathf.Floor(Mathf.Abs(destPos.x));
                 float yrange = Mathf.Abs(destPos.y) - Mathf.Floor(Mathf.Abs(destPos.y));
-                if (dist.y != 0 && (xrange <= 0.51f && xrange >= 0.49f))
+                if (dist.y != 0 && (xrange <= 0.515f && xrange >= 0.485f))
                 {
                     // 추가 기준점 2개가 필요하지 않은 경우, y축 이동
                     WorldPos = destPos;
                 }
-                else if (dist.x != 0 && (yrange <= 0.51f && yrange >= 0.49f))
+                else if (dist.x != 0 && (yrange <= 0.515f && yrange >= 0.485f))
                 {
                     // 추가 기준점 2개가 필요하지 않은 경우, x축 이동
                     WorldPos = destPos;

@@ -72,9 +72,6 @@
     <ClCompile Include="Bomb.cpp">
       <Filter>GameContents\Object</Filter>
     </ClCompile>
-    <ClCompile Include="RoomTimer.cpp">
-      <Filter>GameContents\Room</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h">
@@ -124,9 +121,6 @@
     </ClInclude>
     <ClInclude Include="Bomb.h">
       <Filter>GameContents\Object</Filter>
-    </ClInclude>
-    <ClInclude Include="RoomTimer.h">
-      <Filter>GameContents\Room</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

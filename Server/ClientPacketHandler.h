@@ -33,6 +33,7 @@ enum : uint16
 	PKT_S_ITEMSPAWN = 1024,
 	PKT_S_DEAD = 1025,
 	PKT_S_ITEMACQUISITION = 1026,
+	PKT_S_GAMEEND = 1027,
 };
 
 bool Handle_INVALID(PacketSessionRef& session, BYTE* buffer, int32 len);
@@ -90,6 +91,7 @@ public:
 	static SendBufferRef MakeSendBuffer(Protocol::S_ITEMSPAWN& packet) { return MakeSendBuffer(packet, PKT_S_ITEMSPAWN); }
 	static SendBufferRef MakeSendBuffer(Protocol::S_DEAD& packet) { return MakeSendBuffer(packet, PKT_S_DEAD); }
 	static SendBufferRef MakeSendBuffer(Protocol::S_ITEMACQUISITION& packet) { return MakeSendBuffer(packet, PKT_S_ITEMACQUISITION); }
+	static SendBufferRef MakeSendBuffer(Protocol::S_GAMEEND& packet) { return MakeSendBuffer(packet, PKT_S_GAMEEND); }
 
 private:
 	template<class PacketType, class ProcessFunc>

@@ -103,6 +103,9 @@ extern S_CHANNELUPDATEDefaultTypeInternal _S_CHANNELUPDATE_default_instance_;
 class S_DEAD;
 struct S_DEADDefaultTypeInternal;
 extern S_DEADDefaultTypeInternal _S_DEAD_default_instance_;
+class S_GAMEEND;
+struct S_GAMEENDDefaultTypeInternal;
+extern S_GAMEENDDefaultTypeInternal _S_GAMEEND_default_instance_;
 class S_ITEMACQUISITION;
 struct S_ITEMACQUISITIONDefaultTypeInternal;
 extern S_ITEMACQUISITIONDefaultTypeInternal _S_ITEMACQUISITION_default_instance_;
@@ -150,6 +153,7 @@ template<> ::Protocol::S_CHANNELCHAT* Arena::CreateMaybeMessage<::Protocol::S_CH
 template<> ::Protocol::S_CHANNELCHOICE* Arena::CreateMaybeMessage<::Protocol::S_CHANNELCHOICE>(Arena*);
 template<> ::Protocol::S_CHANNELUPDATE* Arena::CreateMaybeMessage<::Protocol::S_CHANNELUPDATE>(Arena*);
 template<> ::Protocol::S_DEAD* Arena::CreateMaybeMessage<::Protocol::S_DEAD>(Arena*);
+template<> ::Protocol::S_GAMEEND* Arena::CreateMaybeMessage<::Protocol::S_GAMEEND>(Arena*);
 template<> ::Protocol::S_ITEMACQUISITION* Arena::CreateMaybeMessage<::Protocol::S_ITEMACQUISITION>(Arena*);
 template<> ::Protocol::S_ITEMSPAWN* Arena::CreateMaybeMessage<::Protocol::S_ITEMSPAWN>(Arena*);
 template<> ::Protocol::S_LOGIN* Arena::CreateMaybeMessage<::Protocol::S_LOGIN>(Arena*);
@@ -3839,7 +3843,8 @@ class S_BOMBEND final :
 
   enum : int {
     kDestroyObjectCellPosesFieldNumber = 3,
-    kTrapPlayersFieldNumber = 4,
+    kDestroyItemCellPosesFieldNumber = 4,
+    kTrapPlayersFieldNumber = 5,
     kPlayerFieldNumber = 1,
     kBombCellPosFieldNumber = 2,
   };
@@ -3861,7 +3866,25 @@ class S_BOMBEND final :
   const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::Protocol::PCellPos >&
       destroyobjectcellposes() const;
 
-  // repeated .Protocol.PPlayer trapPlayers = 4;
+  // repeated .Protocol.PCellPos destroyItemCellPoses = 4;
+  int destroyitemcellposes_size() const;
+  private:
+  int _internal_destroyitemcellposes_size() const;
+  public:
+  void clear_destroyitemcellposes();
+  ::Protocol::PCellPos* mutable_destroyitemcellposes(int index);
+  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::Protocol::PCellPos >*
+      mutable_destroyitemcellposes();
+  private:
+  const ::Protocol::PCellPos& _internal_destroyitemcellposes(int index) const;
+  ::Protocol::PCellPos* _internal_add_destroyitemcellposes();
+  public:
+  const ::Protocol::PCellPos& destroyitemcellposes(int index) const;
+  ::Protocol::PCellPos* add_destroyitemcellposes();
+  const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::Protocol::PCellPos >&
+      destroyitemcellposes() const;
+
+  // repeated .Protocol.PPlayer trapPlayers = 5;
   int trapplayers_size() const;
   private:
   int _internal_trapplayers_size() const;
@@ -3923,6 +3946,7 @@ class S_BOMBEND final :
   typedef void InternalArenaConstructable_;
   typedef void DestructorSkippable_;
   ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::Protocol::PCellPos > destroyobjectcellposes_;
+  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::Protocol::PCellPos > destroyitemcellposes_;
   ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::Protocol::PPlayer > trapplayers_;
   ::Protocol::PPlayer* player_;
   ::Protocol::PCellPos* bombcellpos_;
@@ -4433,6 +4457,158 @@ class S_ITEMACQUISITION final :
   typedef void DestructorSkippable_;
   ::Protocol::PPlayer* playerinfo_;
   ::Protocol::PCellPos* itempos_;
+  mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
+  friend struct ::TableStruct_Protocol_2eproto;
+};
+// -------------------------------------------------------------------
+
+class S_GAMEEND final :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:Protocol.S_GAMEEND) */ {
+ public:
+  inline S_GAMEEND() : S_GAMEEND(nullptr) {}
+  ~S_GAMEEND() override;
+  explicit PROTOBUF_CONSTEXPR S_GAMEEND(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
+
+  S_GAMEEND(const S_GAMEEND& from);
+  S_GAMEEND(S_GAMEEND&& from) noexcept
+    : S_GAMEEND() {
+    *this = ::std::move(from);
+  }
+
+  inline S_GAMEEND& operator=(const S_GAMEEND& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline S_GAMEEND& operator=(S_GAMEEND&& from) noexcept {
+    if (this == &from) return *this;
+    if (GetOwningArena() == from.GetOwningArena()
+  #ifdef PROTOBUF_FORCE_COPY_IN_MOVE
+        && GetOwningArena() != nullptr
+  #endif  // !PROTOBUF_FORCE_COPY_IN_MOVE
+    ) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const S_GAMEEND& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const S_GAMEEND* internal_default_instance() {
+    return reinterpret_cast<const S_GAMEEND*>(
+               &_S_GAMEEND_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    27;
+
+  friend void swap(S_GAMEEND& a, S_GAMEEND& b) {
+    a.Swap(&b);
+  }
+  inline void Swap(S_GAMEEND* other) {
+    if (other == this) return;
+  #ifdef PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetOwningArena() != nullptr &&
+        GetOwningArena() == other->GetOwningArena()) {
+   #else  // PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetOwningArena() == other->GetOwningArena()) {
+  #endif  // !PROTOBUF_FORCE_COPY_IN_SWAP
+      InternalSwap(other);
+    } else {
+      ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(S_GAMEEND* other) {
+    if (other == this) return;
+    GOOGLE_DCHECK(GetOwningArena() == other->GetOwningArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  S_GAMEEND* New(::PROTOBUF_NAMESPACE_ID::Arena* arena = nullptr) const final {
+    return CreateMaybeMessage<S_GAMEEND>(arena);
+  }
+  using ::PROTOBUF_NAMESPACE_ID::Message::CopyFrom;
+  void CopyFrom(const S_GAMEEND& from);
+  using ::PROTOBUF_NAMESPACE_ID::Message::MergeFrom;
+  void MergeFrom(const S_GAMEEND& from);
+  private:
+  static void MergeImpl(::PROTOBUF_NAMESPACE_ID::Message* to, const ::PROTOBUF_NAMESPACE_ID::Message& from);
+  public:
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  size_t ByteSizeLong() const final;
+  const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
+  uint8_t* _InternalSerialize(
+      uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
+  int GetCachedSize() const final { return _cached_size_.Get(); }
+
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(S_GAMEEND* other);
+
+  private:
+  friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
+  static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
+    return "Protocol.S_GAMEEND";
+  }
+  protected:
+  explicit S_GAMEEND(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+                       bool is_message_owned = false);
+  public:
+
+  static const ClassData _class_data_;
+  const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*GetClassData() const final;
+
+  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  enum : int {
+    kEndInfoFieldNumber = 1,
+  };
+  // repeated .Protocol.PRoomEnd endInfo = 1;
+  int endinfo_size() const;
+  private:
+  int _internal_endinfo_size() const;
+  public:
+  void clear_endinfo();
+  ::Protocol::PRoomEnd* mutable_endinfo(int index);
+  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::Protocol::PRoomEnd >*
+      mutable_endinfo();
+  private:
+  const ::Protocol::PRoomEnd& _internal_endinfo(int index) const;
+  ::Protocol::PRoomEnd* _internal_add_endinfo();
+  public:
+  const ::Protocol::PRoomEnd& endinfo(int index) const;
+  ::Protocol::PRoomEnd* add_endinfo();
+  const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::Protocol::PRoomEnd >&
+      endinfo() const;
+
+  // @@protoc_insertion_point(class_scope:Protocol.S_GAMEEND)
+ private:
+  class _Internal;
+
+  template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
+  typedef void InternalArenaConstructable_;
+  typedef void DestructorSkippable_;
+  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::Protocol::PRoomEnd > endinfo_;
   mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   friend struct ::TableStruct_Protocol_2eproto;
 };
@@ -6579,7 +6755,44 @@ S_BOMBEND::destroyobjectcellposes() const {
   return destroyobjectcellposes_;
 }
 
-// repeated .Protocol.PPlayer trapPlayers = 4;
+// repeated .Protocol.PCellPos destroyItemCellPoses = 4;
+inline int S_BOMBEND::_internal_destroyitemcellposes_size() const {
+  return destroyitemcellposes_.size();
+}
+inline int S_BOMBEND::destroyitemcellposes_size() const {
+  return _internal_destroyitemcellposes_size();
+}
+inline ::Protocol::PCellPos* S_BOMBEND::mutable_destroyitemcellposes(int index) {
+  // @@protoc_insertion_point(field_mutable:Protocol.S_BOMBEND.destroyItemCellPoses)
+  return destroyitemcellposes_.Mutable(index);
+}
+inline ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::Protocol::PCellPos >*
+S_BOMBEND::mutable_destroyitemcellposes() {
+  // @@protoc_insertion_point(field_mutable_list:Protocol.S_BOMBEND.destroyItemCellPoses)
+  return &destroyitemcellposes_;
+}
+inline const ::Protocol::PCellPos& S_BOMBEND::_internal_destroyitemcellposes(int index) const {
+  return destroyitemcellposes_.Get(index);
+}
+inline const ::Protocol::PCellPos& S_BOMBEND::destroyitemcellposes(int index) const {
+  // @@protoc_insertion_point(field_get:Protocol.S_BOMBEND.destroyItemCellPoses)
+  return _internal_destroyitemcellposes(index);
+}
+inline ::Protocol::PCellPos* S_BOMBEND::_internal_add_destroyitemcellposes() {
+  return destroyitemcellposes_.Add();
+}
+inline ::Protocol::PCellPos* S_BOMBEND::add_destroyitemcellposes() {
+  ::Protocol::PCellPos* _add = _internal_add_destroyitemcellposes();
+  // @@protoc_insertion_point(field_add:Protocol.S_BOMBEND.destroyItemCellPoses)
+  return _add;
+}
+inline const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::Protocol::PCellPos >&
+S_BOMBEND::destroyitemcellposes() const {
+  // @@protoc_insertion_point(field_list:Protocol.S_BOMBEND.destroyItemCellPoses)
+  return destroyitemcellposes_;
+}
+
+// repeated .Protocol.PPlayer trapPlayers = 5;
 inline int S_BOMBEND::_internal_trapplayers_size() const {
   return trapplayers_.size();
 }
@@ -7073,9 +7286,52 @@ inline void S_ITEMACQUISITION::set_allocated_itempos(::Protocol::PCellPos* itemp
   // @@protoc_insertion_point(field_set_allocated:Protocol.S_ITEMACQUISITION.itemPos)
 }
 
+// -------------------------------------------------------------------
+
+// S_GAMEEND
+
+// repeated .Protocol.PRoomEnd endInfo = 1;
+inline int S_GAMEEND::_internal_endinfo_size() const {
+  return endinfo_.size();
+}
+inline int S_GAMEEND::endinfo_size() const {
+  return _internal_endinfo_size();
+}
+inline ::Protocol::PRoomEnd* S_GAMEEND::mutable_endinfo(int index) {
+  // @@protoc_insertion_point(field_mutable:Protocol.S_GAMEEND.endInfo)
+  return endinfo_.Mutable(index);
+}
+inline ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::Protocol::PRoomEnd >*
+S_GAMEEND::mutable_endinfo() {
+  // @@protoc_insertion_point(field_mutable_list:Protocol.S_GAMEEND.endInfo)
+  return &endinfo_;
+}
+inline const ::Protocol::PRoomEnd& S_GAMEEND::_internal_endinfo(int index) const {
+  return endinfo_.Get(index);
+}
+inline const ::Protocol::PRoomEnd& S_GAMEEND::endinfo(int index) const {
+  // @@protoc_insertion_point(field_get:Protocol.S_GAMEEND.endInfo)
+  return _internal_endinfo(index);
+}
+inline ::Protocol::PRoomEnd* S_GAMEEND::_internal_add_endinfo() {
+  return endinfo_.Add();
+}
+inline ::Protocol::PRoomEnd* S_GAMEEND::add_endinfo() {
+  ::Protocol::PRoomEnd* _add = _internal_add_endinfo();
+  // @@protoc_insertion_point(field_add:Protocol.S_GAMEEND.endInfo)
+  return _add;
+}
+inline const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::Protocol::PRoomEnd >&
+S_GAMEEND::endinfo() const {
+  // @@protoc_insertion_point(field_list:Protocol.S_GAMEEND.endInfo)
+  return endinfo_;
+}
+
 #ifdef __GNUC__
   #pragma GCC diagnostic pop
 #endif  // __GNUC__
+// -------------------------------------------------------------------
+
 // -------------------------------------------------------------------
 
 // -------------------------------------------------------------------

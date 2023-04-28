@@ -62,6 +62,7 @@ private:
 	ForestMapRef _forestMap;
 	int32 _respawnPosX[8] = { -7,4,-7,4,-5,0,-5,2 };
 	int32 _respawnPosY[8] = { 5,5,-6,-6,5,5,-6,-6 };
+	int32 _rank;
 };
 
 template <class T>

@@ -65,3 +65,9 @@ message PRoomStart
 	PPlayer playerInfo = 1;
 	PPositionInfo posInfo = 2;
 }
+
+message PRoomEnd
+{
+	int32 rank = 1;
+	PPlayer player = 2;
+}
