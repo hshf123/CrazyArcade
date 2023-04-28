@@ -97,6 +97,14 @@ MonoBehaviour:
     m_Address: UI_SettingsPopup
     m_ReadOnly: 0
     m_SerializedLabels: []
+  - m_GUID: 793eae24ed283a149a62c9dbba35f57e
+    m_Address: UI_GameResultPopup
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: f6f2a9f9e8bf10b4eb6802366666543b
+    m_Address: UI_RankSubItem
+    m_ReadOnly: 0
+    m_SerializedLabels: []
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 37d63db9dee568844aed5ef436298665, type: 2}
   m_SchemaSet:

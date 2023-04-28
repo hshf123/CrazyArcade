@@ -261,5 +261,11 @@ public class PacketHandler
 
         ServerSession serverSession = session as ServerSession;
         S_GAMEEND pkt = packet as S_GAMEEND;
+
+        Managers.UI.ShowPopupUI<UI_GameResultPopup>(null, null,
+            (popup) =>
+            {
+                popup.RefreshRankPage(pkt);
+            });
     }
 }
