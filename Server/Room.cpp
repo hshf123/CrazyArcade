@@ -269,23 +269,8 @@ void Room::HandleMove(PlayerRef player, Protocol::C_MOVE& pkt)
 		return;
 
 	WRITE_LOCK;
-	//Protocol::PPlayerState pktState = pkt.positioninfo().state();
-	//Protocol::PMoveDir pktMoveDir = pkt.positioninfo().movedir();
-	//Protocol::PWorldPos pktWorldPos = pkt.positioninfo().worldpos();
-	//Protocol::PCellPos pktCellpos = pkt.positioninfo().cellpos();
-	// Vector2Int cellPos = Vector2Int(pktCellpos.posx(), pktCellpos.posy());
-	//if (cellPos != player->GetCellPos())
-	//{
-	//	if (_forestMap->CanGo(cellPos) == false)
-	//		return;
-	//}
-	//
-	//player->PosInfo.set_state(pktState);
-	//player->PosInfo.set_movedir(pktMoveDir);
-	//player->SetWorldPos(pktWorldPos);
-
-	player->PosInfo = pkt.positioninfo();
 	_forestMap->ApplyMove(player, player->GetCellPos());
+	player->PosInfo = pkt.positioninfo();
 
 	// 다른 플레이어한테도 알려준다
 	Protocol::S_MOVE movePkt;

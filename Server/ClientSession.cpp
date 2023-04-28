@@ -32,12 +32,12 @@ void ClientSession::OnDisconnected()
 				channel->RemovePlayer(player->PlayerInfo.id());
 			}
 		}
-	}
 
-	wstringstream log;
-	log << L"PLAYER ID : " << player->PlayerInfo.id() << L" DISCONNECTED";
-	Utils::Log(log);
-	player = nullptr;
+		wstringstream log;
+		log << L"PLAYER ID : " << player->PlayerInfo.id() << L" DISCONNECTED";
+		Utils::Log(log);
+		player = nullptr;
+	}
 }
 
 void ClientSession::OnRecvPacket(BYTE* buffer, int32 len)

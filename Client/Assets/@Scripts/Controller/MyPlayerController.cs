@@ -79,10 +79,10 @@ public class MyPlayerController : PlayerController
 
         return true;
     }
-    protected override void VirtualUpdate()
+    protected override void UpdateController()
     {
         InputDir();
-        base.VirtualUpdate();
+        base.UpdateController();
         CheckUpdateFlag();
     }
 
