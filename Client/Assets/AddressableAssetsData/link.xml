@@ -8,10 +8,12 @@
     <type fullname="PopulationBar" preserve="all" />
     <type fullname="UI_ChannelScene" preserve="all" />
     <type fullname="UI_ChannelSubItem" preserve="all" />
+    <type fullname="UI_GameResultPopup" preserve="all" />
     <type fullname="UI_LobbyScene" preserve="all" />
     <type fullname="UI_LoginScene" preserve="all" />
     <type fullname="UI_MakeRoomPopup" preserve="all" />
     <type fullname="UI_PlayerSubItem" preserve="all" />
+    <type fullname="UI_RankSubItem" preserve="all" />
     <type fullname="UI_RoomDummySubItem" preserve="all" />
     <type fullname="UI_RoomScene" preserve="all" />
     <type fullname="UI_RoomSubItem" preserve="all" />

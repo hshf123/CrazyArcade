@@ -1,4 +1,7 @@
+using Google.Protobuf.Collections;
 using Google.Protobuf.Protocol;
+using Protocol;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -13,7 +16,9 @@ public class UI_GameResultPopup : UI_Popup
         LoseImage_2,
     }
 
+    SortedDictionary<int, UI_RankSubItem> _subItems = new SortedDictionary<int, UI_RankSubItem>();
     GameObject _rank;
+    public RepeatedField<PRoomEnd> EndInfo;
 
     public override bool Init()
     {
@@ -27,33 +32,43 @@ public class UI_GameResultPopup : UI_Popup
         Get<Image>((int)Images.LoseImage_2).gameObject.SetActive(false);
 
         _rank = Utils.FindChild(gameObject, "Rank", true);
+        RefreshRankPage();
 
         return true;
     }
 
-    public void RefreshRankPage(S_GAMEEND pkt)
+    void RefreshRankPage()
     {
         foreach (UI_RankSubItem subItem in Utils.FindChilds<UI_RankSubItem>(gameObject, true))
             Managers.Resource.Destroy(subItem.gameObject);
 
-        foreach(var endInfo in pkt.EndInfo)
+        foreach (var endInfo in EndInfo)
         {
-            InstantiateRankSubItem(endInfo.Rank,endInfo.Player.Level, endInfo.Player.Name, 0, 0, endInfo.Player.Exp, 0);
+            InstantiateRankSubItem(endInfo.Rank, endInfo.Player.Level, endInfo.Player.Name, 0, 0, endInfo.Player.Exp, 0);
+            if(endInfo.Rank == 1 && endInfo.Player.Id == Managers.Game.PlayerID)
+            {
+                Get<Image>((int)Images.WinImage).gameObject.SetActive(true);
+            }
+            else if(endInfo.Player.Id == Managers.Game.PlayerID)
+            {
+                Get<Image>((int)Images.LoseImage_1).gameObject.SetActive(true);
+                Get<Image>((int)Images.LoseImage_2).gameObject.SetActive(true);
+            }
         }
     }
-
-    void InstantiateRankSubItem(int rank,int level, string name, int kill, int save, float exp, int lucci)
+    void InstantiateRankSubItem(int rank, int level, string name, int kill, int save, float exp, int lucci)
     {
         Managers.UI.MakeSubItem<UI_RankSubItem>(_rank.transform, null,
-            (subItem) =>
-            {
-                subItem.Rank = rank;
-                subItem.Level = level;
-                subItem.Name = name;
-                subItem.Kill = kill;
-                subItem.Save = save;
-                subItem.Exp = exp;
-                subItem.Lucci = lucci;
-            });
+                    (subItem) =>
+                    {
+                        subItem.Rank = rank;
+                        subItem.Level = level;
+                        subItem.Name = name;
+                        subItem.Kill = kill;
+                        subItem.Save = save;
+                        subItem.Exp = exp;
+                        subItem.Lucci = lucci;
+                        subItem.transform.SetSiblingIndex(rank - 1);
+                    });
     }
 }

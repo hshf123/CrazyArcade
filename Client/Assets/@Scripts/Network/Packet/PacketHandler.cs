@@ -265,7 +265,8 @@ public class PacketHandler
         Managers.UI.ShowPopupUI<UI_GameResultPopup>(null, null,
             (popup) =>
             {
-                popup.RefreshRankPage(pkt);
+                var gameResultPopup = popup.GetComponent<UI_GameResultPopup>();
+                gameResultPopup.EndInfo = pkt.EndInfo;
             });
     }
 }

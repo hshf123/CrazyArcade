@@ -115,6 +115,10 @@ void Room::PlayerDead(PlayerRef player)
 	_forestMap->PlayerCount--;
 	player->Rank = _rank--;
 
+	wstringstream log;
+	log << L"PLAYERID : " << player->PlayerInfo.id() << L" IS DEAD RANK : " << player->Rank;
+	Utils::Log(log);
+
 	if (_forestMap->PlayerCount == 1)
 	{
 		// TODO : 게임 결과 보여주기
@@ -122,7 +126,7 @@ void Room::PlayerDead(PlayerRef player)
 		for (auto& p : _players)
 		{
 			Protocol::PRoomEnd* roomEnd = gameEndPkt.add_endinfo();
-			roomEnd->set_rank(player->Rank);
+			roomEnd->set_rank(p.second->Rank);
 			roomEnd->set_allocated_player(p.second->GetPlayerProtocol());
 		}
 		Broadcast(gameEndPkt);

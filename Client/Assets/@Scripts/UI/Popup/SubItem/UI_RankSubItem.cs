@@ -38,6 +38,11 @@ public class UI_RankSubItem : UI_Base
         BindText(typeof(Texts));
         Bind<Image>(typeof(Images));
 
+        if(Rank != 1)
+            Get<Image>((int)Images.WinMiniImage).gameObject.SetActive(false);
+        else
+            Get<Image>((int)Images.LoseMiniImage).gameObject.SetActive(false);
+
         GetText((int)Texts.RankText).text = $"{Rank}";
         GetText((int)Texts.LevelText).text = $"Lv. {Level:D2}";
         GetText((int)Texts.IDText).text = $"{Name}";
