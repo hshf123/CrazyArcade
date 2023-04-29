@@ -6,37 +6,40 @@ extern PacketHandlerFunc GPacketHandler[UINT16_MAX];
 
 enum : uint16
 {
-	PKT_C_LOGIN = 1000,
-	PKT_S_LOGIN = 1001,
-	PKT_C_CHANNELCHOICE = 1002,
-	PKT_S_CHANNELCHOICE = 1003,
-	PKT_C_CHANNELCHAT = 1004,
-	PKT_S_CHANNELCHAT = 1005,
-	PKT_C_MAKEROOM = 1006,
-	PKT_S_MAKEROOM = 1007,
-	PKT_S_CHANNELUPDATE = 1008,
-	PKT_C_ROOMENTER = 1009,
-	PKT_S_ROOMENTER = 1010,
-	PKT_C_ROOMLEAVE = 1011,
-	PKT_S_ROOMUPDATE = 1012,
-	PKT_C_ROOMREADY = 1013,
-	PKT_C_ROOMCHAT = 1014,
-	PKT_S_ROOMCHAT = 1015,
-	PKT_C_ROOMSTART = 1016,
-	PKT_S_ROOMSTART = 1017,
-	PKT_C_MOVE = 1018,
-	PKT_S_MOVE = 1019,
-	PKT_C_BOMB = 1020,
-	PKT_S_BOMB = 1021,
-	PKT_C_BOMBEND = 1022,
-	PKT_S_BOMBEND = 1023,
-	PKT_S_ITEMSPAWN = 1024,
-	PKT_S_DEAD = 1025,
-	PKT_S_ITEMACQUISITION = 1026,
-	PKT_S_GAMEEND = 1027,
+	PKT_C_PING = 1000,
+	PKT_S_PING = 1001,
+	PKT_C_LOGIN = 1002,
+	PKT_S_LOGIN = 1003,
+	PKT_C_CHANNELCHOICE = 1004,
+	PKT_S_CHANNELCHOICE = 1005,
+	PKT_C_CHANNELCHAT = 1006,
+	PKT_S_CHANNELCHAT = 1007,
+	PKT_C_MAKEROOM = 1008,
+	PKT_S_MAKEROOM = 1009,
+	PKT_S_CHANNELUPDATE = 1010,
+	PKT_C_ROOMENTER = 1011,
+	PKT_S_ROOMENTER = 1012,
+	PKT_C_ROOMLEAVE = 1013,
+	PKT_S_ROOMUPDATE = 1014,
+	PKT_C_ROOMREADY = 1015,
+	PKT_C_ROOMCHAT = 1016,
+	PKT_S_ROOMCHAT = 1017,
+	PKT_C_ROOMSTART = 1018,
+	PKT_S_ROOMSTART = 1019,
+	PKT_C_MOVE = 1020,
+	PKT_S_MOVE = 1021,
+	PKT_C_BOMB = 1022,
+	PKT_S_BOMB = 1023,
+	PKT_C_BOMBEND = 1024,
+	PKT_S_BOMBEND = 1025,
+	PKT_S_ITEMSPAWN = 1026,
+	PKT_S_DEAD = 1027,
+	PKT_S_ITEMACQUISITION = 1028,
+	PKT_S_GAMEEND = 1029,
 };
 
 bool Handle_INVALID(PacketSessionRef& session, BYTE* buffer, int32 len);
+bool Handle_C_PING(PacketSessionRef& session, Protocol::C_PING& pkt);
 bool Handle_C_LOGIN(PacketSessionRef& session, Protocol::C_LOGIN& pkt);
 bool Handle_C_CHANNELCHOICE(PacketSessionRef& session, Protocol::C_CHANNELCHOICE& pkt);
 bool Handle_C_CHANNELCHAT(PacketSessionRef& session, Protocol::C_CHANNELCHAT& pkt);
@@ -57,6 +60,7 @@ public:
 	{
 		for (int32 i = 0; i < UINT16_MAX; i++)
 			GPacketHandler[i] = Handle_INVALID;
+		GPacketHandler[PKT_C_PING] = [](PacketSessionRef& session, BYTE* buffer, int32 len) { return HandlePacket<Protocol::C_PING>(Handle_C_PING, session, buffer, len); };
 		GPacketHandler[PKT_C_LOGIN] = [](PacketSessionRef& session, BYTE* buffer, int32 len) { return HandlePacket<Protocol::C_LOGIN>(Handle_C_LOGIN, session, buffer, len); };
 		GPacketHandler[PKT_C_CHANNELCHOICE] = [](PacketSessionRef& session, BYTE* buffer, int32 len) { return HandlePacket<Protocol::C_CHANNELCHOICE>(Handle_C_CHANNELCHOICE, session, buffer, len); };
 		GPacketHandler[PKT_C_CHANNELCHAT] = [](PacketSessionRef& session, BYTE* buffer, int32 len) { return HandlePacket<Protocol::C_CHANNELCHAT>(Handle_C_CHANNELCHAT, session, buffer, len); };
@@ -76,6 +80,7 @@ public:
 		PacketHeader* header = reinterpret_cast<PacketHeader*>(buffer);
 		return GPacketHandler[header->id](session, buffer, len);
 	}
+	static SendBufferRef MakeSendBuffer(Protocol::S_PING& packet) { return MakeSendBuffer(packet, PKT_S_PING); }
 	static SendBufferRef MakeSendBuffer(Protocol::S_LOGIN& packet) { return MakeSendBuffer(packet, PKT_S_LOGIN); }
 	static SendBufferRef MakeSendBuffer(Protocol::S_CHANNELCHOICE& packet) { return MakeSendBuffer(packet, PKT_S_CHANNELCHOICE); }
 	static SendBufferRef MakeSendBuffer(Protocol::S_CHANNELCHAT& packet) { return MakeSendBuffer(packet, PKT_S_CHANNELCHAT); }

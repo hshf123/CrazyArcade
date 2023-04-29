@@ -69,17 +69,13 @@ public class GameScene : BaseScene
     }
     public void InstantiateBomb(PPlayer playerInfo, PCellPos cellPos, long ownerId)
     {
-        if (Managers.Game.PlayerID == playerInfo.Id)
-        {
-        }
-
         Managers.Resource.Instantiate("Bomb", null,
             (bomb) =>
             {
                 BombController bc = bomb.GetComponent<BombController>();
                 bc.CellPos = cellPos;
                 bc.Range = playerInfo.BombRange;
-                bc.SortOrder = -100 + (Managers.Map.MaxY - cellPos.PosY) * 2 + 1;
+                bc.SortOrder = -100 + (Managers.Map.MaxY - cellPos.PosY) * 2;
                 bc.OwnerId = ownerId;
                 Managers.Object.AddBomb(new Vector3Int(cellPos.PosX, cellPos.PosY, 0), bomb.GetComponent<BombController>());
                 bomb.transform.position = new Vector3(bc.CellPos.PosX + correction.x, bc.CellPos.PosY + correction.y, 0);

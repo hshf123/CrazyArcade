@@ -21,6 +21,28 @@ namespace _pb = ::PROTOBUF_NAMESPACE_ID;
 namespace _pbi = _pb::internal;
 
 namespace Protocol {
+PROTOBUF_CONSTEXPR C_PING::C_PING(
+    ::_pbi::ConstantInitialized){}
+struct C_PINGDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR C_PINGDefaultTypeInternal()
+      : _instance(::_pbi::ConstantInitialized{}) {}
+  ~C_PINGDefaultTypeInternal() {}
+  union {
+    C_PING _instance;
+  };
+};
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 C_PINGDefaultTypeInternal _C_PING_default_instance_;
+PROTOBUF_CONSTEXPR S_PING::S_PING(
+    ::_pbi::ConstantInitialized){}
+struct S_PINGDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR S_PINGDefaultTypeInternal()
+      : _instance(::_pbi::ConstantInitialized{}) {}
+  ~S_PINGDefaultTypeInternal() {}
+  union {
+    S_PING _instance;
+  };
+};
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 S_PINGDefaultTypeInternal _S_PING_default_instance_;
 PROTOBUF_CONSTEXPR C_LOGIN::C_LOGIN(
     ::_pbi::ConstantInitialized)
   : id_(&::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized{})
@@ -377,11 +399,23 @@ struct S_GAMEENDDefaultTypeInternal {
 };
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 S_GAMEENDDefaultTypeInternal _S_GAMEEND_default_instance_;
 }  // namespace Protocol
-static ::_pb::Metadata file_level_metadata_Protocol_2eproto[28];
+static ::_pb::Metadata file_level_metadata_Protocol_2eproto[30];
 static constexpr ::_pb::EnumDescriptor const** file_level_enum_descriptors_Protocol_2eproto = nullptr;
 static constexpr ::_pb::ServiceDescriptor const** file_level_service_descriptors_Protocol_2eproto = nullptr;
 
 const uint32_t TableStruct_Protocol_2eproto::offsets[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) = {
+  ~0u,  // no _has_bits_
+  PROTOBUF_FIELD_OFFSET(::Protocol::C_PING, _internal_metadata_),
+  ~0u,  // no _extensions_
+  ~0u,  // no _oneof_case_
+  ~0u,  // no _weak_field_map_
+  ~0u,  // no _inlined_string_donated_
+  ~0u,  // no _has_bits_
+  PROTOBUF_FIELD_OFFSET(::Protocol::S_PING, _internal_metadata_),
+  ~0u,  // no _extensions_
+  ~0u,  // no _oneof_case_
+  ~0u,  // no _weak_field_map_
+  ~0u,  // no _inlined_string_donated_
   ~0u,  // no _has_bits_
   PROTOBUF_FIELD_OFFSET(::Protocol::C_LOGIN, _internal_metadata_),
   ~0u,  // no _extensions_
@@ -598,37 +632,41 @@ const uint32_t TableStruct_Protocol_2eproto::offsets[] PROTOBUF_SECTION_VARIABLE
   PROTOBUF_FIELD_OFFSET(::Protocol::S_GAMEEND, endinfo_),
 };
 static const ::_pbi::MigrationSchema schemas[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) = {
-  { 0, -1, -1, sizeof(::Protocol::C_LOGIN)},
-  { 8, -1, -1, sizeof(::Protocol::S_LOGIN)},
-  { 17, -1, -1, sizeof(::Protocol::C_CHANNELCHOICE)},
-  { 24, -1, -1, sizeof(::Protocol::S_CHANNELCHOICE)},
-  { 33, -1, -1, sizeof(::Protocol::C_CHANNELCHAT)},
-  { 40, -1, -1, sizeof(::Protocol::S_CHANNELCHAT)},
-  { 48, -1, -1, sizeof(::Protocol::C_MAKEROOM)},
-  { 55, -1, -1, sizeof(::Protocol::S_MAKEROOM)},
-  { 63, -1, -1, sizeof(::Protocol::S_CHANNELUPDATE)},
-  { 70, -1, -1, sizeof(::Protocol::C_ROOMENTER)},
-  { 77, -1, -1, sizeof(::Protocol::S_ROOMENTER)},
-  { 85, -1, -1, sizeof(::Protocol::C_ROOMLEAVE)},
-  { 91, -1, -1, sizeof(::Protocol::S_ROOMUPDATE)},
-  { 98, -1, -1, sizeof(::Protocol::C_ROOMREADY)},
-  { 104, -1, -1, sizeof(::Protocol::C_ROOMCHAT)},
-  { 111, -1, -1, sizeof(::Protocol::S_ROOMCHAT)},
-  { 119, -1, -1, sizeof(::Protocol::C_ROOMSTART)},
-  { 125, -1, -1, sizeof(::Protocol::S_ROOMSTART)},
-  { 134, -1, -1, sizeof(::Protocol::C_MOVE)},
-  { 141, -1, -1, sizeof(::Protocol::S_MOVE)},
-  { 150, -1, -1, sizeof(::Protocol::C_BOMB)},
-  { 157, -1, -1, sizeof(::Protocol::S_BOMB)},
-  { 165, -1, -1, sizeof(::Protocol::C_BOMBEND)},
-  { 172, -1, -1, sizeof(::Protocol::S_BOMBEND)},
-  { 183, -1, -1, sizeof(::Protocol::S_ITEMSPAWN)},
-  { 191, -1, -1, sizeof(::Protocol::S_DEAD)},
-  { 199, -1, -1, sizeof(::Protocol::S_ITEMACQUISITION)},
-  { 207, -1, -1, sizeof(::Protocol::S_GAMEEND)},
+  { 0, -1, -1, sizeof(::Protocol::C_PING)},
+  { 6, -1, -1, sizeof(::Protocol::S_PING)},
+  { 12, -1, -1, sizeof(::Protocol::C_LOGIN)},
+  { 20, -1, -1, sizeof(::Protocol::S_LOGIN)},
+  { 29, -1, -1, sizeof(::Protocol::C_CHANNELCHOICE)},
+  { 36, -1, -1, sizeof(::Protocol::S_CHANNELCHOICE)},
+  { 45, -1, -1, sizeof(::Protocol::C_CHANNELCHAT)},
+  { 52, -1, -1, sizeof(::Protocol::S_CHANNELCHAT)},
+  { 60, -1, -1, sizeof(::Protocol::C_MAKEROOM)},
+  { 67, -1, -1, sizeof(::Protocol::S_MAKEROOM)},
+  { 75, -1, -1, sizeof(::Protocol::S_CHANNELUPDATE)},
+  { 82, -1, -1, sizeof(::Protocol::C_ROOMENTER)},
+  { 89, -1, -1, sizeof(::Protocol::S_ROOMENTER)},
+  { 97, -1, -1, sizeof(::Protocol::C_ROOMLEAVE)},
+  { 103, -1, -1, sizeof(::Protocol::S_ROOMUPDATE)},
+  { 110, -1, -1, sizeof(::Protocol::C_ROOMREADY)},
+  { 116, -1, -1, sizeof(::Protocol::C_ROOMCHAT)},
+  { 123, -1, -1, sizeof(::Protocol::S_ROOMCHAT)},
+  { 131, -1, -1, sizeof(::Protocol::C_ROOMSTART)},
+  { 137, -1, -1, sizeof(::Protocol::S_ROOMSTART)},
+  { 146, -1, -1, sizeof(::Protocol::C_MOVE)},
+  { 153, -1, -1, sizeof(::Protocol::S_MOVE)},
+  { 162, -1, -1, sizeof(::Protocol::C_BOMB)},
+  { 169, -1, -1, sizeof(::Protocol::S_BOMB)},
+  { 177, -1, -1, sizeof(::Protocol::C_BOMBEND)},
+  { 184, -1, -1, sizeof(::Protocol::S_BOMBEND)},
+  { 195, -1, -1, sizeof(::Protocol::S_ITEMSPAWN)},
+  { 203, -1, -1, sizeof(::Protocol::S_DEAD)},
+  { 211, -1, -1, sizeof(::Protocol::S_ITEMACQUISITION)},
+  { 219, -1, -1, sizeof(::Protocol::S_GAMEEND)},
 };
 
 static const ::_pb::Message* const file_default_instances[] = {
+  &::Protocol::_C_PING_default_instance_._instance,
+  &::Protocol::_S_PING_default_instance_._instance,
   &::Protocol::_C_LOGIN_default_instance_._instance,
   &::Protocol::_S_LOGIN_default_instance_._instance,
   &::Protocol::_C_CHANNELCHOICE_default_instance_._instance,
@@ -662,51 +700,52 @@ static const ::_pb::Message* const file_default_instances[] = {
 const char descriptor_table_protodef_Protocol_2eproto[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) =
   "\n\016Protocol.proto\022\010Protocol\032\037google/proto"
   "buf/timestamp.proto\032\nEnum.proto\032\014Struct."
-  "proto\"!\n\007C_LOGIN\022\n\n\002id\030\001 \001(\t\022\n\n\002pw\030\002 \001(\t"
-  "\"c\n\007S_LOGIN\022\017\n\007success\030\001 \001(\010\022$\n\010channels"
-  "\030\002 \003(\0132\022.Protocol.PChannel\022!\n\006player\030\003 \001"
-  "(\0132\021.Protocol.PPlayer\"$\n\017C_CHANNELCHOICE"
-  "\022\021\n\tchannelId\030\001 \001(\005\"U\n\017S_CHANNELCHOICE\022\017"
-  "\n\007success\030\001 \001(\010\022\021\n\tchannelId\030\002 \001(\005\022\036\n\005ro"
-  "oms\030\003 \003(\0132\017.Protocol.PRoom\"\035\n\rC_CHANNELC"
-  "HAT\022\014\n\004chat\030\001 \001(\t\"+\n\rS_CHANNELCHAT\022\014\n\004na"
-  "me\030\001 \001(\t\022\014\n\004chat\030\002 \001(\t\"\036\n\nC_MAKEROOM\022\020\n\010"
-  "roomName\030\001 \001(\t\"<\n\nS_MAKEROOM\022\017\n\007success\030"
-  "\001 \001(\010\022\035\n\004room\030\002 \001(\0132\017.Protocol.PRoom\"1\n\017"
-  "S_CHANNELUPDATE\022\036\n\005rooms\030\001 \003(\0132\017.Protoco"
-  "l.PRoom\"\035\n\013C_ROOMENTER\022\016\n\006roomId\030\001 \001(\005\"="
-  "\n\013S_ROOMENTER\022\017\n\007success\030\001 \001(\010\022\035\n\004room\030\002"
-  " \001(\0132\017.Protocol.PRoom\"\r\n\013C_ROOMLEAVE\"-\n\014"
-  "S_ROOMUPDATE\022\035\n\004room\030\001 \001(\0132\017.Protocol.PR"
-  "oom\"\r\n\013C_ROOMREADY\"\031\n\nC_ROOMCHAT\022\013\n\003msg\030"
-  "\001 \001(\t\"<\n\nS_ROOMCHAT\022!\n\006player\030\001 \001(\0132\021.Pr"
-  "otocol.PPlayer\022\013\n\003msg\030\002 \001(\t\"\r\n\013C_ROOMSTA"
-  "RT\"b\n\013S_ROOMSTART\022\017\n\007success\030\001 \001(\010\022\035\n\004ro"
-  "om\030\002 \001(\0132\017.Protocol.PRoom\022#\n\005spawn\030\003 \003(\013"
-  "2\024.Protocol.PRoomStart\"7\n\006C_MOVE\022-\n\014posi"
-  "tionInfo\030\001 \001(\0132\027.Protocol.PPositionInfo\""
-  "i\n\006S_MOVE\022\r\n\005force\030\001 \001(\010\022!\n\006player\030\002 \001(\013"
-  "2\021.Protocol.PPlayer\022-\n\014positionInfo\030\003 \001("
-  "\0132\027.Protocol.PPositionInfo\"-\n\006C_BOMB\022#\n\007"
-  "cellPos\030\001 \001(\0132\022.Protocol.PCellPos\"P\n\006S_B"
-  "OMB\022!\n\006player\030\001 \001(\0132\021.Protocol.PPlayer\022#"
-  "\n\007cellpos\030\002 \001(\0132\022.Protocol.PCellPos\"0\n\tC"
-  "_BOMBEND\022#\n\007cellPos\030\001 \001(\0132\022.Protocol.PCe"
-  "llPos\"\345\001\n\tS_BOMBEND\022!\n\006player\030\001 \001(\0132\021.Pr"
-  "otocol.PPlayer\022\'\n\013bombCellPos\030\002 \001(\0132\022.Pr"
-  "otocol.PCellPos\0222\n\026destroyObjectCellPose"
-  "s\030\003 \003(\0132\022.Protocol.PCellPos\0220\n\024destroyIt"
-  "emCellPoses\030\004 \003(\0132\022.Protocol.PCellPos\022&\n"
-  "\013trapPlayers\030\005 \003(\0132\021.Protocol.PPlayer\"Y\n"
-  "\013S_ITEMSPAWN\022#\n\007cellPos\030\001 \001(\0132\022.Protocol"
-  ".PCellPos\022%\n\010itemType\030\002 \001(\0162\023.Protocol.P"
-  "ItemType\"U\n\006S_DEAD\022!\n\006player\030\001 \001(\0132\021.Pro"
-  "tocol.PPlayer\022(\n\007posInfo\030\002 \001(\0132\027.Protoco"
-  "l.PPositionInfo\"_\n\021S_ITEMACQUISITION\022%\n\n"
-  "playerInfo\030\001 \001(\0132\021.Protocol.PPlayer\022#\n\007i"
-  "temPos\030\002 \001(\0132\022.Protocol.PCellPos\"0\n\tS_GA"
-  "MEEND\022#\n\007endInfo\030\001 \003(\0132\022.Protocol.PRoomE"
-  "ndB\033\252\002\030Google.Protobuf.Protocolb\006proto3"
+  "proto\"\010\n\006C_PING\"\010\n\006S_PING\"!\n\007C_LOGIN\022\n\n\002"
+  "id\030\001 \001(\t\022\n\n\002pw\030\002 \001(\t\"c\n\007S_LOGIN\022\017\n\007succe"
+  "ss\030\001 \001(\010\022$\n\010channels\030\002 \003(\0132\022.Protocol.PC"
+  "hannel\022!\n\006player\030\003 \001(\0132\021.Protocol.PPlaye"
+  "r\"$\n\017C_CHANNELCHOICE\022\021\n\tchannelId\030\001 \001(\005\""
+  "U\n\017S_CHANNELCHOICE\022\017\n\007success\030\001 \001(\010\022\021\n\tc"
+  "hannelId\030\002 \001(\005\022\036\n\005rooms\030\003 \003(\0132\017.Protocol"
+  ".PRoom\"\035\n\rC_CHANNELCHAT\022\014\n\004chat\030\001 \001(\t\"+\n"
+  "\rS_CHANNELCHAT\022\014\n\004name\030\001 \001(\t\022\014\n\004chat\030\002 \001"
+  "(\t\"\036\n\nC_MAKEROOM\022\020\n\010roomName\030\001 \001(\t\"<\n\nS_"
+  "MAKEROOM\022\017\n\007success\030\001 \001(\010\022\035\n\004room\030\002 \001(\0132"
+  "\017.Protocol.PRoom\"1\n\017S_CHANNELUPDATE\022\036\n\005r"
+  "ooms\030\001 \003(\0132\017.Protocol.PRoom\"\035\n\013C_ROOMENT"
+  "ER\022\016\n\006roomId\030\001 \001(\005\"=\n\013S_ROOMENTER\022\017\n\007suc"
+  "cess\030\001 \001(\010\022\035\n\004room\030\002 \001(\0132\017.Protocol.PRoo"
+  "m\"\r\n\013C_ROOMLEAVE\"-\n\014S_ROOMUPDATE\022\035\n\004room"
+  "\030\001 \001(\0132\017.Protocol.PRoom\"\r\n\013C_ROOMREADY\"\031"
+  "\n\nC_ROOMCHAT\022\013\n\003msg\030\001 \001(\t\"<\n\nS_ROOMCHAT\022"
+  "!\n\006player\030\001 \001(\0132\021.Protocol.PPlayer\022\013\n\003ms"
+  "g\030\002 \001(\t\"\r\n\013C_ROOMSTART\"b\n\013S_ROOMSTART\022\017\n"
+  "\007success\030\001 \001(\010\022\035\n\004room\030\002 \001(\0132\017.Protocol."
+  "PRoom\022#\n\005spawn\030\003 \003(\0132\024.Protocol.PRoomSta"
+  "rt\"7\n\006C_MOVE\022-\n\014positionInfo\030\001 \001(\0132\027.Pro"
+  "tocol.PPositionInfo\"i\n\006S_MOVE\022\r\n\005force\030\001"
+  " \001(\010\022!\n\006player\030\002 \001(\0132\021.Protocol.PPlayer\022"
+  "-\n\014positionInfo\030\003 \001(\0132\027.Protocol.PPositi"
+  "onInfo\"-\n\006C_BOMB\022#\n\007cellPos\030\001 \001(\0132\022.Prot"
+  "ocol.PCellPos\"P\n\006S_BOMB\022!\n\006player\030\001 \001(\0132"
+  "\021.Protocol.PPlayer\022#\n\007cellpos\030\002 \001(\0132\022.Pr"
+  "otocol.PCellPos\"0\n\tC_BOMBEND\022#\n\007cellPos\030"
+  "\001 \001(\0132\022.Protocol.PCellPos\"\345\001\n\tS_BOMBEND\022"
+  "!\n\006player\030\001 \001(\0132\021.Protocol.PPlayer\022\'\n\013bo"
+  "mbCellPos\030\002 \001(\0132\022.Protocol.PCellPos\0222\n\026d"
+  "estroyObjectCellPoses\030\003 \003(\0132\022.Protocol.P"
+  "CellPos\0220\n\024destroyItemCellPoses\030\004 \003(\0132\022."
+  "Protocol.PCellPos\022&\n\013trapPlayers\030\005 \003(\0132\021"
+  ".Protocol.PPlayer\"Y\n\013S_ITEMSPAWN\022#\n\007cell"
+  "Pos\030\001 \001(\0132\022.Protocol.PCellPos\022%\n\010itemTyp"
+  "e\030\002 \001(\0162\023.Protocol.PItemType\"U\n\006S_DEAD\022!"
+  "\n\006player\030\001 \001(\0132\021.Protocol.PPlayer\022(\n\007pos"
+  "Info\030\002 \001(\0132\027.Protocol.PPositionInfo\"_\n\021S"
+  "_ITEMACQUISITION\022%\n\nplayerInfo\030\001 \001(\0132\021.P"
+  "rotocol.PPlayer\022#\n\007itemPos\030\002 \001(\0132\022.Proto"
+  "col.PCellPos\"0\n\tS_GAMEEND\022#\n\007endInfo\030\001 \003"
+  "(\0132\022.Protocol.PRoomEndB\033\252\002\030Google.Protob"
+  "uf.Protocolb\006proto3"
   ;
 static const ::_pbi::DescriptorTable* const descriptor_table_Protocol_2eproto_deps[3] = {
   &::descriptor_table_Enum_2eproto,
@@ -715,9 +754,9 @@ static const ::_pbi::DescriptorTable* const descriptor_table_Protocol_2eproto_de
 };
 static ::_pbi::once_flag descriptor_table_Protocol_2eproto_once;
 const ::_pbi::DescriptorTable descriptor_table_Protocol_2eproto = {
-    false, false, 1879, descriptor_table_protodef_Protocol_2eproto,
+    false, false, 1899, descriptor_table_protodef_Protocol_2eproto,
     "Protocol.proto",
-    &descriptor_table_Protocol_2eproto_once, descriptor_table_Protocol_2eproto_deps, 3, 28,
+    &descriptor_table_Protocol_2eproto_once, descriptor_table_Protocol_2eproto_deps, 3, 30,
     schemas, file_default_instances, TableStruct_Protocol_2eproto::offsets,
     file_level_metadata_Protocol_2eproto, file_level_enum_descriptors_Protocol_2eproto,
     file_level_service_descriptors_Protocol_2eproto,
@@ -729,6 +768,84 @@ PROTOBUF_ATTRIBUTE_WEAK const ::_pbi::DescriptorTable* descriptor_table_Protocol
 // Force running AddDescriptors() at dynamic initialization time.
 PROTOBUF_ATTRIBUTE_INIT_PRIORITY2 static ::_pbi::AddDescriptorsRunner dynamic_init_dummy_Protocol_2eproto(&descriptor_table_Protocol_2eproto);
 namespace Protocol {
+
+// ===================================================================
+
+class C_PING::_Internal {
+ public:
+};
+
+C_PING::C_PING(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+                         bool is_message_owned)
+  : ::PROTOBUF_NAMESPACE_ID::internal::ZeroFieldsBase(arena, is_message_owned) {
+  // @@protoc_insertion_point(arena_constructor:Protocol.C_PING)
+}
+C_PING::C_PING(const C_PING& from)
+  : ::PROTOBUF_NAMESPACE_ID::internal::ZeroFieldsBase() {
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  // @@protoc_insertion_point(copy_constructor:Protocol.C_PING)
+}
+
+
+
+
+
+const ::PROTOBUF_NAMESPACE_ID::Message::ClassData C_PING::_class_data_ = {
+    ::PROTOBUF_NAMESPACE_ID::internal::ZeroFieldsBase::CopyImpl,
+    ::PROTOBUF_NAMESPACE_ID::internal::ZeroFieldsBase::MergeImpl,
+};
+const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*C_PING::GetClassData() const { return &_class_data_; }
+
+
+
+
+
+
+
+::PROTOBUF_NAMESPACE_ID::Metadata C_PING::GetMetadata() const {
+  return ::_pbi::AssignDescriptors(
+      &descriptor_table_Protocol_2eproto_getter, &descriptor_table_Protocol_2eproto_once,
+      file_level_metadata_Protocol_2eproto[0]);
+}
+
+// ===================================================================
+
+class S_PING::_Internal {
+ public:
+};
+
+S_PING::S_PING(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+                         bool is_message_owned)
+  : ::PROTOBUF_NAMESPACE_ID::internal::ZeroFieldsBase(arena, is_message_owned) {
+  // @@protoc_insertion_point(arena_constructor:Protocol.S_PING)
+}
+S_PING::S_PING(const S_PING& from)
+  : ::PROTOBUF_NAMESPACE_ID::internal::ZeroFieldsBase() {
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  // @@protoc_insertion_point(copy_constructor:Protocol.S_PING)
+}
+
+
+
+
+
+const ::PROTOBUF_NAMESPACE_ID::Message::ClassData S_PING::_class_data_ = {
+    ::PROTOBUF_NAMESPACE_ID::internal::ZeroFieldsBase::CopyImpl,
+    ::PROTOBUF_NAMESPACE_ID::internal::ZeroFieldsBase::MergeImpl,
+};
+const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*S_PING::GetClassData() const { return &_class_data_; }
+
+
+
+
+
+
+
+::PROTOBUF_NAMESPACE_ID::Metadata S_PING::GetMetadata() const {
+  return ::_pbi::AssignDescriptors(
+      &descriptor_table_Protocol_2eproto_getter, &descriptor_table_Protocol_2eproto_once,
+      file_level_metadata_Protocol_2eproto[1]);
+}
 
 // ===================================================================
 
@@ -970,7 +1087,7 @@ void C_LOGIN::InternalSwap(C_LOGIN* other) {
 ::PROTOBUF_NAMESPACE_ID::Metadata C_LOGIN::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_Protocol_2eproto_getter, &descriptor_table_Protocol_2eproto_once,
-      file_level_metadata_Protocol_2eproto[0]);
+      file_level_metadata_Protocol_2eproto[2]);
 }
 
 // ===================================================================
@@ -1231,7 +1348,7 @@ void S_LOGIN::InternalSwap(S_LOGIN* other) {
 ::PROTOBUF_NAMESPACE_ID::Metadata S_LOGIN::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_Protocol_2eproto_getter, &descriptor_table_Protocol_2eproto_once,
-      file_level_metadata_Protocol_2eproto[1]);
+      file_level_metadata_Protocol_2eproto[3]);
 }
 
 // ===================================================================
@@ -1402,7 +1519,7 @@ void C_CHANNELCHOICE::InternalSwap(C_CHANNELCHOICE* other) {
 ::PROTOBUF_NAMESPACE_ID::Metadata C_CHANNELCHOICE::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_Protocol_2eproto_getter, &descriptor_table_Protocol_2eproto_once,
-      file_level_metadata_Protocol_2eproto[2]);
+      file_level_metadata_Protocol_2eproto[4]);
 }
 
 // ===================================================================
@@ -1643,7 +1760,7 @@ void S_CHANNELCHOICE::InternalSwap(S_CHANNELCHOICE* other) {
 ::PROTOBUF_NAMESPACE_ID::Metadata S_CHANNELCHOICE::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_Protocol_2eproto_getter, &descriptor_table_Protocol_2eproto_once,
-      file_level_metadata_Protocol_2eproto[3]);
+      file_level_metadata_Protocol_2eproto[5]);
 }
 
 // ===================================================================
@@ -1838,7 +1955,7 @@ void C_CHANNELCHAT::InternalSwap(C_CHANNELCHAT* other) {
 ::PROTOBUF_NAMESPACE_ID::Metadata C_CHANNELCHAT::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_Protocol_2eproto_getter, &descriptor_table_Protocol_2eproto_once,
-      file_level_metadata_Protocol_2eproto[4]);
+      file_level_metadata_Protocol_2eproto[6]);
 }
 
 // ===================================================================
@@ -2081,7 +2198,7 @@ void S_CHANNELCHAT::InternalSwap(S_CHANNELCHAT* other) {
 ::PROTOBUF_NAMESPACE_ID::Metadata S_CHANNELCHAT::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_Protocol_2eproto_getter, &descriptor_table_Protocol_2eproto_once,
-      file_level_metadata_Protocol_2eproto[5]);
+      file_level_metadata_Protocol_2eproto[7]);
 }
 
 // ===================================================================
@@ -2276,7 +2393,7 @@ void C_MAKEROOM::InternalSwap(C_MAKEROOM* other) {
 ::PROTOBUF_NAMESPACE_ID::Metadata C_MAKEROOM::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_Protocol_2eproto_getter, &descriptor_table_Protocol_2eproto_once,
-      file_level_metadata_Protocol_2eproto[6]);
+      file_level_metadata_Protocol_2eproto[8]);
 }
 
 // ===================================================================
@@ -2501,7 +2618,7 @@ void S_MAKEROOM::InternalSwap(S_MAKEROOM* other) {
 ::PROTOBUF_NAMESPACE_ID::Metadata S_MAKEROOM::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_Protocol_2eproto_getter, &descriptor_table_Protocol_2eproto_once,
-      file_level_metadata_Protocol_2eproto[7]);
+      file_level_metadata_Protocol_2eproto[9]);
 }
 
 // ===================================================================
@@ -2682,7 +2799,7 @@ void S_CHANNELUPDATE::InternalSwap(S_CHANNELUPDATE* other) {
 ::PROTOBUF_NAMESPACE_ID::Metadata S_CHANNELUPDATE::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_Protocol_2eproto_getter, &descriptor_table_Protocol_2eproto_once,
-      file_level_metadata_Protocol_2eproto[8]);
+      file_level_metadata_Protocol_2eproto[10]);
 }
 
 // ===================================================================
@@ -2853,7 +2970,7 @@ void C_ROOMENTER::InternalSwap(C_ROOMENTER* other) {
 ::PROTOBUF_NAMESPACE_ID::Metadata C_ROOMENTER::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_Protocol_2eproto_getter, &descriptor_table_Protocol_2eproto_once,
-      file_level_metadata_Protocol_2eproto[9]);
+      file_level_metadata_Protocol_2eproto[11]);
 }
 
 // ===================================================================
@@ -3078,7 +3195,7 @@ void S_ROOMENTER::InternalSwap(S_ROOMENTER* other) {
 ::PROTOBUF_NAMESPACE_ID::Metadata S_ROOMENTER::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_Protocol_2eproto_getter, &descriptor_table_Protocol_2eproto_once,
-      file_level_metadata_Protocol_2eproto[10]);
+      file_level_metadata_Protocol_2eproto[12]);
 }
 
 // ===================================================================
@@ -3117,7 +3234,7 @@ const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*C_ROOMLEAVE::GetClassData() co
 ::PROTOBUF_NAMESPACE_ID::Metadata C_ROOMLEAVE::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_Protocol_2eproto_getter, &descriptor_table_Protocol_2eproto_once,
-      file_level_metadata_Protocol_2eproto[11]);
+      file_level_metadata_Protocol_2eproto[13]);
 }
 
 // ===================================================================
@@ -3310,7 +3427,7 @@ void S_ROOMUPDATE::InternalSwap(S_ROOMUPDATE* other) {
 ::PROTOBUF_NAMESPACE_ID::Metadata S_ROOMUPDATE::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_Protocol_2eproto_getter, &descriptor_table_Protocol_2eproto_once,
-      file_level_metadata_Protocol_2eproto[12]);
+      file_level_metadata_Protocol_2eproto[14]);
 }
 
 // ===================================================================
@@ -3349,7 +3466,7 @@ const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*C_ROOMREADY::GetClassData() co
 ::PROTOBUF_NAMESPACE_ID::Metadata C_ROOMREADY::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_Protocol_2eproto_getter, &descriptor_table_Protocol_2eproto_once,
-      file_level_metadata_Protocol_2eproto[13]);
+      file_level_metadata_Protocol_2eproto[15]);
 }
 
 // ===================================================================
@@ -3544,7 +3661,7 @@ void C_ROOMCHAT::InternalSwap(C_ROOMCHAT* other) {
 ::PROTOBUF_NAMESPACE_ID::Metadata C_ROOMCHAT::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_Protocol_2eproto_getter, &descriptor_table_Protocol_2eproto_once,
-      file_level_metadata_Protocol_2eproto[14]);
+      file_level_metadata_Protocol_2eproto[16]);
 }
 
 // ===================================================================
@@ -3787,7 +3904,7 @@ void S_ROOMCHAT::InternalSwap(S_ROOMCHAT* other) {
 ::PROTOBUF_NAMESPACE_ID::Metadata S_ROOMCHAT::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_Protocol_2eproto_getter, &descriptor_table_Protocol_2eproto_once,
-      file_level_metadata_Protocol_2eproto[15]);
+      file_level_metadata_Protocol_2eproto[17]);
 }
 
 // ===================================================================
@@ -3826,7 +3943,7 @@ const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*C_ROOMSTART::GetClassData() co
 ::PROTOBUF_NAMESPACE_ID::Metadata C_ROOMSTART::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_Protocol_2eproto_getter, &descriptor_table_Protocol_2eproto_once,
-      file_level_metadata_Protocol_2eproto[16]);
+      file_level_metadata_Protocol_2eproto[18]);
 }
 
 // ===================================================================
@@ -4087,7 +4204,7 @@ void S_ROOMSTART::InternalSwap(S_ROOMSTART* other) {
 ::PROTOBUF_NAMESPACE_ID::Metadata S_ROOMSTART::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_Protocol_2eproto_getter, &descriptor_table_Protocol_2eproto_once,
-      file_level_metadata_Protocol_2eproto[17]);
+      file_level_metadata_Protocol_2eproto[19]);
 }
 
 // ===================================================================
@@ -4280,7 +4397,7 @@ void C_MOVE::InternalSwap(C_MOVE* other) {
 ::PROTOBUF_NAMESPACE_ID::Metadata C_MOVE::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_Protocol_2eproto_getter, &descriptor_table_Protocol_2eproto_once,
-      file_level_metadata_Protocol_2eproto[18]);
+      file_level_metadata_Protocol_2eproto[20]);
 }
 
 // ===================================================================
@@ -4551,7 +4668,7 @@ void S_MOVE::InternalSwap(S_MOVE* other) {
 ::PROTOBUF_NAMESPACE_ID::Metadata S_MOVE::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_Protocol_2eproto_getter, &descriptor_table_Protocol_2eproto_once,
-      file_level_metadata_Protocol_2eproto[19]);
+      file_level_metadata_Protocol_2eproto[21]);
 }
 
 // ===================================================================
@@ -4744,7 +4861,7 @@ void C_BOMB::InternalSwap(C_BOMB* other) {
 ::PROTOBUF_NAMESPACE_ID::Metadata C_BOMB::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_Protocol_2eproto_getter, &descriptor_table_Protocol_2eproto_once,
-      file_level_metadata_Protocol_2eproto[20]);
+      file_level_metadata_Protocol_2eproto[22]);
 }
 
 // ===================================================================
@@ -4991,7 +5108,7 @@ void S_BOMB::InternalSwap(S_BOMB* other) {
 ::PROTOBUF_NAMESPACE_ID::Metadata S_BOMB::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_Protocol_2eproto_getter, &descriptor_table_Protocol_2eproto_once,
-      file_level_metadata_Protocol_2eproto[21]);
+      file_level_metadata_Protocol_2eproto[23]);
 }
 
 // ===================================================================
@@ -5184,7 +5301,7 @@ void C_BOMBEND::InternalSwap(C_BOMBEND* other) {
 ::PROTOBUF_NAMESPACE_ID::Metadata C_BOMBEND::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_Protocol_2eproto_getter, &descriptor_table_Protocol_2eproto_once,
-      file_level_metadata_Protocol_2eproto[22]);
+      file_level_metadata_Protocol_2eproto[24]);
 }
 
 // ===================================================================
@@ -5539,7 +5656,7 @@ void S_BOMBEND::InternalSwap(S_BOMBEND* other) {
 ::PROTOBUF_NAMESPACE_ID::Metadata S_BOMBEND::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_Protocol_2eproto_getter, &descriptor_table_Protocol_2eproto_once,
-      file_level_metadata_Protocol_2eproto[23]);
+      file_level_metadata_Protocol_2eproto[25]);
 }
 
 // ===================================================================
@@ -5767,7 +5884,7 @@ void S_ITEMSPAWN::InternalSwap(S_ITEMSPAWN* other) {
 ::PROTOBUF_NAMESPACE_ID::Metadata S_ITEMSPAWN::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_Protocol_2eproto_getter, &descriptor_table_Protocol_2eproto_once,
-      file_level_metadata_Protocol_2eproto[24]);
+      file_level_metadata_Protocol_2eproto[26]);
 }
 
 // ===================================================================
@@ -6014,7 +6131,7 @@ void S_DEAD::InternalSwap(S_DEAD* other) {
 ::PROTOBUF_NAMESPACE_ID::Metadata S_DEAD::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_Protocol_2eproto_getter, &descriptor_table_Protocol_2eproto_once,
-      file_level_metadata_Protocol_2eproto[25]);
+      file_level_metadata_Protocol_2eproto[27]);
 }
 
 // ===================================================================
@@ -6261,7 +6378,7 @@ void S_ITEMACQUISITION::InternalSwap(S_ITEMACQUISITION* other) {
 ::PROTOBUF_NAMESPACE_ID::Metadata S_ITEMACQUISITION::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_Protocol_2eproto_getter, &descriptor_table_Protocol_2eproto_once,
-      file_level_metadata_Protocol_2eproto[26]);
+      file_level_metadata_Protocol_2eproto[28]);
 }
 
 // ===================================================================
@@ -6442,12 +6559,20 @@ void S_GAMEEND::InternalSwap(S_GAMEEND* other) {
 ::PROTOBUF_NAMESPACE_ID::Metadata S_GAMEEND::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_Protocol_2eproto_getter, &descriptor_table_Protocol_2eproto_once,
-      file_level_metadata_Protocol_2eproto[27]);
+      file_level_metadata_Protocol_2eproto[29]);
 }
 
 // @@protoc_insertion_point(namespace_scope)
 }  // namespace Protocol
 PROTOBUF_NAMESPACE_OPEN
+template<> PROTOBUF_NOINLINE ::Protocol::C_PING*
+Arena::CreateMaybeMessage< ::Protocol::C_PING >(Arena* arena) {
+  return Arena::CreateMessageInternal< ::Protocol::C_PING >(arena);
+}
+template<> PROTOBUF_NOINLINE ::Protocol::S_PING*
+Arena::CreateMaybeMessage< ::Protocol::S_PING >(Arena* arena) {
+  return Arena::CreateMessageInternal< ::Protocol::S_PING >(arena);
+}
 template<> PROTOBUF_NOINLINE ::Protocol::C_LOGIN*
 Arena::CreateMaybeMessage< ::Protocol::C_LOGIN >(Arena* arena) {
   return Arena::CreateMessageInternal< ::Protocol::C_LOGIN >(arena);

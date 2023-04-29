@@ -30,17 +30,17 @@ static constexpr ::_pb::Message* const* file_default_instances = nullptr;
 
 const char descriptor_table_protodef_Enum_2eproto[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) =
   "\n\nEnum.proto\022\010Protocol*(\n\nPRoomState\022\013\n\007"
-  "WAITING\020\000\022\r\n\tGAMESTART\020\001*G\n\014PPlayerState"
+  "WAITING\020\000\022\r\n\tGAMESTART\020\001*P\n\014PPlayerState"
   "\022\010\n\004IDLE\020\000\022\n\n\006MOVING\020\001\022\n\n\006INTRAP\020\002\022\013\n\007OU"
-  "TTRAP\020\003\022\010\n\004DEAD\020\004*;\n\010PMoveDir\022\010\n\004NONE\020\000\022"
-  "\006\n\002UP\020\001\022\t\n\005RIGHT\020\002\022\010\n\004DOWN\020\003\022\010\n\004LEFT\020\004*O"
-  "\n\tPItemType\022\020\n\014INCBOMBCOUNT\020\000\022\020\n\014INCBOMB"
-  "RANGE\020\001\022\020\n\014MAXBOMBRANGE\020\002\022\014\n\010INCSPEED\020\003b"
-  "\006proto3"
+  "TTRAP\020\003\022\010\n\004DEAD\020\004\022\007\n\003WIN\020\005*;\n\010PMoveDir\022\010"
+  "\n\004NONE\020\000\022\006\n\002UP\020\001\022\t\n\005RIGHT\020\002\022\010\n\004DOWN\020\003\022\010\n"
+  "\004LEFT\020\004*O\n\tPItemType\022\020\n\014INCBOMBCOUNT\020\000\022\020"
+  "\n\014INCBOMBRANGE\020\001\022\020\n\014MAXBOMBRANGE\020\002\022\014\n\010IN"
+  "CSPEED\020\003b\006proto3"
   ;
 static ::_pbi::once_flag descriptor_table_Enum_2eproto_once;
 const ::_pbi::DescriptorTable descriptor_table_Enum_2eproto = {
-    false, false, 287, descriptor_table_protodef_Enum_2eproto,
+    false, false, 296, descriptor_table_protodef_Enum_2eproto,
     "Enum.proto",
     &descriptor_table_Enum_2eproto_once, nullptr, 0, 0,
     schemas, file_default_instances, TableStruct_Enum_2eproto::offsets,
@@ -79,6 +79,7 @@ bool PPlayerState_IsValid(int value) {
     case 2:
     case 3:
     case 4:
+    case 5:
       return true;
     default:
       return false;

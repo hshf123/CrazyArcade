@@ -18,6 +18,15 @@ bool Handle_INVALID(PacketSessionRef& session, BYTE* buffer, int32 len)
 	return false;
 }
 
+bool Handle_C_PING(PacketSessionRef& session, Protocol::C_PING& pkt)
+{
+	ClientSessionRef clientSession = static_pointer_cast<ClientSession>(session);
+	Protocol::S_PING pingPkt;
+	SendBufferRef sendBuffer = ClientPacketHandler::MakeSendBuffer(pingPkt);
+	clientSession->Send(sendBuffer);
+	return true;
+}
+
 bool Handle_C_LOGIN(PacketSessionRef& session, Protocol::C_LOGIN& pkt)
 {
 	ClientSessionRef clientSession = static_pointer_cast<ClientSession>(session);

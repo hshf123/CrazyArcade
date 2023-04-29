@@ -25,12 +25,12 @@ namespace Protocol {
       byte[] descriptorData = global::System.Convert.FromBase64String(
           string.Concat(
             "CgpFbnVtLnByb3RvEghQcm90b2NvbCooCgpQUm9vbVN0YXRlEgsKB1dBSVRJ",
-            "TkcQABINCglHQU1FU1RBUlQQASpHCgxQUGxheWVyU3RhdGUSCAoESURMRRAA",
+            "TkcQABINCglHQU1FU1RBUlQQASpQCgxQUGxheWVyU3RhdGUSCAoESURMRRAA",
             "EgoKBk1PVklORxABEgoKBklOVFJBUBACEgsKB09VVFRSQVAQAxIICgRERUFE",
-            "EAQqOwoIUE1vdmVEaXISCAoETk9ORRAAEgYKAlVQEAESCQoFUklHSFQQAhII",
-            "CgRET1dOEAMSCAoETEVGVBAEKk8KCVBJdGVtVHlwZRIQCgxJTkNCT01CQ09V",
-            "TlQQABIQCgxJTkNCT01CUkFOR0UQARIQCgxNQVhCT01CUkFOR0UQAhIMCghJ",
-            "TkNTUEVFRBADYgZwcm90bzM="));
+            "EAQSBwoDV0lOEAUqOwoIUE1vdmVEaXISCAoETk9ORRAAEgYKAlVQEAESCQoF",
+            "UklHSFQQAhIICgRET1dOEAMSCAoETEVGVBAEKk8KCVBJdGVtVHlwZRIQCgxJ",
+            "TkNCT01CQ09VTlQQABIQCgxJTkNCT01CUkFOR0UQARIQCgxNQVhCT01CUkFO",
+            "R0UQAhIMCghJTkNTUEVFRBADYgZwcm90bzM="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
           new pbr::GeneratedClrTypeInfo(new[] {typeof(global::Protocol.PRoomState), typeof(global::Protocol.PPlayerState), typeof(global::Protocol.PMoveDir), typeof(global::Protocol.PItemType), }, null, null));
@@ -50,6 +50,7 @@ namespace Protocol {
     [pbr::OriginalName("INTRAP")] Intrap = 2,
     [pbr::OriginalName("OUTTRAP")] Outtrap = 3,
     [pbr::OriginalName("DEAD")] Dead = 4,
+    [pbr::OriginalName("WIN")] Win = 5,
   }
 
   public enum PMoveDir {

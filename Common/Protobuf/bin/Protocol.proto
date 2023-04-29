@@ -7,6 +7,16 @@ option csharp_namespace = "Google.Protobuf.Protocol";
 import "Enum.proto";
 import "Struct.proto";
 
+message C_PING
+{
+
+}
+
+message S_PING
+{
+
+}
+
 message C_LOGIN
 {
 	string id = 1;

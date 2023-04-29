@@ -7,6 +7,12 @@ using UnityEngine;
 
 public class PacketHandler
 {
+    public static void S_PINGHandler(PacketSession session, IMessage packet)
+    {
+        S_PING pkt = packet as S_PING;
+        Managers.Game.PingRecv = Environment.TickCount;
+    }
+
     public static void S_LOGINHandler(PacketSession session, IMessage packet)
     {
         ServerSession serverSession = session as ServerSession;

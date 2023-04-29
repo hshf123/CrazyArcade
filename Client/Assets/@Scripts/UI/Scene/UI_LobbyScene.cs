@@ -83,9 +83,15 @@ public class UI_LobbyScene : UI_Scene
     }
     void MakeRoomSubItem(int idx)
     {
+        int siblingIdx = idx % 6;
+
         if (idx >= Managers.Game.Rooms.Count)
         {
-            Managers.UI.MakeSubItem<UI_RoomDummySubItem>(Get<GameObject>((int)GameObjects.RoomList).transform);
+            Managers.UI.MakeSubItem<UI_RoomDummySubItem>(Get<GameObject>((int)GameObjects.RoomList).transform, null,
+                (room) =>
+                {
+                    room.transform.SetSiblingIndex(siblingIdx);
+                });
         }
         else
         {
@@ -97,6 +103,7 @@ public class UI_LobbyScene : UI_Scene
                     room.RoomName = Managers.Game.Rooms[idx].RoomName;
                     room.CurrentPlayerCount = Managers.Game.Rooms[idx].CurrentPlayerCount;
                     room.MaxPlayerCount = Managers.Game.Rooms[idx].MaxPlayerCount;
+                    room.transform.SetSiblingIndex(siblingIdx);
                     // TODO : Waiting, Playing | room.RoomState;
                 });
         }

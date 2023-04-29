@@ -78,12 +78,13 @@ enum PPlayerState : int {
   INTRAP = 2,
   OUTTRAP = 3,
   DEAD = 4,
+  WIN = 5,
   PPlayerState_INT_MIN_SENTINEL_DO_NOT_USE_ = std::numeric_limits<int32_t>::min(),
   PPlayerState_INT_MAX_SENTINEL_DO_NOT_USE_ = std::numeric_limits<int32_t>::max()
 };
 bool PPlayerState_IsValid(int value);
 constexpr PPlayerState PPlayerState_MIN = IDLE;
-constexpr PPlayerState PPlayerState_MAX = DEAD;
+constexpr PPlayerState PPlayerState_MAX = WIN;
 constexpr int PPlayerState_ARRAYSIZE = PPlayerState_MAX + 1;
 
 const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* PPlayerState_descriptor();

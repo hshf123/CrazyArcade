@@ -14,6 +14,7 @@ enum PRoomState
     INTRAP = 2;
     OUTTRAP = 3;
     DEAD = 4;
+    WIN = 5;
 }   
 
 enum PMoveDir

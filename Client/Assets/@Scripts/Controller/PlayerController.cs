@@ -207,6 +207,11 @@ public class PlayerController : MonoBehaviour
                     _animator.Play("DIE");
                     break;
                 }
+            case PlayerState.Win:
+                {
+                    _animator.Play("WIN");
+                    break;
+                }
         }
     }
     public void OnDead()

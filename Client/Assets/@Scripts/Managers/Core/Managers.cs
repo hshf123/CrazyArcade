@@ -1,3 +1,5 @@
+using Google.Protobuf.Protocol;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -9,6 +11,8 @@ public class Managers : MonoBehaviour
     Managers() { }
     static Managers _instance = null;
     public static Managers Instance { get { return _instance; } }
+    Coroutine _coPing = null;
+    bool _pingFlag = false;
 
     MapManager _map = new MapManager();
     ObjectManager _object = new ObjectManager();
@@ -45,5 +49,24 @@ public class Managers : MonoBehaviour
             _instance._net.Init();
             _instance._sound.Init();
         }
+    }
+
+    void Update()
+    {
+        _coPing = StartCoroutine(CoPing());
+    }
+
+    IEnumerator CoPing()
+    {
+        if (_pingFlag == true)
+            yield break;
+
+        _pingFlag = true;
+        C_PING pingPkt = new C_PING();
+        _net.SessionManager.Broadcast(pingPkt);
+        _game.PingSend = Environment.TickCount;
+        yield return new WaitForSeconds(0.25f);
+        _coPing = null;
+        _pingFlag = false;
     }
 }

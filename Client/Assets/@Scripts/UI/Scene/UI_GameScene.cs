@@ -22,6 +22,9 @@ public class UI_GameScene : UI_Scene
         if (base.Init() == false)
             return false;
 
+        Managers.UI.MakeSubItem<UI_PingTextSubItem>(transform);
+        Managers.UI.MakeSubItem<UI_FPSTextSubItem>(transform);
+
         Bind<Button>(typeof(Buttons));
         BindText(typeof(Texts));
 

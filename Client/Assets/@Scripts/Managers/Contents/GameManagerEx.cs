@@ -34,6 +34,20 @@ public class GameManagerEx
     public string MapInfo { get; set; } = "TestMap";
 
     #region Option
+    public int PingSend { get; set; }
+    int _pingRecv;
+    public int PingRecv {
+        get { return _pingRecv; }
+        set 
+        {
+            _pingRecv = value;
+            if (_pingRecv == PingSend)
+                return;
+            Ping = (_pingRecv - PingSend) / 2;
+        } 
+    }
+    public int Ping { get; set; }
+
     public bool BGMOn
     {
         get { return _gameData.BGMOn; }
