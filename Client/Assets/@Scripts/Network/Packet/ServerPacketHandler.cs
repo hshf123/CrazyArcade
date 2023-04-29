@@ -35,6 +35,7 @@ public enum MsgId : ushort
 	PKT_S_DEAD = 1027,
 	PKT_S_ITEMACQUISITION = 1028,
 	PKT_S_GAMEEND = 1029,
+	PKT_S_ROOMBACK = 1030,
 };
 
 class PacketManager
@@ -90,6 +91,8 @@ class PacketManager
         _handler.Add((ushort)MsgId.PKT_S_ITEMACQUISITION, PacketHandler.S_ITEMACQUISITIONHandler);
         _onRecv.Add((ushort)MsgId.PKT_S_GAMEEND, MakePacket<S_GAMEEND>);
         _handler.Add((ushort)MsgId.PKT_S_GAMEEND, PacketHandler.S_GAMEENDHandler);
+        _onRecv.Add((ushort)MsgId.PKT_S_ROOMBACK, MakePacket<S_ROOMBACK>);
+        _handler.Add((ushort)MsgId.PKT_S_ROOMBACK, PacketHandler.S_ROOMBACKHandler);
     }
 
     public void OnRecvPacket(PacketSession session, ArraySegment<byte> buffer)

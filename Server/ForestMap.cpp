@@ -54,12 +54,13 @@ bool ForestMap::CanGo(Vector2Int cellPos)
 	return true;
 }
 
-void ForestMap::ApplyMove(PlayerRef player, Vector2Int dest)
+bool ForestMap::ApplyMove(PlayerRef player, Protocol::C_MOVE& pkt)
 {
 	ApplyLeave(player);
+	Vector2Int dest = Vector2Int(pkt.positioninfo().cellpos().posx(), pkt.positioninfo().cellpos().posy());
 
 	if (CanGo(dest) == false)
-		return;
+		return false;
 
 	_players[player] = dest;
 
@@ -79,7 +80,7 @@ void ForestMap::ApplyMove(PlayerRef player, Vector2Int dest)
 #pragma endregion
 
 	// 실제 좌표 이동
-	player->SetCellPos(dest);
+	player->PosInfo = pkt.positioninfo();
 
 	// 이동 중에 물풍선 갇힌 애들 발견했을 때
 	if (player->PosInfo.state() == Protocol::PPlayerState::MOVING)
@@ -181,26 +182,40 @@ bool ForestMap::SetBomb(Vector2Int pos, PlayerRef ownerPlayer)
 
 void ForestMap::DestroyBomb(Vector2Int pos, int32 range, Protocol::S_BOMBEND& pkt)
 {
-	auto findIt = _bombs.find(pos);
-	if (findIt == _bombs.end())
 	{
-		wstringstream log;
-		log << L"POSITION (" << pos.x << L", " << pos.y << L") HAS NO BOMB";
-		Utils::Log(log);
-		return;
+		auto findIt = _bombs.find(pos);
+		if (findIt == _bombs.end())
+		{
+			wstringstream log;
+			log << L"POSITION (" << pos.x << L", " << pos.y << L") HAS NO BOMB";
+			Utils::Log(log);
+			return;
+		}
+
+		pkt.set_allocated_bombcellpos(GetCellPosProtocol(pos));
+
+		findIt->second->OwnerPlayer->SubBomb();
+		_bombs.erase(pos);
 	}
 
-	pkt.set_allocated_bombcellpos(GetCellPosProtocol(pos));
+	{
+		// 아이템은 사라지게
+		auto findIt = _spawnItems.find(pos);
+		if (findIt != _spawnItems.end())
+		{
+			_destroyItems.insert(pos);
+			wstringstream log;
+			log << L"POSITION (" << pos.x << ", " << pos.y << ")" << L" ITEM WILL BE DESTROY";
+			Utils::Log(log);
+		}
+	}
 
-	findIt->second->OwnerPlayer->SubBomb();
-	_bombs.erase(pos);
-
+	// TRAP
 	Vector<PlayerRef> vec = FindPlayer(pos);
 	for (PlayerRef player : vec)
 	{
 		if (player != nullptr)
 		{
-			// TRAP
 			auto* trapPlayer = pkt.add_trapplayers();
 			player->OnTrap();
 			trapPlayer->CopyFrom(player->PlayerInfo);
@@ -275,7 +290,8 @@ bool ForestMap::CheckWaterCourse(Vector2Int pos)
 
 		return false;
 	}
-	// TODO : 아이템은 사라지게
+
+	// 아이템은 사라지게
 	auto findIt = _spawnItems.find(pos);
 	if (findIt != _spawnItems.end())
 	{
@@ -285,12 +301,12 @@ bool ForestMap::CheckWaterCourse(Vector2Int pos)
 		Utils::Log(log);
 	}
 
+	// TRAP
 	Vector<PlayerRef> vec = FindPlayer(pos);
 	for (PlayerRef player : vec)
 	{
 		if (player != nullptr)
 		{
-			// TRAP
 			_trapPlayers.insert(player);
 		}
 	}

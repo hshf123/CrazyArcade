@@ -16,7 +16,7 @@ public class UI_PingTextSubItem : UI_Base
 
         BindText(typeof(Texts));
 
-        transform.localPosition = new Vector3(-400.0f, 300.0f, 0);
+        transform.localPosition = new Vector3(360.0f, 300.0f, 0);
 
         return true;
     }

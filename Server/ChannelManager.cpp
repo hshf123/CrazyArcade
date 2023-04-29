@@ -3,6 +3,15 @@
 #include "Channel.h"
 #include "Player.h"
 
+void ChannelManager::Update()
+{
+	WRITE_LOCK;
+	for (auto& p : _channels)
+	{
+		p.second->Update();
+	}
+}
+
 void ChannelManager::AddChannel(int32 maxPlayerCount /*= 20*/)
 {
 	WRITE_LOCK;

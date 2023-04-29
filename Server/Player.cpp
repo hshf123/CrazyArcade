@@ -41,21 +41,29 @@ void Player::ApplyItemAbility(ItemType type)
 	{
 	case ItemType::INCBOMBCOUNT:
 	{
-		if (PlayerInfo.maxbombcount() < 9)
+		if (PlayerInfo.maxbombcount() < 6)
 		{
 			log << L"INCBOMBCOUNT" << PlayerInfo.maxbombcount() << L" -> ";
 			PlayerInfo.set_maxbombcount(PlayerInfo.maxbombcount() + 1);
 			log << PlayerInfo.maxbombcount();
 		}
+		else
+		{
+			log << L"INCBOMBCOUNT" << PlayerInfo.bombrange() << L" IS ALREADY MAXRANGE";
+		}
 		break;
 	}
 	case ItemType::INCBOMBRANGE:
 	{
-		if (PlayerInfo.bombrange() < 8)
+		if (PlayerInfo.bombrange() < 7)
 		{
 			log << L"INCBOMBRANGE" << PlayerInfo.bombrange() << L" -> ";
 			PlayerInfo.set_bombrange(PlayerInfo.bombrange() + 1);
 			log << PlayerInfo.bombrange();
+		}
+		else
+		{
+			log << L"INCBOMBRANGE" << PlayerInfo.bombrange() << L" IS ALREADY MAXRANGE";
 		}
 		break;
 	}
@@ -69,7 +77,7 @@ void Player::ApplyItemAbility(ItemType type)
 	case ItemType::MAXBOMBRANGE:
 	{
 		log << L"MAXBOMBRANGE" << PlayerInfo.bombrange() << L" -> ";
-		PlayerInfo.set_bombrange(9);
+		PlayerInfo.set_bombrange(7);
 		log << PlayerInfo.bombrange();
 		break;
 	}
@@ -112,17 +120,13 @@ void Player::OutTrap()
 
 void Player::OnDead()
 {
-	PosInfo.set_state(Protocol::DEAD);
+	PosInfo.set_state(Protocol::PPlayerState::DEAD);
 	// TODO OnDead
 	Protocol::S_DEAD deadPkt;
 	deadPkt.set_allocated_player(GetPlayerProtocol());
 	deadPkt.set_allocated_posinfo(GetPositionInfoProtocol());
 	if (_room != nullptr)
 		_room->Broadcast(deadPkt);
-
-	wstringstream log;
-	log << PlayerInfo.id() << L" is DEAD";
-	Utils::Log(log);
 }
 
 void Player::SetCellPos(Vector2Int pos)

@@ -88,7 +88,7 @@ public class MyPlayerController : PlayerController
 
     void InputDir()
     {
-        if (State == PlayerState.Dead && State == PlayerState.Win)
+        if (State == PlayerState.Dead || State == PlayerState.Win)
             return;
 
         if(State == PlayerState.Intrap)

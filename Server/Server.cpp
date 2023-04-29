@@ -23,7 +23,7 @@ void MakeTestData(int32 idx)
 
 		{
 			wstringstream ss;
-			ss << L"Test" << idx;
+			ss << L"test" << idx;
 			WCHAR id[20];
 			::memset(id, 0, sizeof(id));
 			::memcpy(id, ss.str().c_str(), ss.str().size() * sizeof(WCHAR));
@@ -31,7 +31,7 @@ void MakeTestData(int32 idx)
 		}
 		{
 			wstringstream ss;
-			ss << L"Test" << idx << L"@";
+			ss << L"test" << idx;
 			WCHAR password[20];
 			::memset(password, 0, sizeof(password));
 			::memcpy(password, ss.str().c_str(), ss.str().size() * sizeof(WCHAR));
@@ -57,7 +57,7 @@ void MakeTestData(int32 idx)
 		}
 		{
 			wstringstream ss;
-			ss << L"Test" << idx;
+			ss << L"test" << idx;
 			WCHAR player_id[20];
 			::memset(player_id, 0, sizeof(player_id));
 			::memcpy(player_id, ss.str().c_str(), ss.str().size() * sizeof(WCHAR));
@@ -76,7 +76,7 @@ void MakeTestData(int32 idx)
 int main()
 {
 	// ASSERT_CRASH(GDBConnectionPool->Connect(1, L"Driver={ODBC Driver 18 for SQL Server};Server=(localdb)\\MSSQLLocalDB;Database=ServerDB;Trusted_Connection=Yes;"));
-	ASSERT_CRASH(GDBConnectionPool->Connect(1, L"Driver={ODBC Driver 17 for SQL Server};Server=SANGHYUN\\SQLEXPRESS;Database=CrazyArcadeDB;Trusted_Connection=Yes;"));
+	ASSERT_CRASH(GDBConnectionPool->Connect(5, L"Driver={ODBC Driver 17 for SQL Server};Server=SANGHYUN\\SQLEXPRESS;Database=CrazyArcadeDB;Trusted_Connection=Yes;"));
 	{
 		// FOREIGN KEY 제약 조건 삭제
 		auto query1 = L"IF EXISTS (SELECT * FROM sys.foreign_keys WHERE name = 'FK_Player_UserInfo') \
@@ -148,6 +148,15 @@ int main()
 				}
 			});
 	}
+	GThreadManager->Launch([]()
+		{
+			while (true)
+			{
+				ChannelManager::GetInstance()->Update();
+
+				this_thread::sleep_for(1ms);
+			}
+		});
 
 	GThreadManager->Join();
 }

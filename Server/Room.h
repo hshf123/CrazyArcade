@@ -18,6 +18,8 @@ public:
 public:
 	bool CanGameStart();
 	void GameInit();
+	void Update();
+	void GameEnd();
 	Protocol::PPositionInfo* GetBasicPosInfo(int32 idx);
 
 public:
@@ -44,6 +46,7 @@ public:
 
 private:
 	USE_LOCK;
+	uint64 _endTime = 0;
 	HashMap<int64, PlayerRef> _players;
 	HashMap<int32, PlayerRef> _idxes;
 

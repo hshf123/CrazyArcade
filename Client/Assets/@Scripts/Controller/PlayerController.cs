@@ -318,7 +318,7 @@ public class PlayerController : MonoBehaviour
 
     IEnumerator CoOnDead()
     {
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(0.45f);
 
         Managers.Object.RemovePlayer(PlayerInfo.Id);
         Managers.Resource.Destroy(gameObject);

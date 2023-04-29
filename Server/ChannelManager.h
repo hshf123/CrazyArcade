@@ -14,6 +14,8 @@ public:
 	}
 
 public:
+	void Update();
+
 	void AddChannel(int32 maxPlayerCount = 20);
 	void RemoveChannel(int64 channelId);
 	ChannelRef FindChannel(int64 channelId);

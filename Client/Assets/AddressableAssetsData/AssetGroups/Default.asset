@@ -105,6 +105,14 @@ MonoBehaviour:
     m_Address: UI_RankSubItem
     m_ReadOnly: 0
     m_SerializedLabels: []
+  - m_GUID: 17be8d2b09360fc43bd4cdc0da6b973c
+    m_Address: UI_PingTextSubItem
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: cf4dd962155e666419d269868c6af670
+    m_Address: UI_FPSTextSubItem
+    m_ReadOnly: 0
+    m_SerializedLabels: []
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 37d63db9dee568844aed5ef436298665, type: 2}
   m_SchemaSet:

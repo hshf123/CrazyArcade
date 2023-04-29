@@ -275,4 +275,18 @@ public class PacketHandler
                 gameResultPopup.EndInfo = pkt.EndInfo;
             });
     }
+
+    public static void S_ROOMBACKHandler(PacketSession session, IMessage packet)
+    {
+        Debug.Log($"S_ROOMBACKHandler");
+
+        ServerSession serverSession = session as ServerSession;
+        S_ROOMBACK pkt = packet as S_ROOMBACK;
+
+        Managers.Game.Rooms = null;
+        Managers.Game.LobbyUI = null;
+
+        Managers.Game.Room = pkt.Room;
+        Managers.Scene.ChangeScene<RoomScene>(Define.SceneType.RoomScene);
+    }
 }

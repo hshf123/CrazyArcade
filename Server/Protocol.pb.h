@@ -127,6 +127,9 @@ extern S_MOVEDefaultTypeInternal _S_MOVE_default_instance_;
 class S_PING;
 struct S_PINGDefaultTypeInternal;
 extern S_PINGDefaultTypeInternal _S_PING_default_instance_;
+class S_ROOMBACK;
+struct S_ROOMBACKDefaultTypeInternal;
+extern S_ROOMBACKDefaultTypeInternal _S_ROOMBACK_default_instance_;
 class S_ROOMCHAT;
 struct S_ROOMCHATDefaultTypeInternal;
 extern S_ROOMCHATDefaultTypeInternal _S_ROOMCHAT_default_instance_;
@@ -167,6 +170,7 @@ template<> ::Protocol::S_LOGIN* Arena::CreateMaybeMessage<::Protocol::S_LOGIN>(A
 template<> ::Protocol::S_MAKEROOM* Arena::CreateMaybeMessage<::Protocol::S_MAKEROOM>(Arena*);
 template<> ::Protocol::S_MOVE* Arena::CreateMaybeMessage<::Protocol::S_MOVE>(Arena*);
 template<> ::Protocol::S_PING* Arena::CreateMaybeMessage<::Protocol::S_PING>(Arena*);
+template<> ::Protocol::S_ROOMBACK* Arena::CreateMaybeMessage<::Protocol::S_ROOMBACK>(Arena*);
 template<> ::Protocol::S_ROOMCHAT* Arena::CreateMaybeMessage<::Protocol::S_ROOMCHAT>(Arena*);
 template<> ::Protocol::S_ROOMENTER* Arena::CreateMaybeMessage<::Protocol::S_ROOMENTER>(Arena*);
 template<> ::Protocol::S_ROOMSTART* Arena::CreateMaybeMessage<::Protocol::S_ROOMSTART>(Arena*);
@@ -4852,6 +4856,158 @@ class S_GAMEEND final :
   mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   friend struct ::TableStruct_Protocol_2eproto;
 };
+// -------------------------------------------------------------------
+
+class S_ROOMBACK final :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:Protocol.S_ROOMBACK) */ {
+ public:
+  inline S_ROOMBACK() : S_ROOMBACK(nullptr) {}
+  ~S_ROOMBACK() override;
+  explicit PROTOBUF_CONSTEXPR S_ROOMBACK(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
+
+  S_ROOMBACK(const S_ROOMBACK& from);
+  S_ROOMBACK(S_ROOMBACK&& from) noexcept
+    : S_ROOMBACK() {
+    *this = ::std::move(from);
+  }
+
+  inline S_ROOMBACK& operator=(const S_ROOMBACK& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline S_ROOMBACK& operator=(S_ROOMBACK&& from) noexcept {
+    if (this == &from) return *this;
+    if (GetOwningArena() == from.GetOwningArena()
+  #ifdef PROTOBUF_FORCE_COPY_IN_MOVE
+        && GetOwningArena() != nullptr
+  #endif  // !PROTOBUF_FORCE_COPY_IN_MOVE
+    ) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const S_ROOMBACK& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const S_ROOMBACK* internal_default_instance() {
+    return reinterpret_cast<const S_ROOMBACK*>(
+               &_S_ROOMBACK_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    30;
+
+  friend void swap(S_ROOMBACK& a, S_ROOMBACK& b) {
+    a.Swap(&b);
+  }
+  inline void Swap(S_ROOMBACK* other) {
+    if (other == this) return;
+  #ifdef PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetOwningArena() != nullptr &&
+        GetOwningArena() == other->GetOwningArena()) {
+   #else  // PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetOwningArena() == other->GetOwningArena()) {
+  #endif  // !PROTOBUF_FORCE_COPY_IN_SWAP
+      InternalSwap(other);
+    } else {
+      ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(S_ROOMBACK* other) {
+    if (other == this) return;
+    GOOGLE_DCHECK(GetOwningArena() == other->GetOwningArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  S_ROOMBACK* New(::PROTOBUF_NAMESPACE_ID::Arena* arena = nullptr) const final {
+    return CreateMaybeMessage<S_ROOMBACK>(arena);
+  }
+  using ::PROTOBUF_NAMESPACE_ID::Message::CopyFrom;
+  void CopyFrom(const S_ROOMBACK& from);
+  using ::PROTOBUF_NAMESPACE_ID::Message::MergeFrom;
+  void MergeFrom(const S_ROOMBACK& from);
+  private:
+  static void MergeImpl(::PROTOBUF_NAMESPACE_ID::Message* to, const ::PROTOBUF_NAMESPACE_ID::Message& from);
+  public:
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  size_t ByteSizeLong() const final;
+  const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
+  uint8_t* _InternalSerialize(
+      uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
+  int GetCachedSize() const final { return _cached_size_.Get(); }
+
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(S_ROOMBACK* other);
+
+  private:
+  friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
+  static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
+    return "Protocol.S_ROOMBACK";
+  }
+  protected:
+  explicit S_ROOMBACK(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+                       bool is_message_owned = false);
+  public:
+
+  static const ClassData _class_data_;
+  const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*GetClassData() const final;
+
+  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  enum : int {
+    kRoomFieldNumber = 1,
+  };
+  // .Protocol.PRoom room = 1;
+  bool has_room() const;
+  private:
+  bool _internal_has_room() const;
+  public:
+  void clear_room();
+  const ::Protocol::PRoom& room() const;
+  PROTOBUF_NODISCARD ::Protocol::PRoom* release_room();
+  ::Protocol::PRoom* mutable_room();
+  void set_allocated_room(::Protocol::PRoom* room);
+  private:
+  const ::Protocol::PRoom& _internal_room() const;
+  ::Protocol::PRoom* _internal_mutable_room();
+  public:
+  void unsafe_arena_set_allocated_room(
+      ::Protocol::PRoom* room);
+  ::Protocol::PRoom* unsafe_arena_release_room();
+
+  // @@protoc_insertion_point(class_scope:Protocol.S_ROOMBACK)
+ private:
+  class _Internal;
+
+  template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
+  typedef void InternalArenaConstructable_;
+  typedef void DestructorSkippable_;
+  ::Protocol::PRoom* room_;
+  mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
+  friend struct ::TableStruct_Protocol_2eproto;
+};
 // ===================================================================
 
 
@@ -7575,9 +7731,100 @@ S_GAMEEND::endinfo() const {
   return endinfo_;
 }
 
+// -------------------------------------------------------------------
+
+// S_ROOMBACK
+
+// .Protocol.PRoom room = 1;
+inline bool S_ROOMBACK::_internal_has_room() const {
+  return this != internal_default_instance() && room_ != nullptr;
+}
+inline bool S_ROOMBACK::has_room() const {
+  return _internal_has_room();
+}
+inline const ::Protocol::PRoom& S_ROOMBACK::_internal_room() const {
+  const ::Protocol::PRoom* p = room_;
+  return p != nullptr ? *p : reinterpret_cast<const ::Protocol::PRoom&>(
+      ::Protocol::_PRoom_default_instance_);
+}
+inline const ::Protocol::PRoom& S_ROOMBACK::room() const {
+  // @@protoc_insertion_point(field_get:Protocol.S_ROOMBACK.room)
+  return _internal_room();
+}
+inline void S_ROOMBACK::unsafe_arena_set_allocated_room(
+    ::Protocol::PRoom* room) {
+  if (GetArenaForAllocation() == nullptr) {
+    delete reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(room_);
+  }
+  room_ = room;
+  if (room) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:Protocol.S_ROOMBACK.room)
+}
+inline ::Protocol::PRoom* S_ROOMBACK::release_room() {
+  
+  ::Protocol::PRoom* temp = room_;
+  room_ = nullptr;
+#ifdef PROTOBUF_FORCE_COPY_IN_RELEASE
+  auto* old =  reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(temp);
+  temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
+  if (GetArenaForAllocation() == nullptr) { delete old; }
+#else  // PROTOBUF_FORCE_COPY_IN_RELEASE
+  if (GetArenaForAllocation() != nullptr) {
+    temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
+  }
+#endif  // !PROTOBUF_FORCE_COPY_IN_RELEASE
+  return temp;
+}
+inline ::Protocol::PRoom* S_ROOMBACK::unsafe_arena_release_room() {
+  // @@protoc_insertion_point(field_release:Protocol.S_ROOMBACK.room)
+  
+  ::Protocol::PRoom* temp = room_;
+  room_ = nullptr;
+  return temp;
+}
+inline ::Protocol::PRoom* S_ROOMBACK::_internal_mutable_room() {
+  
+  if (room_ == nullptr) {
+    auto* p = CreateMaybeMessage<::Protocol::PRoom>(GetArenaForAllocation());
+    room_ = p;
+  }
+  return room_;
+}
+inline ::Protocol::PRoom* S_ROOMBACK::mutable_room() {
+  ::Protocol::PRoom* _msg = _internal_mutable_room();
+  // @@protoc_insertion_point(field_mutable:Protocol.S_ROOMBACK.room)
+  return _msg;
+}
+inline void S_ROOMBACK::set_allocated_room(::Protocol::PRoom* room) {
+  ::PROTOBUF_NAMESPACE_ID::Arena* message_arena = GetArenaForAllocation();
+  if (message_arena == nullptr) {
+    delete reinterpret_cast< ::PROTOBUF_NAMESPACE_ID::MessageLite*>(room_);
+  }
+  if (room) {
+    ::PROTOBUF_NAMESPACE_ID::Arena* submessage_arena =
+        ::PROTOBUF_NAMESPACE_ID::Arena::InternalGetOwningArena(
+                reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(room));
+    if (message_arena != submessage_arena) {
+      room = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
+          message_arena, room, submessage_arena);
+    }
+    
+  } else {
+    
+  }
+  room_ = room;
+  // @@protoc_insertion_point(field_set_allocated:Protocol.S_ROOMBACK.room)
+}
+
 #ifdef __GNUC__
   #pragma GCC diagnostic pop
 #endif  // __GNUC__
+// -------------------------------------------------------------------
+
 // -------------------------------------------------------------------
 
 // -------------------------------------------------------------------

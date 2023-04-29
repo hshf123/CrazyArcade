@@ -18,7 +18,7 @@ public:
 
 	bool CanGo(Vector2Int cellPos);
 
-	void ApplyMove(PlayerRef player, Vector2Int dest);
+	bool ApplyMove(PlayerRef player, Protocol::C_MOVE& pkt);
 	void ApplyLeave(PlayerRef player);
 	Vector2Int FindPlayer(PlayerRef player);
 	Vector<PlayerRef> FindPlayer(Vector2Int cellPos, PlayerRef exceptPlayer = nullptr);

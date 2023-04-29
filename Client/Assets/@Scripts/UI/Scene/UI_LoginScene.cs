@@ -52,6 +52,11 @@ public class UI_LoginScene : UI_Scene
         {
             GetInputField((int)InputFields.Input_PW).Select();
         }
+
+        if (GetInputField((int)InputFields.Input_PW).isFocused && Input.GetKey(KeyCode.Return))
+        {
+            OnClickLoginButton();
+        }
     }
 
     void OnClickSignInButton()

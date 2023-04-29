@@ -7,6 +7,8 @@ using ChannelInfo = Protocol::PChannel;
 class Channel : public enable_shared_from_this<Channel>
 {
 public:
+	void Update();
+
 	void AddRoom(int64 playerId, const string& roomName, int32 maxPlayerCount = 8);
 	void RemoveRoom(int32 roomId);
 	RoomRef FindRoom(int32 roomId);

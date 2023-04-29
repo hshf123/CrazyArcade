@@ -4,6 +4,14 @@
 #include "Room.h"
 #include "Protocol.pb.h"
 
+void Channel::Update()
+{
+	for (auto& p : _rooms)
+	{
+		p.second->Update();
+	}
+}
+
 void Channel::AddRoom(int64 playerId, const string& roomName, int32 maxPlayerCount /*= 8*/)
 {
 	wstringstream log;

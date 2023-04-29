@@ -177,3 +177,8 @@ message S_GAMEEND
 {
 	repeated PRoomEnd endInfo = 1;
 }
+
+message S_ROOMBACK
+{
+	PRoom room = 1;
+}

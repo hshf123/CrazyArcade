@@ -102,6 +102,8 @@ void Room::SetIdx(PlayerRef player)
 
 void Room::PlayerDead(PlayerRef player)
 {
+	WRITE_LOCK;
+
 	if (player == nullptr)
 	{
 		wstringstream log;
@@ -117,7 +119,7 @@ void Room::PlayerDead(PlayerRef player)
 
 	wstringstream log;
 	log << L"PLAYERID : " << player->PlayerInfo.id() << L" IS DEAD RANK : " << player->Rank;
-	log << L"\nROOM ID : " << _roomId << L" PLAYER COUNT : " << _forestMap->PlayerCount;
+	log << L" ROOM ID : " << _roomId << L" PLAYER COUNT : " << _forestMap->PlayerCount;
 	Utils::Log(log);
 
 	if (_forestMap->PlayerCount == 1)
@@ -126,12 +128,17 @@ void Room::PlayerDead(PlayerRef player)
 		Protocol::S_GAMEEND gameEndPkt;
 		for (auto& p : _players)
 		{
+			if (p.second->Rank == 1)
+				p.second->PosInfo.set_state(Protocol::PPlayerState::WIN);
 			Protocol::PRoomEnd* roomEnd = gameEndPkt.add_endinfo();
 			roomEnd->set_rank(p.second->Rank);
-			player->PosInfo.set_state(Protocol::PPlayerState::WIN);
-			roomEnd->set_allocated_player(p.second->GetPlayerProtocol());
+			p.second->PlayerInfo.set_ready(false);
+			roomEnd->set_allocated_playerinfo(p.second->GetPlayerProtocol());
+			roomEnd->set_allocated_playerposinfo(p.second->GetPositionInfoProtocol());
 		}
 		Broadcast(gameEndPkt);
+
+		_endTime = ::GetTickCount64() + 4000;
 	}
 }
 
@@ -172,7 +179,9 @@ bool Room::CanGameStart()
 			roomStart->set_allocated_playerinfo(p.second->GetPlayerProtocol());
 			roomStart->set_allocated_posinfo(p.second->GetPositionInfoProtocol());
 
-			_forestMap->ApplyMove(p.second, p.second->GetCellPos());
+			Protocol::C_MOVE tempPkt;
+			tempPkt.set_allocated_positioninfo(p.second->GetPositionInfoProtocol());
+			_forestMap->ApplyMove(p.second, tempPkt);
 		}
 
 		Broadcast(roomStartPkt);
@@ -197,8 +206,33 @@ void Room::GameInit()
 	_rank = _players.size();
 }
 
+void Room::Update()
+{
+	WRITE_LOCK;
+
+	if (_endTime == 0)
+		return;
+
+	if (_endTime <= ::GetTickCount64())
+	{
+		// 실행해야하는 시간이 지났다면
+		Protocol::S_ROOMBACK roomBackPkt;
+		roomBackPkt.set_allocated_room(GetRoomProtocol());
+		Broadcast(roomBackPkt);
+		_endTime = 0;
+	}
+}
+
+void Room::GameEnd()
+{
+	Protocol::S_ROOMBACK roomBackPkt;
+	Broadcast(roomBackPkt);
+}
+
 Protocol::PPositionInfo* Room::GetBasicPosInfo(int32 idx)
 {
+	idx += 2;
+	idx %= 8;
 	Protocol::PPositionInfo* pkt = new Protocol::PPositionInfo();
 	pkt->set_state(Protocol::PPlayerState::IDLE);
 	pkt->set_movedir(Protocol::PMoveDir::DOWN);
@@ -275,8 +309,8 @@ void Room::HandleMove(PlayerRef player, Protocol::C_MOVE& pkt)
 		return;
 
 	WRITE_LOCK;
-	_forestMap->ApplyMove(player, player->GetCellPos());
-	player->PosInfo = pkt.positioninfo();
+	if (_forestMap->ApplyMove(player, pkt) == false)
+		return;
 
 	// 다른 플레이어한테도 알려준다
 	Protocol::S_MOVE movePkt;

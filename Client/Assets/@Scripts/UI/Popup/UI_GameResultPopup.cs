@@ -44,15 +44,17 @@ public class UI_GameResultPopup : UI_Popup
 
         foreach (var endInfo in EndInfo)
         {
-            InstantiateRankSubItem(endInfo.Rank, endInfo.Player.Level, endInfo.Player.Name, 0, 0, endInfo.Player.Exp, 0);
-            if(endInfo.Rank == 1 && endInfo.Player.Id == Managers.Game.PlayerID)
+            InstantiateRankSubItem(endInfo.Rank, endInfo.PlayerInfo.Level, endInfo.PlayerInfo.Name, 0, 0, endInfo.PlayerInfo.Exp, 0);
+            if(endInfo.Rank == 1 && endInfo.PlayerInfo.Id == Managers.Game.PlayerID)
             {
                 Get<Image>((int)Images.WinImage).gameObject.SetActive(true);
+                Managers.Object.MyPlayer.State = endInfo.PlayerPosInfo.State;
             }
-            else if(endInfo.Player.Id == Managers.Game.PlayerID)
+            else if(endInfo.PlayerInfo.Id == Managers.Game.PlayerID)
             {
                 Get<Image>((int)Images.LoseImage_1).gameObject.SetActive(true);
                 Get<Image>((int)Images.LoseImage_2).gameObject.SetActive(true);
+                Managers.Object.MyPlayer.State = endInfo.PlayerPosInfo.State;
             }
         }
     }

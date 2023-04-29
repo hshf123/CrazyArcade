@@ -1564,26 +1564,45 @@ class PRoomEnd final :
   // accessors -------------------------------------------------------
 
   enum : int {
-    kPlayerFieldNumber = 2,
+    kPlayerInfoFieldNumber = 2,
+    kPlayerPosInfoFieldNumber = 3,
     kRankFieldNumber = 1,
   };
-  // .Protocol.PPlayer player = 2;
-  bool has_player() const;
+  // .Protocol.PPlayer playerInfo = 2;
+  bool has_playerinfo() const;
   private:
-  bool _internal_has_player() const;
+  bool _internal_has_playerinfo() const;
   public:
-  void clear_player();
-  const ::Protocol::PPlayer& player() const;
-  PROTOBUF_NODISCARD ::Protocol::PPlayer* release_player();
-  ::Protocol::PPlayer* mutable_player();
-  void set_allocated_player(::Protocol::PPlayer* player);
+  void clear_playerinfo();
+  const ::Protocol::PPlayer& playerinfo() const;
+  PROTOBUF_NODISCARD ::Protocol::PPlayer* release_playerinfo();
+  ::Protocol::PPlayer* mutable_playerinfo();
+  void set_allocated_playerinfo(::Protocol::PPlayer* playerinfo);
   private:
-  const ::Protocol::PPlayer& _internal_player() const;
-  ::Protocol::PPlayer* _internal_mutable_player();
+  const ::Protocol::PPlayer& _internal_playerinfo() const;
+  ::Protocol::PPlayer* _internal_mutable_playerinfo();
   public:
-  void unsafe_arena_set_allocated_player(
-      ::Protocol::PPlayer* player);
-  ::Protocol::PPlayer* unsafe_arena_release_player();
+  void unsafe_arena_set_allocated_playerinfo(
+      ::Protocol::PPlayer* playerinfo);
+  ::Protocol::PPlayer* unsafe_arena_release_playerinfo();
+
+  // .Protocol.PPositionInfo playerPosInfo = 3;
+  bool has_playerposinfo() const;
+  private:
+  bool _internal_has_playerposinfo() const;
+  public:
+  void clear_playerposinfo();
+  const ::Protocol::PPositionInfo& playerposinfo() const;
+  PROTOBUF_NODISCARD ::Protocol::PPositionInfo* release_playerposinfo();
+  ::Protocol::PPositionInfo* mutable_playerposinfo();
+  void set_allocated_playerposinfo(::Protocol::PPositionInfo* playerposinfo);
+  private:
+  const ::Protocol::PPositionInfo& _internal_playerposinfo() const;
+  ::Protocol::PPositionInfo* _internal_mutable_playerposinfo();
+  public:
+  void unsafe_arena_set_allocated_playerposinfo(
+      ::Protocol::PPositionInfo* playerposinfo);
+  ::Protocol::PPositionInfo* unsafe_arena_release_playerposinfo();
 
   // int32 rank = 1;
   void clear_rank();
@@ -1601,7 +1620,8 @@ class PRoomEnd final :
   template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
   typedef void InternalArenaConstructable_;
   typedef void DestructorSkippable_;
-  ::Protocol::PPlayer* player_;
+  ::Protocol::PPlayer* playerinfo_;
+  ::Protocol::PPositionInfo* playerposinfo_;
   int32_t rank_;
   mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   friend struct ::TableStruct_Struct_2eproto;
@@ -2742,45 +2762,45 @@ inline void PRoomEnd::set_rank(int32_t value) {
   // @@protoc_insertion_point(field_set:Protocol.PRoomEnd.rank)
 }
 
-// .Protocol.PPlayer player = 2;
-inline bool PRoomEnd::_internal_has_player() const {
-  return this != internal_default_instance() && player_ != nullptr;
+// .Protocol.PPlayer playerInfo = 2;
+inline bool PRoomEnd::_internal_has_playerinfo() const {
+  return this != internal_default_instance() && playerinfo_ != nullptr;
 }
-inline bool PRoomEnd::has_player() const {
-  return _internal_has_player();
+inline bool PRoomEnd::has_playerinfo() const {
+  return _internal_has_playerinfo();
 }
-inline void PRoomEnd::clear_player() {
-  if (GetArenaForAllocation() == nullptr && player_ != nullptr) {
-    delete player_;
+inline void PRoomEnd::clear_playerinfo() {
+  if (GetArenaForAllocation() == nullptr && playerinfo_ != nullptr) {
+    delete playerinfo_;
   }
-  player_ = nullptr;
+  playerinfo_ = nullptr;
 }
-inline const ::Protocol::PPlayer& PRoomEnd::_internal_player() const {
-  const ::Protocol::PPlayer* p = player_;
+inline const ::Protocol::PPlayer& PRoomEnd::_internal_playerinfo() const {
+  const ::Protocol::PPlayer* p = playerinfo_;
   return p != nullptr ? *p : reinterpret_cast<const ::Protocol::PPlayer&>(
       ::Protocol::_PPlayer_default_instance_);
 }
-inline const ::Protocol::PPlayer& PRoomEnd::player() const {
-  // @@protoc_insertion_point(field_get:Protocol.PRoomEnd.player)
-  return _internal_player();
+inline const ::Protocol::PPlayer& PRoomEnd::playerinfo() const {
+  // @@protoc_insertion_point(field_get:Protocol.PRoomEnd.playerInfo)
+  return _internal_playerinfo();
 }
-inline void PRoomEnd::unsafe_arena_set_allocated_player(
-    ::Protocol::PPlayer* player) {
+inline void PRoomEnd::unsafe_arena_set_allocated_playerinfo(
+    ::Protocol::PPlayer* playerinfo) {
   if (GetArenaForAllocation() == nullptr) {
-    delete reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(player_);
+    delete reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(playerinfo_);
   }
-  player_ = player;
-  if (player) {
+  playerinfo_ = playerinfo;
+  if (playerinfo) {
     
   } else {
     
   }
-  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:Protocol.PRoomEnd.player)
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:Protocol.PRoomEnd.playerInfo)
 }
-inline ::Protocol::PPlayer* PRoomEnd::release_player() {
+inline ::Protocol::PPlayer* PRoomEnd::release_playerinfo() {
   
-  ::Protocol::PPlayer* temp = player_;
-  player_ = nullptr;
+  ::Protocol::PPlayer* temp = playerinfo_;
+  playerinfo_ = nullptr;
 #ifdef PROTOBUF_FORCE_COPY_IN_RELEASE
   auto* old =  reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(temp);
   temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
@@ -2792,44 +2812,134 @@ inline ::Protocol::PPlayer* PRoomEnd::release_player() {
 #endif  // !PROTOBUF_FORCE_COPY_IN_RELEASE
   return temp;
 }
-inline ::Protocol::PPlayer* PRoomEnd::unsafe_arena_release_player() {
-  // @@protoc_insertion_point(field_release:Protocol.PRoomEnd.player)
+inline ::Protocol::PPlayer* PRoomEnd::unsafe_arena_release_playerinfo() {
+  // @@protoc_insertion_point(field_release:Protocol.PRoomEnd.playerInfo)
   
-  ::Protocol::PPlayer* temp = player_;
-  player_ = nullptr;
+  ::Protocol::PPlayer* temp = playerinfo_;
+  playerinfo_ = nullptr;
   return temp;
 }
-inline ::Protocol::PPlayer* PRoomEnd::_internal_mutable_player() {
+inline ::Protocol::PPlayer* PRoomEnd::_internal_mutable_playerinfo() {
   
-  if (player_ == nullptr) {
+  if (playerinfo_ == nullptr) {
     auto* p = CreateMaybeMessage<::Protocol::PPlayer>(GetArenaForAllocation());
-    player_ = p;
+    playerinfo_ = p;
   }
-  return player_;
+  return playerinfo_;
 }
-inline ::Protocol::PPlayer* PRoomEnd::mutable_player() {
-  ::Protocol::PPlayer* _msg = _internal_mutable_player();
-  // @@protoc_insertion_point(field_mutable:Protocol.PRoomEnd.player)
+inline ::Protocol::PPlayer* PRoomEnd::mutable_playerinfo() {
+  ::Protocol::PPlayer* _msg = _internal_mutable_playerinfo();
+  // @@protoc_insertion_point(field_mutable:Protocol.PRoomEnd.playerInfo)
   return _msg;
 }
-inline void PRoomEnd::set_allocated_player(::Protocol::PPlayer* player) {
+inline void PRoomEnd::set_allocated_playerinfo(::Protocol::PPlayer* playerinfo) {
   ::PROTOBUF_NAMESPACE_ID::Arena* message_arena = GetArenaForAllocation();
   if (message_arena == nullptr) {
-    delete player_;
+    delete playerinfo_;
   }
-  if (player) {
+  if (playerinfo) {
     ::PROTOBUF_NAMESPACE_ID::Arena* submessage_arena =
-        ::PROTOBUF_NAMESPACE_ID::Arena::InternalGetOwningArena(player);
+        ::PROTOBUF_NAMESPACE_ID::Arena::InternalGetOwningArena(playerinfo);
     if (message_arena != submessage_arena) {
-      player = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
-          message_arena, player, submessage_arena);
+      playerinfo = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
+          message_arena, playerinfo, submessage_arena);
     }
     
   } else {
     
   }
-  player_ = player;
-  // @@protoc_insertion_point(field_set_allocated:Protocol.PRoomEnd.player)
+  playerinfo_ = playerinfo;
+  // @@protoc_insertion_point(field_set_allocated:Protocol.PRoomEnd.playerInfo)
+}
+
+// .Protocol.PPositionInfo playerPosInfo = 3;
+inline bool PRoomEnd::_internal_has_playerposinfo() const {
+  return this != internal_default_instance() && playerposinfo_ != nullptr;
+}
+inline bool PRoomEnd::has_playerposinfo() const {
+  return _internal_has_playerposinfo();
+}
+inline void PRoomEnd::clear_playerposinfo() {
+  if (GetArenaForAllocation() == nullptr && playerposinfo_ != nullptr) {
+    delete playerposinfo_;
+  }
+  playerposinfo_ = nullptr;
+}
+inline const ::Protocol::PPositionInfo& PRoomEnd::_internal_playerposinfo() const {
+  const ::Protocol::PPositionInfo* p = playerposinfo_;
+  return p != nullptr ? *p : reinterpret_cast<const ::Protocol::PPositionInfo&>(
+      ::Protocol::_PPositionInfo_default_instance_);
+}
+inline const ::Protocol::PPositionInfo& PRoomEnd::playerposinfo() const {
+  // @@protoc_insertion_point(field_get:Protocol.PRoomEnd.playerPosInfo)
+  return _internal_playerposinfo();
+}
+inline void PRoomEnd::unsafe_arena_set_allocated_playerposinfo(
+    ::Protocol::PPositionInfo* playerposinfo) {
+  if (GetArenaForAllocation() == nullptr) {
+    delete reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(playerposinfo_);
+  }
+  playerposinfo_ = playerposinfo;
+  if (playerposinfo) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:Protocol.PRoomEnd.playerPosInfo)
+}
+inline ::Protocol::PPositionInfo* PRoomEnd::release_playerposinfo() {
+  
+  ::Protocol::PPositionInfo* temp = playerposinfo_;
+  playerposinfo_ = nullptr;
+#ifdef PROTOBUF_FORCE_COPY_IN_RELEASE
+  auto* old =  reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(temp);
+  temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
+  if (GetArenaForAllocation() == nullptr) { delete old; }
+#else  // PROTOBUF_FORCE_COPY_IN_RELEASE
+  if (GetArenaForAllocation() != nullptr) {
+    temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
+  }
+#endif  // !PROTOBUF_FORCE_COPY_IN_RELEASE
+  return temp;
+}
+inline ::Protocol::PPositionInfo* PRoomEnd::unsafe_arena_release_playerposinfo() {
+  // @@protoc_insertion_point(field_release:Protocol.PRoomEnd.playerPosInfo)
+  
+  ::Protocol::PPositionInfo* temp = playerposinfo_;
+  playerposinfo_ = nullptr;
+  return temp;
+}
+inline ::Protocol::PPositionInfo* PRoomEnd::_internal_mutable_playerposinfo() {
+  
+  if (playerposinfo_ == nullptr) {
+    auto* p = CreateMaybeMessage<::Protocol::PPositionInfo>(GetArenaForAllocation());
+    playerposinfo_ = p;
+  }
+  return playerposinfo_;
+}
+inline ::Protocol::PPositionInfo* PRoomEnd::mutable_playerposinfo() {
+  ::Protocol::PPositionInfo* _msg = _internal_mutable_playerposinfo();
+  // @@protoc_insertion_point(field_mutable:Protocol.PRoomEnd.playerPosInfo)
+  return _msg;
+}
+inline void PRoomEnd::set_allocated_playerposinfo(::Protocol::PPositionInfo* playerposinfo) {
+  ::PROTOBUF_NAMESPACE_ID::Arena* message_arena = GetArenaForAllocation();
+  if (message_arena == nullptr) {
+    delete playerposinfo_;
+  }
+  if (playerposinfo) {
+    ::PROTOBUF_NAMESPACE_ID::Arena* submessage_arena =
+        ::PROTOBUF_NAMESPACE_ID::Arena::InternalGetOwningArena(playerposinfo);
+    if (message_arena != submessage_arena) {
+      playerposinfo = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
+          message_arena, playerposinfo, submessage_arena);
+    }
+    
+  } else {
+    
+  }
+  playerposinfo_ = playerposinfo;
+  // @@protoc_insertion_point(field_set_allocated:Protocol.PRoomEnd.playerPosInfo)
 }
 
 #ifdef __GNUC__
