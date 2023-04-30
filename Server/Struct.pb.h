@@ -1564,11 +1564,12 @@ class PRoomEnd final :
   // accessors -------------------------------------------------------
 
   enum : int {
-    kPlayerInfoFieldNumber = 2,
-    kPlayerPosInfoFieldNumber = 3,
+    kPlayerInfoFieldNumber = 3,
+    kPlayerPosInfoFieldNumber = 4,
     kRankFieldNumber = 1,
+    kKillFieldNumber = 2,
   };
-  // .Protocol.PPlayer playerInfo = 2;
+  // .Protocol.PPlayer playerInfo = 3;
   bool has_playerinfo() const;
   private:
   bool _internal_has_playerinfo() const;
@@ -1586,7 +1587,7 @@ class PRoomEnd final :
       ::Protocol::PPlayer* playerinfo);
   ::Protocol::PPlayer* unsafe_arena_release_playerinfo();
 
-  // .Protocol.PPositionInfo playerPosInfo = 3;
+  // .Protocol.PPositionInfo playerPosInfo = 4;
   bool has_playerposinfo() const;
   private:
   bool _internal_has_playerposinfo() const;
@@ -1613,6 +1614,15 @@ class PRoomEnd final :
   void _internal_set_rank(int32_t value);
   public:
 
+  // int32 kill = 2;
+  void clear_kill();
+  int32_t kill() const;
+  void set_kill(int32_t value);
+  private:
+  int32_t _internal_kill() const;
+  void _internal_set_kill(int32_t value);
+  public:
+
   // @@protoc_insertion_point(class_scope:Protocol.PRoomEnd)
  private:
   class _Internal;
@@ -1623,6 +1633,7 @@ class PRoomEnd final :
   ::Protocol::PPlayer* playerinfo_;
   ::Protocol::PPositionInfo* playerposinfo_;
   int32_t rank_;
+  int32_t kill_;
   mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   friend struct ::TableStruct_Struct_2eproto;
 };
@@ -2762,7 +2773,27 @@ inline void PRoomEnd::set_rank(int32_t value) {
   // @@protoc_insertion_point(field_set:Protocol.PRoomEnd.rank)
 }
 
-// .Protocol.PPlayer playerInfo = 2;
+// int32 kill = 2;
+inline void PRoomEnd::clear_kill() {
+  kill_ = 0;
+}
+inline int32_t PRoomEnd::_internal_kill() const {
+  return kill_;
+}
+inline int32_t PRoomEnd::kill() const {
+  // @@protoc_insertion_point(field_get:Protocol.PRoomEnd.kill)
+  return _internal_kill();
+}
+inline void PRoomEnd::_internal_set_kill(int32_t value) {
+  
+  kill_ = value;
+}
+inline void PRoomEnd::set_kill(int32_t value) {
+  _internal_set_kill(value);
+  // @@protoc_insertion_point(field_set:Protocol.PRoomEnd.kill)
+}
+
+// .Protocol.PPlayer playerInfo = 3;
 inline bool PRoomEnd::_internal_has_playerinfo() const {
   return this != internal_default_instance() && playerinfo_ != nullptr;
 }
@@ -2852,7 +2883,7 @@ inline void PRoomEnd::set_allocated_playerinfo(::Protocol::PPlayer* playerinfo) 
   // @@protoc_insertion_point(field_set_allocated:Protocol.PRoomEnd.playerInfo)
 }
 
-// .Protocol.PPositionInfo playerPosInfo = 3;
+// .Protocol.PPositionInfo playerPosInfo = 4;
 inline bool PRoomEnd::_internal_has_playerposinfo() const {
   return this != internal_default_instance() && playerposinfo_ != nullptr;
 }

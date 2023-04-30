@@ -69,6 +69,7 @@ message PRoomStart
 message PRoomEnd
 {
 	int32 rank = 1;
-	PPlayer playerInfo = 2;
-	PPositionInfo playerPosInfo = 3;
+	int32 kill = 2;
+	PPlayer playerInfo = 3;
+	PPositionInfo playerPosInfo = 4;
 }

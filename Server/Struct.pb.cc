@@ -137,7 +137,8 @@ PROTOBUF_CONSTEXPR PRoomEnd::PRoomEnd(
     ::_pbi::ConstantInitialized)
   : playerinfo_(nullptr)
   , playerposinfo_(nullptr)
-  , rank_(0){}
+  , rank_(0)
+  , kill_(0){}
 struct PRoomEndDefaultTypeInternal {
   PROTOBUF_CONSTEXPR PRoomEndDefaultTypeInternal()
       : _instance(::_pbi::ConstantInitialized{}) {}
@@ -235,6 +236,7 @@ const uint32_t TableStruct_Struct_2eproto::offsets[] PROTOBUF_SECTION_VARIABLE(p
   ~0u,  // no _weak_field_map_
   ~0u,  // no _inlined_string_donated_
   PROTOBUF_FIELD_OFFSET(::Protocol::PRoomEnd, rank_),
+  PROTOBUF_FIELD_OFFSET(::Protocol::PRoomEnd, kill_),
   PROTOBUF_FIELD_OFFSET(::Protocol::PRoomEnd, playerinfo_),
   PROTOBUF_FIELD_OFFSET(::Protocol::PRoomEnd, playerposinfo_),
 };
@@ -282,17 +284,17 @@ const char descriptor_table_protodef_Struct_2eproto[] PROTOBUF_SECTION_VARIABLE(
   "PWorldPos\022#\n\007cellPos\030\004 \001(\0132\022.Protocol.PC"
   "ellPos\"]\n\nPRoomStart\022%\n\nplayerInfo\030\001 \001(\013"
   "2\021.Protocol.PPlayer\022(\n\007posInfo\030\002 \001(\0132\027.P"
-  "rotocol.PPositionInfo\"o\n\010PRoomEnd\022\014\n\004ran"
-  "k\030\001 \001(\005\022%\n\nplayerInfo\030\002 \001(\0132\021.Protocol.P"
-  "Player\022.\n\rplayerPosInfo\030\003 \001(\0132\027.Protocol"
-  ".PPositionInfob\006proto3"
+  "rotocol.PPositionInfo\"}\n\010PRoomEnd\022\014\n\004ran"
+  "k\030\001 \001(\005\022\014\n\004kill\030\002 \001(\005\022%\n\nplayerInfo\030\003 \001("
+  "\0132\021.Protocol.PPlayer\022.\n\rplayerPosInfo\030\004 "
+  "\001(\0132\027.Protocol.PPositionInfob\006proto3"
   ;
 static const ::_pbi::DescriptorTable* const descriptor_table_Struct_2eproto_deps[1] = {
   &::descriptor_table_Enum_2eproto,
 };
 static ::_pbi::once_flag descriptor_table_Struct_2eproto_once;
 const ::_pbi::DescriptorTable descriptor_table_Struct_2eproto = {
-    false, false, 982, descriptor_table_protodef_Struct_2eproto,
+    false, false, 996, descriptor_table_protodef_Struct_2eproto,
     "Struct.proto",
     &descriptor_table_Struct_2eproto_once, descriptor_table_Struct_2eproto_deps, 1, 8,
     schemas, file_default_instances, TableStruct_Struct_2eproto::offsets,
@@ -2418,15 +2420,17 @@ PRoomEnd::PRoomEnd(const PRoomEnd& from)
   } else {
     playerposinfo_ = nullptr;
   }
-  rank_ = from.rank_;
+  ::memcpy(&rank_, &from.rank_,
+    static_cast<size_t>(reinterpret_cast<char*>(&kill_) -
+    reinterpret_cast<char*>(&rank_)) + sizeof(kill_));
   // @@protoc_insertion_point(copy_constructor:Protocol.PRoomEnd)
 }
 
 inline void PRoomEnd::SharedCtor() {
 ::memset(reinterpret_cast<char*>(this) + static_cast<size_t>(
     reinterpret_cast<char*>(&playerinfo_) - reinterpret_cast<char*>(this)),
-    0, static_cast<size_t>(reinterpret_cast<char*>(&rank_) -
-    reinterpret_cast<char*>(&playerinfo_)) + sizeof(rank_));
+    0, static_cast<size_t>(reinterpret_cast<char*>(&kill_) -
+    reinterpret_cast<char*>(&playerinfo_)) + sizeof(kill_));
 }
 
 PRoomEnd::~PRoomEnd() {
@@ -2462,7 +2466,9 @@ void PRoomEnd::Clear() {
     delete playerposinfo_;
   }
   playerposinfo_ = nullptr;
-  rank_ = 0;
+  ::memset(&rank_, 0, static_cast<size_t>(
+      reinterpret_cast<char*>(&kill_) -
+      reinterpret_cast<char*>(&rank_)) + sizeof(kill_));
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
@@ -2480,17 +2486,25 @@ const char* PRoomEnd::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx)
         } else
           goto handle_unusual;
         continue;
-      // .Protocol.PPlayer playerInfo = 2;
+      // int32 kill = 2;
       case 2:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 18)) {
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 16)) {
+          kill_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr);
+          CHK_(ptr);
+        } else
+          goto handle_unusual;
+        continue;
+      // .Protocol.PPlayer playerInfo = 3;
+      case 3:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 26)) {
           ptr = ctx->ParseMessage(_internal_mutable_playerinfo(), ptr);
           CHK_(ptr);
         } else
           goto handle_unusual;
         continue;
-      // .Protocol.PPositionInfo playerPosInfo = 3;
-      case 3:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 26)) {
+      // .Protocol.PPositionInfo playerPosInfo = 4;
+      case 4:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 34)) {
           ptr = ctx->ParseMessage(_internal_mutable_playerposinfo(), ptr);
           CHK_(ptr);
         } else
@@ -2531,17 +2545,23 @@ uint8_t* PRoomEnd::_InternalSerialize(
     target = ::_pbi::WireFormatLite::WriteInt32ToArray(1, this->_internal_rank(), target);
   }
 
-  // .Protocol.PPlayer playerInfo = 2;
+  // int32 kill = 2;
+  if (this->_internal_kill() != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::_pbi::WireFormatLite::WriteInt32ToArray(2, this->_internal_kill(), target);
+  }
+
+  // .Protocol.PPlayer playerInfo = 3;
   if (this->_internal_has_playerinfo()) {
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
-      InternalWriteMessage(2, _Internal::playerinfo(this),
+      InternalWriteMessage(3, _Internal::playerinfo(this),
         _Internal::playerinfo(this).GetCachedSize(), target, stream);
   }
 
-  // .Protocol.PPositionInfo playerPosInfo = 3;
+  // .Protocol.PPositionInfo playerPosInfo = 4;
   if (this->_internal_has_playerposinfo()) {
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
-      InternalWriteMessage(3, _Internal::playerposinfo(this),
+      InternalWriteMessage(4, _Internal::playerposinfo(this),
         _Internal::playerposinfo(this).GetCachedSize(), target, stream);
   }
 
@@ -2561,14 +2581,14 @@ size_t PRoomEnd::ByteSizeLong() const {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  // .Protocol.PPlayer playerInfo = 2;
+  // .Protocol.PPlayer playerInfo = 3;
   if (this->_internal_has_playerinfo()) {
     total_size += 1 +
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
         *playerinfo_);
   }
 
-  // .Protocol.PPositionInfo playerPosInfo = 3;
+  // .Protocol.PPositionInfo playerPosInfo = 4;
   if (this->_internal_has_playerposinfo()) {
     total_size += 1 +
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
@@ -2578,6 +2598,11 @@ size_t PRoomEnd::ByteSizeLong() const {
   // int32 rank = 1;
   if (this->_internal_rank() != 0) {
     total_size += ::_pbi::WireFormatLite::Int32SizePlusOne(this->_internal_rank());
+  }
+
+  // int32 kill = 2;
+  if (this->_internal_kill() != 0) {
+    total_size += ::_pbi::WireFormatLite::Int32SizePlusOne(this->_internal_kill());
   }
 
   return MaybeComputeUnknownFieldsSize(total_size, &_cached_size_);
@@ -2611,6 +2636,9 @@ void PRoomEnd::MergeFrom(const PRoomEnd& from) {
   if (from._internal_rank() != 0) {
     _internal_set_rank(from._internal_rank());
   }
+  if (from._internal_kill() != 0) {
+    _internal_set_kill(from._internal_kill());
+  }
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
 }
 
@@ -2629,8 +2657,8 @@ void PRoomEnd::InternalSwap(PRoomEnd* other) {
   using std::swap;
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
   ::PROTOBUF_NAMESPACE_ID::internal::memswap<
-      PROTOBUF_FIELD_OFFSET(PRoomEnd, rank_)
-      + sizeof(PRoomEnd::rank_)
+      PROTOBUF_FIELD_OFFSET(PRoomEnd, kill_)
+      + sizeof(PRoomEnd::kill_)
       - PROTOBUF_FIELD_OFFSET(PRoomEnd, playerinfo_)>(
           reinterpret_cast<char*>(&playerinfo_),
           reinterpret_cast<char*>(&other->playerinfo_));

@@ -34,7 +34,7 @@ public:
 
 public:
 	PlayerInfo PlayerInfo;
-	int32 Kill;
+	int32 Kill = 0;
 	int32 Rank = 1;
 
 private:

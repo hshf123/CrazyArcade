@@ -132,13 +132,14 @@ void Room::PlayerDead(PlayerRef player)
 				p.second->PosInfo.set_state(Protocol::PPlayerState::WIN);
 			Protocol::PRoomEnd* roomEnd = gameEndPkt.add_endinfo();
 			roomEnd->set_rank(p.second->Rank);
+			roomEnd->set_kill(p.second->Kill);
 			p.second->PlayerInfo.set_ready(false);
 			roomEnd->set_allocated_playerinfo(p.second->GetPlayerProtocol());
 			roomEnd->set_allocated_playerposinfo(p.second->GetPositionInfoProtocol());
 		}
 		Broadcast(gameEndPkt);
 
-		_endTime = ::GetTickCount64() + 4000;
+		_endTime = ::GetTickCount64() + 5000;
 	}
 }
 

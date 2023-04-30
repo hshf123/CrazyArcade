@@ -94,6 +94,7 @@ bool ForestMap::ApplyMove(PlayerRef player, Protocol::C_MOVE& pkt)
 				if (p->PosInfo.state() == Protocol::PPlayerState::INTRAP)
 				{
 					p->GetRoom()->PlayerDead(p);
+					player->Kill++;
 					wstringstream log;
 					log << L"Player ID : ";
 					log << player->PlayerInfo.id();

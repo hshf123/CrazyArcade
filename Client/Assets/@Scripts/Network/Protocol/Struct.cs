@@ -43,9 +43,10 @@ namespace Protocol {
             "UFdvcmxkUG9zEiMKB2NlbGxQb3MYBCABKAsyEi5Qcm90b2NvbC5QQ2VsbFBv",
             "cyJdCgpQUm9vbVN0YXJ0EiUKCnBsYXllckluZm8YASABKAsyES5Qcm90b2Nv",
             "bC5QUGxheWVyEigKB3Bvc0luZm8YAiABKAsyFy5Qcm90b2NvbC5QUG9zaXRp",
-            "b25JbmZvIm8KCFBSb29tRW5kEgwKBHJhbmsYASABKAUSJQoKcGxheWVySW5m",
-            "bxgCIAEoCzIRLlByb3RvY29sLlBQbGF5ZXISLgoNcGxheWVyUG9zSW5mbxgD",
-            "IAEoCzIXLlByb3RvY29sLlBQb3NpdGlvbkluZm9iBnByb3RvMw=="));
+            "b25JbmZvIn0KCFBSb29tRW5kEgwKBHJhbmsYASABKAUSDAoEa2lsbBgCIAEo",
+            "BRIlCgpwbGF5ZXJJbmZvGAMgASgLMhEuUHJvdG9jb2wuUFBsYXllchIuCg1w",
+            "bGF5ZXJQb3NJbmZvGAQgASgLMhcuUHJvdG9jb2wuUFBvc2l0aW9uSW5mb2IG",
+            "cHJvdG8z"));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { global::Protocol.EnumReflection.Descriptor, },
           new pbr::GeneratedClrTypeInfo(null, null, new pbr::GeneratedClrTypeInfo[] {
@@ -56,7 +57,7 @@ namespace Protocol {
             new pbr::GeneratedClrTypeInfo(typeof(global::Protocol.PCellPos), global::Protocol.PCellPos.Parser, new[]{ "PosX", "PosY" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Protocol.PPositionInfo), global::Protocol.PPositionInfo.Parser, new[]{ "State", "MoveDir", "WorldPos", "CellPos" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Protocol.PRoomStart), global::Protocol.PRoomStart.Parser, new[]{ "PlayerInfo", "PosInfo" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Protocol.PRoomEnd), global::Protocol.PRoomEnd.Parser, new[]{ "Rank", "PlayerInfo", "PlayerPosInfo" }, null, null, null, null)
+            new pbr::GeneratedClrTypeInfo(typeof(global::Protocol.PRoomEnd), global::Protocol.PRoomEnd.Parser, new[]{ "Rank", "Kill", "PlayerInfo", "PlayerPosInfo" }, null, null, null, null)
           }));
     }
     #endregion
@@ -2399,6 +2400,7 @@ namespace Protocol {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public PRoomEnd(PRoomEnd other) : this() {
       rank_ = other.rank_;
+      kill_ = other.kill_;
       playerInfo_ = other.playerInfo_ != null ? other.playerInfo_.Clone() : null;
       playerPosInfo_ = other.playerPosInfo_ != null ? other.playerPosInfo_.Clone() : null;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
@@ -2422,8 +2424,20 @@ namespace Protocol {
       }
     }
 
+    /// <summary>Field number for the "kill" field.</summary>
+    public const int KillFieldNumber = 2;
+    private int kill_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public int Kill {
+      get { return kill_; }
+      set {
+        kill_ = value;
+      }
+    }
+
     /// <summary>Field number for the "playerInfo" field.</summary>
-    public const int PlayerInfoFieldNumber = 2;
+    public const int PlayerInfoFieldNumber = 3;
     private global::Protocol.PPlayer playerInfo_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
@@ -2435,7 +2449,7 @@ namespace Protocol {
     }
 
     /// <summary>Field number for the "playerPosInfo" field.</summary>
-    public const int PlayerPosInfoFieldNumber = 3;
+    public const int PlayerPosInfoFieldNumber = 4;
     private global::Protocol.PPositionInfo playerPosInfo_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
@@ -2462,6 +2476,7 @@ namespace Protocol {
         return true;
       }
       if (Rank != other.Rank) return false;
+      if (Kill != other.Kill) return false;
       if (!object.Equals(PlayerInfo, other.PlayerInfo)) return false;
       if (!object.Equals(PlayerPosInfo, other.PlayerPosInfo)) return false;
       return Equals(_unknownFields, other._unknownFields);
@@ -2472,6 +2487,7 @@ namespace Protocol {
     public override int GetHashCode() {
       int hash = 1;
       if (Rank != 0) hash ^= Rank.GetHashCode();
+      if (Kill != 0) hash ^= Kill.GetHashCode();
       if (playerInfo_ != null) hash ^= PlayerInfo.GetHashCode();
       if (playerPosInfo_ != null) hash ^= PlayerPosInfo.GetHashCode();
       if (_unknownFields != null) {
@@ -2496,12 +2512,16 @@ namespace Protocol {
         output.WriteRawTag(8);
         output.WriteInt32(Rank);
       }
+      if (Kill != 0) {
+        output.WriteRawTag(16);
+        output.WriteInt32(Kill);
+      }
       if (playerInfo_ != null) {
-        output.WriteRawTag(18);
+        output.WriteRawTag(26);
         output.WriteMessage(PlayerInfo);
       }
       if (playerPosInfo_ != null) {
-        output.WriteRawTag(26);
+        output.WriteRawTag(34);
         output.WriteMessage(PlayerPosInfo);
       }
       if (_unknownFields != null) {
@@ -2518,12 +2538,16 @@ namespace Protocol {
         output.WriteRawTag(8);
         output.WriteInt32(Rank);
       }
+      if (Kill != 0) {
+        output.WriteRawTag(16);
+        output.WriteInt32(Kill);
+      }
       if (playerInfo_ != null) {
-        output.WriteRawTag(18);
+        output.WriteRawTag(26);
         output.WriteMessage(PlayerInfo);
       }
       if (playerPosInfo_ != null) {
-        output.WriteRawTag(26);
+        output.WriteRawTag(34);
         output.WriteMessage(PlayerPosInfo);
       }
       if (_unknownFields != null) {
@@ -2538,6 +2562,9 @@ namespace Protocol {
       int size = 0;
       if (Rank != 0) {
         size += 1 + pb::CodedOutputStream.ComputeInt32Size(Rank);
+      }
+      if (Kill != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeInt32Size(Kill);
       }
       if (playerInfo_ != null) {
         size += 1 + pb::CodedOutputStream.ComputeMessageSize(PlayerInfo);
@@ -2559,6 +2586,9 @@ namespace Protocol {
       }
       if (other.Rank != 0) {
         Rank = other.Rank;
+      }
+      if (other.Kill != 0) {
+        Kill = other.Kill;
       }
       if (other.playerInfo_ != null) {
         if (playerInfo_ == null) {
@@ -2591,14 +2621,18 @@ namespace Protocol {
             Rank = input.ReadInt32();
             break;
           }
-          case 18: {
+          case 16: {
+            Kill = input.ReadInt32();
+            break;
+          }
+          case 26: {
             if (playerInfo_ == null) {
               PlayerInfo = new global::Protocol.PPlayer();
             }
             input.ReadMessage(PlayerInfo);
             break;
           }
-          case 26: {
+          case 34: {
             if (playerPosInfo_ == null) {
               PlayerPosInfo = new global::Protocol.PPositionInfo();
             }
@@ -2624,14 +2658,18 @@ namespace Protocol {
             Rank = input.ReadInt32();
             break;
           }
-          case 18: {
+          case 16: {
+            Kill = input.ReadInt32();
+            break;
+          }
+          case 26: {
             if (playerInfo_ == null) {
               PlayerInfo = new global::Protocol.PPlayer();
             }
             input.ReadMessage(PlayerInfo);
             break;
           }
-          case 26: {
+          case 34: {
             if (playerPosInfo_ == null) {
               PlayerPosInfo = new global::Protocol.PPositionInfo();
             }
