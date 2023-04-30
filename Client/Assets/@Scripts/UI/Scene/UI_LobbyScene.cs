@@ -66,7 +66,7 @@ public class UI_LobbyScene : UI_Scene
 
     void Update()
     {
-        if(GetInputField((int)InputFields.ChatInputField).isFocused && Input.GetKey(KeyCode.Return))
+        if(GetInputField((int)InputFields.ChatInputField).isFocused && Input.GetKeyDown(KeyCode.Return))
             OnClickChatSendButton();
     }
 

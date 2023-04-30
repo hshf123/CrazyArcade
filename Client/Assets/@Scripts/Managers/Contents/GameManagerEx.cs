@@ -48,12 +48,12 @@ public class GameManagerEx
     }
     public int Ping { get; set; }
 
+    public bool SettingPopupOn { get; set; } = false;
     public bool BGMOn
     {
         get { return _gameData.BGMOn; }
         set { _gameData.BGMOn = value; }
     }
-
     public bool EffectSoundOn
     {
         get { return _gameData.EffectSoundOn; }

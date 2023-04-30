@@ -54,6 +54,14 @@ public class Managers : MonoBehaviour
     void Update()
     {
         _coPing = StartCoroutine(CoPing());
+
+        if (Input.GetKeyDown(KeyCode.Escape) && Managers.Game.SettingPopupOn == false)
+            _ui.ShowPopupUI<UI_SettingsPopup>();
+        else if (Input.GetKeyDown(KeyCode.Escape) && Managers.Game.SettingPopupOn)
+        {
+            _ui.ClosePopupUI();
+            _game.SettingPopupOn = false;
+        }
     }
 
     IEnumerator CoPing()

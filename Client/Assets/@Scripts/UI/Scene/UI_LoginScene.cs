@@ -52,12 +52,12 @@ public class UI_LoginScene : UI_Scene
 
     void Update()
     {
-        if (GetInputField((int)InputFields.Input_ID).isFocused && Input.GetKey(KeyCode.Tab))
+        if (GetInputField((int)InputFields.Input_ID).isFocused && Input.GetKeyDown(KeyCode.Tab))
         {
             GetInputField((int)InputFields.Input_PW).Select();
         }
 
-        if (GetInputField((int)InputFields.Input_PW).isFocused && Input.GetKey(KeyCode.Return))
+        if (GetInputField((int)InputFields.Input_PW).isFocused && Input.GetKeyDown(KeyCode.Return))
         {
             OnClickLoginButton();
         }
