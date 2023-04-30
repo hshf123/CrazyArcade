@@ -5,11 +5,13 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UIElements;
 
-public class UI_EventHandler : MonoBehaviour, IPointerClickHandler, IPointerDownHandler
+public class UI_EventHandler : MonoBehaviour, IPointerClickHandler, IPointerDownHandler, IPointerEnterHandler
 {
     public event Action OnClickHandler = null;
-    public event Action<PointerEventData> OnClickEventHandler = null;
     public event Action OnPressHandler = null;
+    public event Action OnEnterHandler = null;
+
+    public event Action<PointerEventData> OnClickEventHandler = null;
 
     public void OnPointerClick(PointerEventData eventData)
     {
@@ -20,5 +22,10 @@ public class UI_EventHandler : MonoBehaviour, IPointerClickHandler, IPointerDown
     public void OnPointerDown(PointerEventData eventData)
     {
         OnPressHandler?.Invoke();
+    }
+
+    public void OnPointerEnter(PointerEventData eventData)
+    {
+        OnEnterHandler?.Invoke();
     }
 }

@@ -12,7 +12,7 @@ using Protocol;
 
 public class PlayerController : MonoBehaviour
 {
-    protected Vector3 correction = new Vector3(0.5f, 0.5f, 0);
+    protected Vector3 correction = new Vector3(0.5f, 0.7f, 0);
     #region Component
     protected SpriteRenderer _spriteRenderer;
     protected Animator _animator;
@@ -320,6 +320,7 @@ public class PlayerController : MonoBehaviour
     {
         yield return new WaitForSeconds(0.45f);
 
+        Managers.Sound.Play(Define.Sound.Effect, "player_die");
         Managers.Object.RemovePlayer(PlayerInfo.Id);
         Managers.Resource.Destroy(gameObject);
         _coDead = null;

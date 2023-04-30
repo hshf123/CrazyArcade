@@ -68,7 +68,9 @@ public class ObjectManager
 
     public void Clear()
     {
+        MyPlayer = null;
         _players.Clear();
         _bombs.Clear();
+        _items.Clear();
     }
 }

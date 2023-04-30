@@ -108,10 +108,6 @@ bool Handle_C_LOGIN(PacketSessionRef& session, Protocol::C_LOGIN& pkt)
 		player->PlayerInfo.set_roomid(-1);
 		player->PlayerInfo.set_roomidx(-1);
 		player->PlayerInfo.set_ready(false);
-		player->PlayerInfo.set_speed(2.f);
-		player->PlayerInfo.set_maxbombcount(1);
-		player->PlayerInfo.set_bombcount(0);
-		player->PlayerInfo.set_bombrange(1);
 
 		clientSession->MyPlayer = player;
 		player->SetClientSession(clientSession);
@@ -373,20 +369,5 @@ bool Handle_C_BOMB(PacketSessionRef& session, Protocol::C_BOMB& pkt)
 		return false;
 
 	room->HandleBomb(player, pkt);
-	return true;
-}
-
-bool Handle_C_BOMBEND(PacketSessionRef& session, Protocol::C_BOMBEND& pkt)
-{
-	ClientSessionRef clientSession = static_pointer_cast<ClientSession>(session);
-	PlayerRef player = clientSession->MyPlayer;
-	if (player == nullptr)
-		return false;
-
-	RoomRef room = player->GetRoom();
-	if (room == nullptr)
-		return false;
-
-	room->HandleBombEnd(player, pkt);
 	return true;
 }

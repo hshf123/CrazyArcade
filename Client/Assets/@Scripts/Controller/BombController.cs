@@ -9,8 +9,6 @@ using CellPos = Protocol.PCellPos;
 
 public class BombController : MonoBehaviour
 {
-    Coroutine _coRegisterBomb;
-
     Vector3Int[] _upRangeList;
     Vector3Int[] _rightRangeList;
     Vector3Int[] _downRangeList;
@@ -47,26 +45,6 @@ public class BombController : MonoBehaviour
         }
     }
 
-    public void RegisterBomb()
-    {
-        _coRegisterBomb = StartCoroutine(CoRegisterBomb());
-    }
-    IEnumerator CoRegisterBomb()
-    {
-        if (OwnerId != Managers.Game.PlayerID)
-        {
-            _coRegisterBomb = null;
-            yield break;
-        }
-
-        yield return new WaitForSeconds(2.8f);
-
-        C_BOMBEND bombEndPkt = new C_BOMBEND();
-        bombEndPkt.CellPos = CellPos;
-        Managers.Net.SessionManager.Broadcast(bombEndPkt);
-        _coRegisterBomb = null;
-    }
-
     public void Bomb(Action callback)
     {
         UpWaterCourse();
@@ -78,7 +56,6 @@ public class BombController : MonoBehaviour
             course.transform.position = new Vector3(CellPos.PosX + correction.x, CellPos.PosY + correction.y, 0);
             Managers.Resource.Destroy(course, 0.54f); course.GetComponent<Animator>().Play("CENTER"); course.GetComponent<SpriteRenderer>().sortingOrder = SortOrder;
             Managers.Resource.Destroy(gameObject);
-            // Managers.Object.Remove(BombID);
             callback?.Invoke();
         });
     }

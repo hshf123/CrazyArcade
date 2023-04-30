@@ -42,7 +42,7 @@ public class MapManager
 
         int x = pos.x - MinX;
         int y = MaxY - pos.y;
-        if (_blocks[y, x] != (int)ObjectType.NonFix)
+        if (_blocks[y, x] != (int)BlockType.NonFix)
             return;
 
         _blocks[y, x] = 0;
@@ -67,7 +67,7 @@ public class MapManager
                 callback?.Invoke(map);
                 // NonFixObject 따로 저장
                 NonFixObjectController[] nonFixes = Utils.FindChilds<NonFixObjectController>(Utils.FindChild(map, "NonFixObject"), false);
-                foreach(NonFixObjectController nfobj in nonFixes)
+                foreach (NonFixObjectController nfobj in nonFixes)
                 {
                     _nonFixObjects.Add(CurrentGrid.WorldToCell(nfobj.transform.position), nfobj);
                 }
@@ -101,11 +101,13 @@ public class MapManager
 
     public void DestroyMap()
     {
-        GameObject map = GameObject.Find("Map");
-        if(map!=null)
+        GameObject map = GameObject.Find("ForestMap");
+        if (map != null)
         {
             GameObject.Destroy(map);
             CurrentGrid = null;
         }
+        _nonFixObjects.Clear();
+        _blocks = null;
     }
 }

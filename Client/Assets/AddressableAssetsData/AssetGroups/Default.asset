@@ -113,6 +113,62 @@ MonoBehaviour:
     m_Address: UI_FPSTextSubItem
     m_ReadOnly: 0
     m_SerializedLabels: []
+  - m_GUID: 106eb45f47024794ba5d851f50c5ca1c
+    m_Address: wave
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 60871a9e51d86e24487392a0978fab19
+    m_Address: pt_in_rect
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 72fc432879d24b240a7dc6739b2af2f8
+    m_Address: bomb_set
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 73e47d82fd27a074e8e451f949564bf1
+    m_Address: eat_item
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 183762199d1e4914e9e06affd512f6f8
+    m_Address: logo
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 3870d618e90417d48b8d1db03d352f0b
+    m_Address: mode_select_scene
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 885f06f87fdbf0145ae61d18cb60f28b
+    m_Address: click
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 0920e8f6d7aa55f4eb63c910b6d89de3
+    m_Address: player_die
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 1bf317f7b51fa8e4caee962d54b0ebdd
+    m_Address: lose
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 5ba4e3838b237444b92dd0df258d5544
+    m_Address: win
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: ab0a0e3be833ff745b93ce37ea674cc8
+    m_Address: game_start
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: ae7d49e268aa7994881f6d0110a9b565
+    m_Address: play_scene
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 3f3df562a37faf24abf12c3dee9a01ff
+    m_Address: lobby_scene
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 9feac017855adec4f8713adbbfcd82a9
+    m_Address: bomb_pop
+    m_ReadOnly: 0
+    m_SerializedLabels: []
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 37d63db9dee568844aed5ef436298665, type: 2}
   m_SchemaSet:

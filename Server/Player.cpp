@@ -69,10 +69,19 @@ void Player::ApplyItemAbility(ItemType type)
 	}
 	case ItemType::INCSPEED:
 	{
-		log << L"INCSPEED" << PlayerInfo.speed() << L" -> ";
-		PlayerInfo.set_speed(PlayerInfo.speed() + 0.5f);
-		log << PlayerInfo.speed();
-		break; break;
+		float speed = PlayerInfo.speed() + 1.f;
+		if (speed < 10.f)
+		{
+			log << L"INCSPEED" << PlayerInfo.speed() << L" -> ";
+			PlayerInfo.set_speed(speed);
+			log << PlayerInfo.speed();
+		}
+		else
+		{
+			log << L"INCSPEED" << PlayerInfo.speed() << L" IS ALREADY MAXSPEED";
+		}
+		
+		break;
 	}
 	case ItemType::MAXBOMBRANGE:
 	{

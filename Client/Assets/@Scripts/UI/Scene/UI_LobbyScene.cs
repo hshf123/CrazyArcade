@@ -47,11 +47,16 @@ public class UI_LobbyScene : UI_Scene
         BindInputField(typeof(InputFields));
         BindText(typeof(Texts));
         Bind<Scrollbar>(typeof(Scrollbars));
-
-        Get<Button>((int)Buttons.ChatSendButton).gameObject.BindEvent(OnClickChatSendButton);
+        #region Sound
+        Get<Button>((int)Buttons.MakeRoomButton).gameObject.BindEvent(ButtonEnterSound, Define.UIEvent.Enter);
+        Get<Button>((int)Buttons.RightButton).gameObject.BindEvent(ButtonEnterSound, Define.UIEvent.Enter);
+        Get<Button>((int)Buttons.LeftButton).gameObject.BindEvent(ButtonEnterSound, Define.UIEvent.Enter);
+        Get<Button>((int)Buttons.ChatSendButton).gameObject.BindEvent(ButtonEnterSound, Define.UIEvent.Enter);
+        #endregion
+        Get<Button>((int)Buttons.MakeRoomButton).gameObject.BindEvent(OnClickMakeRoomButton);
         Get<Button>((int)Buttons.RightButton).gameObject.BindEvent(OnClickRightButton);
         Get<Button>((int)Buttons.LeftButton).gameObject.BindEvent(OnClickLeftButton);
-        Get<Button>((int)Buttons.MakeRoomButton).gameObject.BindEvent(OnClickMakeRoomButton);
+        Get<Button>((int)Buttons.ChatSendButton).gameObject.BindEvent(OnClickChatSendButton);
         GetText((int)Texts.ChatText).text = "안내 : 본 게임은 크아 모작임\n";
 
         RefreshLobbyPage();
@@ -117,12 +122,31 @@ public class UI_LobbyScene : UI_Scene
         }
     }
 
+    void ButtonEnterSound()
+    {
+        Managers.Sound.Play(Define.Sound.Effect, "pt_in_rect");
+    }
     void OnClickMakeRoomButton()
     {
+        Managers.Sound.Play(Define.Sound.Effect, "click");
         Managers.UI.ShowPopupUI<UI_MakeRoomPopup>();
+    }
+    void OnClickRightButton()
+    {
+        Managers.Sound.Play(Define.Sound.Effect, "click");
+        int maxPageCount = Managers.Game.Rooms.Count / 6;
+        _roomPage = Mathf.Min(_roomPage + 1, maxPageCount);
+        RefreshLobbyPage();
+    }
+    void OnClickLeftButton()
+    {
+        Managers.Sound.Play(Define.Sound.Effect, "click");
+        _roomPage = Mathf.Max(_roomPage - 1, 0);
+        RefreshLobbyPage();
     }
     void OnClickChatSendButton()
     {
+        Managers.Sound.Play(Define.Sound.Effect, "click");
         string msg = GetInputField((int)InputFields.ChatInputField).text;
         if (string.IsNullOrEmpty(msg))
             return;
@@ -132,23 +156,13 @@ public class UI_LobbyScene : UI_Scene
         GetInputField((int)InputFields.ChatInputField).text = "";
         Managers.Net.SessionManager.Broadcast(chatPkt);
     }
-    void OnClickRightButton()
-    {
-        int maxPageCount = Managers.Game.Rooms.Count / 6;
-        _roomPage = Mathf.Min(_roomPage + 1, maxPageCount);
-        RefreshLobbyPage();
-    }
-    void OnClickLeftButton()
-    {
-        _roomPage = Mathf.Max(_roomPage - 1, 0);
-        RefreshLobbyPage();
-    }
     void OnClickRoom(PointerEventData evtData)
     {
         GameObject go = evtData.pointerCurrentRaycast.gameObject;
         if (go == null)
             return;
 
+        Managers.Sound.Play(Define.Sound.Effect, "click");
         UI_RoomSubItem room = go.GetComponent<UI_RoomSubItem>();
         Debug.Log($"{room.RoomID}번 방에 들어가려고 시도!");
 

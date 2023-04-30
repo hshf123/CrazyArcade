@@ -130,6 +130,7 @@ public class PacketHandler
 
         Managers.Game.Room = pkt.Room;
         Managers.Game.Spawn = pkt.Spawn;
+        Managers.Game.MapName = pkt.MapName;
         Managers.Scene.ChangeScene<GameScene>(Define.SceneType.GameScene);
     }
 
@@ -185,6 +186,7 @@ public class PacketHandler
 
         bc.Bomb(() =>
         {
+            Managers.Sound.Play(Define.Sound.Effect, "wave");
             Managers.Object.RemoveBomb(bombCellPos);
         });
 
@@ -252,6 +254,8 @@ public class PacketHandler
             return;
         
         pc.PlayerInfo = pkt.PlayerInfo;
+        if (pc.PlayerInfo.Id == Managers.Game.PlayerID)
+            Managers.Sound.Play(Define.Sound.Effect, "eat_item");
 
         ItemController ic = Managers.Object.FindItem(new Vector3Int(pkt.ItemPos.PosX, pkt.ItemPos.PosY, 0));
         if (ic == null)

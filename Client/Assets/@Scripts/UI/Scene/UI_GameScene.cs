@@ -28,7 +28,7 @@ public class UI_GameScene : UI_Scene
         Bind<Button>(typeof(Buttons));
         BindText(typeof(Texts));
 
-        GetText((int)Texts.MapInfoText).text = Managers.Game.MapInfo;
+        GetText((int)Texts.MapInfoText).text = Managers.Game.MapName;
 
         return true;
     }

@@ -18,6 +18,7 @@ public:
 public:
 	bool CanGameStart();
 	void GameInit();
+	void JobPush(uint64 workTime, function<void(void)> job);
 	void Update();
 	void GameEnd();
 	Protocol::PPositionInfo* GetBasicPosInfo(int32 idx);
@@ -42,10 +43,11 @@ public:
 	void HandleChat(PlayerRef player, Protocol::C_ROOMCHAT& pkt);
 	void HandleMove(PlayerRef player, Protocol::C_MOVE& pkt);
 	void HandleBomb(PlayerRef player, Protocol::C_BOMB& pkt);
-	void HandleBombEnd(PlayerRef player, Protocol::C_BOMBEND& pkt);
 
 private:
 	USE_LOCK;
+	Map<uint64, function<void(void)>> _bombMap;
+
 	uint64 _endTime = 0;
 	HashMap<int64, PlayerRef> _players;
 	HashMap<int32, PlayerRef> _idxes;

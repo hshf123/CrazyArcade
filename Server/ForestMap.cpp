@@ -269,8 +269,8 @@ bool ForestMap::CheckWaterCourse(Vector2Int pos)
 			DestroyBomb(pos, bomb->OwnerPlayer->PlayerInfo.bombrange(), bombEndPkt);
 			OwnerRoom->Broadcast(bombEndPkt);
 			wstringstream log;
-			log << L"Player ID : " << bomb->OwnerPlayer->PlayerInfo.id();
-			log << L" A bomb located at (" << pos.x << ", " << pos.y << ")" << L" exploded.";
+			log << L"PLAYER ID : " << bomb->OwnerPlayer->PlayerInfo.id();
+			log << L" A BOMB LOCATED AT (" << pos.x << ", " << pos.y << ")" << L" EXPLODED CHAIN.";
 			Utils::Log(log);
 		}
 		else if (_blocks[y][x] == 2)
@@ -404,6 +404,15 @@ void ForestMap::SpawnItem(Vector2Int pos)
 
 void ForestMap::LoadMap(wstring pathPrefix /*= L"../Common/MapData"*/)
 {
+	// 이전 정보 초기화
+	_blocks.clear();
+	_players.clear();
+	_spawnItems.clear();
+	_bombs.clear();
+	_destroyObjects.clear();
+	_destroyItems.clear();
+	_trapPlayers.clear();
+
 	// 폴더 경로 설정
 	fs::path folder_path = fs::path(pathPrefix).lexically_normal();
 

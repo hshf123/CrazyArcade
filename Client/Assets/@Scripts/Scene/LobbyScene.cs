@@ -9,8 +9,7 @@ public class LobbyScene : BaseScene
         if (base.Init() == false)
             return false;
 
-        Managers.Sound.Clear();
-
+        Managers.Sound.Play(Define.Sound.Bgm, "lobby_scene");
         Managers.UI.ShowSceneUI<UI_LobbyScene>(null,
             (sceneUI) =>
             {
@@ -18,5 +17,13 @@ public class LobbyScene : BaseScene
             });
 
         return true;
+    }
+
+    public override void Clear()
+    {
+        Managers.UI.Clear();
+        Managers.Game.Rooms = null;
+        Managers.Game.LobbyUI = null;
+        Managers.Sound.Clear();
     }
 }

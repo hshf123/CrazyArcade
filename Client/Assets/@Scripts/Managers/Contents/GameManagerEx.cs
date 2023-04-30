@@ -31,7 +31,7 @@ public class GameManagerEx
     GameData _gameData = new GameData();
     public GameData SaveData { get { return _gameData; } set { _gameData = value; } }
 
-    public string MapInfo { get; set; } = "TestMap";
+    public string MapName { get; set; }
 
     #region Option
     public int PingSend { get; set; }

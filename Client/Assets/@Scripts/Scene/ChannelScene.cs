@@ -12,19 +12,7 @@ public class ChannelScene : BaseScene
         if (base.Init() == false)
             return false;
 
-        //ChannelInfo = new ChannelInfo();
-        //ChannelInfo.ChannelCount = 5;
-        //for (int i = 0; i < 5; i++)
-        //{
-        //    Channel channel = new Channel();
-        //    channel.ChannelId = i + 1;
-        //    channel.CurrentPlayerCount = 0;
-        //    channel.MaxPlayerCount = 500;
-        //
-        //    ChannelInfo.Channels.Add(channel);
-        //}
-
-        Managers.Sound.Clear();
+        Managers.Sound.Play(Define.Sound.Bgm, "mode_select_scene");
         Managers.UI.ShowSceneUI<UI_ChannelScene>(null,
             (sceneUI) =>
             {
@@ -32,5 +20,13 @@ public class ChannelScene : BaseScene
             });
 
         return true;
+    }
+
+    public override void Clear()
+    {
+        Managers.UI.Clear();
+        _uiChannelScene = null;
+        Managers.Game.Channels = null;
+        Managers.Sound.Clear();
     }
 }

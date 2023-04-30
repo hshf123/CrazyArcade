@@ -73,7 +73,7 @@ void Channel::RemoveRoom(int32 roomId)
 	Broadcast(channelUpdatePkt);
 
 	wstringstream log;
-	log << L" CHANNEL ID : " << ChannelInfo.channelid() << L" REMOVE ROOM ID : " << roomId;
+	log << L"CHANNEL ID : " << ChannelInfo.channelid() << L" REMOVE ROOM ID : " << roomId;
 	Utils::Log(log);
 }
 

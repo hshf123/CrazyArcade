@@ -65,10 +65,19 @@ public class UI_RoomScene : UI_Scene
         BindText(typeof(Texts));
         Bind<Image>(typeof(Images));
         Bind<Scrollbar>(typeof(Scrollbars));
-        
+        #region Sound
+        Get<Button>((int)Buttons.BackButton).gameObject.BindEvent(ButtonEnterSound, Define.UIEvent.Enter);
+        Get<Button>((int)Buttons.ChatSendButton).gameObject.BindEvent(ButtonEnterSound, Define.UIEvent.Enter);
+        Get<Button>((int)Buttons.Player_1Button).gameObject.BindEvent(ButtonEnterSound, Define.UIEvent.Enter);
+        Get<Button>((int)Buttons.Player_2Button).gameObject.BindEvent(ButtonEnterSound, Define.UIEvent.Enter);
+        Get<Button>((int)Buttons.Player_3Button).gameObject.BindEvent(ButtonEnterSound, Define.UIEvent.Enter);
+        Get<Button>((int)Buttons.Player_4Button).gameObject.BindEvent(ButtonEnterSound, Define.UIEvent.Enter);
+        Get<Button>((int)Buttons.Player_5Button).gameObject.BindEvent(ButtonEnterSound, Define.UIEvent.Enter);
+        Get<Button>((int)Buttons.Player_6Button).gameObject.BindEvent(ButtonEnterSound, Define.UIEvent.Enter);
+        Get<Button>((int)Buttons.Player_7Button).gameObject.BindEvent(ButtonEnterSound, Define.UIEvent.Enter);
+        #endregion
         Get<Button>((int)Buttons.BackButton).gameObject.BindEvent(OnClickBackButton);
         Get<Button>((int)Buttons.ChatSendButton).gameObject.BindEvent(OnClickChatSendButton);
-
         Get<Button>((int)Buttons.Player_1Button).gameObject.BindEvent(OnClickBenButton1);
         Get<Button>((int)Buttons.Player_2Button).gameObject.BindEvent(OnClickBenButton2);
         Get<Button>((int)Buttons.Player_3Button).gameObject.BindEvent(OnClickBenButton3);
@@ -147,23 +156,31 @@ public class UI_RoomScene : UI_Scene
         Get<Scrollbar>((int)Scrollbars.ScrollbarVertical).value = 0;
     }
 
+    void ButtonEnterSound()
+    {
+        Managers.Sound.Play(Define.Sound.Effect, "pt_in_rect");
+    }
     void OnClickStartButton()
     {
+        Managers.Sound.Play(Define.Sound.Effect, "click");
         C_ROOMSTART roomStartPkt = new C_ROOMSTART();
         Managers.Net.SessionManager.Broadcast(roomStartPkt);
     }
     void OnClickReadyButton()
     {
+        Managers.Sound.Play(Define.Sound.Effect, "click");
         C_ROOMREADY roomReadyPkt = new C_ROOMREADY();
         Managers.Net.SessionManager.Broadcast(roomReadyPkt);
     }
     void OnClickBackButton()
     {
+        Managers.Sound.Play(Define.Sound.Effect, "click");
         C_ROOMLEAVE roomLeavePkt = new C_ROOMLEAVE();
         Managers.Net.SessionManager.Broadcast(roomLeavePkt);
     }
     void OnClickChatSendButton()
     {
+        Managers.Sound.Play(Define.Sound.Effect, "click");
         if (string.IsNullOrEmpty(GetInputField((int)InputFields.ChatInputField).text))
             return;
 
@@ -176,6 +193,7 @@ public class UI_RoomScene : UI_Scene
     {
         if (Managers.Game.IsLeader == false)
             return;
+        Managers.Sound.Play(Define.Sound.Effect, "click");
     }
     void OnClickBenButton1()
     {

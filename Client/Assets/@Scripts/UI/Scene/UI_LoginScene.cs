@@ -38,7 +38,11 @@ public class UI_LoginScene : UI_Scene
         Bind<Button>(typeof(Buttons));
         BindText(typeof(Texts));
         BindInputField(typeof(InputFields));
-
+        #region Sound
+        Get<Button>((int)Buttons.SignInButton).gameObject.BindEvent(ButtonEnterSound, Define.UIEvent.Enter);
+        Get<Button>((int)Buttons.LoginButton).gameObject.BindEvent(ButtonEnterSound, Define.UIEvent.Enter);
+        Get<Button>((int)Buttons.ExitButton).gameObject.BindEvent(ButtonEnterSound, Define.UIEvent.Enter);
+        #endregion
         Get<Button>((int)Buttons.SignInButton).gameObject.BindEvent(OnClickSignInButton);
         Get<Button>((int)Buttons.LoginButton).gameObject.BindEvent(OnClickLoginButton);
         Get<Button>((int)Buttons.ExitButton).gameObject.BindEvent(OnClickExitButton);
@@ -59,12 +63,18 @@ public class UI_LoginScene : UI_Scene
         }
     }
 
+    void ButtonEnterSound()
+    {
+        Managers.Sound.Play(Define.Sound.Effect, "pt_in_rect");
+    }
     void OnClickSignInButton()
     {
         // TODO : 회원가입 창 띄우기
+        Managers.Sound.Play(Define.Sound.Effect, "click");
     }
     void OnClickLoginButton()
     {
+        Managers.Sound.Play(Define.Sound.Effect, "click");
         C_LOGIN loginPkt = new C_LOGIN();
         // LATER 아이디 컨벤션? 비번 해시? 웹서버?
 
@@ -75,6 +85,7 @@ public class UI_LoginScene : UI_Scene
     }
     void OnClickExitButton()
     {
+        Managers.Sound.Play(Define.Sound.Effect, "click");
         Debug.Log("Exit");
         Application.Quit();
     }

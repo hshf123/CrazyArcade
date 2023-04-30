@@ -115,7 +115,8 @@ message S_ROOMSTART
 {
 	bool success = 1;
 	PRoom room = 2;
-	repeated PRoomStart spawn = 3;
+	string mapName = 3;
+	repeated PRoomStart spawn = 4;
 }
 
 message C_MOVE
@@ -139,11 +140,6 @@ message S_BOMB
 {
 	PPlayer player = 1;
 	PCellPos cellpos = 2;
-}
-
-message C_BOMBEND
-{
-	PCellPos cellPos = 1;
 }
 
 message S_BOMBEND

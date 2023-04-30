@@ -30,13 +30,12 @@ enum : uint16
 	PKT_S_MOVE = 1021,
 	PKT_C_BOMB = 1022,
 	PKT_S_BOMB = 1023,
-	PKT_C_BOMBEND = 1024,
-	PKT_S_BOMBEND = 1025,
-	PKT_S_ITEMSPAWN = 1026,
-	PKT_S_DEAD = 1027,
-	PKT_S_ITEMACQUISITION = 1028,
-	PKT_S_GAMEEND = 1029,
-	PKT_S_ROOMBACK = 1030,
+	PKT_S_BOMBEND = 1024,
+	PKT_S_ITEMSPAWN = 1025,
+	PKT_S_DEAD = 1026,
+	PKT_S_ITEMACQUISITION = 1027,
+	PKT_S_GAMEEND = 1028,
+	PKT_S_ROOMBACK = 1029,
 };
 
 bool Handle_INVALID(PacketSessionRef& session, BYTE* buffer, int32 len);
@@ -52,7 +51,6 @@ bool Handle_C_ROOMCHAT(PacketSessionRef& session, Protocol::C_ROOMCHAT& pkt);
 bool Handle_C_ROOMSTART(PacketSessionRef& session, Protocol::C_ROOMSTART& pkt);
 bool Handle_C_MOVE(PacketSessionRef& session, Protocol::C_MOVE& pkt);
 bool Handle_C_BOMB(PacketSessionRef& session, Protocol::C_BOMB& pkt);
-bool Handle_C_BOMBEND(PacketSessionRef& session, Protocol::C_BOMBEND& pkt);
 
 class ClientPacketHandler
 {
@@ -73,7 +71,6 @@ public:
 		GPacketHandler[PKT_C_ROOMSTART] = [](PacketSessionRef& session, BYTE* buffer, int32 len) { return HandlePacket<Protocol::C_ROOMSTART>(Handle_C_ROOMSTART, session, buffer, len); };
 		GPacketHandler[PKT_C_MOVE] = [](PacketSessionRef& session, BYTE* buffer, int32 len) { return HandlePacket<Protocol::C_MOVE>(Handle_C_MOVE, session, buffer, len); };
 		GPacketHandler[PKT_C_BOMB] = [](PacketSessionRef& session, BYTE* buffer, int32 len) { return HandlePacket<Protocol::C_BOMB>(Handle_C_BOMB, session, buffer, len); };
-		GPacketHandler[PKT_C_BOMBEND] = [](PacketSessionRef& session, BYTE* buffer, int32 len) { return HandlePacket<Protocol::C_BOMBEND>(Handle_C_BOMBEND, session, buffer, len); };
 	}
 
 	static bool HandlePacket(PacketSessionRef& session, BYTE* buffer, uint32 len)

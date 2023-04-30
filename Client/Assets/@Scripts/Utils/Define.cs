@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Define
 {
-    public enum ObjectType
+    public enum BlockType
     {
         Fix = 1,
         NonFix = 2,
@@ -13,7 +13,8 @@ public class Define
     public enum UIEvent
     {
         Click,
-        Press
+        Press,
+        Enter,
     }
 
     public enum SceneType

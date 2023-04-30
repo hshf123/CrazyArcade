@@ -145,9 +145,8 @@ void Room::PlayerDead(PlayerRef player)
 
 bool Room::CanGameStart()
 {
-	GameInit();
 	{
-		WRITE_LOCK;
+		READ_LOCK;
 		if (_currentPlayerCount < 2)
 			return false;
 
@@ -160,10 +159,16 @@ bool Room::CanGameStart()
 			if (p.second->PlayerInfo.ready() == false)
 				return false;
 		}
+	}
 
+	GameInit();
+
+	{
+		WRITE_LOCK;
 		Protocol::S_ROOMSTART roomStartPkt;
 		roomStartPkt.set_success(true);
 		roomStartPkt.set_allocated_room(GetRoomProtocol());
+		roomStartPkt.set_mapname(u8"ForestMap");
 
 		int32 idx = 0;
 		for (auto& p : _players)
@@ -176,6 +181,13 @@ bool Room::CanGameStart()
 			}
 			Protocol::PPositionInfo* basicPosInfo = GetBasicPosInfo(idx++);
 			p.second->PosInfo.CopyFrom(*basicPosInfo);
+
+			// 플레이어 기본으로 초기화
+			p.second->PlayerInfo.set_speed(4.f);
+			p.second->PlayerInfo.set_maxbombcount(1);
+			p.second->PlayerInfo.set_bombcount(0);
+			p.second->PlayerInfo.set_bombrange(1);
+
 			Protocol::PRoomStart* roomStart = roomStartPkt.add_spawn();
 			roomStart->set_allocated_playerinfo(p.second->GetPlayerProtocol());
 			roomStart->set_allocated_posinfo(p.second->GetPositionInfoProtocol());
@@ -189,6 +201,7 @@ bool Room::CanGameStart()
 
 		_state = RoomState::GAMESTART;
 	}
+
 	// TODO 채널에 있는 사람들한테 게임 시작중인방이라고 broadcast
 	return true;
 }
@@ -201,26 +214,47 @@ void Room::GameInit()
 	_forestMap->OwnerRoom = shared_from_this();
 	_forestMap->PlayerCount = _currentPlayerCount;
 	for (auto& p : _players)
-	{
 		p.second->Kill = 0;
-	}
+
 	_rank = _players.size();
+}
+
+void Room::JobPush(uint64 workTime, function<void(void)> job)
+{
+	WRITE_LOCK;
+
+	_bombMap.insert({ workTime, job });
 }
 
 void Room::Update()
 {
 	WRITE_LOCK;
 
-	if (_endTime == 0)
-		return;
-
-	if (_endTime <= ::GetTickCount64())
+	if (_endTime != 0 && _endTime <= ::GetTickCount64())
 	{
 		// 실행해야하는 시간이 지났다면
 		Protocol::S_ROOMBACK roomBackPkt;
 		roomBackPkt.set_allocated_room(GetRoomProtocol());
 		Broadcast(roomBackPkt);
 		_endTime = 0;
+
+		// 게임이 끝났으니 물풍선 큐도 비워준다.
+		_bombMap.clear();
+		return;
+	}
+
+	if (_endTime == 0 && _bombMap.empty() == false)
+	{
+		auto job = _bombMap.begin();
+		if (job->first <= ::GetTickCount64())
+		{
+			// 물풍선이 터져야 하는 시간이 지났다면
+			wstringstream log;
+			log << L"ROOM ID : " << _roomId << L" HAS UPDATE THING";
+			Utils::Log(log);
+			job->second();
+			_bombMap.erase(job->first);
+		}
 	}
 }
 
@@ -324,41 +358,44 @@ void Room::HandleBomb(PlayerRef player, Protocol::C_BOMB& pkt)
 {
 	if (player == nullptr)
 		return;
-	
-	WRITE_LOCK;
-	Vector2 bombPos = player->GetWorldPos() + Vector2(0, -0.3f);
-	Vector2Int bombCellPos = _forestMap->WorldToCell(bombPos);
 
-	if (_forestMap->SetBomb(bombCellPos, player) == false)
-		return;
-
+	Vector2Int bombCellPos;
 	{
-		wstringstream log;
-		log << L"Player ID : " << player->PlayerInfo.id();
-		log << L" has placed a Bomb at (" << bombCellPos.x << ", " << bombCellPos.y << ")";
-		Utils::Log(log);
+		WRITE_LOCK;
+		// Vector2 bombPos = player->GetWorldPos() + Vector2(0, -0.15f);
+		// bombCellPos = _forestMap->WorldToCell(bombPos);
+		bombCellPos = player->GetCellPos();
+
+		if (_forestMap->SetBomb(bombCellPos, player) == false)
+			return;
+
+		{
+			wstringstream log;
+			log << L"PLAYER ID : " << player->PlayerInfo.id();
+			log << L" HAS PLACED A BOMB AT (" << bombCellPos.x << ", " << bombCellPos.y << ")";
+			Utils::Log(log);
+		}
+
+		Protocol::S_BOMB bombPkt;
+		bombPkt.set_allocated_player(player->GetPlayerProtocol());
+		bombPkt.set_allocated_cellpos(_forestMap->GetCellPosProtocol(bombCellPos));
+		Broadcast(bombPkt);
 	}
 
-	Protocol::S_BOMB bombPkt;
-	bombPkt.set_allocated_player(player->GetPlayerProtocol());
-	bombPkt.set_allocated_cellpos(_forestMap->GetCellPosProtocol(bombCellPos));
-	Broadcast(bombPkt);
-}
+	JobPush(::GetTickCount64() + 2800, [=]()
+		{
+			Protocol::S_BOMBEND bombEndPkt;
+			bombEndPkt.set_allocated_player(player->GetPlayerProtocol());
+			if (_forestMap->FindBomb(bombCellPos) == nullptr)
+				return;
+			_forestMap->DestroyBomb(bombCellPos, player->PlayerInfo.bombrange(), bombEndPkt);
+			_forestMap->BombResult(bombEndPkt);
+			player->SubBomb();
+			Broadcast(bombEndPkt);
 
-void Room::HandleBombEnd(PlayerRef player, Protocol::C_BOMBEND& pkt)
-{
-	WRITE_LOCK;
-	Vector2Int bombCellPos = Vector2Int(pkt.cellpos().posx(), pkt.cellpos().posy());
-
-	Protocol::S_BOMBEND bombEndPkt;
-	bombEndPkt.set_allocated_player(player->GetPlayerProtocol());
-	_forestMap->DestroyBomb(bombCellPos, player->PlayerInfo.bombrange(), bombEndPkt);
-	_forestMap->BombResult(bombEndPkt);
-	player->SubBomb();
-	Broadcast(bombEndPkt);
-
-	wstringstream log;
-	log << L"Player ID : " << player->PlayerInfo.id();
-	log << L" A bomb located at (" << bombCellPos.x << ", " << bombCellPos.y << ")" << L" exploded.";
-	Utils::Log(log);
+			wstringstream log;
+			log << L"PLAYER ID : " << player->PlayerInfo.id();
+			log << L" A BOMB LOCATED AT (" << bombCellPos.x << ", " << bombCellPos.y << ")" << L" EXPLODED.";
+			Utils::Log(log);
+		});
 }
