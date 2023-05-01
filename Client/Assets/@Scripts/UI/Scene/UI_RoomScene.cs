@@ -68,13 +68,6 @@ public class UI_RoomScene : UI_Scene
         #region Sound
         Get<Button>((int)Buttons.BackButton).gameObject.BindEvent(ButtonEnterSound, Define.UIEvent.Enter);
         Get<Button>((int)Buttons.ChatSendButton).gameObject.BindEvent(ButtonEnterSound, Define.UIEvent.Enter);
-        Get<Button>((int)Buttons.Player_1Button).gameObject.BindEvent(ButtonEnterSound, Define.UIEvent.Enter);
-        Get<Button>((int)Buttons.Player_2Button).gameObject.BindEvent(ButtonEnterSound, Define.UIEvent.Enter);
-        Get<Button>((int)Buttons.Player_3Button).gameObject.BindEvent(ButtonEnterSound, Define.UIEvent.Enter);
-        Get<Button>((int)Buttons.Player_4Button).gameObject.BindEvent(ButtonEnterSound, Define.UIEvent.Enter);
-        Get<Button>((int)Buttons.Player_5Button).gameObject.BindEvent(ButtonEnterSound, Define.UIEvent.Enter);
-        Get<Button>((int)Buttons.Player_6Button).gameObject.BindEvent(ButtonEnterSound, Define.UIEvent.Enter);
-        Get<Button>((int)Buttons.Player_7Button).gameObject.BindEvent(ButtonEnterSound, Define.UIEvent.Enter);
         #endregion
         Get<Button>((int)Buttons.BackButton).gameObject.BindEvent(OnClickBackButton);
         Get<Button>((int)Buttons.ChatSendButton).gameObject.BindEvent(OnClickChatSendButton);
@@ -88,11 +81,21 @@ public class UI_RoomScene : UI_Scene
 
         if (Managers.Game.IsLeader)
         {
+            Get<Button>((int)Buttons.StartButton).gameObject.BindEvent(ButtonEnterSound, Define.UIEvent.Enter);
+            Get<Button>((int)Buttons.Player_1Button).gameObject.BindEvent(ButtonEnterSound, Define.UIEvent.Enter);
+            Get<Button>((int)Buttons.Player_2Button).gameObject.BindEvent(ButtonEnterSound, Define.UIEvent.Enter);
+            Get<Button>((int)Buttons.Player_3Button).gameObject.BindEvent(ButtonEnterSound, Define.UIEvent.Enter);
+            Get<Button>((int)Buttons.Player_4Button).gameObject.BindEvent(ButtonEnterSound, Define.UIEvent.Enter);
+            Get<Button>((int)Buttons.Player_5Button).gameObject.BindEvent(ButtonEnterSound, Define.UIEvent.Enter);
+            Get<Button>((int)Buttons.Player_6Button).gameObject.BindEvent(ButtonEnterSound, Define.UIEvent.Enter);
+            Get<Button>((int)Buttons.Player_7Button).gameObject.BindEvent(ButtonEnterSound, Define.UIEvent.Enter);
+
             Get<Button>((int)Buttons.StartButton).gameObject.BindEvent(OnClickStartButton);
             Get<Button>((int)Buttons.ReadyButton).gameObject.SetActive(false);
         }
         else
         {
+            Get<Button>((int)Buttons.ReadyButton).gameObject.BindEvent(ButtonEnterSound, Define.UIEvent.Enter);
             Get<Button>((int)Buttons.ReadyButton).gameObject.BindEvent(OnClickReadyButton);
             Get<Button>((int)Buttons.StartButton).gameObject.SetActive(false);
         }

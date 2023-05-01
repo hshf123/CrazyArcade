@@ -121,7 +121,7 @@ void Channel::InsertPlayer(PlayerRef player)
 	// Broadcast(channelUpdatePkt, player->GetClientSession());
 
 	wstringstream log;
-	log << L"PLAYER ID : " << player->PlayerInfo.id() << L" ENTER CHANNEL LOBBY ID : " << ChannelInfo.channelid();
+	log << L"PLAYER ID : " << player->PlayerInfo.id() << L" ENTER CHANNEL ID : " << ChannelInfo.channelid() << L" CURRENT PLAYER COUNT : " << ChannelInfo.currentplayercount();
 	Utils::Log(log);
 }
 
@@ -129,6 +129,7 @@ void Channel::RemovePlayer(int64 playerId)
 {
 	WRITE_LOCK;
 	_players.erase(playerId);
+	ChannelInfo.set_currentplayercount(ChannelInfo.currentplayercount() - 1);
 }
 
 PlayerRef Channel::FindPlayer(int64 playerId)
@@ -149,7 +150,7 @@ void Channel::CopyChannelProtocol(Protocol::PChannel* pkt)
 
 Protocol::PChannel* Channel::GetChannelProtocol()
 {
-	Protocol::PChannel* pkt = new Protocol::PChannel();
+	Protocol::PChannel* pkt = ChannelInfo.New();
 	pkt->CopyFrom(ChannelInfo);
 	return pkt;
 }

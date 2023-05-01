@@ -9,7 +9,8 @@ public class LobbyScene : BaseScene
         if (base.Init() == false)
             return false;
 
-        Managers.Sound.Play(Define.Sound.Bgm, "lobby_scene");
+        if (Managers.Sound.GetBGMName() != "lobby_scene")
+            Managers.Sound.Play(Define.Sound.Bgm, "lobby_scene");
         Managers.UI.ShowSceneUI<UI_LobbyScene>(null,
             (sceneUI) =>
             {
@@ -24,6 +25,5 @@ public class LobbyScene : BaseScene
         Managers.UI.Clear();
         Managers.Game.Rooms = null;
         Managers.Game.LobbyUI = null;
-        Managers.Sound.Clear();
     }
 }

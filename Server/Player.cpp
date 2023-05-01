@@ -108,10 +108,8 @@ void Player::OnTrap()
 	log << PlayerInfo.id() << L" is ONTRAP";
 	Utils::Log(log);
 
-	GThreadManager->Launch([&]()
+	_room->JobPush(::GetTickCount64() + 6000, [=]()
 		{
-			this_thread::sleep_for(6s);
-
 			if (PosInfo.state() != Protocol::PPlayerState::INTRAP)
 				return;
 

@@ -31,14 +31,22 @@ public class UI_MakeRoomPopup : UI_Popup
         BindInputField(typeof(InputFields));
         BindText(typeof(Texts));
 
+        Get<Button>((int)Buttons.MakeRoomButton).gameObject.BindEvent(ButtonEnterSound, Define.UIEvent.Enter);
+        Get<Button>((int)Buttons.ExitButton).gameObject.BindEvent(ButtonEnterSound, Define.UIEvent.Enter);
+
         Get<Button>((int)Buttons.MakeRoomButton).gameObject.BindEvent(OnClickMakeRoomButton);
         Get<Button>((int)Buttons.ExitButton).gameObject.BindEvent(OnClickExitButton);
 
         return true;
     }
 
+    void ButtonEnterSound()
+    {
+        Managers.Sound.Play(Define.Sound.Effect, "pt_in_rect");
+    }
     void OnClickMakeRoomButton()
     {
+        Managers.Sound.Play(Define.Sound.Effect, "click");
         string roomName = GetInputField((int)InputFields.RoomNameInputField).text;
         if(string.IsNullOrEmpty(roomName))
             roomName = GetText((int)Texts.RoomNameEx).text;
@@ -49,6 +57,7 @@ public class UI_MakeRoomPopup : UI_Popup
     }
     void OnClickExitButton()
     {
+        Managers.Sound.Play(Define.Sound.Effect, "click");
         ClosePopupUI();
     }
 }

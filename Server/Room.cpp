@@ -112,6 +112,8 @@ void Room::PlayerDead(PlayerRef player)
 		return;
 	}
 
+	if (player->PosInfo.state() == Protocol::PPlayerState::DEAD)
+		return;
 	player->OnDead();
 	_forestMap->ApplyLeave(player);
 	_forestMap->PlayerCount--;

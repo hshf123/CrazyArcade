@@ -9,7 +9,8 @@ public:
 		int size_needed = MultiByteToWideChar(CP_UTF8, 0, &str[0], static_cast<int>(str.size()), nullptr, 0);
 		std::wstring wstr(size_needed, 0);
 		MultiByteToWideChar(CP_UTF8, 0, &str[0], static_cast<int>(str.size()), &wstr[0], size_needed);
-		if (wstr[wstr.size() - 1] == 8203) {
+		if (wstr.size() > 0 && wstr[wstr.size() - 1] == 8203)
+		{
 			return std::wstring(wstr.begin(), wstr.end() - 1);
 		}
 		return wstr;

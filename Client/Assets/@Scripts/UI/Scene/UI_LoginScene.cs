@@ -39,6 +39,10 @@ public class UI_LoginScene : UI_Scene
         BindText(typeof(Texts));
         BindInputField(typeof(InputFields));
         #region Sound
+        Get<Button>((int)Buttons.DreamServerButton).gameObject.BindEvent(ButtonEnterSound, Define.UIEvent.Enter);
+        Get<Button>((int)Buttons.HappyServerButton).gameObject.BindEvent(ButtonEnterSound, Define.UIEvent.Enter);
+        Get<Button>((int)Buttons._1pButton).gameObject.BindEvent(ButtonEnterSound, Define.UIEvent.Enter);
+        Get<Button>((int)Buttons._2pButton).gameObject.BindEvent(ButtonEnterSound, Define.UIEvent.Enter);
         Get<Button>((int)Buttons.SignInButton).gameObject.BindEvent(ButtonEnterSound, Define.UIEvent.Enter);
         Get<Button>((int)Buttons.LoginButton).gameObject.BindEvent(ButtonEnterSound, Define.UIEvent.Enter);
         Get<Button>((int)Buttons.ExitButton).gameObject.BindEvent(ButtonEnterSound, Define.UIEvent.Enter);

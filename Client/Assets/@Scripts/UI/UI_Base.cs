@@ -74,6 +74,10 @@ public abstract class UI_Base : MonoBehaviour
                 evt.OnPressHandler -= action;
                 evt.OnPressHandler += action;
                 break;
+            case Define.UIEvent.Enter:
+                evt.OnEnterHandler -= action;
+                evt.OnEnterHandler += action;
+                break;
         }
     }
 
