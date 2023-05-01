@@ -27,7 +27,11 @@ public class UI_SettingsPopup : UI_Popup
 
         Bind<GameObject>(typeof(GameObjects));
         Bind<Button>(typeof(Buttons));
-
+        #region Sound
+        Get<Button>((int)Buttons.BgmOnOffButton).gameObject.BindEvent(ButtonEnterSound, Define.UIEvent.Enter);
+        Get<Button>((int)Buttons.EffectOnOffButton).gameObject.BindEvent(ButtonEnterSound, Define.UIEvent.Enter);
+        Get<Button>((int)Buttons.ExitButton).gameObject.BindEvent(ButtonEnterSound, Define.UIEvent.Enter);
+        #endregion
         Get<Button>((int)Buttons.BgmOnOffButton).gameObject.BindEvent(OnClickBgmOnOffButton);
         Get<Button>((int)Buttons.EffectOnOffButton).gameObject.BindEvent(OnClickEffectOnOffButton);
         Get<Button>((int)Buttons.ExitButton).gameObject.BindEvent(OnClickExitButton);
@@ -40,8 +44,13 @@ public class UI_SettingsPopup : UI_Popup
         return true;
     }
 
+    void ButtonEnterSound()
+    {
+        Managers.Sound.Play(Define.Sound.Effect, "pt_in_rect");
+    }
     void OnClickBgmOnOffButton()
     {
+        Managers.Sound.Play(Define.Sound.Effect, "click");
         bool bgmOn = Managers.Game.BGMOn;
         bgmOn = !bgmOn;
         Managers.Game.BGMOn = bgmOn;
@@ -55,6 +64,7 @@ public class UI_SettingsPopup : UI_Popup
     }
     void OnClickEffectOnOffButton()
     {
+        Managers.Sound.Play(Define.Sound.Effect, "click");
         bool effectSoundOn = Managers.Game.EffectSoundOn;
         effectSoundOn = !effectSoundOn;
         Managers.Game.EffectSoundOn = effectSoundOn;

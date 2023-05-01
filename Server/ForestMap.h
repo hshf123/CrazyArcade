@@ -11,13 +11,9 @@ public:
 	int SizeX() { return MaxX - MinX + 1; }
 	int SizeY() { return MaxY - MinY + 1; }
 
-	Vector2Int WorldToCell(Vector2 pos);
-	Vector2 CellToWorld(Vector2Int pos);
 	Protocol::PCellPos* GetCellPosProtocol(Vector2Int cellPos);
-	Protocol::PWorldPos* GetWorldPosProtocol(Vector2 worldPos);
 
 	bool CanGo(Vector2Int cellPos);
-
 	bool ApplyMove(PlayerRef player, Protocol::C_MOVE& pkt);
 	void ApplyLeave(PlayerRef player);
 	Vector2Int FindPlayer(PlayerRef player);

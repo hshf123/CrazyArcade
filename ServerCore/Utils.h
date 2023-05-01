@@ -27,15 +27,17 @@ public:
 	static void Log(const wstring& log)
 	{
 		wcout.imbue(locale("kor"));
-		wcout << L"[ LOG ]";
+		wcout << L"[ LOG ] [TIME STAMP : " << TimeStamp() << L"s ] ";
 		wcout << log << endl;
 	}
 
 	static void Log(const wstringstream& log)
 	{
-		wcout.imbue(locale("kor"));
-		wstringstream ws;
-		ws << L"[ LOG ]" << log.str();
-		wcout << ws.str() << endl;
+		Log(log.str());
+	}
+
+	static int32 TimeStamp()
+	{
+		return ::clock() / 1000;
 	}
 };

@@ -33,6 +33,7 @@ public class UI_GameResultPopup : UI_Popup
 
         _rank = Utils.FindChild(gameObject, "Rank", true);
         RefreshRankPage();
+        Managers.Sound.Clear();
 
         return true;
     }
@@ -58,7 +59,7 @@ public class UI_GameResultPopup : UI_Popup
                 Get<Image>((int)Images.LoseImage_1).gameObject.SetActive(true);
                 Get<Image>((int)Images.LoseImage_2).gameObject.SetActive(true);
                 Managers.Object.MyPlayer.State = endInfo.PlayerPosInfo.State;
-                Managers.Sound.Play(Define.Sound.Effect, "lose");
+                Managers.Sound.Play(Define.Sound.Effect, "defeat");
             }
         }
     }

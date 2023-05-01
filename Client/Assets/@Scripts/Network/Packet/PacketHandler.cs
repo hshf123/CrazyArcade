@@ -149,8 +149,8 @@ public class PacketHandler
         if (pc.PlayerInfo.Id == Managers.Object.MyPlayer.PlayerInfo.Id)
             return;
 
-        // pkt.Force
-        pc.WorldPos = new Vector3(pkt.PositionInfo.WorldPos.PosX, pkt.PositionInfo.WorldPos.PosY, 0);
+        // pc.WorldPos = new Vector3(pkt.PositionInfo.WorldPos.PosX, pkt.PositionInfo.WorldPos.PosY, 0);
+        pc.DestPos = new Vector3(pkt.PositionInfo.WorldPos.PosX, pkt.PositionInfo.WorldPos.PosY, 0);
         pc.CellPos = new Vector3Int(pkt.PositionInfo.CellPos.PosX, pkt.PositionInfo.CellPos.PosY, 0);
         pc.State = pkt.PositionInfo.State;
         pc.Dir = pkt.PositionInfo.MoveDir;
@@ -186,11 +186,10 @@ public class PacketHandler
 
         bc.Bomb(() =>
         {
-            Managers.Sound.Play(Define.Sound.Effect, "wave");
+            Managers.Sound.Play(Define.Sound.Effect, "boom");
             Managers.Object.RemoveBomb(bombCellPos);
         });
 
-        // pkt.Player -> 물풍선 주인이 누군지
         foreach (PCellPos cellpos in pkt.DestroyObjectCellPoses)
             Managers.Map.Break(new Vector3Int(cellpos.PosX, cellpos.PosY, 0));
         foreach (PCellPos cellpos in pkt.DestroyItemCellPoses)
@@ -209,6 +208,7 @@ public class PacketHandler
                 continue;
             pc.State = PPlayerState.Intrap;
             pc.PlayerInfo = playerInfo;
+            Managers.Sound.Play(Define.Sound.Effect, "inBalloon");
         }
     }
 

@@ -92,7 +92,6 @@ void Channel::InsertPlayer(PlayerRef player)
 	WRITE_LOCK;
 	_players.insert({ player->PlayerInfo.id(), player });
 	player->PlayerInfo.set_channelid(ChannelInfo.channelid());
-	ChannelInfo.set_currentplayercount(_players.size());
 
 	if (ChannelInfo.currentplayercount() > ChannelInfo.maxplayercount())
 	{
@@ -152,6 +151,11 @@ Protocol::PChannel* Channel::GetChannelProtocol()
 {
 	Protocol::PChannel* pkt = ChannelInfo.New();
 	pkt->CopyFrom(ChannelInfo);
+	Vector<Protocol::PRoom> vec = GetRoomsProtocol();
+	pkt->clear_currentplayercount();
+	pkt->set_currentplayercount(_players.size());
+	for (auto& v : vec)
+		pkt->set_currentplayercount(pkt->currentplayercount() + v.currentplayercount());
 	return pkt;
 }
 
@@ -160,9 +164,7 @@ Vector<Protocol::PRoom> Channel::GetRoomsProtocol()
 	Vector<Protocol::PRoom> res;
 	READ_LOCK;
 	for (auto& p : _rooms)
-	{
 		res.push_back(*p.second->GetRoomProtocol());
-	}
 	return res;
 }
 

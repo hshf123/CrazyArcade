@@ -8,6 +8,12 @@ class Room : public enable_shared_from_this<Room>
 {
 public:
 	Room(int64 id, const string& roomName, int32 maxPlayerCount);
+	~Room() 
+	{
+		wstringstream log;
+		log << L"ROOM DESTRUCTOR";
+		Utils::Log(log);
+	}
 
 	void InsertPlayer(PlayerRef player);
 	void RemovePlayer(int64 playerId);
@@ -46,7 +52,7 @@ public:
 
 private:
 	USE_LOCK;
-	Map<uint64, function<void(void)>> _bombMap;
+	MultiMap<uint64, function<void(void)>> _jobMultiMap;
 
 	uint64 _endTime = 0;
 	HashMap<int64, PlayerRef> _players;

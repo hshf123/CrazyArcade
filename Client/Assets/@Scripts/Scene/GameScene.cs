@@ -93,6 +93,7 @@ public class GameScene : BaseScene
             ic.ItemType = itemType;
             item.transform.position = pos + new Vector3(0.5f, 0.5f, 0);
             Managers.Object.AddItem(pos, ic);
+            Managers.Sound.Play(Define.Sound.Effect, "ItemGen");
         });
     }
 

@@ -69,7 +69,7 @@ void Player::ApplyItemAbility(ItemType type)
 	}
 	case ItemType::INCSPEED:
 	{
-		float speed = PlayerInfo.speed() + 1.f;
+		float speed = PlayerInfo.speed() + 0.6f;
 		if (speed < 10.f)
 		{
 			log << L"INCSPEED" << PlayerInfo.speed() << L" -> ";
@@ -110,7 +110,7 @@ void Player::OnTrap()
 
 	_room->JobPush(::GetTickCount64() + 6000, [=]()
 		{
-			if (PosInfo.state() != Protocol::PPlayerState::INTRAP)
+			if (PosInfo.state() != Protocol::PPlayerState::INTRAP || PosInfo.state() == Protocol::PPlayerState::DEAD)
 				return;
 
 			_room->PlayerDead(static_pointer_cast<Player>(shared_from_this()));

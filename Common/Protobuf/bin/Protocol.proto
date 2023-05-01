@@ -9,7 +9,7 @@ import "Struct.proto";
 
 message C_PING
 {
-
+	
 }
 
 message S_PING

@@ -7,7 +7,9 @@ class ClientSession : public PacketSession
 public:
 	~ClientSession()
 	{
-		cout << "~ClientSession" << endl;
+		wstringstream log;
+		log << L"CLIENTSESSION DESTRUCTOR";
+		Utils::Log(log);
 	}
 
 	void OnConnected(NetAddress netAddr) override;

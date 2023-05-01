@@ -55,14 +55,16 @@ bool Handle_C_LOGIN(PacketSessionRef& session, Protocol::C_LOGIN& pkt)
 
 		if (id != outID)
 		{
-			wcout.imbue(locale("kor"));
-			wcout << id << L" " << L"로그인 실패! 존재하지 않는 아이디" << endl;
+			wstringstream log;
+			log << id << L" FAILED LOGIN ID DOESN'T EXIST";
+			Utils::Log(log);
 			return false;
 		}
 		if (pw != outPW)
 		{
-			wcout.imbue(locale("kor"));
-			wcout << pw << L" " << L"로그인 실패! 패스워드 불일치" << endl;
+			wstringstream log;
+			log << pw << L" FAILED LOGIN PW IS NOT CORRECT";
+			Utils::Log(log);
 			return false;
 		}
 	}

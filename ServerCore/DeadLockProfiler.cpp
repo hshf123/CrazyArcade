@@ -95,12 +95,17 @@ void DeadLockProfiler::Dfs(int32 here)
 
 		if (_finished[there] == false)
 		{
-			cout << _idToName[here] << " -> " << _idToName[there] << endl;
+			wstringstream log;
+			log << _idToName[here] << L" -> " << _idToName[there];
+			Utils::Log(log);
 
 			int32 now = here;
 			while (true)
 			{
-				cout << _idToName[_parent[now]] << " -> " << _idToName[now] << endl;
+				wstringstream log;
+				log << _idToName[_parent[now]] << L" -> " << _idToName[now];
+				Utils::Log(log);
+
 				now = _parent[now];
 				if (now == there)
 					break;

@@ -8,30 +8,12 @@
 #include "Bomb.h"
 namespace fs = std::filesystem;
 
-Vector2Int ForestMap::WorldToCell(Vector2 pos)
-{
-	return Vector2Int(static_cast<int32>(std::floor(pos.x)), static_cast<int32>(std::floor(pos.y)));
-}
-
-Vector2 ForestMap::CellToWorld(Vector2Int pos)
-{
-	return Vector2(pos.x + .5f, pos.y + .5f);
-}
-
 Protocol::PCellPos* ForestMap::GetCellPosProtocol(Vector2Int cellPos)
 {
 	Protocol::PCellPos* pcellpos = new Protocol::PCellPos();
 	pcellpos->set_posx(cellPos.x);
 	pcellpos->set_posy(cellPos.y);
 	return pcellpos;
-}
-
-Protocol::PWorldPos* ForestMap::GetWorldPosProtocol(Vector2 worldPos)
-{
-	Protocol::PWorldPos* pworldpos = new Protocol::PWorldPos();
-	pworldpos->set_posx(worldPos.x);
-	pworldpos->set_posy(worldPos.y);
-	return pworldpos;
 }
 
 bool ForestMap::CanGo(Vector2Int cellPos)
@@ -47,22 +29,15 @@ bool ForestMap::CanGo(Vector2Int cellPos)
 	if (_blocks[y][x] != 0)
 		return false;
 
-	auto findIt = _bombs.find(cellPos);
-	if (findIt != _bombs.end())
-		return false;
-
 	return true;
 }
 
 bool ForestMap::ApplyMove(PlayerRef player, Protocol::C_MOVE& pkt)
 {
-	ApplyLeave(player);
 	Vector2Int dest = Vector2Int(pkt.positioninfo().cellpos().posx(), pkt.positioninfo().cellpos().posy());
 
 	if (CanGo(dest) == false)
 		return false;
-
-	_players[player] = dest;
 
 #pragma region LOG
 	if(dest != player->GetCellPos())
@@ -76,10 +51,16 @@ bool ForestMap::ApplyMove(PlayerRef player, Protocol::C_MOVE& pkt)
 		log << player->PosInfo.cellpos().posy();
 		log << L")";
 		Utils::Log(log);
+
+		// 물풍선 있을 경우
+		if (FindBomb(dest) != nullptr)
+			return false;
 	}
 #pragma endregion
 
 	// 실제 좌표 이동
+	ApplyLeave(player);
+	_players[player] = dest;
 	player->PosInfo = pkt.positioninfo();
 
 	// 이동 중에 물풍선 갇힌 애들 발견했을 때
@@ -168,10 +149,7 @@ BombRef ForestMap::FindBomb(Vector2Int cellPos)
 
 bool ForestMap::SetBomb(Vector2Int pos, PlayerRef ownerPlayer)
 {
-	if (CanGo(pos) == false)
-		return false;
-
-	if (ownerPlayer->AddBomb() == false)
+	if (CanGo(pos) == false || FindBomb(pos) != nullptr || ownerPlayer->AddBomb() == false)
 		return false;
 
 	BombRef bomb = MakeShared<Bomb>();
@@ -257,7 +235,7 @@ bool ForestMap::CheckWaterCourse(Vector2Int pos)
 {
 	int32 x = pos.x - MinX;
 	int32 y = MaxY - pos.y;
-	if (CanGo(pos) == false)
+	if (CanGo(pos) == false || FindBomb(pos) != nullptr)
 	{
 		auto findIt = _bombs.find(pos);
 		if (findIt != _bombs.end())
@@ -317,7 +295,7 @@ bool ForestMap::CheckWaterCourse(Vector2Int pos)
 
 void ForestMap::BombResult(Protocol::S_BOMBEND& pkt)
 {
-	::srand(static_cast<uint32>(time(nullptr)));
+	::srand(static_cast<uint32>(::clock()));
 	for (Vector2Int pos : _destroyObjects)
 	{
 		auto* cellpos = pkt.add_destroyobjectcellposes();

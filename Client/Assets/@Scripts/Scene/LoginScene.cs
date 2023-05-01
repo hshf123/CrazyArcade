@@ -10,7 +10,6 @@ public class LoginScene : BaseScene
             return false;
 
         Managers.Sound.Play(Define.Sound.Bgm, "login_scene");
-        Debug.Log(Managers.Sound.GetBGMName());
 
         Managers.UI.ShowSceneUI<UI_LoginScene>();
         return true;

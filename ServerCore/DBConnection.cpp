@@ -263,9 +263,9 @@ void DBConnection::HandleError(SQLRETURN ret)
 		if (errorRet != SQL_SUCCESS && errorRet != SQL_SUCCESS_WITH_INFO)
 			break;
 
-		// TODO : Log
-		wcout.imbue(locale("kor"));
-		wcout << errMsg << endl;
+		wstringstream log;
+		log << L"SQL HANDLE ERROR : " << errMsg;
+		Utils::Log(log);
 
 		index++;
 	}

@@ -156,6 +156,10 @@ public class MyPlayerController : PlayerController
         base.UpdateSortOrder();
         _cursor.sortingOrder = _sortOrder + 1;
     }
+    protected override void PositionCorrection()
+    {
+        // 내 플레이어는 할 필요가 없으니까 비워두자
+    }
     void CheckUpdateFlag()
     {
         if (_updateFlag)

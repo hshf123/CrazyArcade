@@ -12,7 +12,9 @@
 void ClientSession::OnConnected(NetAddress netAddr)
 {
 	GSessionManager.Add(static_pointer_cast<ClientSession>(shared_from_this()));
-	wcout << netAddr.GetIpAddress() << " | " << netAddr.GetPort() << endl;
+	wstringstream log;
+	log << L"IP ADDRESS : " << netAddr.GetIpAddress() << ", PORT : " << netAddr.GetPort();
+	Utils::Log(log);
 }
 
 void ClientSession::OnDisconnected()

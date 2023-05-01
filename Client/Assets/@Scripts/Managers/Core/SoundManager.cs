@@ -7,7 +7,6 @@ public class SoundManager
 {
     private AudioSource[] _audioSources = new AudioSource[(int)Define.Sound.Max];
     private Dictionary<string, AudioClip> _audioClips = new Dictionary<string, AudioClip>();
-    string _bgmName;
 
     private GameObject _soundRoot = null;
 
@@ -39,7 +38,6 @@ public class SoundManager
         foreach (AudioSource audioSource in _audioSources)
             audioSource.Stop();
         _audioClips.Clear();
-        _bgmName = "";
     }
 
     public void Play(Define.Sound type)
@@ -54,7 +52,6 @@ public class SoundManager
 
         if (type == Define.Sound.Bgm)
         {
-            _bgmName = key;
             LoadAudioClip(key, (audioClip) =>
             {
                 if (audioSource.isPlaying)
@@ -118,10 +115,5 @@ public class SoundManager
                 _audioClips.Add(key, audioClip);
             callback?.Invoke(audioClip);
         });
-    }
-
-    public string GetBGMName()
-    {
-        return _bgmName;
     }
 }

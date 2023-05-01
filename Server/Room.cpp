@@ -46,7 +46,7 @@ void Room::RemovePlayer(int64 playerId)
 
 		ChannelRef channel = GetChannel();
 		channel->RemoveRoom(_roomId);
-		for(auto& p : players)
+		for (auto& p : players)
 		{
 			channel->InsertPlayer(p);
 		}
@@ -114,6 +114,7 @@ void Room::PlayerDead(PlayerRef player)
 
 	if (player->PosInfo.state() == Protocol::PPlayerState::DEAD)
 		return;
+
 	player->OnDead();
 	_forestMap->ApplyLeave(player);
 	_forestMap->PlayerCount--;
@@ -125,24 +126,7 @@ void Room::PlayerDead(PlayerRef player)
 	Utils::Log(log);
 
 	if (_forestMap->PlayerCount == 1)
-	{
-		// TODO : 게임 결과 보여주기
-		Protocol::S_GAMEEND gameEndPkt;
-		for (auto& p : _players)
-		{
-			if (p.second->Rank == 1)
-				p.second->PosInfo.set_state(Protocol::PPlayerState::WIN);
-			Protocol::PRoomEnd* roomEnd = gameEndPkt.add_endinfo();
-			roomEnd->set_rank(p.second->Rank);
-			roomEnd->set_kill(p.second->Kill);
-			p.second->PlayerInfo.set_ready(false);
-			roomEnd->set_allocated_playerinfo(p.second->GetPlayerProtocol());
-			roomEnd->set_allocated_playerposinfo(p.second->GetPositionInfoProtocol());
-		}
-		Broadcast(gameEndPkt);
-
-		_endTime = ::GetTickCount64() + 5000;
-	}
+		JobPush(::GetTickCount64() + 2000, [=]() {GameEnd(); });
 }
 
 bool Room::CanGameStart()
@@ -225,7 +209,7 @@ void Room::JobPush(uint64 workTime, function<void(void)> job)
 {
 	WRITE_LOCK;
 
-	_bombMap.insert({ workTime, job });
+	_jobMultiMap.insert({ workTime, job });
 }
 
 void Room::Update()
@@ -241,29 +225,42 @@ void Room::Update()
 		_endTime = 0;
 
 		// 게임이 끝났으니 물풍선 큐도 비워준다.
-		_bombMap.clear();
+		_jobMultiMap.clear();
 		return;
 	}
 
-	if (_endTime == 0 && _bombMap.empty() == false)
+	if (_endTime == 0 && _jobMultiMap.empty() == false)
 	{
-		auto job = _bombMap.begin();
+		auto job = _jobMultiMap.begin();
 		if (job->first <= ::GetTickCount64())
 		{
-			// 물풍선이 터져야 하는 시간이 지났다면
+			// 해당 일을 해야하는 시간이 지났다면 실행.
 			wstringstream log;
 			log << L"ROOM ID : " << _roomId << L" HAS UPDATE THING";
 			Utils::Log(log);
 			job->second();
-			_bombMap.erase(job->first);
+			_jobMultiMap.erase(job->first);
 		}
 	}
 }
 
 void Room::GameEnd()
 {
-	Protocol::S_ROOMBACK roomBackPkt;
-	Broadcast(roomBackPkt);
+	Protocol::S_GAMEEND gameEndPkt;
+	for (auto& p : _players)
+	{
+		if (p.second->Rank == 1)
+			p.second->PosInfo.set_state(Protocol::PPlayerState::WIN);
+		Protocol::PRoomEnd* roomEnd = gameEndPkt.add_endinfo();
+		roomEnd->set_rank(p.second->Rank);
+		roomEnd->set_kill(p.second->Kill);
+		p.second->PlayerInfo.set_ready(false);
+		roomEnd->set_allocated_playerinfo(p.second->GetPlayerProtocol());
+		roomEnd->set_allocated_playerposinfo(p.second->GetPositionInfoProtocol());
+	}
+	Broadcast(gameEndPkt);
+
+	_endTime = ::GetTickCount64() + 5000;
 }
 
 Protocol::PPositionInfo* Room::GetBasicPosInfo(int32 idx)
@@ -364,8 +361,6 @@ void Room::HandleBomb(PlayerRef player, Protocol::C_BOMB& pkt)
 	Vector2Int bombCellPos;
 	{
 		WRITE_LOCK;
-		// Vector2 bombPos = player->GetWorldPos() + Vector2(0, -0.15f);
-		// bombCellPos = _forestMap->WorldToCell(bombPos);
 		bombCellPos = player->GetCellPos();
 
 		if (_forestMap->SetBomb(bombCellPos, player) == false)

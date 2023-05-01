@@ -44,8 +44,9 @@ void Session::Disconnect(const WCHAR* cause)
 	if (_connected.exchange(false) == false)
 		return;
 
-	wcout.imbue(locale("kor"));
-	wcout << L"Disconnect : " << cause << endl;
+	wstringstream log;
+	log << L"DISCONNECTED : " << cause;
+	Utils::Log(log);
 
 	RegisterDisconnect();
 }
@@ -270,7 +271,9 @@ void Session::HandleError(int32 errorCode)
 		break;
 	default:
 		// TODO : Log
-		cout << "Handle Error : " << errorCode << endl;
+		wstringstream log;
+		log << L"HANDLE ERROR : " << errorCode;
+		Utils::Log(log);
 		break;
 	}
 }

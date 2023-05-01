@@ -44,6 +44,22 @@ public class PlayerController : MonoBehaviour
     }
     #endregion
 
+    Vector3 _destPos;
+    public Vector3 DestPos
+    {
+        get
+        {
+            return _destPos;
+        }
+        set
+        {
+            if (_destPos.x == value.x && _destPos.y == value.y)
+                return;
+
+            _destPos.x = value.x;
+            _destPos.y = value.y;
+        }
+    }
     public virtual Vector3 WorldPos
     {
         get
@@ -136,6 +152,7 @@ public class PlayerController : MonoBehaviour
     protected virtual void UpdateController()
     {
         MovePosition();
+        PositionCorrection();
         UpdateSortOrder();
     }
     protected void UpdateAnimation()
@@ -218,95 +235,113 @@ public class PlayerController : MonoBehaviour
     {
         _coDead = StartCoroutine(CoOnDead());
     }
-    
+
     protected virtual void MovePosition()
     {
         if (State != PlayerState.Moving && State != PlayerState.Intrap)
             return;
 
+        // 현재 위치 시작
         Vector3 destPos = WorldPos;
         Vector3 benchmark = destPos;
         Vector3 benchmarkUp = destPos;
         Vector3 benchmarkDown = destPos;
         switch (Dir)
         {
+            // 이동 방향에 따른 충돌 판정용 좌표와 다음 이동 위치 지정
             case MoveDir.Up:
                 {
-                    Vector3 dir = (Vector3.up * Time.deltaTime * PlayerInfo.Speed);
-                    benchmark += dir + new Vector3(0, 0.5f, 0);
-                    benchmarkUp += dir + new Vector3(-0.5f, 0.5f, 0);
-                    benchmarkDown += dir + new Vector3(0.5f, 0.5f, 0);
-                    destPos += dir;
+                    benchmark += new Vector3(0, 0.5f, 0);
+                    benchmarkUp += new Vector3(-0.5f, 0.5f, 0);
+                    benchmarkDown += new Vector3(0.5f, 0.5f, 0);
+                    destPos += (Vector3.up * Time.deltaTime * PlayerInfo.Speed);
                     break;
                 }
             case MoveDir.Right:
                 {
-                    Vector3 dir = (Vector3.right * Time.deltaTime * PlayerInfo.Speed);
-                    benchmark += dir + new Vector3(0.5f, 0, 0);
-                    benchmarkUp += dir + new Vector3(0.5f, -0.5f, 0);
-                    benchmarkDown += dir + new Vector3(0.5f, 0.5f, 0);
-                    destPos += dir;
+                    benchmark += new Vector3(0.5f, 0, 0);
+                    benchmarkUp += new Vector3(0.5f, -0.5f, 0);
+                    benchmarkDown += new Vector3(0.5f, 0.5f, 0);
+                    destPos += (Vector3.right * Time.deltaTime * PlayerInfo.Speed);
                     break;
                 }
             case MoveDir.Down:
                 {
-                    Vector3 dir = (Vector3.down * Time.deltaTime * PlayerInfo.Speed);
-                    benchmark += dir + new Vector3(0, -0.5f, 0);
-                    benchmarkUp += dir + new Vector3(-0.5f, -0.5f, 0);
-                    benchmarkDown += dir + new Vector3(0.5f, -0.5f, 0);
-                    destPos += dir;
+                    benchmark += new Vector3(0, -0.5f, 0);
+                    benchmarkUp += new Vector3(-0.5f, -0.5f, 0);
+                    benchmarkDown += new Vector3(0.5f, -0.5f, 0);
+                    destPos += (Vector3.down * Time.deltaTime * PlayerInfo.Speed);
                     break;
                 }
             case MoveDir.Left:
                 {
-                    Vector3 dir = (Vector3.left * Time.deltaTime * PlayerInfo.Speed);
-                    benchmark += dir + new Vector3(-0.5f, 0, 0);
-                    benchmarkUp += dir + new Vector3(-0.5f, 0.5f, 0);
-                    benchmarkDown += dir + new Vector3(-0.5f, -0.5f, 0);
-                    destPos += dir;
+                    benchmark += new Vector3(-0.5f, 0, 0);
+                    benchmarkUp += new Vector3(-0.5f, 0.5f, 0);
+                    benchmarkDown += new Vector3(-0.5f, -0.5f, 0);
+                    destPos += (Vector3.left * Time.deltaTime * PlayerInfo.Speed);
                     break;
                 }
         }
         if (Dir != MoveDir.None)
         {
+            // 이동 방향의 기준점
             Vector3Int destCellPos = Managers.Map.CurrentGrid.WorldToCell(benchmark);
-            bool isBomb = Managers.Object.FindBomb(destCellPos) == null;
+            bool isBomb = Managers.Object.FindBomb(destCellPos) == null; // 해당 방향에 물풍선이 있는지 체크
             if ((Managers.Map.CanGo(destCellPos) && isBomb) || (isBomb == false && destCellPos == CellPos))
             {
-                Vector3 dist = destPos - WorldPos;
+                // 갈 수 있고 물풍선이 없을 경우 or 물풍선이 있지만 물풍선이랑 같은 칸인 경우 (내가 제자리에서 물풍선을 놓았을 경우)
+                Vector3 dist = destPos - WorldPos; // 목표 위치까지의 거리
                 float xrange = Mathf.Abs(destPos.x) - Mathf.Floor(Mathf.Abs(destPos.x));
                 float yrange = Mathf.Abs(destPos.y) - Mathf.Floor(Mathf.Abs(destPos.y));
                 if (dist.y != 0 && (xrange <= (0.5f + Time.deltaTime * PlayerInfo.Speed) && xrange >= (0.5f - Time.deltaTime * PlayerInfo.Speed)))
                 {
-                    // 추가 기준점 2개가 필요하지 않은 경우, y축 이동
+                    // y축 이동 (세로로 이동)
                     WorldPos = destPos;
                 }
                 else if (dist.x != 0 && (yrange <= (0.5f + Time.deltaTime * PlayerInfo.Speed) && yrange >= (0.5f - Time.deltaTime * PlayerInfo.Speed)))
                 {
-                    // 추가 기준점 2개가 필요하지 않은 경우, x축 이동
+                    // x축 이동 (가로로 이동)
                     WorldPos = destPos;
                 }
                 else
                 {
+                    // 충돌이 없는 경우 or 벽에 살짝 걸쳐서 이동 보정이 필요한 경우 (살짝 밀어서 가운데로 보정)
                     Vector3Int destCellPosUp = Managers.Map.CurrentGrid.WorldToCell(benchmarkUp);
                     Vector3Int destCellPosDown = Managers.Map.CurrentGrid.WorldToCell(benchmarkDown);
                     bool upCanGo = Managers.Map.CanGo(destCellPosUp) || ((destCellPos == CellPos) && (Managers.Object.FindBomb(destCellPos) != null));
                     bool downCanGo = Managers.Map.CanGo(destCellPosDown) || ((destCellPos == CellPos) && (Managers.Object.FindBomb(destCellPos) != null));
                     if (upCanGo && downCanGo)
                     {
+                        // 위 아래 둘 다 뚫린 경우 (충돌이 없는 경우)
                         WorldPos = destPos;
                     }
                     else if (upCanGo == false)
                     {
+                        // 막힌쪽 반대로 이동 (위쪽이 막힌경우라면 아래로 살짝 이동)
                         WorldPos += (benchmark - benchmarkUp).normalized * Time.deltaTime * PlayerInfo.Speed;
                     }
                     else if (downCanGo == false)
                     {
+                        // 막힌쪽 반대로 이동 (아래쪽이 막힌경우라면 위로 살짝 이동)
                         WorldPos += (benchmark - benchmarkDown).normalized * Time.deltaTime * PlayerInfo.Speed;
                     }
                 }
                 CellPos = Managers.Map.CurrentGrid.WorldToCell(WorldPos);
             }
+        }
+    }
+    protected virtual void PositionCorrection()
+    {
+        // 아직 이동중이라면 보정할 필요가 없다.
+        if (State == PlayerState.Moving)
+            return;
+
+        float dist = (DestPos - WorldPos).magnitude;
+        if(dist > Time.deltaTime * PlayerInfo.Speed)
+        {
+            // 한 프레임안에 도착할 수 있다면 도착한 걸로 판정
+            Vector3 dir = (DestPos - WorldPos).normalized;
+            WorldPos += (dir * Time.deltaTime * PlayerInfo.Speed);
         }
     }
     protected virtual void UpdateSortOrder()
@@ -320,7 +355,7 @@ public class PlayerController : MonoBehaviour
     {
         yield return new WaitForSeconds(0.45f);
 
-        Managers.Sound.Play(Define.Sound.Effect, "player_die");
+        Managers.Sound.Play(Define.Sound.Effect, "ballon_explosion");
         Managers.Object.RemovePlayer(PlayerInfo.Id);
         Managers.Resource.Destroy(gameObject);
         _coDead = null;
