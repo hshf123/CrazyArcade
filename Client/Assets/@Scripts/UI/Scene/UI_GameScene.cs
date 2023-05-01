@@ -24,6 +24,7 @@ public class UI_GameScene : UI_Scene
 
         Managers.UI.MakeSubItem<UI_PingTextSubItem>(transform);
         Managers.UI.MakeSubItem<UI_FPSTextSubItem>(transform);
+        Managers.UI.ShowPopupUI<UI_GameStartPopup>();
 
         Bind<Button>(typeof(Buttons));
         BindText(typeof(Texts));

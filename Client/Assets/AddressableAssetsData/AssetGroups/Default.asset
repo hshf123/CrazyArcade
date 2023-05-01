@@ -193,6 +193,10 @@ MonoBehaviour:
     m_Address: pt_in_rect
     m_ReadOnly: 0
     m_SerializedLabels: []
+  - m_GUID: f0e29b42698427949a2bffcf7d0b7a84
+    m_Address: UI_GameStartPopup
+    m_ReadOnly: 0
+    m_SerializedLabels: []
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 37d63db9dee568844aed5ef436298665, type: 2}
   m_SchemaSet:
