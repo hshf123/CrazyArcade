@@ -57,7 +57,7 @@ public class UI_LobbyScene : UI_Scene
         Get<Button>((int)Buttons.RightButton).gameObject.BindEvent(OnClickRightButton);
         Get<Button>((int)Buttons.LeftButton).gameObject.BindEvent(OnClickLeftButton);
         Get<Button>((int)Buttons.ChatSendButton).gameObject.BindEvent(OnClickChatSendButton);
-        GetText((int)Texts.ChatText).text = "안내 : 본 게임은 크아 모작임\n";
+        GetText((int)Texts.ChatText).text = "안내 : 크아 모작입니다.\n";
 
         RefreshLobbyPage();
 

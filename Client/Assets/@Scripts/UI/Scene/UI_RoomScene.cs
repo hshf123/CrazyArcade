@@ -100,7 +100,7 @@ public class UI_RoomScene : UI_Scene
             Get<Button>((int)Buttons.StartButton).gameObject.SetActive(false);
         }
 
-        GetText((int)Texts.ChatText).text = "안내 : RoomScene입니다.\n";
+        GetText((int)Texts.ChatText).text = $"안내 : {Managers.Game.Room.RoomId}번 방.\n";
 
         RefreshRoomPage();
 
