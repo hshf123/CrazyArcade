@@ -131,7 +131,7 @@ int main()
 	}
 
 	ServerServiceRef service = MakeShared<ServerService>(
-		NetAddress(L"127.0.0.1", 7777),
+		NetAddress(L"127.0.0.1", 5959),
 		MakeShared<IocpCore>(),
 		MakeShared<ClientSession>,
 		100);

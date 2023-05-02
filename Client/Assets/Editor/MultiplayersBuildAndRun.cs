@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class MultiplayersBuildAndRun
 {
-    [MenuItem("Tools/Build Not Run")]
+    [MenuItem("Tools/Build Not Run #b")]
     static void PerformWin64Build()
     {
         EditorUserBuildSettings.SwitchActiveBuildTarget(

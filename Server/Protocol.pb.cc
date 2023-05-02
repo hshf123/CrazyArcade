@@ -270,7 +270,8 @@ struct S_ROOMSTARTDefaultTypeInternal {
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 S_ROOMSTARTDefaultTypeInternal _S_ROOMSTART_default_instance_;
 PROTOBUF_CONSTEXPR C_MOVE::C_MOVE(
     ::_pbi::ConstantInitialized)
-  : positioninfo_(nullptr){}
+  : positioninfo_(nullptr)
+  , frontpos_(nullptr){}
 struct C_MOVEDefaultTypeInternal {
   PROTOBUF_CONSTEXPR C_MOVEDefaultTypeInternal()
       : _instance(::_pbi::ConstantInitialized{}) {}
@@ -559,6 +560,7 @@ const uint32_t TableStruct_Protocol_2eproto::offsets[] PROTOBUF_SECTION_VARIABLE
   ~0u,  // no _weak_field_map_
   ~0u,  // no _inlined_string_donated_
   PROTOBUF_FIELD_OFFSET(::Protocol::C_MOVE, positioninfo_),
+  PROTOBUF_FIELD_OFFSET(::Protocol::C_MOVE, frontpos_),
   ~0u,  // no _has_bits_
   PROTOBUF_FIELD_OFFSET(::Protocol::S_MOVE, _internal_metadata_),
   ~0u,  // no _extensions_
@@ -655,15 +657,15 @@ static const ::_pbi::MigrationSchema schemas[] PROTOBUF_SECTION_VARIABLE(protode
   { 131, -1, -1, sizeof(::Protocol::C_ROOMSTART)},
   { 137, -1, -1, sizeof(::Protocol::S_ROOMSTART)},
   { 147, -1, -1, sizeof(::Protocol::C_MOVE)},
-  { 154, -1, -1, sizeof(::Protocol::S_MOVE)},
-  { 163, -1, -1, sizeof(::Protocol::C_BOMB)},
-  { 170, -1, -1, sizeof(::Protocol::S_BOMB)},
-  { 178, -1, -1, sizeof(::Protocol::S_BOMBEND)},
-  { 189, -1, -1, sizeof(::Protocol::S_ITEMSPAWN)},
-  { 197, -1, -1, sizeof(::Protocol::S_DEAD)},
-  { 205, -1, -1, sizeof(::Protocol::S_ITEMACQUISITION)},
-  { 213, -1, -1, sizeof(::Protocol::S_GAMEEND)},
-  { 220, -1, -1, sizeof(::Protocol::S_ROOMBACK)},
+  { 155, -1, -1, sizeof(::Protocol::S_MOVE)},
+  { 164, -1, -1, sizeof(::Protocol::C_BOMB)},
+  { 171, -1, -1, sizeof(::Protocol::S_BOMB)},
+  { 179, -1, -1, sizeof(::Protocol::S_BOMBEND)},
+  { 190, -1, -1, sizeof(::Protocol::S_ITEMSPAWN)},
+  { 198, -1, -1, sizeof(::Protocol::S_DEAD)},
+  { 206, -1, -1, sizeof(::Protocol::S_ITEMACQUISITION)},
+  { 214, -1, -1, sizeof(::Protocol::S_GAMEEND)},
+  { 221, -1, -1, sizeof(::Protocol::S_ROOMBACK)},
 };
 
 static const ::_pb::Message* const file_default_instances[] = {
@@ -724,30 +726,31 @@ const char descriptor_table_protodef_Protocol_2eproto[] PROTOBUF_SECTION_VARIABL
   "g\030\002 \001(\t\"\r\n\013C_ROOMSTART\"s\n\013S_ROOMSTART\022\017\n"
   "\007success\030\001 \001(\010\022\035\n\004room\030\002 \001(\0132\017.Protocol."
   "PRoom\022\017\n\007mapName\030\003 \001(\t\022#\n\005spawn\030\004 \003(\0132\024."
-  "Protocol.PRoomStart\"7\n\006C_MOVE\022-\n\014positio"
-  "nInfo\030\001 \001(\0132\027.Protocol.PPositionInfo\"i\n\006"
-  "S_MOVE\022\r\n\005force\030\001 \001(\010\022!\n\006player\030\002 \001(\0132\021."
-  "Protocol.PPlayer\022-\n\014positionInfo\030\003 \001(\0132\027"
-  ".Protocol.PPositionInfo\"-\n\006C_BOMB\022#\n\007cel"
-  "lPos\030\001 \001(\0132\022.Protocol.PCellPos\"P\n\006S_BOMB"
-  "\022!\n\006player\030\001 \001(\0132\021.Protocol.PPlayer\022#\n\007c"
-  "ellpos\030\002 \001(\0132\022.Protocol.PCellPos\"\345\001\n\tS_B"
-  "OMBEND\022!\n\006player\030\001 \001(\0132\021.Protocol.PPlaye"
-  "r\022\'\n\013bombCellPos\030\002 \001(\0132\022.Protocol.PCellP"
-  "os\0222\n\026destroyObjectCellPoses\030\003 \003(\0132\022.Pro"
-  "tocol.PCellPos\0220\n\024destroyItemCellPoses\030\004"
-  " \003(\0132\022.Protocol.PCellPos\022&\n\013trapPlayers\030"
-  "\005 \003(\0132\021.Protocol.PPlayer\"Y\n\013S_ITEMSPAWN\022"
-  "#\n\007cellPos\030\001 \001(\0132\022.Protocol.PCellPos\022%\n\010"
-  "itemType\030\002 \001(\0162\023.Protocol.PItemType\"U\n\006S"
-  "_DEAD\022!\n\006player\030\001 \001(\0132\021.Protocol.PPlayer"
-  "\022(\n\007posInfo\030\002 \001(\0132\027.Protocol.PPositionIn"
-  "fo\"_\n\021S_ITEMACQUISITION\022%\n\nplayerInfo\030\001 "
-  "\001(\0132\021.Protocol.PPlayer\022#\n\007itemPos\030\002 \001(\0132"
-  "\022.Protocol.PCellPos\"0\n\tS_GAMEEND\022#\n\007endI"
-  "nfo\030\001 \003(\0132\022.Protocol.PRoomEnd\"+\n\nS_ROOMB"
-  "ACK\022\035\n\004room\030\001 \001(\0132\017.Protocol.PRoomB\033\252\002\030G"
-  "oogle.Protobuf.Protocolb\006proto3"
+  "Protocol.PRoomStart\"]\n\006C_MOVE\022-\n\014positio"
+  "nInfo\030\001 \001(\0132\027.Protocol.PPositionInfo\022$\n\010"
+  "frontPos\030\002 \001(\0132\022.Protocol.PCellPos\"i\n\006S_"
+  "MOVE\022\r\n\005force\030\001 \001(\010\022!\n\006player\030\002 \001(\0132\021.Pr"
+  "otocol.PPlayer\022-\n\014positionInfo\030\003 \001(\0132\027.P"
+  "rotocol.PPositionInfo\"-\n\006C_BOMB\022#\n\007cellP"
+  "os\030\001 \001(\0132\022.Protocol.PCellPos\"P\n\006S_BOMB\022!"
+  "\n\006player\030\001 \001(\0132\021.Protocol.PPlayer\022#\n\007cel"
+  "lpos\030\002 \001(\0132\022.Protocol.PCellPos\"\345\001\n\tS_BOM"
+  "BEND\022!\n\006player\030\001 \001(\0132\021.Protocol.PPlayer\022"
+  "\'\n\013bombCellPos\030\002 \001(\0132\022.Protocol.PCellPos"
+  "\0222\n\026destroyObjectCellPoses\030\003 \003(\0132\022.Proto"
+  "col.PCellPos\0220\n\024destroyItemCellPoses\030\004 \003"
+  "(\0132\022.Protocol.PCellPos\022&\n\013trapPlayers\030\005 "
+  "\003(\0132\021.Protocol.PPlayer\"Y\n\013S_ITEMSPAWN\022#\n"
+  "\007cellPos\030\001 \001(\0132\022.Protocol.PCellPos\022%\n\010it"
+  "emType\030\002 \001(\0162\023.Protocol.PItemType\"U\n\006S_D"
+  "EAD\022!\n\006player\030\001 \001(\0132\021.Protocol.PPlayer\022("
+  "\n\007posInfo\030\002 \001(\0132\027.Protocol.PPositionInfo"
+  "\"_\n\021S_ITEMACQUISITION\022%\n\nplayerInfo\030\001 \001("
+  "\0132\021.Protocol.PPlayer\022#\n\007itemPos\030\002 \001(\0132\022."
+  "Protocol.PCellPos\"0\n\tS_GAMEEND\022#\n\007endInf"
+  "o\030\001 \003(\0132\022.Protocol.PRoomEnd\"+\n\nS_ROOMBAC"
+  "K\022\035\n\004room\030\001 \001(\0132\017.Protocol.PRoomB\033\252\002\030Goo"
+  "gle.Protobuf.Protocolb\006proto3"
   ;
 static const ::_pbi::DescriptorTable* const descriptor_table_Protocol_2eproto_deps[3] = {
   &::descriptor_table_Enum_2eproto,
@@ -756,7 +759,7 @@ static const ::_pbi::DescriptorTable* const descriptor_table_Protocol_2eproto_de
 };
 static ::_pbi::once_flag descriptor_table_Protocol_2eproto_once;
 const ::_pbi::DescriptorTable descriptor_table_Protocol_2eproto = {
-    false, false, 1911, descriptor_table_protodef_Protocol_2eproto,
+    false, false, 1949, descriptor_table_protodef_Protocol_2eproto,
     "Protocol.proto",
     &descriptor_table_Protocol_2eproto_once, descriptor_table_Protocol_2eproto_deps, 3, 30,
     schemas, file_default_instances, TableStruct_Protocol_2eproto::offsets,
@@ -4264,17 +4267,28 @@ void S_ROOMSTART::InternalSwap(S_ROOMSTART* other) {
 class C_MOVE::_Internal {
  public:
   static const ::Protocol::PPositionInfo& positioninfo(const C_MOVE* msg);
+  static const ::Protocol::PCellPos& frontpos(const C_MOVE* msg);
 };
 
 const ::Protocol::PPositionInfo&
 C_MOVE::_Internal::positioninfo(const C_MOVE* msg) {
   return *msg->positioninfo_;
 }
+const ::Protocol::PCellPos&
+C_MOVE::_Internal::frontpos(const C_MOVE* msg) {
+  return *msg->frontpos_;
+}
 void C_MOVE::clear_positioninfo() {
   if (GetArenaForAllocation() == nullptr && positioninfo_ != nullptr) {
     delete positioninfo_;
   }
   positioninfo_ = nullptr;
+}
+void C_MOVE::clear_frontpos() {
+  if (GetArenaForAllocation() == nullptr && frontpos_ != nullptr) {
+    delete frontpos_;
+  }
+  frontpos_ = nullptr;
 }
 C_MOVE::C_MOVE(::PROTOBUF_NAMESPACE_ID::Arena* arena,
                          bool is_message_owned)
@@ -4290,11 +4304,19 @@ C_MOVE::C_MOVE(const C_MOVE& from)
   } else {
     positioninfo_ = nullptr;
   }
+  if (from._internal_has_frontpos()) {
+    frontpos_ = new ::Protocol::PCellPos(*from.frontpos_);
+  } else {
+    frontpos_ = nullptr;
+  }
   // @@protoc_insertion_point(copy_constructor:Protocol.C_MOVE)
 }
 
 inline void C_MOVE::SharedCtor() {
-positioninfo_ = nullptr;
+::memset(reinterpret_cast<char*>(this) + static_cast<size_t>(
+    reinterpret_cast<char*>(&positioninfo_) - reinterpret_cast<char*>(this)),
+    0, static_cast<size_t>(reinterpret_cast<char*>(&frontpos_) -
+    reinterpret_cast<char*>(&positioninfo_)) + sizeof(frontpos_));
 }
 
 C_MOVE::~C_MOVE() {
@@ -4309,6 +4331,7 @@ C_MOVE::~C_MOVE() {
 inline void C_MOVE::SharedDtor() {
   GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
   if (this != internal_default_instance()) delete positioninfo_;
+  if (this != internal_default_instance()) delete frontpos_;
 }
 
 void C_MOVE::SetCachedSize(int size) const {
@@ -4325,6 +4348,10 @@ void C_MOVE::Clear() {
     delete positioninfo_;
   }
   positioninfo_ = nullptr;
+  if (GetArenaForAllocation() == nullptr && frontpos_ != nullptr) {
+    delete frontpos_;
+  }
+  frontpos_ = nullptr;
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
@@ -4338,6 +4365,14 @@ const char* C_MOVE::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
       case 1:
         if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 10)) {
           ptr = ctx->ParseMessage(_internal_mutable_positioninfo(), ptr);
+          CHK_(ptr);
+        } else
+          goto handle_unusual;
+        continue;
+      // .Protocol.PCellPos frontPos = 2;
+      case 2:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 18)) {
+          ptr = ctx->ParseMessage(_internal_mutable_frontpos(), ptr);
           CHK_(ptr);
         } else
           goto handle_unusual;
@@ -4378,6 +4413,13 @@ uint8_t* C_MOVE::_InternalSerialize(
         _Internal::positioninfo(this).GetCachedSize(), target, stream);
   }
 
+  // .Protocol.PCellPos frontPos = 2;
+  if (this->_internal_has_frontpos()) {
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
+      InternalWriteMessage(2, _Internal::frontpos(this),
+        _Internal::frontpos(this).GetCachedSize(), target, stream);
+  }
+
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
     target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
         _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
@@ -4399,6 +4441,13 @@ size_t C_MOVE::ByteSizeLong() const {
     total_size += 1 +
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
         *positioninfo_);
+  }
+
+  // .Protocol.PCellPos frontPos = 2;
+  if (this->_internal_has_frontpos()) {
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
+        *frontpos_);
   }
 
   return MaybeComputeUnknownFieldsSize(total_size, &_cached_size_);
@@ -4426,6 +4475,9 @@ void C_MOVE::MergeFrom(const C_MOVE& from) {
   if (from._internal_has_positioninfo()) {
     _internal_mutable_positioninfo()->::Protocol::PPositionInfo::MergeFrom(from._internal_positioninfo());
   }
+  if (from._internal_has_frontpos()) {
+    _internal_mutable_frontpos()->::Protocol::PCellPos::MergeFrom(from._internal_frontpos());
+  }
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
 }
 
@@ -4443,7 +4495,12 @@ bool C_MOVE::IsInitialized() const {
 void C_MOVE::InternalSwap(C_MOVE* other) {
   using std::swap;
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
-  swap(positioninfo_, other->positioninfo_);
+  ::PROTOBUF_NAMESPACE_ID::internal::memswap<
+      PROTOBUF_FIELD_OFFSET(C_MOVE, frontpos_)
+      + sizeof(C_MOVE::frontpos_)
+      - PROTOBUF_FIELD_OFFSET(C_MOVE, positioninfo_)>(
+          reinterpret_cast<char*>(&positioninfo_),
+          reinterpret_cast<char*>(&other->positioninfo_));
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata C_MOVE::GetMetadata() const {

@@ -149,8 +149,8 @@ public class PacketHandler
         if (pc.PlayerInfo.Id == Managers.Object.MyPlayer.PlayerInfo.Id)
             return;
 
-        // pc.WorldPos = new Vector3(pkt.PositionInfo.WorldPos.PosX, pkt.PositionInfo.WorldPos.PosY, 0);
-        pc.DestPos = new Vector3(pkt.PositionInfo.WorldPos.PosX, pkt.PositionInfo.WorldPos.PosY, 0);
+        pc.WorldPos = new Vector3(pkt.PositionInfo.WorldPos.PosX, pkt.PositionInfo.WorldPos.PosY, 0);
+        //pc.DestPos = new Vector3(pkt.PositionInfo.WorldPos.PosX, pkt.PositionInfo.WorldPos.PosY, 0);
         pc.CellPos = new Vector3Int(pkt.PositionInfo.CellPos.PosX, pkt.PositionInfo.CellPos.PosY, 0);
         pc.State = pkt.PositionInfo.State;
         pc.Dir = pkt.PositionInfo.MoveDir;

@@ -78,9 +78,9 @@ public class PlayerController : MonoBehaviour
     }
     public virtual Vector3Int CellPos
     {
-        get 
+        get
         {
-            return new Vector3Int(PosInfo.CellPos.PosX, PosInfo.CellPos.PosY, 0); 
+            return new Vector3Int(PosInfo.CellPos.PosX, PosInfo.CellPos.PosY, 0);
         }
         set
         {
@@ -152,7 +152,6 @@ public class PlayerController : MonoBehaviour
     protected virtual void UpdateController()
     {
         MovePosition();
-        PositionCorrection();
         UpdateSortOrder();
     }
     protected void UpdateAnimation()
@@ -160,7 +159,7 @@ public class PlayerController : MonoBehaviour
         if (_animator == null)
             return;
 
-        switch(State)
+        switch (State)
         {
             case PlayerState.Idle:
                 {
@@ -326,22 +325,7 @@ public class PlayerController : MonoBehaviour
                         WorldPos += (benchmark - benchmarkDown).normalized * Time.deltaTime * PlayerInfo.Speed;
                     }
                 }
-                CellPos = Managers.Map.CurrentGrid.WorldToCell(WorldPos);
             }
-        }
-    }
-    protected virtual void PositionCorrection()
-    {
-        // 아직 이동중이라면 보정할 필요가 없다.
-        if (State == PlayerState.Moving)
-            return;
-
-        float dist = (DestPos - WorldPos).magnitude;
-        if(dist > Time.deltaTime * PlayerInfo.Speed)
-        {
-            // 한 프레임안에 도착할 수 있다면 도착한 걸로 판정
-            Vector3 dir = (DestPos - WorldPos).normalized;
-            WorldPos += (dir * Time.deltaTime * PlayerInfo.Speed);
         }
     }
     protected virtual void UpdateSortOrder()

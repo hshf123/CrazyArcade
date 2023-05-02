@@ -122,6 +122,7 @@ message S_ROOMSTART
 message C_MOVE
 {
 	PPositionInfo positionInfo = 1;
+	PCellPos frontPos = 2;
 }
 
 message S_MOVE

@@ -344,7 +344,13 @@ void Room::HandleMove(PlayerRef player, Protocol::C_MOVE& pkt)
 
 	WRITE_LOCK;
 	if (_forestMap->ApplyMove(player, pkt) == false)
-		return;
+	{
+		// 방향이 변경된 경우 or 상태가 변경된 경우
+		if (player->PosInfo.movedir() != pkt.positioninfo().movedir() || player->PosInfo.state() != pkt.positioninfo().state())
+			player->PosInfo = pkt.positioninfo();
+		else // 뭔가 문제가 있는 상황
+			return;
+	}
 
 	// 다른 플레이어한테도 알려준다
 	Protocol::S_MOVE movePkt;

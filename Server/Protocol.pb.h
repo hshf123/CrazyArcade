@@ -3288,6 +3288,7 @@ class C_MOVE final :
 
   enum : int {
     kPositionInfoFieldNumber = 1,
+    kFrontPosFieldNumber = 2,
   };
   // .Protocol.PPositionInfo positionInfo = 1;
   bool has_positioninfo() const;
@@ -3307,6 +3308,24 @@ class C_MOVE final :
       ::Protocol::PPositionInfo* positioninfo);
   ::Protocol::PPositionInfo* unsafe_arena_release_positioninfo();
 
+  // .Protocol.PCellPos frontPos = 2;
+  bool has_frontpos() const;
+  private:
+  bool _internal_has_frontpos() const;
+  public:
+  void clear_frontpos();
+  const ::Protocol::PCellPos& frontpos() const;
+  PROTOBUF_NODISCARD ::Protocol::PCellPos* release_frontpos();
+  ::Protocol::PCellPos* mutable_frontpos();
+  void set_allocated_frontpos(::Protocol::PCellPos* frontpos);
+  private:
+  const ::Protocol::PCellPos& _internal_frontpos() const;
+  ::Protocol::PCellPos* _internal_mutable_frontpos();
+  public:
+  void unsafe_arena_set_allocated_frontpos(
+      ::Protocol::PCellPos* frontpos);
+  ::Protocol::PCellPos* unsafe_arena_release_frontpos();
+
   // @@protoc_insertion_point(class_scope:Protocol.C_MOVE)
  private:
   class _Internal;
@@ -3315,6 +3334,7 @@ class C_MOVE final :
   typedef void InternalArenaConstructable_;
   typedef void DestructorSkippable_;
   ::Protocol::PPositionInfo* positioninfo_;
+  ::Protocol::PCellPos* frontpos_;
   mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   friend struct ::TableStruct_Protocol_2eproto;
 };
@@ -6310,6 +6330,91 @@ inline void C_MOVE::set_allocated_positioninfo(::Protocol::PPositionInfo* positi
   }
   positioninfo_ = positioninfo;
   // @@protoc_insertion_point(field_set_allocated:Protocol.C_MOVE.positionInfo)
+}
+
+// .Protocol.PCellPos frontPos = 2;
+inline bool C_MOVE::_internal_has_frontpos() const {
+  return this != internal_default_instance() && frontpos_ != nullptr;
+}
+inline bool C_MOVE::has_frontpos() const {
+  return _internal_has_frontpos();
+}
+inline const ::Protocol::PCellPos& C_MOVE::_internal_frontpos() const {
+  const ::Protocol::PCellPos* p = frontpos_;
+  return p != nullptr ? *p : reinterpret_cast<const ::Protocol::PCellPos&>(
+      ::Protocol::_PCellPos_default_instance_);
+}
+inline const ::Protocol::PCellPos& C_MOVE::frontpos() const {
+  // @@protoc_insertion_point(field_get:Protocol.C_MOVE.frontPos)
+  return _internal_frontpos();
+}
+inline void C_MOVE::unsafe_arena_set_allocated_frontpos(
+    ::Protocol::PCellPos* frontpos) {
+  if (GetArenaForAllocation() == nullptr) {
+    delete reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(frontpos_);
+  }
+  frontpos_ = frontpos;
+  if (frontpos) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:Protocol.C_MOVE.frontPos)
+}
+inline ::Protocol::PCellPos* C_MOVE::release_frontpos() {
+  
+  ::Protocol::PCellPos* temp = frontpos_;
+  frontpos_ = nullptr;
+#ifdef PROTOBUF_FORCE_COPY_IN_RELEASE
+  auto* old =  reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(temp);
+  temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
+  if (GetArenaForAllocation() == nullptr) { delete old; }
+#else  // PROTOBUF_FORCE_COPY_IN_RELEASE
+  if (GetArenaForAllocation() != nullptr) {
+    temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
+  }
+#endif  // !PROTOBUF_FORCE_COPY_IN_RELEASE
+  return temp;
+}
+inline ::Protocol::PCellPos* C_MOVE::unsafe_arena_release_frontpos() {
+  // @@protoc_insertion_point(field_release:Protocol.C_MOVE.frontPos)
+  
+  ::Protocol::PCellPos* temp = frontpos_;
+  frontpos_ = nullptr;
+  return temp;
+}
+inline ::Protocol::PCellPos* C_MOVE::_internal_mutable_frontpos() {
+  
+  if (frontpos_ == nullptr) {
+    auto* p = CreateMaybeMessage<::Protocol::PCellPos>(GetArenaForAllocation());
+    frontpos_ = p;
+  }
+  return frontpos_;
+}
+inline ::Protocol::PCellPos* C_MOVE::mutable_frontpos() {
+  ::Protocol::PCellPos* _msg = _internal_mutable_frontpos();
+  // @@protoc_insertion_point(field_mutable:Protocol.C_MOVE.frontPos)
+  return _msg;
+}
+inline void C_MOVE::set_allocated_frontpos(::Protocol::PCellPos* frontpos) {
+  ::PROTOBUF_NAMESPACE_ID::Arena* message_arena = GetArenaForAllocation();
+  if (message_arena == nullptr) {
+    delete reinterpret_cast< ::PROTOBUF_NAMESPACE_ID::MessageLite*>(frontpos_);
+  }
+  if (frontpos) {
+    ::PROTOBUF_NAMESPACE_ID::Arena* submessage_arena =
+        ::PROTOBUF_NAMESPACE_ID::Arena::InternalGetOwningArena(
+                reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(frontpos));
+    if (message_arena != submessage_arena) {
+      frontpos = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
+          message_arena, frontpos, submessage_arena);
+    }
+    
+  } else {
+    
+  }
+  frontpos_ = frontpos;
+  // @@protoc_insertion_point(field_set_allocated:Protocol.C_MOVE.frontPos)
 }
 
 // -------------------------------------------------------------------

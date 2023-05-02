@@ -34,13 +34,14 @@ bool ForestMap::CanGo(Vector2Int cellPos)
 
 bool ForestMap::ApplyMove(PlayerRef player, Protocol::C_MOVE& pkt)
 {
+	Vector2Int frontCellPos = Vector2Int(pkt.frontpos().posx(), pkt.frontpos().posy());
 	Vector2Int dest = Vector2Int(pkt.positioninfo().cellpos().posx(), pkt.positioninfo().cellpos().posy());
 
-	if (CanGo(dest) == false)
+	if (CanGo(frontCellPos) == false)
 		return false;
 
 #pragma region LOG
-	if(dest != player->GetCellPos())
+	if(frontCellPos != player->GetCellPos())
 	{
 		wstringstream log;
 		log << L"Player ID : ";
@@ -53,7 +54,7 @@ bool ForestMap::ApplyMove(PlayerRef player, Protocol::C_MOVE& pkt)
 		Utils::Log(log);
 
 		// 물풍선 있을 경우
-		if (FindBomb(dest) != nullptr)
+		if (FindBomb(frontCellPos) != nullptr)
 			return false;
 	}
 #pragma endregion
@@ -79,8 +80,9 @@ bool ForestMap::ApplyMove(PlayerRef player, Protocol::C_MOVE& pkt)
 					wstringstream log;
 					log << L"Player ID : ";
 					log << player->PlayerInfo.id();
-					log << L" killed ";
+					log << L" KILL ";
 					log << p->PlayerInfo.id();
+					log << L" KILL COUNT : " << player->Kill;
 					Utils::Log(log);
 				}
 			}

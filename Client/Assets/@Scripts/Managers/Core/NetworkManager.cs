@@ -13,7 +13,7 @@ public class NetworkManager
         Connector connector = new Connector();
         connector.Connect(
             "127.0.0.1",
-            7777,
+            5959,
             () => { return new ServerSession(); },
             1);
     }

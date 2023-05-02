@@ -45,7 +45,7 @@ public class UI_GameResultPopup : UI_Popup
 
         foreach (var endInfo in EndInfo)
         {
-            InstantiateRankSubItem(endInfo.Rank, endInfo.PlayerInfo.Level, endInfo.PlayerInfo.Name, 0, 0, endInfo.PlayerInfo.Exp, 0);
+            InstantiateRankSubItem(endInfo.Rank, endInfo.PlayerInfo.Level, endInfo.PlayerInfo.Name, endInfo.Kill, 0, endInfo.PlayerInfo.Exp, 0);
             if(endInfo.Rank == 1 && endInfo.PlayerInfo.Id == Managers.Game.PlayerID)
             {
                 // 1등인 경우
