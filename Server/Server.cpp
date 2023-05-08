@@ -148,17 +148,12 @@ int main()
 				}
 			});
 	}
-	for (int32 i = 0; i < 2; i++)
-	{
-		GThreadManager->Launch([=]()
-			{
-				while (true)
-				{
-					ChannelManager::GetInstance()->Update();
 
-					this_thread::sleep_for(1ms);
-				}
-			});
+	while (true)
+	{
+		ChannelManager::GetInstance()->Update();
+
+		this_thread::sleep_for(1ms);
 	}
 
 	GThreadManager->Join();
